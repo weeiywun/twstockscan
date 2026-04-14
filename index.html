@@ -6,7 +6,6 @@
 <title>選股雷達 · StockRadar</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400;500;600&family=Noto+Sans+TC:wght@300;400;500;700&display=swap" rel="stylesheet">
-<script src="https://s3.tradingview.com/tv.js" async></script>
 <style>
 /* ── Variables ─────────────────────────────── */
 :root {
@@ -96,7 +95,7 @@ header{
 .strat-tab.locked{opacity:.5;cursor:not-allowed}
 
 /* ── Main layout ─────────────────────────────── */
-main{max-width:1200px;margin:0 auto;padding:28px 24px 64px;position:relative;z-index:1}
+main{padding:28px 0 0;}
 
 /* ── Strategy Panel ─────────────────────────── */
 .strategy-panel{display:none;animation:fadeIn .3s ease}
@@ -198,17 +197,10 @@ tbody tr:hover .spark-bar{opacity:1}
 /* ── Expand row ─────────────────────────────── */
 .expand-row td{padding:0}
 .expand-content{
-  padding:20px 20px 20px 20px;
+  padding:20px 20px 20px 56px;
   background:rgba(0,232,122,0.03);
   border-top:1px solid var(--border);
   display:grid;grid-template-columns:1fr 1fr 1fr;gap:20px;
-}
-.expand-chart{
-  grid-column:1/-1;
-  border-radius:8px;overflow:hidden;
-  border:1px solid var(--border);
-  background:var(--bg2);
-  min-height:420px;
 }
 .expand-section h4{font-size:11px;color:var(--text3);text-transform:uppercase;letter-spacing:.08em;margin-bottom:10px}
 .trend-row{display:flex;align-items:center;gap:8px;margin-bottom:6px}
@@ -218,27 +210,46 @@ tbody tr:hover .spark-bar{opacity:1}
 .trend-bar.retail{background:var(--red)}
 .trend-val{font-family:var(--mono);font-size:11px;color:var(--text2);width:44px;text-align:right}
 
-/* ── Watchlist ───────────────────────────────── */
-.watchlist-section{margin-top:28px}
-.section-header{
-  display:flex;align-items:center;justify-content:space-between;
-  margin-bottom:14px;
+/* ── Page layout (content + sidebar) ────────── */
+.page-layout{
+  max-width:1200px;margin:0 auto;padding:0 24px 64px;
+  display:grid;grid-template-columns:1fr 220px;gap:24px;
+  align-items:start;position:relative;z-index:1;
 }
-.section-title{font-size:13px;font-weight:600;color:var(--text2);text-transform:uppercase;letter-spacing:.08em}
-.watchlist-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(200px,1fr));gap:10px}
-.watch-card{
+.content-col{min-width:0}
+.watchlist-sidebar{
+  position:sticky;top:72px;
   background:var(--bg2);border:1px solid var(--border);
-  border-radius:8px;padding:12px 14px;
+  border-radius:12px;overflow:hidden;
+}
+.sidebar-header{
+  padding:12px 14px;border-bottom:1px solid var(--border);
   display:flex;align-items:center;justify-content:space-between;
+}
+.section-title{font-size:11px;font-weight:600;color:var(--text3);text-transform:uppercase;letter-spacing:.1em}
+.watch-list{display:flex;flex-direction:column}
+.watch-card{
+  padding:10px 14px;border-bottom:1px solid var(--border);
+  display:flex;align-items:center;gap:8px;
   font-family:var(--mono);font-size:12px;
-  transition:border-color .2s;
+  transition:background .15s;
 }
-.watch-card:hover{border-color:var(--border2)}
-.watch-add{
-  border:1px dashed var(--border);color:var(--text3);
-  justify-content:center;gap:6px;cursor:pointer;
+.watch-card:last-child{border-bottom:none}
+.watch-card:hover{background:rgba(255,255,255,0.03)}
+.watch-card-code{color:var(--green);font-weight:600;flex:0 0 auto}
+.watch-card-name{color:var(--text2);flex:1;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;font-family:var(--sans)}
+.watch-card-remove{color:var(--text3);cursor:pointer;flex:0 0 auto;line-height:1}
+.watch-card-remove:hover{color:var(--red)}
+.watch-empty{padding:20px 14px;color:var(--text3);font-size:12px;text-align:center;line-height:1.6;font-family:var(--sans)}
+
+/* ── Market Overview ─────────────────────────── */
+.market-overview{
+  border-bottom:1px solid var(--border);
+  background:var(--bg2);
+  padding:0;height:120px;
+  position:relative;z-index:1;
+  overflow:hidden;
 }
-.watch-add:hover{border-color:var(--green);color:var(--green)}
 
 /* ── Coming Soon panel ───────────────────────── */
 .coming-soon{
@@ -252,7 +263,8 @@ tbody tr:hover .spark-bar{opacity:1}
 /* ── Responsive ──────────────────────────────── */
 @media(max-width:768px){
   header{padding:0 16px}
-  main{padding:20px 16px 48px}
+  .page-layout{padding:16px 16px 48px;grid-template-columns:1fr}
+  .watchlist-sidebar{position:static}
   .strategy-nav{padding:12px 16px 0}
   .expand-content{grid-template-columns:1fr;gap:14px}
   table thead th:nth-child(n+5){display:none}
@@ -285,8 +297,36 @@ tbody tr:hover .spark-bar{opacity:1}
 <!-- Strategy Tabs -->
 <nav class="strategy-nav" id="strategyNav"></nav>
 
-<!-- Main Content -->
-<main id="mainContent"></main>
+<!-- Market Overview -->
+<div class="market-overview">
+  <div class="tradingview-widget-container" style="height:120px">
+    <div class="tradingview-widget-container__widget" style="height:120px"></div>
+    <script type="text/javascript" src="https://s3.tradingview.com/external-embedding/embed-widget-mini-symbol-overview.js" async>
+    {
+      "symbol": "TVC:TWII",
+      "width": "100%",
+      "height": 120,
+      "locale": "zh_TW",
+      "dateRange": "3M",
+      "colorTheme": "dark",
+      "isTransparent": true,
+      "autosize": true,
+      "largeChartUrl": ""
+    }
+    </script>
+  </div>
+</div>
+
+<!-- Two-column layout -->
+<div class="page-layout">
+  <main id="mainContent"></main>
+  <aside class="watchlist-sidebar">
+    <div class="sidebar-header">
+      <span class="section-title">觀察清單</span>
+    </div>
+    <div class="watch-list" id="watchlistGrid"></div>
+  </aside>
+</div>
 
 <script>
 // ════════════════════════════════════════════════════
@@ -524,17 +564,6 @@ function renderStrategy() {
       </table>
     </div>`;
 
-  // Watchlist
-  const watchHTML = `
-    <div class="watchlist-section">
-      <div class="section-header">
-        <span class="section-title">觀察清單</span>
-      </div>
-      <div class="watchlist-grid" id="watchlistGrid">
-        ${renderWatchlist()}
-      </div>
-    </div>`;
-
   main.innerHTML = `
     <div class="strategy-panel active">
       <div class="strat-header">
@@ -544,8 +573,11 @@ function renderStrategy() {
       ${condsHTML}
       ${summaryHTML}
       ${tableHTML}
-      ${watchHTML}
     </div>`;
+
+  // 更新右側 sidebar
+  const grid = document.getElementById('watchlistGrid');
+  if (grid) grid.innerHTML = renderWatchlist();
 }
 
 function renderRow(d) {
@@ -581,9 +613,6 @@ function renderRow(d) {
     <tr class="expand-row" id="expand-${d.stock_id}" style="display:none">
       <td colspan="6">
         <div class="expand-content">
-          <div class="expand-chart">
-            <div id="tv-chart-${d.stock_id}" style="height:420px"></div>
-          </div>
           <div class="expand-section">
             <h4>千張大戶趨勢</h4>
             ${trendBars(d.big_trend, '大戶', '')}
@@ -612,19 +641,18 @@ function renderRow(d) {
 
 function renderWatchlist() {
   if (watchlist.length === 0) {
-    return `<div class="watch-card watch-add"><span>點擊結果列加入觀察</span></div>`;
+    return `<div class="watch-empty">點擊結果列<br>加入觀察清單</div>`;
   }
-  const cards = watchlist.map(sid => {
-    const strat = STRATEGIES.find(s => s.available);
+  const strat = STRATEGIES.find(s => s.available);
+  return watchlist.map(sid => {
     const item = (DATA[strat.dataKey]||[]).find(d => d.stock_id === sid);
-    const name = item ? item.name : sid;
+    const name = item ? item.name : '—';
     return `<div class="watch-card">
-      <span style="font-size:13px;color:var(--green)">${sid}</span>
-      <span style="color:var(--text2)">${name}</span>
-      <span onclick="event.stopPropagation();removeWatch('${sid}')" style="color:var(--text3);cursor:pointer;margin-left:4px">×</span>
+      <span class="watch-card-code">${sid}</span>
+      <span class="watch-card-name">${name}</span>
+      <span class="watch-card-remove" onclick="event.stopPropagation();removeWatch('${sid}')">×</span>
     </div>`;
-  });
-  return cards.join('') + `<div class="watch-card watch-add" onclick=""><span>+</span></div>`;
+  }).join('');
 }
 
 // ════════════════════════════════════════════════════
@@ -653,44 +681,11 @@ function toggleExpand(sid) {
     document.getElementById(`expand-${sid}`).style.display = 'table-row';
     document.getElementById(`row-${sid}`).classList.add('expanded');
     expandedRow = sid;
-    loadTVChart(sid);
   } else {
     expandedRow = null;
   }
 }
 
-function loadTVChart(sid) {
-  if (typeof TradingView === 'undefined') {
-    // tv.js 尚未載入完成，稍後重試
-    setTimeout(() => loadTVChart(sid), 300);
-    return;
-  }
-  const strat = STRATEGIES.find(s => s.id === activeStratId);
-  const d = (DATA[strat.dataKey] || []).find(x => x.stock_id === sid);
-  if (!d) return;
-
-  const container = document.getElementById(`tv-chart-${sid}`);
-  if (!container || container.dataset.loaded) return;
-  container.dataset.loaded = '1';
-
-  new TradingView.widget({
-    container_id: `tv-chart-${sid}`,
-    autosize: true,
-    symbol: getTVSymbol(d),
-    interval: 'D',
-    timezone: 'Asia/Taipei',
-    theme: 'dark',
-    style: '1',
-    locale: 'zh_TW',
-    toolbar_bg: '#0e1018',
-    gridcolor: 'rgba(255,255,255,0.04)',
-    hide_side_toolbar: false,
-    allow_symbol_change: false,
-    studies: ['MAExp@tv-basicstudies'],
-    hide_legend: false,
-    save_image: false,
-  });
-}
 
 function toggleWatch(sid, name) {
   if (watchlist.includes(sid)) {
@@ -726,6 +721,8 @@ document.getElementById('headerMeta').textContent =
 
 renderNav();
 renderStrategy();
+const _wg = document.getElementById('watchlistGrid');
+if (_wg) _wg.innerHTML = renderWatchlist();
 </script>
 </body>
 </html>
