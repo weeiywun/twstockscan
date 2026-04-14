@@ -6,6 +6,7 @@
 <title>選股雷達 · StockRadar</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400;500;600&family=Noto+Sans+TC:wght@300;400;500;700&display=swap" rel="stylesheet">
+<script src="https://s3.tradingview.com/tv.js" async></script>
 <style>
 /* ── Variables ─────────────────────────────── */
 :root {
@@ -197,10 +198,17 @@ tbody tr:hover .spark-bar{opacity:1}
 /* ── Expand row ─────────────────────────────── */
 .expand-row td{padding:0}
 .expand-content{
-  padding:20px 20px 20px 56px;
+  padding:20px 20px 20px 20px;
   background:rgba(0,232,122,0.03);
   border-top:1px solid var(--border);
   display:grid;grid-template-columns:1fr 1fr 1fr;gap:20px;
+}
+.expand-chart{
+  grid-column:1/-1;
+  border-radius:8px;overflow:hidden;
+  border:1px solid var(--border);
+  background:var(--bg2);
+  min-height:420px;
 }
 .expand-section h4{font-size:11px;color:var(--text3);text-transform:uppercase;letter-spacing:.08em;margin-bottom:10px}
 .trend-row{display:flex;align-items:center;gap:8px;margin-bottom:6px}
@@ -573,6 +581,9 @@ function renderRow(d) {
     <tr class="expand-row" id="expand-${d.stock_id}" style="display:none">
       <td colspan="6">
         <div class="expand-content">
+          <div class="expand-chart">
+            <div id="tv-chart-${d.stock_id}" style="height:420px"></div>
+          </div>
           <div class="expand-section">
             <h4>千張大戶趨勢</h4>
             ${trendBars(d.big_trend, '大戶', '')}
@@ -642,9 +653,43 @@ function toggleExpand(sid) {
     document.getElementById(`expand-${sid}`).style.display = 'table-row';
     document.getElementById(`row-${sid}`).classList.add('expanded');
     expandedRow = sid;
+    loadTVChart(sid);
   } else {
     expandedRow = null;
   }
+}
+
+function loadTVChart(sid) {
+  if (typeof TradingView === 'undefined') {
+    // tv.js 尚未載入完成，稍後重試
+    setTimeout(() => loadTVChart(sid), 300);
+    return;
+  }
+  const strat = STRATEGIES.find(s => s.id === activeStratId);
+  const d = (DATA[strat.dataKey] || []).find(x => x.stock_id === sid);
+  if (!d) return;
+
+  const container = document.getElementById(`tv-chart-${sid}`);
+  if (!container || container.dataset.loaded) return;
+  container.dataset.loaded = '1';
+
+  new TradingView.widget({
+    container_id: `tv-chart-${sid}`,
+    autosize: true,
+    symbol: getTVSymbol(d),
+    interval: 'D',
+    timezone: 'Asia/Taipei',
+    theme: 'dark',
+    style: '1',
+    locale: 'zh_TW',
+    toolbar_bg: '#0e1018',
+    gridcolor: 'rgba(255,255,255,0.04)',
+    hide_side_toolbar: false,
+    allow_symbol_change: false,
+    studies: ['MAExp@tv-basicstudies'],
+    hide_legend: false,
+    save_image: false,
+  });
 }
 
 function toggleWatch(sid, name) {
