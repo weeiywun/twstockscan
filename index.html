@@ -1,0 +1,657 @@
+<!DOCTYPE html>
+<html lang="zh-TW">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>選股雷達 · StockRadar</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400;500;600&family=Noto+Sans+TC:wght@300;400;500;700&display=swap" rel="stylesheet">
+<style>
+/* ── Variables ─────────────────────────────── */
+:root {
+  --bg:        #08090f;
+  --bg2:       #0e1018;
+  --bg3:       #161923;
+  --border:    rgba(255,255,255,0.07);
+  --border2:   rgba(255,255,255,0.12);
+  --text:      #e8eaf0;
+  --text2:     #8890a4;
+  --text3:     #545c70;
+  --green:     #00e87a;
+  --green-dim: rgba(0,232,122,0.12);
+  --green-glow:rgba(0,232,122,0.25);
+  --amber:     #f5a623;
+  --red:       #ff5c5c;
+  --blue:      #4d9fff;
+  --mono:      'IBM Plex Mono', monospace;
+  --sans:      'Noto Sans TC', sans-serif;
+}
+
+/* ── Reset ─────────────────────────────────── */
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+html{scroll-behavior:smooth}
+body{background:var(--bg);color:var(--text);font-family:var(--sans);font-size:14px;line-height:1.6;min-height:100vh;overflow-x:hidden}
+
+/* ── Noise texture overlay ──────────────────── */
+body::before{
+  content:'';position:fixed;inset:0;
+  background-image:url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)' opacity='0.03'/%3E%3C/svg%3E");
+  pointer-events:none;z-index:0;opacity:0.4;
+}
+
+/* ── Header ─────────────────────────────────── */
+header{
+  position:sticky;top:0;z-index:100;
+  background:rgba(8,9,15,0.92);
+  border-bottom:1px solid var(--border);
+  backdrop-filter:blur(12px);
+  padding:0 24px;
+  display:flex;align-items:center;gap:24px;height:56px;
+}
+.logo{
+  font-family:var(--mono);font-size:15px;font-weight:600;
+  color:var(--green);letter-spacing:.04em;white-space:nowrap;
+  display:flex;align-items:center;gap:8px;
+}
+.logo-dot{
+  width:7px;height:7px;background:var(--green);border-radius:50%;
+  box-shadow:0 0 8px var(--green);
+  animation:pulse 2s ease-in-out infinite;
+}
+@keyframes pulse{0%,100%{opacity:1;box-shadow:0 0 8px var(--green)}50%{opacity:.5;box-shadow:0 0 3px var(--green)}}
+
+.header-meta{margin-left:auto;font-family:var(--mono);font-size:11px;color:var(--text3);letter-spacing:.04em}
+
+/* ── Strategy Nav ───────────────────────────── */
+.strategy-nav{
+  display:flex;gap:2px;padding:16px 24px 0;
+  border-bottom:1px solid var(--border);
+  overflow-x:auto;
+  scrollbar-width:none;
+}
+.strategy-nav::-webkit-scrollbar{display:none}
+
+.strat-tab{
+  position:relative;
+  padding:10px 18px 12px;
+  font-size:13px;font-weight:500;
+  color:var(--text2);
+  border:none;background:none;cursor:pointer;
+  transition:color .2s;white-space:nowrap;
+  font-family:var(--sans);
+  border-bottom:2px solid transparent;
+  margin-bottom:-1px;
+}
+.strat-tab:hover{color:var(--text)}
+.strat-tab.active{color:var(--green);border-bottom-color:var(--green)}
+.strat-tab .badge{
+  display:inline-flex;align-items:center;justify-content:center;
+  width:18px;height:18px;border-radius:4px;
+  background:var(--green-dim);color:var(--green);
+  font-family:var(--mono);font-size:10px;font-weight:600;
+  margin-left:7px;
+}
+.strat-tab.locked .badge{background:rgba(255,255,255,0.06);color:var(--text3)}
+.strat-tab.locked{opacity:.5;cursor:not-allowed}
+
+/* ── Main layout ─────────────────────────────── */
+main{max-width:1200px;margin:0 auto;padding:28px 24px 64px;position:relative;z-index:1}
+
+/* ── Strategy Panel ─────────────────────────── */
+.strategy-panel{display:none;animation:fadeIn .3s ease}
+.strategy-panel.active{display:block}
+@keyframes fadeIn{from{opacity:0;transform:translateY(6px)}to{opacity:1;transform:translateY(0)}}
+
+/* ── Strategy header ─────────────────────────── */
+.strat-header{margin-bottom:24px}
+.strat-title{font-size:20px;font-weight:700;letter-spacing:-.02em;margin-bottom:6px}
+.strat-desc{font-size:13px;color:var(--text2);max-width:640px;line-height:1.7}
+
+/* ── Conditions bar ─────────────────────────── */
+.conditions{
+  display:flex;flex-wrap:wrap;gap:8px;margin:16px 0 28px;
+}
+.cond{
+  display:flex;align-items:center;gap:6px;
+  padding:5px 10px;border-radius:6px;
+  background:var(--bg3);border:1px solid var(--border);
+  font-size:11.5px;color:var(--text2);font-family:var(--mono);
+}
+.cond-dot{width:5px;height:5px;border-radius:50%;background:var(--green);flex-shrink:0}
+
+/* ── Summary row ─────────────────────────────── */
+.summary-row{
+  display:grid;grid-template-columns:repeat(auto-fit,minmax(180px,1fr));gap:12px;
+  margin-bottom:28px;
+}
+.summary-card{
+  background:var(--bg2);border:1px solid var(--border);
+  border-radius:10px;padding:16px 18px;
+}
+.summary-label{font-size:11px;color:var(--text3);text-transform:uppercase;letter-spacing:.08em;margin-bottom:6px}
+.summary-value{font-family:var(--mono);font-size:22px;font-weight:600;color:var(--text)}
+.summary-value.green{color:var(--green)}
+.summary-value.amber{color:var(--amber)}
+.summary-sub{font-size:11px;color:var(--text3);margin-top:3px;font-family:var(--mono)}
+
+/* ── Results table ──────────────────────────── */
+.table-wrap{
+  background:var(--bg2);border:1px solid var(--border);
+  border-radius:12px;overflow:hidden;margin-bottom:28px;
+}
+.table-toolbar{
+  display:flex;align-items:center;justify-content:space-between;
+  padding:14px 20px;border-bottom:1px solid var(--border);
+}
+.table-title{font-size:12px;font-weight:600;color:var(--text2);text-transform:uppercase;letter-spacing:.1em}
+.updated-tag{font-family:var(--mono);font-size:11px;color:var(--text3)}
+
+table{width:100%;border-collapse:collapse}
+thead th{
+  padding:10px 16px;text-align:left;
+  font-size:11px;font-weight:500;color:var(--text3);
+  text-transform:uppercase;letter-spacing:.08em;
+  border-bottom:1px solid var(--border);background:var(--bg3);
+  cursor:pointer;user-select:none;white-space:nowrap;
+}
+thead th:hover{color:var(--text2)}
+thead th .sort-icon{opacity:.3;margin-left:4px;font-size:10px}
+thead th.sorted .sort-icon{opacity:1;color:var(--green)}
+
+tbody tr{
+  border-bottom:1px solid var(--border);
+  transition:background .15s;cursor:pointer;
+}
+tbody tr:last-child{border-bottom:none}
+tbody tr:hover{background:rgba(255,255,255,0.03)}
+tbody tr.expanded{background:rgba(0,232,122,0.04)}
+
+td{padding:14px 16px;vertical-align:middle}
+
+.stock-code{font-family:var(--mono);font-size:13px;font-weight:600;color:var(--green)}
+.stock-name{font-size:13px;font-weight:500;margin-bottom:2px}
+.stock-industry{font-size:11px;color:var(--text3)}
+
+.price-cell{font-family:var(--mono);font-size:14px;font-weight:500}
+.ema-cell{font-family:var(--mono);font-size:13px;color:var(--text2)}
+
+.deviation{
+  display:inline-flex;align-items:center;gap:4px;
+  font-family:var(--mono);font-size:12px;font-weight:600;
+  padding:3px 8px;border-radius:4px;
+}
+.deviation.neg{color:#4d9fff;background:rgba(77,159,255,0.12)}
+.deviation.pos{color:var(--amber);background:rgba(245,166,35,0.12)}
+
+.big-pct{font-family:var(--mono);font-size:14px;font-weight:600;color:var(--text)}
+.big-chg{
+  font-family:var(--mono);font-size:11px;color:var(--green);
+  background:var(--green-dim);padding:2px 6px;border-radius:3px;margin-left:6px;
+}
+
+/* ── Mini sparkline ─────────────────────────── */
+.spark{display:inline-flex;align-items:flex-end;gap:2px;height:24px;vertical-align:middle}
+.spark-bar{width:6px;background:var(--green);border-radius:1px 1px 0 0;opacity:.6;transition:opacity .2s}
+tbody tr:hover .spark-bar{opacity:1}
+
+/* ── Expand row ─────────────────────────────── */
+.expand-row td{padding:0}
+.expand-content{
+  padding:20px 20px 20px 56px;
+  background:rgba(0,232,122,0.03);
+  border-top:1px solid var(--border);
+  display:grid;grid-template-columns:1fr 1fr 1fr;gap:20px;
+}
+.expand-section h4{font-size:11px;color:var(--text3);text-transform:uppercase;letter-spacing:.08em;margin-bottom:10px}
+.trend-row{display:flex;align-items:center;gap:8px;margin-bottom:6px}
+.trend-date{font-family:var(--mono);font-size:11px;color:var(--text3);width:40px}
+.trend-bar-wrap{flex:1;height:6px;background:var(--bg3);border-radius:3px;overflow:hidden}
+.trend-bar{height:100%;background:var(--green);border-radius:3px;transition:width .6s ease}
+.trend-bar.retail{background:var(--red)}
+.trend-val{font-family:var(--mono);font-size:11px;color:var(--text2);width:44px;text-align:right}
+
+/* ── Watchlist ───────────────────────────────── */
+.watchlist-section{margin-top:28px}
+.section-header{
+  display:flex;align-items:center;justify-content:space-between;
+  margin-bottom:14px;
+}
+.section-title{font-size:13px;font-weight:600;color:var(--text2);text-transform:uppercase;letter-spacing:.08em}
+.watchlist-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(200px,1fr));gap:10px}
+.watch-card{
+  background:var(--bg2);border:1px solid var(--border);
+  border-radius:8px;padding:12px 14px;
+  display:flex;align-items:center;justify-content:space-between;
+  font-family:var(--mono);font-size:12px;
+  transition:border-color .2s;
+}
+.watch-card:hover{border-color:var(--border2)}
+.watch-add{
+  border:1px dashed var(--border);color:var(--text3);
+  justify-content:center;gap:6px;cursor:pointer;
+}
+.watch-add:hover{border-color:var(--green);color:var(--green)}
+
+/* ── Coming Soon panel ───────────────────────── */
+.coming-soon{
+  display:flex;flex-direction:column;align-items:center;
+  justify-content:center;padding:80px 20px;text-align:center;gap:12px;
+}
+.coming-icon{font-size:40px;opacity:.3}
+.coming-title{font-size:16px;font-weight:500;color:var(--text2)}
+.coming-desc{font-size:13px;color:var(--text3);max-width:380px;line-height:1.7}
+
+/* ── Responsive ──────────────────────────────── */
+@media(max-width:768px){
+  header{padding:0 16px}
+  main{padding:20px 16px 48px}
+  .strategy-nav{padding:12px 16px 0}
+  .expand-content{grid-template-columns:1fr;gap:14px}
+  table thead th:nth-child(n+5){display:none}
+  table tbody td:nth-child(n+5){display:none}
+}
+
+/* ── Tooltip ─────────────────────────────────── */
+[data-tip]{position:relative}
+[data-tip]::after{
+  content:attr(data-tip);
+  position:absolute;bottom:calc(100% + 6px);left:50%;transform:translateX(-50%);
+  background:#1e2230;border:1px solid var(--border2);
+  color:var(--text);font-size:11px;padding:4px 8px;border-radius:4px;
+  white-space:nowrap;pointer-events:none;opacity:0;transition:opacity .15s;
+  font-family:var(--sans);font-weight:400;z-index:50;
+}
+[data-tip]:hover::after{opacity:1}
+</style>
+</head>
+<body>
+
+<header>
+  <div class="logo">
+    <span class="logo-dot"></span>
+    StockRadar
+  </div>
+  <div class="header-meta" id="headerMeta">載入中...</div>
+</header>
+
+<!-- Strategy Tabs -->
+<nav class="strategy-nav" id="strategyNav"></nav>
+
+<!-- Main Content -->
+<main id="mainContent"></main>
+
+<script>
+// ════════════════════════════════════════════════════
+//  STRATEGY REGISTRY
+//  新增選股策略只需在這裡加一筆 + 提供 data
+// ════════════════════════════════════════════════════
+const STRATEGIES = [
+  {
+    id: "chips_big_holder",
+    name: "千張大戶籌碼",
+    shortName: "籌碼集中",
+    icon: "◈",
+    available: true,
+    description: "追蹤電子類個股的千張大戶持股比例，篩選出大戶連續增持、散戶持續出場、股價位於低基期的標的。",
+    conditions: [
+      "電子類產業（9大分類）",
+      "日均成交量 ≥ 1,000 張",
+      "千張大戶比例 > 30%",
+      "連續 4 週大戶比例增加",
+      "散戶（≤10張）比例同步下降",
+      "股價乖離 EMA26：−10% ～ +5%",
+    ],
+    dataUpdated: "2026-04-10",
+    dataSource: "集保開放資料 + TWSE/TPEx",
+    dataKey: "chips_big_holder_data",
+  },
+  {
+    id: "institutional_flow",
+    name: "三大法人買超",
+    shortName: "法人動向",
+    icon: "◉",
+    available: false,
+    description: "追蹤外資、投信、自營商的買賣超趨勢，篩選出法人持續淨買入的標的。",
+    conditions: [],
+    comingSoon: "預計 Phase 2 實裝",
+  },
+  {
+    id: "short_squeeze",
+    name: "融券增加監控",
+    shortName: "融券動態",
+    icon: "◎",
+    available: false,
+    description: "監控融券餘額快速增加的個股，搭配大戶增持判斷潛在軋空機會。",
+    conditions: [],
+    comingSoon: "預計 Phase 3 實裝",
+  },
+];
+
+// ════════════════════════════════════════════════════
+//  EMBEDDED DATA  (未來可改成 fetch('./data/xxx.json'))
+// ════════════════════════════════════════════════════
+const DATA = {
+  chips_big_holder_data: [
+    {
+      stock_id:"3013",name:"晟銘電",industry:"電子工業",
+      close:103.5,ema26:112.62,deviation:-8.10,
+      big_pct_latest:42.03,big_4w_chg:2.14,
+      big_trend:[39.89,40.71,41.13,42.03],
+      retail_trend:[31.85,31.51,31.39,31.16],
+    },
+    {
+      stock_id:"2385",name:"群光",industry:"電子零組件業",
+      close:124.0,ema26:124.44,deviation:-0.35,
+      big_pct_latest:70.22,big_4w_chg:1.19,
+      big_trend:[69.03,69.13,69.71,70.22],
+      retail_trend:[9.84,9.81,9.75,9.63],
+    },
+    {
+      stock_id:"2379",name:"瑞昱",industry:"電子工業",
+      close:524.0,ema26:502.27,deviation:4.33,
+      big_pct_latest:58.18,big_4w_chg:1.12,
+      big_trend:[57.06,57.55,57.71,58.18],
+      retail_trend:[7.82,7.55,7.43,7.15],
+    },
+    {
+      stock_id:"3312",name:"弘憶股",industry:"電子通路業",
+      close:40.0,ema26:38.52,deviation:3.84,
+      big_pct_latest:44.21,big_4w_chg:1.01,
+      big_trend:[43.2,43.24,43.44,44.21],
+      retail_trend:[29.82,29.55,29.37,29.11],
+    },
+  ],
+};
+
+const DATE_LABELS = ["03/20","03/27","04/02","04/10"];
+
+// ════════════════════════════════════════════════════
+//  STATE
+// ════════════════════════════════════════════════════
+let activeStratId = STRATEGIES[0].id;
+let sortCol = "big_4w_chg";
+let sortAsc = false;
+let expandedRow = null;
+let watchlist = JSON.parse(localStorage.getItem("watchlist") || "[]");
+
+// ════════════════════════════════════════════════════
+//  RENDER HELPERS
+// ════════════════════════════════════════════════════
+function sparkBars(trend) {
+  const min = Math.min(...trend), max = Math.max(...trend);
+  const range = max - min || 1;
+  return trend.map(v => {
+    const h = Math.round(((v - min) / range) * 18) + 6;
+    return `<span class="spark-bar" style="height:${h}px"></span>`;
+  }).join('');
+}
+
+function trendBars(trend, label, colorClass) {
+  const max = Math.max(...trend);
+  return trend.map((v, i) => `
+    <div class="trend-row">
+      <span class="trend-date">${DATE_LABELS[i]}</span>
+      <div class="trend-bar-wrap">
+        <div class="trend-bar ${colorClass}" style="width:${(v/max*100).toFixed(1)}%"></div>
+      </div>
+      <span class="trend-val">${v.toFixed(2)}%</span>
+    </div>`).join('');
+}
+
+// ════════════════════════════════════════════════════
+//  RENDER STRATEGY TABS
+// ════════════════════════════════════════════════════
+function renderNav() {
+  const nav = document.getElementById('strategyNav');
+  nav.innerHTML = STRATEGIES.map(s => {
+    const data = DATA[s.dataKey] || [];
+    const badge = s.available
+      ? `<span class="badge">${data.length}</span>`
+      : `<span class="badge">—</span>`;
+    return `<button class="strat-tab ${s.id===activeStratId?'active':''} ${!s.available?'locked':''}"
+      onclick="${s.available ? `setStrategy('${s.id}')` : ''}"
+      title="${!s.available ? (s.comingSoon||'即將推出') : ''}">
+      ${s.icon} ${s.shortName}${badge}
+    </button>`;
+  }).join('');
+}
+
+// ════════════════════════════════════════════════════
+//  RENDER ACTIVE STRATEGY
+// ════════════════════════════════════════════════════
+function renderStrategy() {
+  const strat = STRATEGIES.find(s => s.id === activeStratId);
+  const main = document.getElementById('mainContent');
+
+  if (!strat.available) {
+    main.innerHTML = `<div class="coming-soon">
+      <div class="coming-icon">${strat.icon}</div>
+      <div class="coming-title">${strat.name}</div>
+      <div class="coming-desc">${strat.description}<br><br><span style="color:var(--amber)">${strat.comingSoon}</span></div>
+    </div>`;
+    return;
+  }
+
+  const data = (DATA[strat.dataKey] || []).slice().sort((a,b) => {
+    const va = a[sortCol], vb = b[sortCol];
+    return sortAsc ? va - vb : vb - va;
+  });
+
+  const maxChg = Math.max(...data.map(d => d.big_4w_chg));
+
+  // Summary cards
+  const summaryHTML = `
+    <div class="summary-row">
+      <div class="summary-card">
+        <div class="summary-label">篩選結果</div>
+        <div class="summary-value green">${data.length}</div>
+        <div class="summary-sub">符合全部條件</div>
+      </div>
+      <div class="summary-card">
+        <div class="summary-label">最大增幅</div>
+        <div class="summary-value amber">+${maxChg.toFixed(2)}%</div>
+        <div class="summary-sub">大戶 4 週增持幅度</div>
+      </div>
+      <div class="summary-card">
+        <div class="summary-label">資料日期</div>
+        <div class="summary-value" style="font-size:16px;font-family:var(--mono)">${strat.dataUpdated}</div>
+        <div class="summary-sub">${strat.dataSource}</div>
+      </div>
+      <div class="summary-card">
+        <div class="summary-label">篩選範圍</div>
+        <div class="summary-value" style="font-size:16px">電子類</div>
+        <div class="summary-sub">日量 ≥ 1,000 張</div>
+      </div>
+    </div>`;
+
+  // Conditions
+  const condsHTML = `<div class="conditions">
+    ${strat.conditions.map(c => `<div class="cond"><span class="cond-dot"></span>${c}</div>`).join('')}
+  </div>`;
+
+  // Table
+  const sortIcon = (col) => `<span class="sort-icon">${sortCol===col ? (sortAsc?'↑':'↓') : '·'}</span>`;
+  const tableHTML = `
+    <div class="table-wrap">
+      <div class="table-toolbar">
+        <span class="table-title">篩選結果</span>
+        <span class="updated-tag">更新：${strat.dataUpdated}</span>
+      </div>
+      <table id="resultsTable">
+        <thead>
+          <tr>
+            <th onclick="sort('stock_id')">代號 / 名稱${sortIcon('stock_id')}</th>
+            <th onclick="sort('close')" data-tip="最新收盤價">現價${sortIcon('close')}</th>
+            <th onclick="sort('deviation')" data-tip="(現價 − EMA26) / EMA26">乖離 EMA26${sortIcon('deviation')}</th>
+            <th onclick="sort('big_pct_latest')" data-tip="最新週千張大戶持股比例">大戶比例${sortIcon('big_pct_latest')}</th>
+            <th onclick="sort('big_4w_chg')" data-tip="近4週大戶比例增幅">4週增幅${sortIcon('big_4w_chg')}</th>
+            <th data-tip="4週大戶持股趨勢">趨勢</th>
+          </tr>
+        </thead>
+        <tbody>
+          ${data.map(d => renderRow(d)).join('')}
+        </tbody>
+      </table>
+    </div>`;
+
+  // Watchlist
+  const watchHTML = `
+    <div class="watchlist-section">
+      <div class="section-header">
+        <span class="section-title">觀察清單</span>
+      </div>
+      <div class="watchlist-grid" id="watchlistGrid">
+        ${renderWatchlist()}
+      </div>
+    </div>`;
+
+  main.innerHTML = `
+    <div class="strategy-panel active">
+      <div class="strat-header">
+        <div class="strat-title">${strat.icon} ${strat.name}策略</div>
+        <div class="strat-desc">${strat.description}</div>
+      </div>
+      ${condsHTML}
+      ${summaryHTML}
+      ${tableHTML}
+      ${watchHTML}
+    </div>`;
+}
+
+function renderRow(d) {
+  const devClass = d.deviation < 0 ? 'neg' : 'pos';
+  const devSign  = d.deviation > 0 ? '+' : '';
+  const inWatch  = watchlist.includes(d.stock_id);
+  return `
+    <tr onclick="toggleExpand('${d.stock_id}')" id="row-${d.stock_id}">
+      <td>
+        <div class="stock-code">${d.stock_id}</div>
+        <div class="stock-name">${d.name}</div>
+        <div class="stock-industry">${d.industry}</div>
+      </td>
+      <td><span class="price-cell">${d.close.toFixed(1)}</span></td>
+      <td>
+        <span class="ema-cell">${d.ema26.toFixed(2)}</span><br>
+        <span class="deviation ${devClass}">${devSign}${d.deviation.toFixed(2)}%</span>
+      </td>
+      <td><span class="big-pct">${d.big_pct_latest.toFixed(2)}%</span></td>
+      <td>
+        <span class="big-pct">${d.big_4w_chg > 0 ? '+' : ''}${d.big_4w_chg.toFixed(2)}%</span>
+        <span class="big-chg">+${d.big_4w_chg.toFixed(2)}</span>
+      </td>
+      <td><div class="spark">${sparkBars(d.big_trend)}</div></td>
+    </tr>
+    <tr class="expand-row" id="expand-${d.stock_id}" style="display:none">
+      <td colspan="6">
+        <div class="expand-content">
+          <div class="expand-section">
+            <h4>千張大戶趨勢</h4>
+            ${trendBars(d.big_trend, '大戶', '')}
+          </div>
+          <div class="expand-section">
+            <h4>散戶持股趨勢</h4>
+            ${trendBars(d.retail_trend, '散戶', 'retail')}
+          </div>
+          <div class="expand-section">
+            <h4>操作</h4>
+            <button onclick="event.stopPropagation();toggleWatch('${d.stock_id}','${d.name}')"
+              style="background:${inWatch?'var(--green-dim)':'var(--bg3)'};border:1px solid ${inWatch?'var(--green)':'var(--border)'};color:${inWatch?'var(--green)':'var(--text2)'};padding:8px 14px;border-radius:6px;cursor:pointer;font-size:12px;font-family:var(--sans);width:100%;margin-bottom:8px"
+              id="watchBtn-${d.stock_id}">
+              ${inWatch ? '✓ 已加入觀察清單' : '+ 加入觀察清單'}
+            </button>
+            <a href="https://tw.stock.yahoo.com/quote/${d.stock_id}" target="_blank"
+              onclick="event.stopPropagation()"
+              style="display:block;text-align:center;background:var(--bg3);border:1px solid var(--border);color:var(--text2);padding:8px 14px;border-radius:6px;font-size:12px;text-decoration:none">
+              Yahoo 股市 ↗
+            </a>
+          </div>
+        </div>
+      </td>
+    </tr>`;
+}
+
+function renderWatchlist() {
+  if (watchlist.length === 0) {
+    return `<div class="watch-card watch-add"><span>點擊結果列加入觀察</span></div>`;
+  }
+  const cards = watchlist.map(sid => {
+    const strat = STRATEGIES.find(s => s.available);
+    const item = (DATA[strat.dataKey]||[]).find(d => d.stock_id === sid);
+    const name = item ? item.name : sid;
+    return `<div class="watch-card">
+      <span style="font-size:13px;color:var(--green)">${sid}</span>
+      <span style="color:var(--text2)">${name}</span>
+      <span onclick="event.stopPropagation();removeWatch('${sid}')" style="color:var(--text3);cursor:pointer;margin-left:4px">×</span>
+    </div>`;
+  });
+  return cards.join('') + `<div class="watch-card watch-add" onclick=""><span>+</span></div>`;
+}
+
+// ════════════════════════════════════════════════════
+//  INTERACTIONS
+// ════════════════════════════════════════════════════
+function setStrategy(id) {
+  activeStratId = id;
+  expandedRow = null;
+  renderNav();
+  renderStrategy();
+}
+
+function sort(col) {
+  if (sortCol === col) sortAsc = !sortAsc;
+  else { sortCol = col; sortAsc = false; }
+  renderStrategy();
+}
+
+function toggleExpand(sid) {
+  const prev = expandedRow;
+  if (prev) {
+    document.getElementById(`expand-${prev}`).style.display = 'none';
+    document.getElementById(`row-${prev}`).classList.remove('expanded');
+  }
+  if (prev !== sid) {
+    document.getElementById(`expand-${sid}`).style.display = 'table-row';
+    document.getElementById(`row-${sid}`).classList.add('expanded');
+    expandedRow = sid;
+  } else {
+    expandedRow = null;
+  }
+}
+
+function toggleWatch(sid, name) {
+  if (watchlist.includes(sid)) {
+    watchlist = watchlist.filter(s => s !== sid);
+  } else {
+    watchlist.push(sid);
+  }
+  localStorage.setItem("watchlist", JSON.stringify(watchlist));
+  const btn = document.getElementById(`watchBtn-${sid}`);
+  if (btn) {
+    const inWatch = watchlist.includes(sid);
+    btn.textContent = inWatch ? '✓ 已加入觀察清單' : '+ 加入觀察清單';
+    btn.style.background = inWatch ? 'var(--green-dim)' : 'var(--bg3)';
+    btn.style.borderColor = inWatch ? 'var(--green)' : 'var(--border)';
+    btn.style.color = inWatch ? 'var(--green)' : 'var(--text2)';
+  }
+  const grid = document.getElementById('watchlistGrid');
+  if (grid) grid.innerHTML = renderWatchlist();
+}
+
+function removeWatch(sid) {
+  watchlist = watchlist.filter(s => s !== sid);
+  localStorage.setItem("watchlist", JSON.stringify(watchlist));
+  const grid = document.getElementById('watchlistGrid');
+  if (grid) grid.innerHTML = renderWatchlist();
+}
+
+// ════════════════════════════════════════════════════
+//  INIT
+// ════════════════════════════════════════════════════
+document.getElementById('headerMeta').textContent =
+  `資料：${STRATEGIES[0].dataUpdated}　策略數：${STRATEGIES.length}`;
+
+renderNav();
+renderStrategy();
+</script>
+</body>
+</html>
