@@ -375,6 +375,28 @@ let expandedRow = null;
 let watchlist = JSON.parse(localStorage.getItem("watchlist") || "[]");
 
 // ════════════════════════════════════════════════════
+//  EXCHANGE DETECTION
+//  資料若有 market 欄位（"TWSE"/"TPEX"）優先採用，
+//  否則依代號範圍推算（非 100% 精確）
+// ════════════════════════════════════════════════════
+function guessMarket(stockId) {
+  const n = parseInt(stockId, 10);
+  if (n >= 1000 && n <= 2999) return 'TWSE';   // 上市
+  if (n >= 3000 && n <= 3499) return 'TWSE';   // 上市居多
+  if (n >= 3500 && n <= 3999) return 'TPEX';   // 上櫃居多
+  if (n >= 4000 && n <= 4999) return 'TPEX';   // 上櫃
+  if (n >= 5000 && n <= 5999) return 'TPEX';   // 上櫃居多
+  if (n >= 6000 && n <= 6999) return 'TPEX';   // 上櫃居多
+  if (n >= 7000 && n <= 9999) return 'TPEX';   // 上櫃
+  return 'TWSE';                                 // fallback
+}
+
+function getTVSymbol(d) {
+  const market = d.market || guessMarket(d.stock_id);
+  return `${market}:${d.stock_id}`;
+}
+
+// ════════════════════════════════════════════════════
 //  RENDER HELPERS
 // ════════════════════════════════════════════════════
 function sparkBars(trend) {
@@ -525,8 +547,15 @@ function renderRow(d) {
   return `
     <tr onclick="toggleExpand('${d.stock_id}')" id="row-${d.stock_id}">
       <td>
-        <div class="stock-code">${d.stock_id}</div>
-        <div class="stock-name">${d.name}</div>
+        <a href="https://www.tradingview.com/chart/?symbol=${getTVSymbol(d)}" target="_blank"
+          onclick="event.stopPropagation()"
+          style="text-decoration:none;display:inline-block">
+          <div class="stock-code" style="display:flex;align-items:center;gap:5px">
+            ${d.stock_id}
+            <span style="font-size:9px;opacity:.45;font-family:var(--mono)">↗</span>
+          </div>
+          <div class="stock-name">${d.name}</div>
+        </a>
         <div class="stock-industry">${d.industry}</div>
       </td>
       <td><span class="price-cell">${d.close.toFixed(1)}</span></td>
