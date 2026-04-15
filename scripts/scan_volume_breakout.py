@@ -66,32 +66,44 @@ def get_stock_list():
     stocks = []
 
     # ── 上市 (TWSE) ──
-    try:
-        url = "https://openapi.twse.com.tw/v1/exchangeReport/STOCK_DAY_ALL"
-        r = requests.get(url, timeout=30, headers={"User-Agent": "Mozilla/5.0"})
-        for item in r.json():
-            sid = item.get("Code", "").strip()
-            name = item.get("Name", "").strip()
-            if len(sid) == 4 and sid.isdigit():
-                stocks.append({"stock_id": sid, "name": name, "market": "TWSE"})
-        twse_count = sum(1 for s in stocks if s["market"] == "TWSE")
-        print(f"  上市股票：{twse_count} 支")
-    except Exception as e:
-        print(f"  上市清單取得失敗：{e}")
+    for attempt in range(2):
+        try:
+            url = "https://openapi.twse.com.tw/v1/exchangeReport/STOCK_DAY_ALL"
+            r = requests.get(url, timeout=30, headers={"User-Agent": "Mozilla/5.0"})
+            for item in r.json():
+                sid = item.get("Code", "").strip()
+                name = item.get("Name", "").strip()
+                if len(sid) == 4 and sid.isdigit():
+                    stocks.append({"stock_id": sid, "name": name, "market": "TWSE"})
+            twse_count = sum(1 for s in stocks if s["market"] == "TWSE")
+            print(f"  上市股票：{twse_count} 支")
+            break
+        except Exception as e:
+            if attempt == 0:
+                print(f"  上市清單取得失敗，3秒後重試：{e}")
+                time.sleep(3)
+            else:
+                print(f"  上市清單取得失敗（已重試）：{e}")
 
     # ── 上櫃 (TPEx) ──
-    try:
-        url = "https://www.tpex.org.tw/openapi/v1/tpex_mainboard_daily_close_quotes"
-        r = requests.get(url, timeout=30, headers={"User-Agent": "Mozilla/5.0"})
-        for item in r.json():
-            sid = (item.get("SecuritiesCompanyCode") or item.get("Code") or "").strip()
-            name = (item.get("CompanyName") or item.get("Name") or "").strip()
-            if len(sid) == 4 and sid.isdigit():
-                stocks.append({"stock_id": sid, "name": name, "market": "TPEX"})
-        tpex_count = sum(1 for s in stocks if s["market"] == "TPEX")
-        print(f"  上櫃股票：{tpex_count} 支")
-    except Exception as e:
-        print(f"  上櫃清單取得失敗：{e}")
+    for attempt in range(2):
+        try:
+            url = "https://www.tpex.org.tw/openapi/v1/tpex_mainboard_daily_close_quotes"
+            r = requests.get(url, timeout=30, headers={"User-Agent": "Mozilla/5.0"})
+            for item in r.json():
+                sid = (item.get("SecuritiesCompanyCode") or item.get("Code") or "").strip()
+                name = (item.get("CompanyName") or item.get("Name") or "").strip()
+                if len(sid) == 4 and sid.isdigit():
+                    stocks.append({"stock_id": sid, "name": name, "market": "TPEX"})
+            tpex_count = sum(1 for s in stocks if s["market"] == "TPEX")
+            print(f"  上櫃股票：{tpex_count} 支")
+            break
+        except Exception as e:
+            if attempt == 0:
+                print(f"  上櫃清單取得失敗，3秒後重試：{e}")
+                time.sleep(3)
+            else:
+                print(f"  上櫃清單取得失敗（已重試）：{e}")
 
     return stocks
 
@@ -233,21 +245,27 @@ def check_strategy(close, open_, high, low, volume, dates):
 #  Step 3：批次下載 + 主流程
 # ─────────────────────────────────────────────────────────────
 
-def batch_download(tickers_str, start_date, end_date):
-    try:
-        data = yf.download(
-            tickers_str,
-            start=start_date,
-            end=end_date,
-            group_by="ticker",
-            auto_adjust=True,
-            progress=False,
-            threads=True,
-        )
-        return data
-    except Exception as e:
-        print(f"    批次下載失敗：{e}")
-        return None
+def batch_download(tickers_str, start_date, end_date, max_retries=2):
+    for attempt in range(max_retries + 1):
+        try:
+            data = yf.download(
+                tickers_str,
+                start=start_date,
+                end=end_date,
+                group_by="ticker",
+                auto_adjust=True,
+                progress=False,
+                threads=True,
+            )
+            return data
+        except Exception as e:
+            if attempt < max_retries:
+                wait = 5 * (attempt + 1)
+                print(f" (重試 {attempt+1}/{max_retries}，等待 {wait}s)", end="", flush=True)
+                time.sleep(wait)
+            else:
+                print(f"    批次下載失敗（已重試 {max_retries} 次）：{e}")
+                return None
 
 
 def main(quick_test=False):
@@ -285,6 +303,8 @@ def main(quick_test=False):
     BATCH = 100
     total = len(stocks)
     n_batches = (total + BATCH - 1) // BATCH
+    total_scanned = 0
+    total_skipped = 0
 
     for b_idx in range(n_batches):
         batch = stocks[b_idx * BATCH:(b_idx + 1) * BATCH]
@@ -301,7 +321,10 @@ def main(quick_test=False):
         raw = batch_download(ticker_str, start_date, end_date)
         if raw is None or raw.empty:
             print(" → 下載失敗，跳過")
+            total_skipped += 1
             continue
+
+        total_scanned += len(batch)
 
         batch_hits = 0
         for ticker, s in stock_map.items():
@@ -343,6 +366,10 @@ def main(quick_test=False):
     # ── 輸出結果 ──
     print(f"\n{'='*55}")
     print(f"  篩選完成！符合條件：{len(results)} 支")
+    coverage_rate = round(total_scanned / len(stocks) * 100, 1) if stocks else 0
+    print(f"  掃描覆蓋率：{total_scanned:,} / {len(stocks):,}（{coverage_rate}%）")
+    if total_skipped:
+        print(f"  跳過批次：{total_skipped}")
     print(f"{'='*55}\n")
 
     if results:
@@ -361,6 +388,12 @@ def main(quick_test=False):
         "strategy_id": "volume_breakout",
         "updated": TODAY,
         "total": len(results),
+        "scan_coverage": {
+            "scanned": total_scanned,
+            "total": len(stocks),
+            "rate": round(total_scanned / len(stocks) * 100, 1) if stocks else 0,
+            "skipped_batches": total_skipped,
+        },
         "results": results,
     }
 
