@@ -340,7 +340,70 @@ def main(quick_test=False):
         json.dump(output, f, ensure_ascii=False, indent=2)
 
     print(f"\n結果已寫入：{os.path.abspath(OUTPUT_PATH)}")
+
+    # ── LINE 推播通知 ──
+    send_line_notification(results)
+
     return results
+
+
+def send_line_notification(results):
+    """透過 LINE Messaging API 推播爆量追蹤掃描結果。"""
+    token = os.environ.get("LINE_CHANNEL_ACCESS_TOKEN")
+    user_id = os.environ.get("LINE_USER_ID")
+
+    if not token or not user_id:
+        print("\n[LINE] 環境變數未設定，跳過推播通知")
+        return
+
+    # ── 組裝訊息內容 ──
+    if results:
+        lines = [
+            f"📊 爆量追蹤選股結果",
+            f"📅 掃描日期：{TODAY}",
+            f"✅ 符合條件：{len(results)} 支",
+            "",
+            f"{'代號':<6} {'名稱':<8} {'T日':>10} {'量比':>5} {'T漲幅':>7} {'洗盤天':>5} {'模四':>4}",
+            "─" * 50,
+        ]
+        for r in results:
+            p4 = "★" if r["phase4_activated"] else " "
+            lines.append(
+                f"{r['stock_id']:<6} {r['name'][:8]:<8} "
+                f"{r['t_date']:>10} {r['t_vol_ratio']:>4.1f}x "
+                f"{r['t_change_pct']:>+6.2f}% {r['days_since_t']:>4}天 {p4}"
+            )
+        message = "\n".join(lines)
+    else:
+        message = f"📊 爆量追蹤選股結果\n📅 掃描日期：{TODAY}\n\n今日無符合條件標的"
+
+    # LINE text 訊息上限 5000 個 Unicode 字元
+    MAX_LEN = 5000
+    if len(message) > MAX_LEN:
+        message = message[:MAX_LEN - 3] + "..."
+
+    payload = {
+        "to": user_id,
+        "messages": [{"type": "text", "text": message}],
+    }
+    headers = {
+        "Content-Type": "application/json",
+        "Authorization": f"Bearer {token}",
+    }
+
+    try:
+        resp = requests.post(
+            "https://api.line.me/v2/bot/message/push",
+            json=payload,
+            headers=headers,
+            timeout=15,
+        )
+        if resp.status_code == 200:
+            print("[LINE] 推播通知已成功送出")
+        else:
+            print(f"[LINE] 推播失敗：HTTP {resp.status_code} - {resp.text}")
+    except Exception as e:
+        print(f"[LINE] 推播通知發生例外：{e}")
 
 
 if __name__ == "__main__":

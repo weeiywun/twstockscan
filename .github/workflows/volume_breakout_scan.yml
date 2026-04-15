@@ -30,6 +30,9 @@ jobs:
         run: pip install -r scripts/requirements.txt
 
       - name: Run volume breakout scanner
+        env:
+          LINE_CHANNEL_ACCESS_TOKEN: ${{ secrets.LINE_CHANNEL_ACCESS_TOKEN }}
+          LINE_USER_ID: ${{ secrets.LINE_USER_ID }}
         run: python scripts/scan_volume_breakout.py
 
       - name: Commit and push results
