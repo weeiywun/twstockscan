@@ -157,6 +157,15 @@ main{padding:24px 0 0;}
 }
 .table-title{font-size:12px;font-weight:600;color:var(--text2);letter-spacing:.04em}
 .updated-tag{font-size:11px;color:var(--text3)}
+.toolbar-right{display:flex;align-items:center;gap:10px}
+.btn-csv{
+  font-size:11px;font-weight:500;color:var(--text2);
+  background:var(--bg3);border:1px solid var(--border);
+  border-radius:6px;padding:4px 10px;cursor:pointer;
+  display:flex;align-items:center;gap:5px;
+  transition:background .15s,border-color .15s;
+}
+.btn-csv:hover{background:#e8f0fe;border-color:#aac4f7;color:#1a5fa8}
 
 .table-scroll{overflow-x:auto;-webkit-overflow-scrolling:touch}
 table{width:100%;border-collapse:collapse;min-width:560px}
@@ -267,18 +276,6 @@ tbody tr:hover .spark-bar{opacity:.9}
   display:flex;align-items:center;gap:16px;flex-wrap:wrap;
   padding-top:12px;padding-bottom:12px;min-height:88px;
 }
-.tv-row{
-  display:flex;gap:12px;
-  padding:0 24px 12px;
-}
-.tv-chart-wrap{
-  flex:1;height:130px;min-width:0;overflow:hidden;
-  border-radius:var(--radius);border:1px solid var(--border);
-}
-@media(max-width:768px){
-  .tv-row{padding:0 16px 10px;gap:8px;}
-  .tv-chart-wrap{height:110px;}
-}
 .mkt-card{
   display:flex;flex-direction:column;gap:3px;
   padding:14px 18px;border-radius:var(--radius);
@@ -377,8 +374,6 @@ tbody tr:hover .spark-bar{opacity:.9}
 
   thead th:nth-child(4),
   tbody td:nth-child(4){display:none}
-
-  .tv-row{display:none}
 }
 </style>
 </head>
@@ -403,73 +398,50 @@ tbody tr:hover .spark-bar{opacity:.9}
 <div class="market-overview" id="marketOverview">
   <div class="page-inner">
     <div class="mkt-card" id="mktTWSE">
-      <span class="mkt-card-label">加權報酬指數 TAIEX</span>
+      <span class="mkt-card-label">加權股價指數 TAIEX</span>
       <span class="mkt-card-value" id="twseVal">--</span>
       <span class="mkt-card-change flat" id="twseChg">載入中…</span>
     </div>
-    <div class="mkt-card" id="mktOTC">
-      <span class="mkt-card-label">上櫃報酬指數 TPEx</span>
-      <span class="mkt-card-value" id="otcVal">--</span>
-      <span class="mkt-card-change flat" id="otcChg">載入中…</span>
-    </div>
-    <span class="mkt-time" id="mktTime">資料來源：FinMind 日收</span>
-  </div>
-  <!-- TradingView 技術分析圖 -->
-  <div class="tv-row">
-    <div class="tv-chart-wrap">
-      <div class="tradingview-widget-container" style="height:100%">
-        <div class="tradingview-widget-container__widget" style="height:100%"></div>
-        <script type="text/javascript" src="https://s3.tradingview.com/external-embedding/embed-widget-mini-symbol-overview.js" async>
-        {"symbol":"TWSE:IX0001","width":"100%","height":"100%","locale":"zh_TW","dateRange":"3M","colorTheme":"light","trendLineColor":"rgba(41,98,255,1)","underLineColor":"rgba(41,98,255,0.12)","underLineBottomColor":"rgba(41,98,255,0)","isTransparent":true,"autosize":true}
-        </script>
-      </div>
-    </div>
-    <div class="tv-chart-wrap">
-      <div class="tradingview-widget-container" style="height:100%">
-        <div class="tradingview-widget-container__widget" style="height:100%"></div>
-        <script type="text/javascript" src="https://s3.tradingview.com/external-embedding/embed-widget-mini-symbol-overview.js" async>
-        {"symbol":"TPEX:TPEX","width":"100%","height":"100%","locale":"zh_TW","dateRange":"3M","colorTheme":"light","trendLineColor":"rgba(41,168,98,1)","underLineColor":"rgba(41,168,98,0.12)","underLineBottomColor":"rgba(41,168,98,0)","isTransparent":true,"autosize":true}
-        </script>
-      </div>
-    </div>
+    <span class="mkt-time" id="mktTime"></span>
   </div>
 </div>
 <script>
 (function(){
   function fmt(n){return (+n).toLocaleString('zh-TW',{minimumFractionDigits:2,maximumFractionDigits:2});}
-
-  function renderCard(valId, chgId, rows){
-    if(!rows||rows.length<1)return;
-    rows.sort(function(a,b){return b.date.localeCompare(a.date);});
-    var latest=rows[0], prev=rows[1];
-    document.getElementById(valId).textContent=fmt(latest.price);
-    if(prev){
-      var d=latest.price-prev.price, pct=d/prev.price*100;
-      var sign=d>=0?'+':'';
-      document.getElementById(chgId).textContent=sign+fmt(d)+' ('+sign+pct.toFixed(2)+'%)';
-      document.getElementById(chgId).className='mkt-card-change '+(d>0?'up':d<0?'dn':'flat');
-    }
-    document.getElementById('mktTime').textContent='資料日期：'+latest.date+'（FinMind 日收）';
+  function updateTime(){
+    document.getElementById('mktTime').textContent=
+      '更新 '+new Date().toLocaleTimeString('zh-TW',{hour:'2-digit',minute:'2-digit',second:'2-digit'});
   }
-
-  function loadIndex(dataId, valId, chgId){
-    var start=new Date(Date.now()-10*24*60*60*1000).toISOString().slice(0,10);
-    fetch('https://api.finmindtrade.com/api/v4/data?dataset=TaiwanStockTotalReturnIndex&data_id='+dataId+'&start_date='+start)
+  function loadTWSE(){
+    fetch('https://openapi.twse.com.tw/v1/exchangeReport/TAIEX')
       .then(function(r){return r.json();})
-      .then(function(j){
-        if(j.data&&j.data.length)renderCard(valId,chgId,j.data);
-        else{
-          document.getElementById(chgId).textContent='暫無資料';
-          document.getElementById(chgId).className='mkt-card-change flat';
+      .then(function(data){
+        if(!data||!data.length)return;
+        data.sort(function(a,b){return b.Date.localeCompare(a.Date);});
+        var t=data[0];
+        var close=t.Index||t.ClosePrice||'--';
+        var valEl=document.getElementById('twseVal');
+        var chgEl=document.getElementById('twseChg');
+        valEl.textContent=fmt(close);
+        if(t.Change!==undefined){
+          var d=+t.Change, pct=t.ChangePercent?+t.ChangePercent:NaN;
+          var sign=d>=0?'+':'';
+          chgEl.textContent=sign+fmt(d)+(isNaN(pct)?'':' ('+sign+pct.toFixed(2)+'%)');
+          chgEl.className='mkt-card-change '+(d>0?'up':d<0?'dn':'flat');
+        } else if(data[1]){
+          var prev=data[1], diff=+close-(+prev.Index||+prev.ClosePrice);
+          var sign=diff>=0?'+':'';
+          chgEl.textContent=sign+fmt(diff);
+          chgEl.className='mkt-card-change '+(diff>0?'up':diff<0?'dn':'flat');
         }
+        updateTime();
       }).catch(function(){
-        document.getElementById(chgId).textContent='無法取得資料';
-        document.getElementById(chgId).className='mkt-card-change flat';
+        document.getElementById('twseChg').textContent='無法取得資料';
+        document.getElementById('twseChg').className='mkt-card-change flat';
       });
   }
-
-  loadIndex('TAIEX','twseVal','twseChg');
-  loadIndex('TPEx','otcVal','otcChg');
+  loadTWSE();
+  setInterval(loadTWSE, 60000);
 })();
 </script>
 
@@ -496,9 +468,8 @@ const STRATEGIES = [
     shortName: "籌碼集中",
     icon: "◈",
     available: true,
-    description: "追蹤電子類個股的千張大戶持股比例，篩選出大戶連續增持、散戶持續出場、股價位於低基期的標的。",
+    description: "追蹤全市場個股的千張大戶持股比例，篩選出大戶連續增持、散戶持續出場、股價位於低基期的標的。",
     conditions: [
-      "電子類產業（9大分類）",
       "日均成交量 ≥ 1,000 張",
       "千張大戶比例 > 30%",
       "連續 4 週大戶比例增加",
@@ -653,7 +624,7 @@ function renderStrategy() {
       </div>
       <div class="summary-card">
         <div class="summary-label">篩選範圍</div>
-        <div class="summary-value" style="font-size:16px">電子類</div>
+        <div class="summary-value" style="font-size:16px">全市場</div>
         <div class="summary-sub">日量 ≥ 1,000 張</div>
       </div>
     </div>`;
@@ -669,7 +640,12 @@ function renderStrategy() {
     <div class="table-wrap">
       <div class="table-toolbar">
         <span class="table-title">篩選結果</span>
-        <span class="updated-tag">更新：${strat.dataUpdated}</span>
+        <div class="toolbar-right">
+          <span class="updated-tag">更新：${strat.dataUpdated}</span>
+          <button class="btn-csv" onclick="exportCSV()" title="匯出目前篩選結果為 CSV">
+            ↓ 匯出 CSV
+          </button>
+        </div>
       </div>
       <div class="table-scroll">
       <table id="resultsTable">
@@ -837,6 +813,47 @@ function removeWatch(sid) {
   localStorage.setItem("watchlist", JSON.stringify(watchlist));
   const grid = document.getElementById('watchlistGrid');
   if (grid) grid.innerHTML = renderWatchlist();
+}
+
+function exportCSV() {
+  const strat = STRATEGIES.find(s => s.id === activeStratId);
+  const data = DATA[strat.dataKey] || [];
+  if (!data.length) return;
+
+  const dateRow = DATE_LABELS.length ? DATE_LABELS.join(' / ') : strat.dataUpdated;
+  const headers = [
+    '代號', '名稱', '產業',
+    '現價', '乖離EMA26(%)',
+    '大戶比例(%)', '4週增幅(%)',
+    `大戶趨勢(${dateRow})`,
+    `散戶趨勢(${dateRow})`,
+    '資料日期'
+  ];
+
+  const rows = data.map(d => [
+    d.stock_id,
+    d.name,
+    d.industry || '',
+    d.close.toFixed(1),
+    (d.deviation >= 0 ? '+' : '') + d.deviation.toFixed(2),
+    d.big_pct_latest.toFixed(2),
+    (d.big_4w_chg >= 0 ? '+' : '') + d.big_4w_chg.toFixed(2),
+    d.big_trend   ? d.big_trend.map(v => v.toFixed(2)).join(' / ')   : '',
+    d.retail_trend? d.retail_trend.map(v => v.toFixed(2)).join(' / '): '',
+    strat.dataUpdated
+  ]);
+
+  const csv = [headers, ...rows]
+    .map(r => r.map(v => `"${String(v).replace(/"/g, '""')}"`).join(','))
+    .join('\r\n');
+
+  const blob = new Blob(['\uFEFF' + csv], { type: 'text/csv;charset=utf-8' });
+  const url  = URL.createObjectURL(blob);
+  const a    = document.createElement('a');
+  a.href     = url;
+  a.download = `${strat.id}_${strat.dataUpdated}.csv`;
+  a.click();
+  URL.revokeObjectURL(url);
 }
 
 // ════════════════════════════════════════════════════
