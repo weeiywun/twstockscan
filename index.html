@@ -246,10 +246,24 @@ tbody tr:hover .spark-bar{opacity:1}
 .market-overview{
   border-bottom:1px solid var(--border);
   background:var(--bg2);
-  padding:0;height:120px;
+  padding:0 24px;height:120px;
   position:relative;z-index:1;
   overflow:hidden;
+  display:flex;align-items:center;gap:32px;
 }
+.mkt-card{
+  display:flex;flex-direction:column;gap:4px;
+  padding:16px 20px;border-radius:10px;
+  border:1px solid var(--border);background:var(--bg3);
+  min-width:180px;
+}
+.mkt-card-label{font-size:11px;color:var(--text3);font-family:var(--mono);letter-spacing:.06em}
+.mkt-card-value{font-size:22px;font-family:var(--mono);font-weight:600;color:var(--text);letter-spacing:.02em}
+.mkt-card-change{font-size:12px;font-family:var(--mono)}
+.mkt-card-change.up{color:var(--red)}
+.mkt-card-change.dn{color:var(--green)}
+.mkt-card-change.flat{color:var(--text3)}
+.mkt-time{font-size:10px;color:var(--text3);font-family:var(--mono);margin-left:auto;align-self:flex-end;padding-bottom:2px}
 
 /* ── Coming Soon panel ───────────────────────── */
 .coming-soon{
@@ -298,24 +312,82 @@ tbody tr:hover .spark-bar{opacity:1}
 <nav class="strategy-nav" id="strategyNav"></nav>
 
 <!-- Market Overview -->
-<div class="market-overview">
-  <div class="tradingview-widget-container" style="height:120px">
-    <div class="tradingview-widget-container__widget" style="height:120px"></div>
-    <script type="text/javascript" src="https://s3.tradingview.com/external-embedding/embed-widget-mini-symbol-overview.js" async>
-    {
-      "symbol": "TVC:TWII",
-      "width": "100%",
-      "height": 120,
-      "locale": "zh_TW",
-      "dateRange": "3M",
-      "colorTheme": "dark",
-      "isTransparent": true,
-      "autosize": true,
-      "largeChartUrl": ""
-    }
-    </script>
+<div class="market-overview" id="marketOverview">
+  <div class="mkt-card" id="mktTWSE">
+    <span class="mkt-card-label">加權指數 TAIEX</span>
+    <span class="mkt-card-value" id="twseVal">--</span>
+    <span class="mkt-card-change flat" id="twseChg">載入中…</span>
   </div>
+  <div class="mkt-card" id="mktOTC">
+    <span class="mkt-card-label">櫃買指數 TPEx</span>
+    <span class="mkt-card-value" id="otcVal">--</span>
+    <span class="mkt-card-change flat" id="otcChg">載入中…</span>
+  </div>
+  <span class="mkt-time" id="mktTime"></span>
 </div>
+<script>
+(function(){
+  function fmt(n){return (+n).toLocaleString('zh-TW',{minimumFractionDigits:2,maximumFractionDigits:2});}
+  function setCard(valEl,chgEl,close,prev){
+    valEl.textContent = fmt(close);
+    if(prev&&+prev!==0){
+      var d=+close-+prev, pct=d/+prev*100;
+      var sign=d>=0?'+':'';
+      chgEl.textContent = sign+fmt(d)+' ('+sign+pct.toFixed(2)+'%)';
+      chgEl.className='mkt-card-change '+(d>0?'up':d<0?'dn':'flat');
+    } else {
+      chgEl.textContent='';chgEl.className='mkt-card-change flat';
+    }
+  }
+  function updateTime(){
+    document.getElementById('mktTime').textContent=
+      '更新 '+new Date().toLocaleTimeString('zh-TW',{hour:'2-digit',minute:'2-digit',second:'2-digit'});
+  }
+  function loadTWSE(){
+    fetch('https://openapi.twse.com.tw/v1/exchangeReport/TAIEX')
+      .then(function(r){return r.json();})
+      .then(function(data){
+        if(!data||!data.length)return;
+        data.sort(function(a,b){return b.Date.localeCompare(a.Date);});
+        var t=data[0];
+        // API fields: Index (今日收盤), Change (漲跌點), ChangePercent (漲跌%)
+        var close = t.Index||t.ClosePrice||'--';
+        var valEl = document.getElementById('twseVal');
+        var chgEl = document.getElementById('twseChg');
+        valEl.textContent = fmt(close);
+        if(t.Change!==undefined){
+          var d=+t.Change, pct=t.ChangePercent?+t.ChangePercent:NaN;
+          var sign=d>=0?'+':'';
+          chgEl.textContent = sign+fmt(d)+(isNaN(pct)?'':' ('+sign+pct.toFixed(2)+'%)');
+          chgEl.className='mkt-card-change '+(d>0?'up':d<0?'dn':'flat');
+        } else {
+          var prev=data[1];
+          if(prev){setCard(valEl,chgEl,close,prev.Index||prev.ClosePrice);}
+        }
+        updateTime();
+      }).catch(function(){
+        document.getElementById('twseChg').textContent='無法取得資料';
+      });
+  }
+  function loadOTC(){
+    // TPEX 提供的 OpenAPI（不需 CORS proxy）
+    fetch('https://www.tpex.org.tw/openapi/v1/tpex_mainboard_peratio_analysis')
+      .then(function(r){return r.ok?r.json():Promise.reject();})
+      .then(function(){
+        // OTC 指數沒有簡易 REST API，顯示提示
+        throw new Error('no index endpoint');
+      }).catch(function(){
+        document.getElementById('otcVal').textContent='N/A';
+        document.getElementById('otcChg').textContent='暫無即時資料';
+        document.getElementById('otcChg').className='mkt-card-change flat';
+      });
+  }
+  // Load on start, refresh every 60s
+  loadTWSE();
+  loadOTC();
+  setInterval(loadTWSE, 60000);
+})();
+</script>
 
 <!-- Two-column layout -->
 <div class="page-layout">
