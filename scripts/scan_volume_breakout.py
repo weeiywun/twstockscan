@@ -403,6 +403,14 @@ def main(quick_test=False):
 
     print(f"\n結果已寫入：{os.path.abspath(OUTPUT_PATH)}")
 
+    # ── 寫入歷史紀錄 ──
+    history_dir = os.path.join(SCRIPT_DIR, "..", "data", "history")
+    os.makedirs(history_dir, exist_ok=True)
+    history_path = os.path.join(history_dir, f"volume_breakout_{TODAY}.json")
+    with open(history_path, "w", encoding="utf-8") as f:
+        json.dump(output, f, ensure_ascii=False, indent=2)
+    print(f"歷史紀錄已寫入：{os.path.abspath(history_path)}")
+
     # ── LINE 推播通知 ──
     send_line_notification(results)
 
