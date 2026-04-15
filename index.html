@@ -1076,7 +1076,7 @@ function tryInit() {
   if (_wg) _wg.innerHTML = renderWatchlist();
 }
 
-fetch('./data/chips_big_holder.json')
+fetch('./data/chips_big_holder.json', { cache: 'no-store' })
   .then(r => r.json())
   .then(json => {
     DATA.chips_big_holder_data = json.results || [];
@@ -1090,22 +1090,20 @@ fetch('./data/chips_big_holder.json')
     tryInit();
   });
 
-fetch('./data/volume_breakout.json')
+// Bug 1 fix：加 no-store 防止瀏覽器/CDN 快取舊的空 JSON
+fetch('./data/volume_breakout.json', { cache: 'no-store' })
   .then(r => r.json())
   .then(json => {
     DATA.volume_breakout_data = json.results || [];
     const strat = STRATEGIES.find(s => s.id === 'volume_breakout');
-    if (strat && json.updated) strat.dataUpdated = json.updated;
-    // 若目前顯示的是爆量追蹤頁籤，重繪
-    if (activeStratId === 'volume_breakout') {
-      renderNav();
-      renderStrategy();
-    } else {
-      renderNav();   // 更新 badge 數字
-    }
+    if (strat && json.updated && json.updated !== '—') strat.dataUpdated = json.updated;
+    // Bug 2 fix：無論當前頁籤是哪個，都重繪 nav；
+    // 若目前在爆量追蹤頁籤（含「資料尚未生成」狀態），一律重繪內容
+    renderNav();
+    if (activeStratId === 'volume_breakout') renderStrategy();
   })
-  .catch(() => {
-    // 資料尚未生成時靜默忽略
+  .catch(err => {
+    console.warn('volume_breakout.json 載入失敗：', err);
   });
 </script>
 </body>
