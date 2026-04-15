@@ -3,7 +3,8 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>SR-PC</title>
+<title>SR_PC</title>
+<link rel="icon" type="image/svg+xml" href="favicon.svg">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400;500;600&family=Noto+Sans+TC:wght@300;400;500;700&display=swap" rel="stylesheet">
 <style>
@@ -383,7 +384,7 @@ tbody tr:hover .spark-bar{opacity:.9}
   <div class="page-inner">
     <div class="logo">
       <span class="logo-mark"></span>
-      選股雷達<span>&nbsp;StockRadar</span>
+      SR_PC
     </div>
     <div class="header-meta" id="headerMeta">載入中...</div>
   </div>
@@ -413,35 +414,64 @@ tbody tr:hover .spark-bar{opacity:.9}
       '更新 '+new Date().toLocaleTimeString('zh-TW',{hour:'2-digit',minute:'2-digit',second:'2-digit'});
   }
   function loadTWSE(){
-    fetch('https://openapi.twse.com.tw/v1/exchangeReport/TAIEX')
-      .then(function(r){return r.json();})
+    // 使用 TWSE 開放資料 API - 加權指數
+    fetch('https://www.twse.com.tw/rwd/zh/afterTrading/FMTQIK?response=json')
+      .then(function(r){
+        if(!r.ok) throw new Error('API error');
+        return r.json();
+      })
       .then(function(data){
-        if(!data||!data.length)return;
-        data.sort(function(a,b){return b.Date.localeCompare(a.Date);});
-        var t=data[0];
-        var close=t.Index||t.ClosePrice||'--';
-        var valEl=document.getElementById('twseVal');
-        var chgEl=document.getElementById('twseChg');
-        valEl.textContent=fmt(close);
-        if(t.Change!==undefined){
-          var d=+t.Change, pct=t.ChangePercent?+t.ChangePercent:NaN;
-          var sign=d>=0?'+':'';
-          chgEl.textContent=sign+fmt(d)+(isNaN(pct)?'':' ('+sign+pct.toFixed(2)+'%)');
-          chgEl.className='mkt-card-change '+(d>0?'up':d<0?'dn':'flat');
-        } else if(data[1]){
-          var prev=data[1], diff=+close-(+prev.Index||+prev.ClosePrice);
-          var sign=diff>=0?'+':'';
-          chgEl.textContent=sign+fmt(diff);
-          chgEl.className='mkt-card-change '+(diff>0?'up':diff<0?'dn':'flat');
+        if(!data || !data.data || data.data.length === 0) {
+          throw new Error('No data');
         }
+        // data.data[0] = ["日期", "成交股數", "成交金額", "成交筆數", "發行量加權股價指數", "漲跌點數"]
+        var latest = data.data[0];
+        var close = parseFloat(latest[4].replace(/,/g, ''));
+        var change = parseFloat(latest[5].replace(/,/g, ''));
+        
+        var valEl = document.getElementById('twseVal');
+        var chgEl = document.getElementById('twseChg');
+        
+        valEl.textContent = fmt(close);
+        
+        var sign = change >= 0 ? '+' : '';
+        var pct = (change / (close - change) * 100);
+        chgEl.textContent = sign + fmt(change) + ' (' + sign + pct.toFixed(2) + '%)';
+        chgEl.className = 'mkt-card-change ' + (change > 0 ? 'up' : change < 0 ? 'dn' : 'flat');
+        
         updateTime();
-      }).catch(function(){
-        document.getElementById('twseChg').textContent='無法取得資料';
-        document.getElementById('twseChg').className='mkt-card-change flat';
+      })
+      .catch(function(err){
+        console.warn('無法取得台股指數:', err);
+        // 嘗試備用來源 - OpenAPI
+        fetch('https://openapi.twse.com.tw/v1/exchangeReport/FMTQIK')
+          .then(function(r){return r.json();})
+          .then(function(data){
+            if(!data || data.length === 0) throw new Error('No backup data');
+            // 取最新一筆
+            var latest = data[0];
+            var close = parseFloat(latest.ClosingIndex);
+            var change = parseFloat(latest.Change);
+            
+            var valEl = document.getElementById('twseVal');
+            var chgEl = document.getElementById('twseChg');
+            
+            valEl.textContent = fmt(close);
+            var sign = change >= 0 ? '+' : '';
+            var pct = (change / (close - change) * 100);
+            chgEl.textContent = sign + fmt(change) + ' (' + sign + pct.toFixed(2) + '%)';
+            chgEl.className = 'mkt-card-change ' + (change > 0 ? 'up' : change < 0 ? 'dn' : 'flat');
+            
+            updateTime();
+          })
+          .catch(function(){
+            document.getElementById('twseChg').textContent = '無法取得資料';
+            document.getElementById('twseChg').className = 'mkt-card-change flat';
+          });
       });
   }
   loadTWSE();
-  setInterval(loadTWSE, 60000);
+  setInterval(loadTWSE, 300000); // 每5分鐘更新一次（非即時）
 })();
 </script>
 
