@@ -1,8 +1,4 @@
-# StockRadar 選股雷達
-
-![爆量追蹤選股](https://github.com/weeiywun/twstockscan/actions/workflows/volume_breakout_scan.yml/badge.svg)
-
-台股選股追蹤系統，部署於 GitHub Pages。
+# SR
 
 ## 架構說明
 
