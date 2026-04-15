@@ -39,14 +39,21 @@ body{
   min-height:100vh;overflow-x:hidden;
 }
 
+/* ── Shared inner constraint (aligns with .page-layout) ── */
+.page-inner{
+  max-width:1200px;margin:0 auto;padding:0 24px;width:100%;
+}
+
 /* ── Header ─────────────────────────────────── */
 header{
   position:sticky;top:0;z-index:100;
   background:#fff;
   border-bottom:1px solid var(--border);
   box-shadow:var(--shadow-sm);
-  padding:0 24px;
-  display:flex;align-items:center;gap:20px;height:54px;
+  height:54px;
+}
+header .page-inner{
+  display:flex;align-items:center;gap:20px;height:100%;
 }
 .logo{
   font-size:16px;font-weight:700;
@@ -68,11 +75,13 @@ header{
 
 /* ── Strategy Nav ───────────────────────────── */
 .strategy-nav{
-  display:flex;gap:0;padding:0 24px;
   background:#fff;border-bottom:1px solid var(--border);
+}
+.strategy-nav .page-inner{
+  display:flex;gap:0;
   overflow-x:auto;scrollbar-width:none;
 }
-.strategy-nav::-webkit-scrollbar{display:none}
+.strategy-nav .page-inner::-webkit-scrollbar{display:none}
 
 .strat-tab{
   position:relative;
@@ -253,9 +262,10 @@ tbody tr:hover .spark-bar{opacity:.9}
 .market-overview{
   border-bottom:1px solid var(--border);
   background:#fff;
-  padding:0 24px;height:auto;min-height:88px;
-  display:flex;align-items:center;gap:16px;
-  flex-wrap:wrap;
+}
+.market-overview .page-inner{
+  display:flex;align-items:center;gap:16px;flex-wrap:wrap;
+  padding-top:12px;padding-bottom:12px;min-height:88px;
 }
 .mkt-card{
   display:flex;flex-direction:column;gap:3px;
@@ -303,15 +313,14 @@ tbody tr:hover .spark-bar{opacity:.9}
 
 /* ── ≤768px: single column ───────────────────── */
 @media(max-width:768px){
-  header{padding:0 16px;height:50px}
+  .page-inner{padding:0 16px}
+
+  header{height:50px}
   .logo{font-size:15px}
   .header-meta{display:none}
 
-  .strategy-nav{padding:0 16px}
-
-  .market-overview{
-    padding:10px 16px;gap:10px;
-    height:auto;
+  .market-overview .page-inner{
+    gap:10px;padding-top:10px;padding-bottom:10px;
   }
   .mkt-card{min-width:140px;padding:10px 14px}
   .mkt-card-value{font-size:17px}
@@ -353,7 +362,7 @@ tbody tr:hover .spark-bar{opacity:.9}
 
   .strat-tab{padding:10px 12px 11px;font-size:12px}
 
-  .market-overview{flex-direction:column;align-items:flex-start;padding:12px 16px}
+  .market-overview .page-inner{flex-direction:column;align-items:flex-start}
   .mkt-time{padding:0;margin:0}
 
   thead th:nth-child(4),
@@ -364,29 +373,35 @@ tbody tr:hover .spark-bar{opacity:.9}
 <body>
 
 <header>
-  <div class="logo">
-    <span class="logo-mark"></span>
-    選股雷達<span>&nbsp;StockRadar</span>
+  <div class="page-inner">
+    <div class="logo">
+      <span class="logo-mark"></span>
+      選股雷達<span>&nbsp;StockRadar</span>
+    </div>
+    <div class="header-meta" id="headerMeta">載入中...</div>
   </div>
-  <div class="header-meta" id="headerMeta">載入中...</div>
 </header>
 
 <!-- Strategy Tabs -->
-<nav class="strategy-nav" id="strategyNav"></nav>
+<nav class="strategy-nav">
+  <div class="page-inner" id="strategyNav"></div>
+</nav>
 
 <!-- Market Overview -->
 <div class="market-overview" id="marketOverview">
-  <div class="mkt-card" id="mktTWSE">
-    <span class="mkt-card-label">加權指數 TAIEX</span>
-    <span class="mkt-card-value" id="twseVal">--</span>
-    <span class="mkt-card-change flat" id="twseChg">載入中…</span>
+  <div class="page-inner">
+    <div class="mkt-card" id="mktTWSE">
+      <span class="mkt-card-label">加權指數 TAIEX</span>
+      <span class="mkt-card-value" id="twseVal">--</span>
+      <span class="mkt-card-change flat" id="twseChg">載入中…</span>
+    </div>
+    <div class="mkt-card" id="mktOTC">
+      <span class="mkt-card-label">櫃買指數 TPEx</span>
+      <span class="mkt-card-value" id="otcVal">--</span>
+      <span class="mkt-card-change flat" id="otcChg">載入中…</span>
+    </div>
+    <span class="mkt-time" id="mktTime"></span>
   </div>
-  <div class="mkt-card" id="mktOTC">
-    <span class="mkt-card-label">櫃買指數 TPEx</span>
-    <span class="mkt-card-value" id="otcVal">--</span>
-    <span class="mkt-card-change flat" id="otcChg">載入中…</span>
-  </div>
-  <span class="mkt-time" id="mktTime"></span>
 </div>
 <script>
 (function(){
