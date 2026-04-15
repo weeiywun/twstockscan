@@ -417,8 +417,158 @@ def main(quick_test=False):
     return results
 
 
+FLEX_MAX_STOCKS = 15          # Flex Message 最多顯示股票數，避免超過 LINE 50KB 限制
+FLEX_COLOR_PRIMARY = "#0c6b3e"
+FLEX_COLOR_PHASE4_ON = "#a86200"
+FLEX_COLOR_PHASE4_OFF = "#cccccc"
+
+
+def build_flex_message(results):
+    """組裝 Flex Message JSON"""
+
+    if not results:
+        bubble = {
+            "type": "bubble",
+            "size": "mega",
+            "header": {
+                "type": "box",
+                "layout": "vertical",
+                "contents": [
+                    {"type": "text", "text": "📊 爆量追蹤選股", "weight": "bold", "size": "lg", "color": FLEX_COLOR_PRIMARY},
+                ],
+                "paddingAll": "20px",
+                "backgroundColor": "#f7f8fa"
+            },
+            "body": {
+                "type": "box",
+                "layout": "vertical",
+                "contents": [
+                    {"type": "text", "text": "今日無符合條件標的", "size": "md", "color": "#888888", "align": "center", "margin": "xl"}
+                ],
+                "paddingAll": "20px"
+            }
+        }
+        return {"type": "flex", "altText": f"📊 爆量追蹤選股 {TODAY}：無符合條件標的", "contents": bubble}
+
+    stock_rows = []
+    for r in results[:FLEX_MAX_STOCKS]:
+        p4_color = FLEX_COLOR_PHASE4_ON if r["phase4_activated"] else FLEX_COLOR_PHASE4_OFF
+        p4_text = "★ 發動" if r["phase4_activated"] else "—"
+
+        stock_rows.append({"type": "separator", "margin": "md"})
+        stock_rows.append({
+            "type": "box",
+            "layout": "horizontal",
+            "contents": [
+                {
+                    "type": "box",
+                    "layout": "vertical",
+                    "contents": [
+                        {"type": "text", "text": r["stock_id"], "size": "md", "weight": "bold", "color": FLEX_COLOR_PRIMARY},
+                        {"type": "text", "text": r["name"], "size": "xs", "color": "#555555"}
+                    ],
+                    "flex": 3
+                },
+                {
+                    "type": "box",
+                    "layout": "vertical",
+                    "contents": [
+                        {"type": "text", "text": f"{r['t_vol_ratio']}x", "size": "sm", "align": "center", "weight": "bold"},
+                        {"type": "text", "text": f"{r['t_change_pct']:+.1f}%", "size": "xs", "align": "center", "color": "#c0392b"}
+                    ],
+                    "flex": 2
+                },
+                {
+                    "type": "box",
+                    "layout": "vertical",
+                    "contents": [
+                        {"type": "text", "text": f"{r['days_since_t']}天", "size": "xs", "align": "center", "color": "#888888"},
+                        {"type": "text", "text": p4_text, "size": "xs", "align": "center", "color": p4_color, "weight": "bold"}
+                    ],
+                    "flex": 2
+                }
+            ],
+            "margin": "md",
+            "paddingAll": "4px"
+        })
+
+    if len(results) > FLEX_MAX_STOCKS:
+        stock_rows.append({"type": "separator", "margin": "md"})
+        stock_rows.append({"type": "text", "text": f"...還有 {len(results) - FLEX_MAX_STOCKS} 支，請查看完整報告", "size": "xs", "color": "#aaaaaa", "margin": "md", "align": "center"})
+
+    phase4_count = sum(1 for r in results if r["phase4_activated"])
+
+    bubble = {
+        "type": "bubble",
+        "size": "mega",
+        "header": {
+            "type": "box",
+            "layout": "vertical",
+            "contents": [
+                {"type": "text", "text": "📊 爆量追蹤選股", "weight": "bold", "size": "lg", "color": FLEX_COLOR_PRIMARY},
+                {
+                    "type": "box",
+                    "layout": "horizontal",
+                    "contents": [
+                        {"type": "text", "text": f"📅 {TODAY}", "size": "xs", "color": "#aaaaaa"},
+                        {"type": "text", "text": f"✅ {len(results)} 支符合", "size": "xs", "color": FLEX_COLOR_PRIMARY, "align": "end"},
+                    ],
+                    "margin": "md"
+                },
+                {
+                    "type": "box",
+                    "layout": "horizontal",
+                    "contents": [
+                        {"type": "text", "text": f"★ 模組四啟動：{phase4_count} 支", "size": "xs", "color": FLEX_COLOR_PHASE4_ON}
+                    ],
+                    "margin": "sm"
+                }
+            ],
+            "paddingAll": "20px",
+            "backgroundColor": "#f7f8fa"
+        },
+        "body": {
+            "type": "box",
+            "layout": "vertical",
+            "contents": [
+                {
+                    "type": "box",
+                    "layout": "horizontal",
+                    "contents": [
+                        {"type": "text", "text": "代號/名稱", "size": "xxs", "color": "#aaaaaa", "flex": 3},
+                        {"type": "text", "text": "量比/漲幅", "size": "xxs", "color": "#aaaaaa", "flex": 2, "align": "center"},
+                        {"type": "text", "text": "洗盤/模四", "size": "xxs", "color": "#aaaaaa", "flex": 2, "align": "center"},
+                    ]
+                },
+                *stock_rows
+            ],
+            "paddingAll": "20px"
+        },
+        "footer": {
+            "type": "box",
+            "layout": "vertical",
+            "contents": [
+                {
+                    "type": "button",
+                    "action": {
+                        "type": "uri",
+                        "label": "📈 查看完整報告",
+                        "uri": "https://weeiywun.github.io/twstockscan/"
+                    },
+                    "style": "primary",
+                    "color": "#0c6b3e",
+                    "height": "sm"
+                }
+            ],
+            "paddingAll": "12px"
+        }
+    }
+
+    return {"type": "flex", "altText": f"📊 爆量追蹤選股 {TODAY}：{len(results)} 支符合條件", "contents": bubble}
+
+
 def send_line_notification(results):
-    """透過 LINE Messaging API 推播爆量追蹤掃描結果。"""
+    """透過 LINE Messaging API 推播爆量追蹤掃描結果（Flex Message）。"""
     token = os.environ.get("LINE_CHANNEL_ACCESS_TOKEN")
     user_id = os.environ.get("LINE_USER_ID")
 
@@ -426,35 +576,11 @@ def send_line_notification(results):
         print("\n[LINE] 環境變數未設定，跳過推播通知")
         return
 
-    # ── 組裝訊息內容 ──
-    if results:
-        lines = [
-            f"📊 爆量追蹤選股結果",
-            f"📅 掃描日期：{TODAY}",
-            f"✅ 符合條件：{len(results)} 支",
-            "",
-            f"{'代號':<6} {'名稱':<8} {'T日':>10} {'量比':>5} {'T漲幅':>7} {'洗盤天':>5} {'模四':>4}",
-            "─" * 50,
-        ]
-        for r in results:
-            p4 = "★" if r["phase4_activated"] else " "
-            lines.append(
-                f"{r['stock_id']:<6} {r['name'][:8]:<8} "
-                f"{r['t_date']:>10} {r['t_vol_ratio']:>4.1f}x "
-                f"{r['t_change_pct']:>+6.2f}% {r['days_since_t']:>4}天 {p4}"
-            )
-        message = "\n".join(lines)
-    else:
-        message = f"📊 爆量追蹤選股結果\n📅 掃描日期：{TODAY}\n\n今日無符合條件標的"
-
-    # LINE text 訊息上限 5000 個 Unicode 字元
-    MAX_LEN = 5000
-    if len(message) > MAX_LEN:
-        message = message[:MAX_LEN - 3] + "..."
+    flex_msg = build_flex_message(results)
 
     payload = {
         "to": user_id,
-        "messages": [{"type": "text", "text": message}],
+        "messages": [flex_msg],
     }
     headers = {
         "Content-Type": "application/json",
