@@ -476,7 +476,7 @@ const STRATEGIES = [
       "散戶（≤10張）比例同步下降",
       "股價乖離 EMA26：−10% ～ +5%",
     ],
-    dataUpdated: "2026-04-10",
+    dataUpdated: "載入中...",
     dataSource: "集保開放資料 + TWSE/TPEx",
     dataKey: "chips_big_holder_data",
   },
@@ -495,7 +495,7 @@ const STRATEGIES = [
       "T+1至今：每日收盤 ≥ T日最低（底線防守）",
       "★模組四（進階）：今日放量 > 前5日均量×1.5 且突破洗盤區最高",
     ],
-    dataUpdated: "—",
+    dataUpdated: "載入中...",
     dataSource: "TWSE + TPEx（盤後自動更新）",
     dataKey: "volume_breakout_data",
   },
@@ -1064,47 +1064,37 @@ function renderVolumeBreakout(strat, main) {
 // ════════════════════════════════════════════════════
 //  INIT — 從 JSON 載入資料後再渲染
 // ════════════════════════════════════════════════════
-let _initDone = false;
-function tryInit() {
-  if (_initDone) return;
-  _initDone = true;
-  document.getElementById('headerMeta').textContent =
-    `資料：${STRATEGIES.find(s=>s.available)?.dataUpdated ?? '—'}　策略數：${STRATEGIES.length}`;
+async function loadData() {
+  try {
+    const [chipsRes, vbRes] = await Promise.all([
+      fetch('data/chips_big_holder.json', { cache: 'no-store' }).then(r => r.ok ? r.json() : null).catch(() => null),
+      fetch('data/volume_breakout.json',  { cache: 'no-store' }).then(r => r.ok ? r.json() : null).catch(() => null),
+    ]);
+
+    if (chipsRes && chipsRes.results) {
+      DATA.chips_big_holder_data = chipsRes.results;
+      DATE_LABELS = (chipsRes.results[0]?.date_labels || []).map(d => d.replace(/-/g, '/'));
+      const strat = STRATEGIES.find(s => s.id === 'chips_big_holder');
+      if (strat) strat.dataUpdated = chipsRes.updated || strat.dataUpdated;
+    }
+
+    if (vbRes && vbRes.results) {
+      DATA.volume_breakout_data = vbRes.results;
+      const strat = STRATEGIES.find(s => s.id === 'volume_breakout');
+      if (strat) strat.dataUpdated = vbRes.updated || strat.dataUpdated;
+    }
+  } catch (e) {
+    console.error('資料載入失敗:', e);
+  }
+
+  // 資料載入完成後渲染
   renderNav();
   renderStrategy();
-  const _wg = document.getElementById('watchlistGrid');
-  if (_wg) _wg.innerHTML = renderWatchlist();
+  document.getElementById('headerMeta').textContent =
+    `策略數 ${STRATEGIES.filter(s=>s.available).length} / 觀察 ${watchlist.length}`;
 }
 
-fetch('./data/chips_big_holder.json', { cache: 'no-store' })
-  .then(r => r.json())
-  .then(json => {
-    DATA.chips_big_holder_data = json.results || [];
-    DATE_LABELS = (json.results[0]?.date_labels || []).map(d => d.replace(/-/g, '/'));
-    const strat = STRATEGIES.find(s => s.id === 'chips_big_holder');
-    if (strat && json.updated) strat.dataUpdated = json.updated;
-    tryInit();
-  })
-  .catch(err => {
-    console.error('載入 chips_big_holder.json 失敗：', err);
-    tryInit();
-  });
-
-// Bug 1 fix：加 no-store 防止瀏覽器/CDN 快取舊的空 JSON
-fetch('./data/volume_breakout.json', { cache: 'no-store' })
-  .then(r => r.json())
-  .then(json => {
-    DATA.volume_breakout_data = json.results || [];
-    const strat = STRATEGIES.find(s => s.id === 'volume_breakout');
-    if (strat && json.updated && json.updated !== '—') strat.dataUpdated = json.updated;
-    // Bug 2 fix：無論當前頁籤是哪個，都重繪 nav；
-    // 若目前在爆量追蹤頁籤（含「資料尚未生成」狀態），一律重繪內容
-    renderNav();
-    if (activeStratId === 'volume_breakout') renderStrategy();
-  })
-  .catch(err => {
-    console.warn('volume_breakout.json 載入失敗：', err);
-  });
+loadData();
 </script>
 </body>
 </html>
