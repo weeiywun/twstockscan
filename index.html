@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>選股雷達 · StockRadar</title>
+<title>SR-PC</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400;500;600&family=Noto+Sans+TC:wght@300;400;500;700&display=swap" rel="stylesheet">
 <style>
@@ -267,6 +267,18 @@ tbody tr:hover .spark-bar{opacity:.9}
   display:flex;align-items:center;gap:16px;flex-wrap:wrap;
   padding-top:12px;padding-bottom:12px;min-height:88px;
 }
+.tv-row{
+  display:flex;gap:12px;
+  padding:0 24px 12px;
+}
+.tv-chart-wrap{
+  flex:1;height:130px;min-width:0;overflow:hidden;
+  border-radius:var(--radius);border:1px solid var(--border);
+}
+@media(max-width:768px){
+  .tv-row{padding:0 16px 10px;gap:8px;}
+  .tv-chart-wrap{height:110px;}
+}
 .mkt-card{
   display:flex;flex-direction:column;gap:3px;
   padding:14px 18px;border-radius:var(--radius);
@@ -348,10 +360,8 @@ tbody tr:hover .spark-bar{opacity:.9}
   .table-wrap{border-radius:8px}
   .table-scroll{overflow-x:auto;-webkit-overflow-scrolling:touch}
 
-  /* 隱藏次要欄位 */
-  thead th:nth-child(3),
+  /* 隱藏次要欄位：僅隱藏趨勢圖欄（第6欄），保留乖離率（第3欄） */
   thead th:nth-child(6),
-  tbody td:nth-child(3),
   tbody td:nth-child(6){display:none}
 }
 
@@ -367,6 +377,8 @@ tbody tr:hover .spark-bar{opacity:.9}
 
   thead th:nth-child(4),
   tbody td:nth-child(4){display:none}
+
+  .tv-row{display:none}
 }
 </style>
 </head>
@@ -391,79 +403,73 @@ tbody tr:hover .spark-bar{opacity:.9}
 <div class="market-overview" id="marketOverview">
   <div class="page-inner">
     <div class="mkt-card" id="mktTWSE">
-      <span class="mkt-card-label">加權指數 TAIEX</span>
+      <span class="mkt-card-label">加權報酬指數 TAIEX</span>
       <span class="mkt-card-value" id="twseVal">--</span>
       <span class="mkt-card-change flat" id="twseChg">載入中…</span>
     </div>
     <div class="mkt-card" id="mktOTC">
-      <span class="mkt-card-label">櫃買指數 TPEx</span>
+      <span class="mkt-card-label">上櫃報酬指數 TPEx</span>
       <span class="mkt-card-value" id="otcVal">--</span>
       <span class="mkt-card-change flat" id="otcChg">載入中…</span>
     </div>
-    <span class="mkt-time" id="mktTime"></span>
+    <span class="mkt-time" id="mktTime">資料來源：FinMind 日收</span>
+  </div>
+  <!-- TradingView 技術分析圖 -->
+  <div class="tv-row">
+    <div class="tv-chart-wrap">
+      <div class="tradingview-widget-container" style="height:100%">
+        <div class="tradingview-widget-container__widget" style="height:100%"></div>
+        <script type="text/javascript" src="https://s3.tradingview.com/external-embedding/embed-widget-mini-symbol-overview.js" async>
+        {"symbol":"TWSE:IX0001","width":"100%","height":"100%","locale":"zh_TW","dateRange":"3M","colorTheme":"light","trendLineColor":"rgba(41,98,255,1)","underLineColor":"rgba(41,98,255,0.12)","underLineBottomColor":"rgba(41,98,255,0)","isTransparent":true,"autosize":true}
+        </script>
+      </div>
+    </div>
+    <div class="tv-chart-wrap">
+      <div class="tradingview-widget-container" style="height:100%">
+        <div class="tradingview-widget-container__widget" style="height:100%"></div>
+        <script type="text/javascript" src="https://s3.tradingview.com/external-embedding/embed-widget-mini-symbol-overview.js" async>
+        {"symbol":"TPEX:TPEX","width":"100%","height":"100%","locale":"zh_TW","dateRange":"3M","colorTheme":"light","trendLineColor":"rgba(41,168,98,1)","underLineColor":"rgba(41,168,98,0.12)","underLineBottomColor":"rgba(41,168,98,0)","isTransparent":true,"autosize":true}
+        </script>
+      </div>
+    </div>
   </div>
 </div>
 <script>
 (function(){
   function fmt(n){return (+n).toLocaleString('zh-TW',{minimumFractionDigits:2,maximumFractionDigits:2});}
-  function setCard(valEl,chgEl,close,prev){
-    valEl.textContent = fmt(close);
-    if(prev&&+prev!==0){
-      var d=+close-+prev, pct=d/+prev*100;
+
+  function renderCard(valId, chgId, rows){
+    if(!rows||rows.length<1)return;
+    rows.sort(function(a,b){return b.date.localeCompare(a.date);});
+    var latest=rows[0], prev=rows[1];
+    document.getElementById(valId).textContent=fmt(latest.price);
+    if(prev){
+      var d=latest.price-prev.price, pct=d/prev.price*100;
       var sign=d>=0?'+':'';
-      chgEl.textContent = sign+fmt(d)+' ('+sign+pct.toFixed(2)+'%)';
-      chgEl.className='mkt-card-change '+(d>0?'up':d<0?'dn':'flat');
-    } else {
-      chgEl.textContent='';chgEl.className='mkt-card-change flat';
+      document.getElementById(chgId).textContent=sign+fmt(d)+' ('+sign+pct.toFixed(2)+'%)';
+      document.getElementById(chgId).className='mkt-card-change '+(d>0?'up':d<0?'dn':'flat');
     }
+    document.getElementById('mktTime').textContent='資料日期：'+latest.date+'（FinMind 日收）';
   }
-  function updateTime(){
-    document.getElementById('mktTime').textContent=
-      '更新 '+new Date().toLocaleTimeString('zh-TW',{hour:'2-digit',minute:'2-digit',second:'2-digit'});
-  }
-  function loadTWSE(){
-    fetch('https://openapi.twse.com.tw/v1/exchangeReport/TAIEX')
+
+  function loadIndex(dataId, valId, chgId){
+    var start=new Date(Date.now()-10*24*60*60*1000).toISOString().slice(0,10);
+    fetch('https://api.finmindtrade.com/api/v4/data?dataset=TaiwanStockTotalReturnIndex&data_id='+dataId+'&start_date='+start)
       .then(function(r){return r.json();})
-      .then(function(data){
-        if(!data||!data.length)return;
-        data.sort(function(a,b){return b.Date.localeCompare(a.Date);});
-        var t=data[0];
-        // API fields: Index (今日收盤), Change (漲跌點), ChangePercent (漲跌%)
-        var close = t.Index||t.ClosePrice||'--';
-        var valEl = document.getElementById('twseVal');
-        var chgEl = document.getElementById('twseChg');
-        valEl.textContent = fmt(close);
-        if(t.Change!==undefined){
-          var d=+t.Change, pct=t.ChangePercent?+t.ChangePercent:NaN;
-          var sign=d>=0?'+':'';
-          chgEl.textContent = sign+fmt(d)+(isNaN(pct)?'':' ('+sign+pct.toFixed(2)+'%)');
-          chgEl.className='mkt-card-change '+(d>0?'up':d<0?'dn':'flat');
-        } else {
-          var prev=data[1];
-          if(prev){setCard(valEl,chgEl,close,prev.Index||prev.ClosePrice);}
+      .then(function(j){
+        if(j.data&&j.data.length)renderCard(valId,chgId,j.data);
+        else{
+          document.getElementById(chgId).textContent='暫無資料';
+          document.getElementById(chgId).className='mkt-card-change flat';
         }
-        updateTime();
       }).catch(function(){
-        document.getElementById('twseChg').textContent='無法取得資料';
+        document.getElementById(chgId).textContent='無法取得資料';
+        document.getElementById(chgId).className='mkt-card-change flat';
       });
   }
-  function loadOTC(){
-    // TPEX 提供的 OpenAPI（不需 CORS proxy）
-    fetch('https://www.tpex.org.tw/openapi/v1/tpex_mainboard_peratio_analysis')
-      .then(function(r){return r.ok?r.json():Promise.reject();})
-      .then(function(){
-        // OTC 指數沒有簡易 REST API，顯示提示
-        throw new Error('no index endpoint');
-      }).catch(function(){
-        document.getElementById('otcVal').textContent='N/A';
-        document.getElementById('otcChg').textContent='暫無即時資料';
-        document.getElementById('otcChg').className='mkt-card-change flat';
-      });
-  }
-  // Load on start, refresh every 60s
-  loadTWSE();
-  loadOTC();
-  setInterval(loadTWSE, 60000);
+
+  loadIndex('TAIEX','twseVal','twseChg');
+  loadIndex('TPEx','otcVal','otcChg');
 })();
 </script>
 
