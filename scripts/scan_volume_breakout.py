@@ -34,6 +34,28 @@ TODAY = datetime.now().strftime("%Y-%m-%d")
 SCRIPT_DIR = os.path.dirname(os.path.abspath(__file__))
 OUTPUT_PATH = os.path.join(SCRIPT_DIR, "..", "data", "volume_breakout.json")
 
+# ─────────────────────────────────────────────────────────────
+#  台灣股市休市日（國定假日 + 彈性放假）
+#  注意：此列表需每年初依行政院公告手動更新！
+#  格式：{"MM-DD": "假日名稱"}，僅列平日休市（六日已由 cron 排除）
+# ─────────────────────────────────────────────────────────────
+TW_MARKET_HOLIDAYS = {
+    # ── 2026 年台灣股市休市日 ──
+    "01-01": "元旦",
+    "01-26": "農曆除夕",
+    "01-27": "農曆春節",
+    "01-28": "農曆春節",
+    "01-29": "農曆春節",
+    "01-30": "農曆春節",
+    "02-02": "春節補假",
+    "02-28": "和平紀念日",
+    "04-03": "清明節",
+    "06-19": "端午節",
+    "09-25": "中秋節",
+    "10-09": "國慶日補假",
+    "10-10": "國慶日",
+}
+
 
 # ─────────────────────────────────────────────────────────────
 #  Step 1：取得股票清單
@@ -232,6 +254,13 @@ def main(quick_test=False):
     print("=" * 55)
     print(f"  爆量追蹤選股  {TODAY}")
     print("=" * 55)
+
+    # ── 判斷是否為休市日 ──
+    today_mmdd = datetime.now().strftime("%m-%d")
+    if today_mmdd in TW_MARKET_HOLIDAYS:
+        holiday_name = TW_MARKET_HOLIDAYS[today_mmdd]
+        print(f"今日為休市日 ({TODAY} {holiday_name})，跳過掃描")
+        sys.exit(0)
 
     # ── 取得股票清單 ──
     print("\n[1] 取得股票清單...")
