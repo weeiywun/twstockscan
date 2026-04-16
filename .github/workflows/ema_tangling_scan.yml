@@ -1,0 +1,62 @@
+name: PHASE3 均線糾結選股 (EMA Tangling Scanner)
+
+on:
+  # 每個交易日 15:40 台灣時間執行（UTC 07:40）
+  schedule:
+    - cron: '40 7 * * 1-5'
+  # 允許手動觸發（首次測試用）
+  workflow_dispatch:
+
+jobs:
+  scan:
+    runs-on: ubuntu-latest
+    timeout-minutes: 60
+
+    permissions:
+      contents: write
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Set up Python 3.11
+        uses: actions/setup-python@v5
+        with:
+          python-version: '3.11'
+          cache: 'pip'
+          cache-dependency-path: scripts/requirements.txt
+
+      - name: Install dependencies
+        run: pip install -r scripts/requirements.txt
+
+      - name: Run EMA tangling scanner
+        env:
+          LINE_CHANNEL_ACCESS_TOKEN: ${{ secrets.LINE_CHANNEL_ACCESS_TOKEN }}
+          LINE_USER_ID: ${{ secrets.LINE_USER_ID }}
+        run: python scripts/scan_ema_tangling.py
+
+      - name: Commit and push results
+        run: |
+          git config user.name  "github-actions[bot]"
+          git config user.email "github-actions[bot]@users.noreply.github.com"
+          git add data/ema_tangling.json
+          git add data/history/
+          # 若資料無變動則不提交（避免空提交）
+          git diff --staged --quiet && echo "資料無變動，略過提交" || \
+            git commit -m "data: ema_tangling update $(date -u +%Y-%m-%d)"
+          git push
+
+      - name: Notify LINE on failure
+        if: failure()
+        env:
+          LINE_CHANNEL_ACCESS_TOKEN: ${{ secrets.LINE_CHANNEL_ACCESS_TOKEN }}
+          LINE_USER_ID: ${{ secrets.LINE_USER_ID }}
+          RUN_URL: ${{ github.server_url }}/${{ github.repository }}/actions/runs/${{ github.run_id }}
+        run: |
+          curl -s -X POST https://api.line.me/v2/bot/message/push \
+            -H "Content-Type: application/json" \
+            -H "Authorization: Bearer $LINE_CHANNEL_ACCESS_TOKEN" \
+            -d '{
+              "to": "'"$LINE_USER_ID"'",
+              "messages": [{"type": "text", "text": "⚠️ 均線糾結選股 workflow 執行失敗\n\n日期：'"$(date -u +%Y-%m-%d)"'\n\n請至 GitHub Actions 查看錯誤日誌：\n'"$RUN_URL"'"}]
+            }'

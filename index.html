@@ -530,6 +530,22 @@ const STRATEGIES = [
     dataKey: "volume_breakout_data",
   },
   {
+    id: "ema_tangling",
+    name: "均線糾結",
+    shortName: "PHASE3",
+    icon: "◇",
+    available: true,
+    description: "篩選 EMA20/60/120 三條均線互相糾結（乖離 ≤ 5%）且股價站上所有均線的標的，捕捉蓄勢待發的突破機會。",
+    conditions: [
+      "EMA20、EMA60、EMA120 三線最大最小差距 / 最小值 ≤ 5%",
+      "收盤價站上 EMA20、EMA60、EMA120",
+      "20 日均量 ≥ 500 張",
+    ],
+    dataUpdated: "載入中...",
+    dataSource: "TWSE + TPEx（盤後自動更新）",
+    dataKey: "ema_tangling_data",
+  },
+  {
     id: "institutional_flow",
     name: "三大法人買超",
     shortName: "法人動向",
@@ -537,7 +553,7 @@ const STRATEGIES = [
     available: false,
     description: "追蹤外資、投信、自營商的買賣超趨勢，篩選出法人持續淨買入的標的。",
     conditions: [],
-    comingSoon: "預計 Phase 3 實裝",
+    comingSoon: "預計 Phase 4 實裝",
   },
   {
     id: "short_squeeze",
@@ -547,7 +563,7 @@ const STRATEGIES = [
     available: false,
     description: "監控融券餘額快速增加的個股，搭配大戶增持判斷潛在軋空機會。",
     conditions: [],
-    comingSoon: "預計 Phase 4 實裝",
+    comingSoon: "預計 Phase 5 實裝",
   },
 ];
 
@@ -557,6 +573,7 @@ const STRATEGIES = [
 const DATA = {
   chips_big_holder_data: [],
   volume_breakout_data:  [],
+  ema_tangling_data:     [],
 };
 let DATE_LABELS = [];
 
@@ -652,6 +669,12 @@ function renderStrategy() {
   // 爆量追蹤策略使用獨立渲染器
   if (strat.id === 'volume_breakout') {
     renderVolumeBreakout(strat, main);
+    return;
+  }
+
+  // 均線糾結策略使用獨立渲染器
+  if (strat.id === 'ema_tangling') {
+    renderEmaTangling(strat, main);
     return;
   }
 
@@ -803,10 +826,17 @@ function renderWatchlist() {
   if (watchlist.length === 0) {
     return `<div class="watch-empty">點擊結果列<br>加入觀察清單</div>`;
   }
-  const strat = STRATEGIES.find(s => s.available);
+  // 跨策略查找名稱：遍歷所有有資料的策略
+  function findName(sid) {
+    for (const s of STRATEGIES) {
+      if (!s.available || !s.dataKey) continue;
+      const item = (DATA[s.dataKey] || []).find(d => d.stock_id === sid);
+      if (item) return item.name;
+    }
+    return '—';
+  }
   return watchlist.map(sid => {
-    const item = (DATA[strat.dataKey]||[]).find(d => d.stock_id === sid);
-    const name = item ? item.name : '—';
+    const name = findName(sid);
     return `<div class="watch-card">
       <span class="watch-card-code">${sid}</span>
       <span class="watch-card-name">${name}</span>
@@ -1092,13 +1122,235 @@ function renderVolumeBreakout(strat, main) {
 }
 
 // ════════════════════════════════════════════════════
+//  均線糾結：渲染器
+// ════════════════════════════════════════════════════
+function renderEmaTangling(strat, main) {
+  const rawData = DATA.ema_tangling_data || [];
+
+  // 尚未有資料時的提示
+  if (rawData.length === 0) {
+    main.innerHTML = `
+      <div class="strategy-panel active">
+        <div class="strat-header">
+          <div class="strat-title">${strat.icon} ${strat.name}策略</div>
+          <div class="strat-desc">${strat.description}</div>
+        </div>
+        <div class="conditions">
+          ${strat.conditions.map(c => `<div class="cond"><span class="cond-dot"></span>${c}</div>`).join('')}
+        </div>
+        <div class="coming-soon" style="padding:48px 20px">
+          <div class="coming-icon" style="font-size:28px">◇</div>
+          <div class="coming-title">資料尚未生成</div>
+          <div class="coming-desc">
+            請至 GitHub Actions → <b>PHASE3 均線糾結選股</b> → <b>Run workflow</b><br>
+            手動觸發首次掃描，或等待盤後 15:40 自動執行。
+          </div>
+        </div>
+      </div>`;
+    return;
+  }
+
+  // 排序（預設：糾結程度升序，越小越好）
+  const etSortCol = window._etSortCol || 'tangle_pct';
+  const etSortAsc = (window._etSortAsc !== undefined) ? window._etSortAsc : true;
+  const data = rawData.slice().sort((a, b) => {
+    const va = a[etSortCol] ?? 0, vb = b[etSortCol] ?? 0;
+    if (typeof va === 'string') return etSortAsc ? va.localeCompare(vb) : vb.localeCompare(va);
+    return etSortAsc ? va - vb : vb - va;
+  });
+
+  const avgTangle = data.length ? data.reduce((s, d) => s + d.tangle_pct, 0) / data.length : 0;
+
+  function sortIcon(col) {
+    const active = etSortCol === col;
+    return `<span class="sort-icon">${active ? (etSortAsc ? '↑' : '↓') : '·'}</span>`;
+  }
+
+  function etSort(col) {
+    if (window._etSortCol === col) window._etSortAsc = !window._etSortAsc;
+    else { window._etSortCol = col; window._etSortAsc = (col === 'tangle_pct'); }
+    renderStrategy();
+  }
+  window.etSort = etSort;
+
+  function exportEtCSV() {
+    const headers = ['代號','名稱','市場','今日收盤','EMA20','EMA60','EMA120','糾結%','20日均量(張)'];
+    const rows = data.map(d => [
+      d.stock_id, d.name, d.market,
+      d.close.toFixed(2),
+      d.ema20.toFixed(2), d.ema60.toFixed(2), d.ema120.toFixed(2),
+      d.tangle_pct.toFixed(2),
+      d.vol_20ma.toFixed(0)
+    ]);
+    const csv = [headers, ...rows]
+      .map(r => r.map(v => `"${String(v).replace(/"/g,'""')}"`).join(',')).join('\r\n');
+    const blob = new Blob(['\uFEFF' + csv], {type:'text/csv;charset=utf-8'});
+    const url = URL.createObjectURL(blob);
+    const a = document.createElement('a');
+    a.href = url; a.download = `ema_tangling_${strat.dataUpdated}.csv`;
+    a.click(); URL.revokeObjectURL(url);
+  }
+  window.exportEtCSV = exportEtCSV;
+
+  main.innerHTML = `
+    <div class="strategy-panel active">
+      <div class="strat-header">
+        <div class="strat-title">${strat.icon} ${strat.name}策略</div>
+        <div class="strat-desc">${strat.description}</div>
+      </div>
+      <div class="conditions">
+        ${strat.conditions.map(c => `<div class="cond"><span class="cond-dot"></span>${c}</div>`).join('')}
+      </div>
+
+      <!-- Summary -->
+      <div class="summary-row">
+        <div class="summary-card">
+          <div class="summary-label">篩選結果</div>
+          <div class="summary-value green">${data.length}</div>
+          <div class="summary-sub">符合全部條件</div>
+        </div>
+        <div class="summary-card">
+          <div class="summary-label">平均糾結度</div>
+          <div class="summary-value amber">${avgTangle.toFixed(2)}%</div>
+          <div class="summary-sub">三線乖離均值（越小越緊）</div>
+        </div>
+        <div class="summary-card">
+          <div class="summary-label">資料日期</div>
+          <div class="summary-value" style="font-size:16px;font-family:var(--mono)">${strat.dataUpdated}</div>
+          <div class="summary-sub">${strat.dataSource}</div>
+        </div>
+        <div class="summary-card">
+          <div class="summary-label">掃描範圍</div>
+          <div class="summary-value" style="font-size:16px">全市場</div>
+          <div class="summary-sub">上市 + 上櫃</div>
+        </div>
+      </div>
+
+      <!-- Table -->
+      <div class="table-wrap">
+        <div class="table-toolbar">
+          <span class="table-title">均線糾結結果</span>
+          <div class="toolbar-right">
+            <span class="updated-tag">更新：${strat.dataUpdated}</span>
+            <button class="btn-csv" onclick="exportEtCSV()">↓ 匯出 CSV</button>
+          </div>
+        </div>
+        <div class="table-scroll">
+          <table>
+            <thead>
+              <tr>
+                <th onclick="etSort('stock_id')" style="cursor:pointer">代號 / 名稱${sortIcon('stock_id')}</th>
+                <th onclick="etSort('close')" style="cursor:pointer" data-tip="今日收盤價">今日收${sortIcon('close')}</th>
+                <th onclick="etSort('tangle_pct')" style="cursor:pointer" data-tip="(EMA最大值 − EMA最小值) / EMA最小值 × 100%">糾結%${sortIcon('tangle_pct')}</th>
+                <th onclick="etSort('ema20')" style="cursor:pointer" data-tip="EMA20 值">EMA20${sortIcon('ema20')}</th>
+                <th onclick="etSort('ema60')" style="cursor:pointer" data-tip="EMA60 值">EMA60${sortIcon('ema60')}</th>
+                <th onclick="etSort('ema120')" style="cursor:pointer" data-tip="EMA120 值">EMA120${sortIcon('ema120')}</th>
+                <th onclick="etSort('vol_20ma')" style="cursor:pointer" data-tip="20 日平均成交量（張）">均量(張)${sortIcon('vol_20ma')}</th>
+              </tr>
+            </thead>
+            <tbody>
+              ${data.map(d => {
+                const mkt = d.market === 'TWSE' ? 'TWSE' : 'TPEX';
+                const tvSymbol = `${mkt}:${d.stock_id}`;
+                const inWatch = watchlist.includes(d.stock_id);
+                const tangleColor = d.tangle_pct <= 2 ? 'var(--green)' : d.tangle_pct <= 4 ? 'var(--amber)' : 'var(--text2)';
+                return `<tr onclick="etToggleExpand('${d.stock_id}')" id="et-row-${d.stock_id}">
+                  <td>
+                    <a href="https://www.tradingview.com/chart/?symbol=${tvSymbol}" target="_blank"
+                       onclick="event.stopPropagation()" style="text-decoration:none;display:inline-block">
+                      <div class="stock-code" style="display:flex;align-items:center;gap:5px">
+                        ${d.stock_id}<span style="font-size:9px;opacity:.45;font-family:var(--mono)">↗</span>
+                      </div>
+                      <div class="stock-name">${d.name}</div>
+                    </a>
+                    <div class="stock-industry" style="font-size:10px;color:var(--text3)">${d.market}</div>
+                  </td>
+                  <td><span class="price-cell">${d.close.toFixed(2)}</span></td>
+                  <td>
+                    <span style="font-family:var(--mono);font-size:14px;font-weight:600;color:${tangleColor}">${d.tangle_pct.toFixed(2)}%</span>
+                  </td>
+                  <td><span class="ema-cell">${d.ema20.toFixed(2)}</span></td>
+                  <td><span class="ema-cell">${d.ema60.toFixed(2)}</span></td>
+                  <td><span class="ema-cell">${d.ema120.toFixed(2)}</span></td>
+                  <td><span style="font-family:var(--mono);font-size:12px">${d.vol_20ma.toFixed(0)}</span></td>
+                </tr>
+                <tr class="expand-row" id="et-expand-${d.stock_id}" style="display:none">
+                  <td colspan="7">
+                    <div class="expand-content" style="grid-template-columns:1fr 1fr 1fr">
+                      <div class="expand-section">
+                        <h4>均線數值</h4>
+                        <div style="display:flex;flex-direction:column;gap:6px;font-family:var(--mono);font-size:12px">
+                          <div style="display:flex;justify-content:space-between"><span style="color:var(--text3)">EMA20</span><span>${d.ema20.toFixed(2)}</span></div>
+                          <div style="display:flex;justify-content:space-between"><span style="color:var(--text3)">EMA60</span><span>${d.ema60.toFixed(2)}</span></div>
+                          <div style="display:flex;justify-content:space-between"><span style="color:var(--text3)">EMA120</span><span>${d.ema120.toFixed(2)}</span></div>
+                          <div style="display:flex;justify-content:space-between"><span style="color:var(--text3)">收盤</span><span style="color:var(--green);font-weight:600">${d.close.toFixed(2)}</span></div>
+                        </div>
+                      </div>
+                      <div class="expand-section">
+                        <h4>糾結分析</h4>
+                        <div style="display:flex;flex-direction:column;gap:6px;font-family:var(--mono);font-size:12px">
+                          <div style="display:flex;justify-content:space-between"><span style="color:var(--text3)">糾結度</span><span style="color:${tangleColor};font-weight:600">${d.tangle_pct.toFixed(2)}%</span></div>
+                          <div style="display:flex;justify-content:space-between"><span style="color:var(--text3)">20日均量</span><span>${d.vol_20ma.toFixed(0)} 張</span></div>
+                          <div style="display:flex;justify-content:space-between"><span style="color:var(--text3)">市場</span><span>${d.market}</span></div>
+                        </div>
+                      </div>
+                      <div class="expand-section">
+                        <h4>操作</h4>
+                        <button onclick="event.stopPropagation();toggleWatch('${d.stock_id}','${d.name}')"
+                          style="background:${inWatch?'var(--green-dim)':'#fff'};border:1px solid ${inWatch?'var(--green)':'var(--border)'};color:${inWatch?'var(--green)':'var(--text2)'};padding:8px 14px;border-radius:6px;cursor:pointer;font-size:12px;font-family:var(--sans);width:100%;margin-bottom:8px"
+                          id="watchBtn-${d.stock_id}">
+                          ${inWatch ? '✓ 已加入觀察清單' : '+ 加入觀察清單'}
+                        </button>
+                        <a href="https://tw.stock.yahoo.com/quote/${d.stock_id}" target="_blank"
+                          onclick="event.stopPropagation()"
+                          style="display:block;text-align:center;background:#fff;border:1px solid var(--border);color:var(--text2);padding:8px 14px;border-radius:6px;font-size:12px;text-decoration:none">
+                          Yahoo 股市 ↗
+                        </a>
+                      </div>
+                    </div>
+                  </td>
+                </tr>`;
+              }).join('')}
+            </tbody>
+          </table>
+        </div>
+      </div>
+    </div>`;
+
+  const grid = document.getElementById('watchlistGrid');
+  if (grid) grid.innerHTML = renderWatchlist();
+}
+
+let etExpandedRow = null;
+
+function etToggleExpand(sid) {
+  const prev = etExpandedRow;
+  if (prev) {
+    const prevExp = document.getElementById(`et-expand-${prev}`);
+    const prevRow = document.getElementById(`et-row-${prev}`);
+    if (prevExp) prevExp.style.display = 'none';
+    if (prevRow) prevRow.classList.remove('expanded');
+  }
+  if (prev !== sid) {
+    const expEl = document.getElementById(`et-expand-${sid}`);
+    const rowEl = document.getElementById(`et-row-${sid}`);
+    if (expEl) expEl.style.display = 'table-row';
+    if (rowEl) rowEl.classList.add('expanded');
+    etExpandedRow = sid;
+  } else {
+    etExpandedRow = null;
+  }
+}
+
+// ════════════════════════════════════════════════════
 //  INIT — 從 JSON 載入資料後再渲染
 // ════════════════════════════════════════════════════
 async function loadData() {
   try {
-    const [chipsRes, vbRes] = await Promise.all([
+    const [chipsRes, vbRes, etRes] = await Promise.all([
       fetch('data/chips_big_holder.json', { cache: 'no-store' }).then(r => r.ok ? r.json() : null).catch(() => null),
       fetch('data/volume_breakout.json',  { cache: 'no-store' }).then(r => r.ok ? r.json() : null).catch(() => null),
+      fetch('data/ema_tangling.json',     { cache: 'no-store' }).then(r => r.ok ? r.json() : null).catch(() => null),
     ]);
 
     if (chipsRes && chipsRes.results) {
@@ -1112,6 +1364,12 @@ async function loadData() {
       DATA.volume_breakout_data = vbRes.results;
       const strat = STRATEGIES.find(s => s.id === 'volume_breakout');
       if (strat) strat.dataUpdated = vbRes.updated || strat.dataUpdated;
+    }
+
+    if (etRes && etRes.results) {
+      DATA.ema_tangling_data = etRes.results;
+      const strat = STRATEGIES.find(s => s.id === 'ema_tangling');
+      if (strat) strat.dataUpdated = etRes.updated || strat.dataUpdated;
     }
   } catch (e) {
     console.error('資料載入失敗:', e);
