@@ -29,6 +29,9 @@ warnings.filterwarnings("ignore")
 
 TODAY = datetime.now().strftime("%Y-%m-%d")
 
+# 計算 EMA120 所需最少交易日（120 + 10 天緩衝，確保 EMA 收斂精度）
+MIN_REQUIRED_DAYS = 130
+
 # 輸出路徑：scripts/ 的上一層是 repo root，再進 data/
 SCRIPT_DIR = os.path.dirname(os.path.abspath(__file__))
 OUTPUT_PATH = os.path.join(SCRIPT_DIR, "..", "data", "ema_tangling.json")
@@ -130,7 +133,7 @@ def check_strategy(close, volume):
         (False, None)        不符合
     """
     n = len(close)
-    if n < 130:  # 至少需要 120 + 10 的緩衝
+    if n < MIN_REQUIRED_DAYS:
         return False, None
 
     # ── 計算 EMA ──
@@ -272,7 +275,7 @@ def main(quick_test=False):
                         continue
                     df = raw[ticker].dropna(how="all")
 
-                if df is None or df.empty or len(df) < 130:
+                if df is None or df.empty or len(df) < MIN_REQUIRED_DAYS:
                     continue
 
                 close  = df["Close"].values.astype(float)
