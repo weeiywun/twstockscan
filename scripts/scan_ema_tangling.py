@@ -4,7 +4,7 @@
 盤後自動執行，篩選符合「EMA20/60/120 均線糾結且股價站上所有均線」型態的台股。
 
 策略條件：
-  條件一：EMA20、EMA60、EMA120 三條均線最大值與最小值的差距 / 最小值 ≤ 5%
+  條件一：EMA20、EMA60、EMA120 三條均線最大值與最小值的差距 / 最小值 ≤ 10%
   條件二：收盤價 > EMA20、EMA60、EMA120（股價站上所有均線）
   條件三：20 日均量 ≥ 500 張
 
@@ -148,12 +148,12 @@ def check_strategy(close, volume):
     if ema20 <= 0 or ema60 <= 0 or ema120 <= 0:
         return False, None
 
-    # ── 條件一：均線糾結（三線最大最小差距 / 最小值 ≤ 5%）──
+    # ── 條件一：均線糾結（三線最大最小差距 / 最小值 ≤ 10%）──
     ema_max = max(ema20, ema60, ema120)
     ema_min = min(ema20, ema60, ema120)
     tangle_pct = (ema_max - ema_min) / ema_min * 100
 
-    if tangle_pct > 5.0:
+    if tangle_pct > 10.0:
         return False, None
 
     # ── 條件二：收盤價站上所有均線 ──
@@ -445,7 +445,7 @@ def build_flex_message(results):
                     "type": "box",
                     "layout": "horizontal",
                     "contents": [
-                        {"type": "text", "text": "EMA20/60/120 糾結 ≤ 5%，股價站上所有均線", "size": "xxs", "color": "#aaaaaa"}
+                        {"type": "text", "text": "EMA20/60/120 糾結 ≤ 10%，股價站上所有均線", "size": "xxs", "color": "#aaaaaa"}
                     ],
                     "margin": "sm"
                 }
