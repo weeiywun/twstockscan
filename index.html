@@ -1,88 +1,11 @@
-  function loadTWSE(){
-    // 使用 TWSE 準即時資料 API (盤中每 5 秒更新)
-    fetch('https://mis.twse.com.tw/stock/api/getStockInfo.jsp?ex_ch=tse_t00.tw&json=1&delay=0')
-      .then(function(r){
-        if(!r.ok) throw new Error('API error');
-        return r.json();
-      })
-      .then(function(data){
-        if(!data || !data.msgArray || data.msgArray.length === 0) {
-          throw new Error('No data');
-        }
-        // msgArray[0] 包含加權指數資料
-        var idx = data.msgArray[0];
-        var close = parseFloat(idx.z || idx.y);  // z=最新成交價, y=昨收(盤前使用)
-        var prevClose = parseFloat(idx.y);        // y=昨收
-        var change = close - prevClose;
-        
-        var valEl = document.getElementById('twseVal');
-        var chgEl = document.getElementById('twseChg');
-        
-        valEl.textContent = fmt(close);
-        
-        var sign = change >= 0 ? '+' : '';
-        var pct = (change / prevClose * 100);
-        chgEl.textContent = sign + fmt(change) + ' (' + sign + pct.toFixed(2) + '%)';
-        chgEl.className = 'mkt-card-change ' + (change > 0 ? 'up' : change < 0 ? 'dn' : 'flat');
-        
-        updateTime();
-      })
-      .catch(function(err){
-        console.warn('無法取得即時台股指數，嘗試盤後資料:', err);
-        // 備用來源 1 - TWSE 盤後資料 API
-        fetch('https://www.twse.com.tw/rwd/zh/afterTrading/FMTQIK?response=json')
-          .then(function(r){
-            if(!r.ok) throw new Error('API error');
-            return r.json();
-          })
-          .then(function(data){
-            if(!data || !data.data || data.data.length === 0) {
-              throw new Error('No data');
-            }
-            // data.data[0] = ["日期", "成交股數", "成交金額", "成交筆數", "發行量加權股價指數", "漲跌點數"]
-            var latest = data.data[0];
-            var close = parseFloat(latest[4].replace(/,/g, ''));
-            var change = parseFloat(latest[5].replace(/,/g, ''));
-            
-            var valEl = document.getElementById('twseVal');
-            var chgEl = document.getElementById('twseChg');
-            
-            valEl.textContent = fmt(close);
-            
-            var sign = change >= 0 ? '+' : '';
-            var pct = (change / (close - change) * 100);
-            chgEl.textContent = sign + fmt(change) + ' (' + sign + pct.toFixed(2) + '%)';
-            chgEl.className = 'mkt-card-change ' + (change > 0 ? 'up' : change < 0 ? 'dn' : 'flat');
-            
-            updateTime();
-          })
-          .catch(function(err2){
-            console.warn('無法取得盤後資料，嘗試 OpenAPI:', err2);
-            // 備用來源 2 - OpenAPI
-            fetch('https://openapi.twse.com.tw/v1/exchangeReport/FMTQIK')
-              .then(function(r){return r.json();})
-              .then(function(data){
-                if(!data || data.length === 0) throw new Error('No backup data');
-                // 取最新一筆
-                var latest = data[0];
-                var close = parseFloat(latest.ClosingIndex);
-                var change = parseFloat(latest.Change);
-                
-                var valEl = document.getElementById('twseVal');
-                var chgEl = document.getElementById('twseChg');
-                
-                valEl.textContent = fmt(close);
-                var sign = change >= 0 ? '+' : '';
-                var pct = (change / (close - change) * 100);
-                chgEl.textContent = sign + fmt(change) + ' (' + sign + pct.toFixed(2) + '%)';
-                chgEl.className = 'mkt-card-change ' + (change > 0 ? 'up' : change < 0 ? 'dn' : 'flat');
-                
-                updateTime();
-              })
-              .catch(function(){
-                document.getElementById('twseChg').textContent = '無法取得資料';
-                document.getElementById('twseChg').className = 'mkt-card-change flat';
-              });
-          });
-      });
-  }
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+<body>
+    <h1>This is the restored index.html file.</h1>
+</body>
+</html>
