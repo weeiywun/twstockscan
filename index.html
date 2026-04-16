@@ -1242,11 +1242,14 @@ function etToggleExpand(sid) {
 //  INIT — 從 JSON 載入資料後再渲染
 // ════════════════════════════════════════════════════
 async function loadData() {
+  // 加入時間戳避免快取問題（瀏覽器 + CDN）
+  const timestamp = new Date().getTime();
+
   try {
     const [chipsRes, vbRes, etRes] = await Promise.all([
-      fetch('data/chips_big_holder.json', { cache: 'no-store' }).then(r => r.ok ? r.json() : null).catch(() => null),
-      fetch('data/volume_breakout.json',  { cache: 'no-store' }).then(r => r.ok ? r.json() : null).catch(() => null),
-      fetch('data/ema_tangling.json',     { cache: 'no-store' }).then(r => r.ok ? r.json() : null).catch(() => null),
+      fetch(`data/chips_big_holder.json?t=${timestamp}`, { cache: 'no-store' }).then(r => r.ok ? r.json() : null).catch(() => null),
+      fetch(`data/volume_breakout.json?t=${timestamp}`,  { cache: 'no-store' }).then(r => r.ok ? r.json() : null).catch(() => null),
+      fetch(`data/ema_tangling.json?t=${timestamp}`,     { cache: 'no-store' }).then(r => r.ok ? r.json() : null).catch(() => null),
     ]);
 
     if (chipsRes && chipsRes.results) {
