@@ -153,17 +153,17 @@ def check_strategy(close, volume):
     ema_min = min(ema20, ema60, ema120)
     tangle_pct = (ema_max - ema_min) / ema_min * 100
 
-    if tangle_pct > 15.0:
+    if tangle_pct > 10.0:
         return False, None
 
-    # ── 條件二：收盤價至少大於一條均線 ──
+    # ── 條件二：收盤價至少大於二條均線 ──
     today_close = float(close[-1])
     count = sum([
         today_close > ema20,
         today_close > ema60,
         today_close > ema120
     ])
-    if count < 1:
+    if count < 2:
         return False, None
 
     # ── 條件三：20 日均量 ≥ 500 張（1 張 = 1000 股）──
