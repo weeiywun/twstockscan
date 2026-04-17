@@ -257,12 +257,6 @@ def main(quick_test=False):
         print(f"今日為休市日 ({TODAY} {holiday_name})，跳過掃描")
         sys.exit(0)
 
-    # ── FinMind API Token ──
-    token = os.environ.get("FINMIND_API_TOKEN")
-    if not token:
-        print("錯誤：環境變數 FINMIND_API_TOKEN 未設定，無法下載股價資料")
-        sys.exit(1)
-
     # ── 取得股票清單 ──
     print("\n[1] 取得股票清單...")
     stocks = get_stock_list()
@@ -280,9 +274,9 @@ def main(quick_test=False):
     end_date   = datetime.now().strftime("%Y-%m-%d")
     start_date = (datetime.now() - timedelta(days=160)).strftime("%Y-%m-%d")
 
-    # ── 並發下載全市場資料（FinMind）──
-    print("[2] 下載股價資料（FinMind）...")
-    stock_data = fetch_all_stocks(stocks, start_date, end_date, token)
+    # ── 批次下載全市場資料（yfinance）──
+    print("[2] 下載股價資料（yfinance）...")
+    stock_data = fetch_all_stocks(stocks, start_date, end_date)
 
     if not stock_data:
         print("無法取得任何股票資料，結束執行")
