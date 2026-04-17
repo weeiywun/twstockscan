@@ -531,6 +531,7 @@ def send_line_notification(results):
         return
 
     user_ids = [uid.strip() for uid in raw_ids.split(",") if uid.strip()]
+    print(f"[LINE] 推播對象：{len(user_ids)} 人，IDs = {[uid[:8]+'...' for uid in user_ids]}")
 
     flex_msg = build_flex_message(results)
 
