@@ -4,9 +4,9 @@
 盤後自動執行，篩選符合「EMA20/60/120 均線糾結且股價站上所有均線」型態的台股。
 
 策略條件：
-  條件一：EMA20、EMA60、EMA120 三條均線最大值與最小值的差距 / 最小值 ≤ 15%
-  條件二：收盤價 > EMA20、EMA60、EMA120（股價站上任意一條均線）
-  條件三：20 日均量 ≥ 300 張
+  條件一：EMA20、EMA60、EMA120 三條均線最大值與最小值的差距 / 最小值 ≤ 10%
+  條件二：收盤價 > EMA20、EMA60、EMA120（股價站上任意二條均線）
+  條件三：20 日均量 ≥ 500 張
 
 執行方式：
   python scan_ema_tangling.py          # 全市場掃描
@@ -168,7 +168,7 @@ def check_strategy(close, volume):
 
     # ── 條件三：20 日均量 ≥ 500 張（1 張 = 1000 股）──
     vol_20ma = float(np.mean(volume[-20:])) / 1000.0   # 換算為張
-    if vol_20ma < 300:
+    if vol_20ma < 500:
         return False, None
 
     result = {
