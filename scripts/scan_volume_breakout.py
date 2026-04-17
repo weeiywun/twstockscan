@@ -22,9 +22,9 @@ import os
 from datetime import datetime, timedelta
 
 import requests
-import yfinance as yf
 import pandas as pd
 import numpy as np
+from finmind_client import fetch_all_stocks
 
 warnings.filterwarnings("ignore")
 
@@ -242,31 +242,8 @@ def check_strategy(close, open_, high, low, volume, dates):
 
 
 # ─────────────────────────────────────────────────────────────
-#  Step 3：批次下載 + 主流程
+#  Step 3：下載資料（FinMind）+ 主流程
 # ─────────────────────────────────────────────────────────────
-
-def batch_download(tickers_str, start_date, end_date, max_retries=2):
-    for attempt in range(max_retries + 1):
-        try:
-            data = yf.download(
-                tickers_str,
-                start=start_date,
-                end=end_date,
-                group_by="ticker",
-                auto_adjust=True,
-                progress=False,
-                threads=True,
-            )
-            return data
-        except Exception as e:
-            if attempt < max_retries:
-                wait = 5 * (attempt + 1)
-                print(f" (重試 {attempt+1}/{max_retries}，等待 {wait}s)", end="", flush=True)
-                time.sleep(wait)
-            else:
-                print(f"    批次下載失敗（已重試 {max_retries} 次）：{e}")
-                return None
-
 
 def main(quick_test=False):
     print("=" * 55)
@@ -279,6 +256,12 @@ def main(quick_test=False):
         holiday_name = TW_MARKET_HOLIDAYS[today_mmdd]
         print(f"今日為休市日 ({TODAY} {holiday_name})，跳過掃描")
         sys.exit(0)
+
+    # ── FinMind API Token ──
+    token = os.environ.get("FINMIND_API_TOKEN")
+    if not token:
+        print("錯誤：環境變數 FINMIND_API_TOKEN 未設定，無法下載股價資料")
+        sys.exit(1)
 
     # ── 取得股票清單 ──
     print("\n[1] 取得股票清單...")
@@ -297,71 +280,46 @@ def main(quick_test=False):
     end_date   = datetime.now().strftime("%Y-%m-%d")
     start_date = (datetime.now() - timedelta(days=160)).strftime("%Y-%m-%d")
 
-    # ── 批次掃描 ──
-    print("[2] 開始掃描...")
-    results = []
-    BATCH = 100
-    total = len(stocks)
-    n_batches = (total + BATCH - 1) // BATCH
+    # ── 並發下載全市場資料（FinMind）──
+    print("[2] 下載股價資料（FinMind）...")
+    stock_data = fetch_all_stocks(stocks, start_date, end_date, token)
+
+    if not stock_data:
+        print("無法取得任何股票資料，結束執行")
+        sys.exit(1)
+
+    # ── 套用策略 ──
+    print("\n[3] 套用爆量追蹤策略...")
+    results       = []
     total_scanned = 0
     total_skipped = 0
 
-    for b_idx in range(n_batches):
-        batch = stocks[b_idx * BATCH:(b_idx + 1) * BATCH]
+    for s in stocks:
+        sid = s["stock_id"]
+        df  = stock_data.get(sid)
 
-        stock_map = {}
-        for s in batch:
-            suffix = ".TW" if s["market"] == "TWSE" else ".TWO"
-            ticker = s["stock_id"] + suffix
-            stock_map[ticker] = s
-
-        ticker_str = " ".join(stock_map.keys())
-        print(f"  批次 {b_idx+1}/{n_batches}：{len(batch)} 支", end="", flush=True)
-
-        raw = batch_download(ticker_str, start_date, end_date)
-        if raw is None or raw.empty:
-            print(" → 下載失敗，跳過")
+        if df is None or df.empty or len(df) < 70:
             total_skipped += 1
             continue
 
-        total_scanned += len(batch)
+        total_scanned += 1
+        try:
+            close  = df["Close"].values.astype(float)
+            open_  = df["Open"].values.astype(float)
+            high   = df["High"].values.astype(float)
+            low    = df["Low"].values.astype(float)
+            volume = df["Volume"].values.astype(float)
+            dates  = df.index
 
-        batch_hits = 0
-        for ticker, s in stock_map.items():
-            try:
-                # 處理單支 vs 多支回傳格式不同的問題
-                if len(batch) == 1:
-                    df = raw.dropna(how="all")
-                else:
-                    lvl0 = raw.columns.get_level_values(0)
-                    if ticker not in lvl0:
-                        continue
-                    df = raw[ticker].dropna(how="all")
+            passed, result = check_strategy(close, open_, high, low, volume, dates)
 
-                if df is None or df.empty or len(df) < 70:
-                    continue
-
-                close  = df["Close"].values.astype(float)
-                open_  = df["Open"].values.astype(float)
-                high   = df["High"].values.astype(float)
-                low    = df["Low"].values.astype(float)
-                volume = df["Volume"].values.astype(float)
-                dates  = df.index
-
-                passed, result = check_strategy(close, open_, high, low, volume, dates)
-
-                if passed:
-                    result["stock_id"] = s["stock_id"]
-                    result["name"]     = s["name"]
-                    result["market"]   = s["market"]
-                    results.append(result)
-                    batch_hits += 1
-
-            except Exception:
-                pass
-
-        print(f" → 找到 {batch_hits} 支" if batch_hits else " → 本批無符合")
-        time.sleep(1.2)   # 避免頻繁請求
+            if passed:
+                result["stock_id"] = sid
+                result["name"]     = s["name"]
+                result["market"]   = s["market"]
+                results.append(result)
+        except Exception:
+            pass
 
     # ── 輸出結果 ──
     print(f"\n{'='*55}")
@@ -369,7 +327,7 @@ def main(quick_test=False):
     coverage_rate = round(total_scanned / len(stocks) * 100, 1) if stocks else 0
     print(f"  掃描覆蓋率：{total_scanned:,} / {len(stocks):,}（{coverage_rate}%）")
     if total_skipped:
-        print(f"  跳過批次：{total_skipped}")
+        print(f"  資料不足跳過：{total_skipped} 支")
     print(f"{'='*55}\n")
 
     if results:
