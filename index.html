@@ -493,7 +493,7 @@ function openTV(tvSymbol, event) {
   const isMobile = /iPhone|iPad|iPod|Android/i.test(navigator.userAgent);
   const webUrl = `https://www.tradingview.com/chart/?symbol=${tvSymbol}`;
   if (isMobile) {
-    const appUrl = `tradingview://chart?symbol=${tvSymbol}`;
+    const appUrl = `tradingview://chart?symbol=${encodeURIComponent(tvSymbol)}`;
     // 嘗試喚起 App；若 App 未安裝，500ms 後 fallback 到網頁版
     const t0 = Date.now();
     window.location.href = appUrl;
