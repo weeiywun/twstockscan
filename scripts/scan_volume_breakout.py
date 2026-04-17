@@ -522,16 +522,21 @@ def build_flex_message(results):
 def send_line_notification(results):
     """透過 LINE Messaging API 推播爆量追蹤掃描結果（Flex Message）。"""
     token = os.environ.get("LINE_CHANNEL_ACCESS_TOKEN")
-    user_id = os.environ.get("LINE_USER_ID")
+    # 支援多人：LINE_USER_IDS 以逗號分隔，例如 "Uabc123,Uxyz789"
+    # 相容舊版單一 LINE_USER_ID
+    raw_ids = os.environ.get("LINE_USER_IDS") or os.environ.get("LINE_USER_ID")
 
-    if not token or not user_id:
+    if not token or not raw_ids:
         print("\n[LINE] 環境變數未設定，跳過推播通知")
         return
+
+    user_ids = [uid.strip() for uid in raw_ids.split(",") if uid.strip()]
+    print(f"[LINE] 推播對象：{len(user_ids)} 人，IDs = {[uid[:8]+'...' for uid in user_ids]}")
 
     flex_msg = build_flex_message(results)
 
     payload = {
-        "to": user_id,
+        "userIds": user_ids,
         "messages": [flex_msg],
     }
     headers = {
@@ -541,7 +546,7 @@ def send_line_notification(results):
 
     try:
         resp = requests.post(
-            "https://api.line.me/v2/bot/message/push",
+            "https://api.line.me/v2/bot/message/multicast",
             json=payload,
             headers=headers,
             timeout=15,
