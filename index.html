@@ -183,6 +183,7 @@ thead th{
   letter-spacing:.04em;
   border-bottom:1px solid var(--border);background:var(--bg3);
   cursor:pointer;user-select:none;white-space:nowrap;
+  position:sticky;top:0;z-index:2;
 }
 thead th:hover{color:var(--text2)}
 thead th .sort-icon{opacity:.3;margin-left:4px;font-size:10px}
@@ -296,6 +297,65 @@ tbody tr:hover .spark-bar{opacity:.9}
   font-family:var(--sans);font-weight:400;z-index:50;
 }
 [data-tip]:hover::after{opacity:1}
+
+/* ── 垂直捲軸（超過6筆啟用）───────────────────── */
+.table-vscroll{
+  max-height:312px;
+  overflow-y:auto;
+  scrollbar-width:thin;
+  scrollbar-color:var(--border2) transparent;
+}
+.table-vscroll::-webkit-scrollbar{width:4px}
+.table-vscroll::-webkit-scrollbar-track{background:transparent}
+.table-vscroll::-webkit-scrollbar-thumb{background:var(--border2);border-radius:2px}
+
+/* ── AI 推薦卡片 ─────────────────────────────── */
+.ai-card{
+  background:var(--bg2);border:1px solid var(--border);
+  border-radius:var(--radius);overflow:hidden;margin-bottom:24px;
+  box-shadow:var(--shadow-sm);
+}
+.ai-card-header{
+  display:flex;align-items:center;justify-content:space-between;
+  padding:12px 16px;border-bottom:1px solid var(--border);
+  background:linear-gradient(90deg,var(--green-dim) 0%,transparent 60%);
+}
+.ai-card-title{
+  font-size:12px;font-weight:600;color:var(--green);
+  letter-spacing:.06em;
+}
+.ai-card-meta{font-size:11px;color:var(--text3)}
+.ai-card-body{padding:4px 0}
+.ai-rank-item{
+  display:flex;align-items:flex-start;gap:14px;
+  padding:12px 16px;border-bottom:1px solid var(--border);
+  transition:background .12s;
+}
+.ai-rank-item:last-child{border-bottom:none}
+.ai-rank-item:hover{background:var(--bg3)}
+.ai-rank-badge{
+  flex:0 0 30px;height:30px;border-radius:6px;
+  border:1.5px solid;
+  display:flex;align-items:center;justify-content:center;
+  font-family:var(--mono);font-size:11px;font-weight:700;
+  margin-top:2px;flex-shrink:0;
+}
+.ai-rank-info{flex:1;min-width:0}
+.ai-rank-stock{display:flex;align-items:center;gap:6px;margin-bottom:4px;flex-wrap:wrap}
+.ai-rank-reason{font-size:12px;color:var(--text2);line-height:1.6}
+.ai-score{
+  flex:0 0 auto;display:flex;flex-direction:column;
+  align-items:center;justify-content:center;gap:0;
+}
+.ai-score-val{font-family:var(--mono);font-size:18px;font-weight:700}
+.ai-score-label{font-size:10px;color:var(--text3)}
+.ai-card-footer{
+  padding:8px 16px;border-top:1px solid var(--border);
+  font-size:11px;color:var(--text3);background:var(--bg3);
+}
+.ai-card-empty{
+  padding:28px 16px;text-align:center;font-size:13px;color:var(--text3);
+}
 
 /* ════════════════════════════════════════════════
    RESPONSIVE  (RWD)
@@ -481,6 +541,7 @@ let sortCol = "big_4w_chg";
 let sortAsc = false;
 let expandedRow = null;
 let watchlist = JSON.parse(localStorage.getItem("watchlist") || "[]");
+let aiData = null;
 
 // ════════════════════════════════════════════════════
 //  TRADINGVIEW APP DEEP LINK
@@ -636,6 +697,7 @@ function renderStrategy() {
 
   // Table
   const sortIcon = (col) => `<span class="sort-icon">${sortCol===col ? (sortAsc?'↑':'↓') : '·'}</span>`;
+  const vscrollClass = data.length > 6 ? 'table-vscroll' : '';
   const tableHTML = `
     <div class="table-wrap">
       <div class="table-toolbar">
@@ -648,6 +710,7 @@ function renderStrategy() {
         </div>
       </div>
       <div class="table-scroll">
+      <div class="${vscrollClass}">
       <table id="resultsTable">
         <thead>
           <tr>
@@ -664,6 +727,7 @@ function renderStrategy() {
         </tbody>
       </table>
       </div>
+      </div>
     </div>`;
 
   main.innerHTML = `
@@ -675,6 +739,7 @@ function renderStrategy() {
       ${condsHTML}
       ${summaryHTML}
       ${tableHTML}
+      ${renderAICard()}
     </div>`;
 
   // 更新右側 sidebar
@@ -762,6 +827,58 @@ function renderWatchlist() {
       <span class="watch-card-remove" onclick="event.stopPropagation();removeWatch('${sid}')">×</span>
     </div>`;
   }).join('');
+}
+
+// ════════════════════════════════════════════════════
+//  AI 推薦卡片
+// ════════════════════════════════════════════════════
+function renderAICard() {
+  if (!aiData) {
+    return `<div class="ai-card">
+      <div class="ai-card-header">
+        <span class="ai-card-title">✦ AI 選股推薦</span>
+        <span class="ai-card-meta">尚未載入</span>
+      </div>
+      <div class="ai-card-empty">AI 分析資料尚未產生，下次選股後自動更新</div>
+    </div>`;
+  }
+  if (!aiData.ranked || aiData.ranked.length === 0) {
+    return `<div class="ai-card">
+      <div class="ai-card-header">
+        <span class="ai-card-title">✦ AI 選股推薦</span>
+      </div>
+      <div class="ai-card-empty">本週無推薦標的</div>
+    </div>`;
+  }
+
+  const top3 = aiData.ranked.slice(0, 3);
+  const rankColors  = ['var(--green)', 'var(--amber)', 'var(--blue)'];
+  const genTime = (aiData.generated_at || '').slice(0, 16).replace('T', ' ');
+
+  const itemsHTML = top3.map((item, i) => `
+    <div class="ai-rank-item">
+      <div class="ai-rank-badge" style="color:${rankColors[i]};border-color:${rankColors[i]}">#${item.rank}</div>
+      <div class="ai-rank-info">
+        <div class="ai-rank-stock">
+          <span class="stock-code">${item.stock_id}</span>
+          <span style="font-size:13px;font-weight:500;color:var(--text)">${item.name}</span>
+        </div>
+        <div class="ai-rank-reason">${item.reason}</div>
+      </div>
+      <div class="ai-score">
+        <span class="ai-score-val" style="color:${rankColors[i]}">${item.score}</span>
+        <span class="ai-score-label">分</span>
+      </div>
+    </div>`).join('');
+
+  return `<div class="ai-card">
+    <div class="ai-card-header">
+      <span class="ai-card-title">✦ AI 選股推薦</span>
+      <span class="ai-card-meta">${aiData.model || 'gemini-2.0-flash'} · ${genTime}</span>
+    </div>
+    <div class="ai-card-body">${itemsHTML}</div>
+    <div class="ai-card-footer">依波段偏好排序：大戶增持幅度 · 低乖離 · 基本面獲利能力</div>
+  </div>`;
 }
 
 // ════════════════════════════════════════════════════
@@ -1269,10 +1386,11 @@ async function loadData() {
   const timestamp = new Date().getTime();
 
   try {
-    const [chipsRes, vbRes, etRes] = await Promise.all([
+    const [chipsRes, vbRes, etRes, aiRes] = await Promise.all([
       fetch(`data/chips_big_holder.json?t=${timestamp}`, { cache: 'no-store' }).then(r => r.ok ? r.json() : null).catch(() => null),
       fetch(`data/volume_breakout.json?t=${timestamp}`,  { cache: 'no-store' }).then(r => r.ok ? r.json() : null).catch(() => null),
       fetch(`data/ema_tangling.json?t=${timestamp}`,     { cache: 'no-store' }).then(r => r.ok ? r.json() : null).catch(() => null),
+      fetch(`data/ai_recommendations.json?t=${timestamp}`, { cache: 'no-store' }).then(r => r.ok ? r.json() : null).catch(() => null),
     ]);
 
     if (chipsRes && chipsRes.results) {
@@ -1292,6 +1410,10 @@ async function loadData() {
       DATA.ema_tangling_data = etRes.results;
       const strat = STRATEGIES.find(s => s.id === 'ema_tangling');
       if (strat) strat.dataUpdated = etRes.updated || strat.dataUpdated;
+    }
+
+    if (aiRes && aiRes.ranked) {
+      aiData = aiRes;
     }
   } catch (e) {
     console.error('資料載入失敗:', e);

@@ -1,0 +1,35 @@
+name: AI Stock Ranking
+
+on:
+  push:
+    paths:
+      - 'data/chips_big_holder.json'
+
+jobs:
+  rank:
+    runs-on: ubuntu-latest
+    permissions:
+      contents: write
+
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.11'
+
+      - name: Install dependencies
+        run: pip install requests
+
+      - name: Run AI ranking
+        run: python scripts/call_ai_ranking.py
+        env:
+          GEMINI_API_KEY: ${{ secrets.GEMINI_API_KEY }}
+
+      - name: Commit AI recommendations
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "github-actions[bot]@users.noreply.github.com"
+          git add data/ai_recommendations.json
+          git diff --staged --quiet || git commit -m "data: AI ranking $(date +%Y-%m-%d)"
+          git push
