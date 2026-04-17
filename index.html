@@ -483,6 +483,29 @@ let expandedRow = null;
 let watchlist = JSON.parse(localStorage.getItem("watchlist") || "[]");
 
 // ════════════════════════════════════════════════════
+//  TRADINGVIEW APP DEEP LINK
+//  手機上優先呼出 TradingView App（需已安裝），
+//  未安裝時 fallback 到網頁版；桌機直接開新分頁。
+// ════════════════════════════════════════════════════
+function openTV(tvSymbol, event) {
+  event.stopPropagation();
+  event.preventDefault();
+  const isMobile = /iPhone|iPad|iPod|Android/i.test(navigator.userAgent);
+  const webUrl = `https://www.tradingview.com/chart/?symbol=${tvSymbol}`;
+  if (isMobile) {
+    const appUrl = `tradingview://chart?symbol=${tvSymbol}`;
+    // 嘗試喚起 App；若 App 未安裝，500ms 後 fallback 到網頁版
+    const t0 = Date.now();
+    window.location.href = appUrl;
+    setTimeout(() => {
+      if (Date.now() - t0 < 1200) window.open(webUrl, '_blank');
+    }, 500);
+  } else {
+    window.open(webUrl, '_blank');
+  }
+}
+
+// ════════════════════════════════════════════════════
 //  EXCHANGE DETECTION
 //  資料若有 market 欄位（"TWSE"/"TPEX"）優先採用，
 //  否則依代號範圍推算（非 100% 精確）
@@ -666,8 +689,8 @@ function renderRow(d) {
   return `
     <tr onclick="toggleExpand('${d.stock_id}')" id="row-${d.stock_id}">
       <td>
-        <a href="https://www.tradingview.com/chart/?symbol=${getTVSymbol(d)}" target="_blank"
-          onclick="event.stopPropagation()"
+        <a href="https://www.tradingview.com/chart/?symbol=${getTVSymbol(d)}"
+          onclick="openTV('${getTVSymbol(d)}', event)"
           style="text-decoration:none;display:inline-block">
           <div class="stock-code" style="display:flex;align-items:center;gap:5px">
             ${d.stock_id}
@@ -980,8 +1003,8 @@ function renderVolumeBreakout(strat, main) {
                   : `<span style="color:var(--text3);font-size:11px">—</span>`;
                 return `<tr>
                   <td>
-                    <a href="https://www.tradingview.com/chart/?symbol=${tvSymbol}" target="_blank"
-                       onclick="event.stopPropagation()" style="text-decoration:none;display:inline-block">
+                    <a href="https://www.tradingview.com/chart/?symbol=${tvSymbol}"
+                       onclick="openTV('${tvSymbol}', event)" style="text-decoration:none;display:inline-block">
                       <div class="stock-code" style="display:flex;align-items:center;gap:5px">
                         ${d.stock_id}<span style="font-size:9px;opacity:.45;font-family:var(--mono)">↗</span>
                       </div>
@@ -1152,8 +1175,8 @@ function renderEmaTangling(strat, main) {
                 const tangleColor = d.tangle_pct <= 2 ? 'var(--green)' : d.tangle_pct <= 4 ? 'var(--amber)' : 'var(--text2)';
                 return `<tr onclick="etToggleExpand('${d.stock_id}')" id="et-row-${d.stock_id}">
                   <td>
-                    <a href="https://www.tradingview.com/chart/?symbol=${tvSymbol}" target="_blank"
-                       onclick="event.stopPropagation()" style="text-decoration:none;display:inline-block">
+                    <a href="https://www.tradingview.com/chart/?symbol=${tvSymbol}"
+                       onclick="openTV('${tvSymbol}', event)" style="text-decoration:none;display:inline-block">
                       <div class="stock-code" style="display:flex;align-items:center;gap:5px">
                         ${d.stock_id}<span style="font-size:9px;opacity:.45;font-family:var(--mono)">↗</span>
                       </div>
