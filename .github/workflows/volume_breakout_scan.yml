@@ -35,7 +35,7 @@ jobs:
       - name: Run volume breakout scanner
         env:
           LINE_CHANNEL_ACCESS_TOKEN: ${{ secrets.LINE_CHANNEL_ACCESS_TOKEN }}
-          LINE_USER_ID: ${{ secrets.LINE_USER_ID }}
+          LINE_USER_IDS: ${{ secrets.LINE_USER_IDS }}
         run: python scripts/scan_volume_breakout.py
 
       - name: Commit and push results
@@ -73,13 +73,14 @@ jobs:
         if: failure()
         env:
           LINE_CHANNEL_ACCESS_TOKEN: ${{ secrets.LINE_CHANNEL_ACCESS_TOKEN }}
-          LINE_USER_ID: ${{ secrets.LINE_USER_ID }}
+          LINE_USER_IDS: ${{ secrets.LINE_USER_IDS }}
           RUN_URL: ${{ github.server_url }}/${{ github.repository }}/actions/runs/${{ github.run_id }}
         run: |
-          curl -s -X POST https://api.line.me/v2/bot/message/push \
+          USER_IDS_JSON=$(echo "$LINE_USER_IDS" | tr ',' '\n' | jq -R . | jq -s .)
+          curl -s -X POST https://api.line.me/v2/bot/message/multicast \
             -H "Content-Type: application/json" \
             -H "Authorization: Bearer $LINE_CHANNEL_ACCESS_TOKEN" \
-            -d '{
-              "to": "'"$LINE_USER_ID"'",
-              "messages": [{"type": "text", "text": "⚠️ 爆量追蹤選股 workflow 執行失敗\n\n日期：'"$(date -u +%Y-%m-%d)"'\n\n請至 GitHub Actions 查看錯誤日誌：\n'"$RUN_URL"'"}]
-            }'
+            -d "{
+              \"userIds\": $USER_IDS_JSON,
+              \"messages\": [{\"type\": \"text\", \"text\": \"⚠️ 爆量追蹤選股 workflow 執行失敗\n\n日期：$(date -u +%Y-%m-%d)\n\n請至 GitHub Actions 查看錯誤日誌：\n$RUN_URL\"}]
+            }"
