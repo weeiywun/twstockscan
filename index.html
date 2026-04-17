@@ -431,10 +431,10 @@ const STRATEGIES = [
     shortName: "PHASE3",
     icon: "◇",
     available: true,
-    description: "篩選 EMA20/60/120 三條均線互相糾結（乖離 ≤ 5%）且股價站上所有均線的標的，捕捉蓄勢待發的突破機會。",
+    description: "篩選 EMA20/60/120 三條均線互相糾結（乖離 ≤ 10%）且股價站上任意兩條均線的標的，捕捉蓄勢待發的突破機會。",
     conditions: [
-      "EMA20、EMA60、EMA120 三線最大最小差距 / 最小值 ≤ 5%",
-      "收盤價站上 EMA20、EMA60、EMA120",
+      "EMA20、EMA60、EMA120 三線最大最小差距 / 最小值 ≤ 10%",
+      "收盤價站上 EMA20、EMA60、EMA120 其中任意兩條",
       "20 日均量 ≥ 500 張",
     ],
     dataUpdated: "載入中...",
