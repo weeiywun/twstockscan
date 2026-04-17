@@ -536,7 +536,7 @@ def send_line_notification(results):
     flex_msg = build_flex_message(results)
 
     payload = {
-        "userIds": user_ids,
+        "to": user_ids,
         "messages": [flex_msg],
     }
     headers = {
