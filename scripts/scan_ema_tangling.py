@@ -156,7 +156,7 @@ def check_strategy(close, volume):
     if tangle_pct > 15.0:
         return False, None
 
-    # ── 條件二：收盤價至少大於兩條均線 ──
+    # ── 條件二：收盤價至少大於一條均線 ──
     today_close = float(close[-1])
     count = sum([
         today_close > ema20,
