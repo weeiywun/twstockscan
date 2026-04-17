@@ -1,12 +1,61 @@
 {
   "strategy_id": "volume_breakout",
   "updated": "2026-04-17",
-  "total": 0,
+  "total": 3,
   "scan_coverage": {
-    "scanned": 0,
+    "scanned": 1954,
     "total": 1961,
-    "rate": 0.0,
-    "skipped_batches": 1961
+    "rate": 99.6,
+    "skipped_batches": 7
   },
-  "results": []
+  "results": [
+    {
+      "close": 31.7,
+      "ma60": 30.99,
+      "deviation_ma60": 2.3,
+      "t_date": "2026-04-09",
+      "t_change_pct": 7.28,
+      "t_vol_ratio": 27.7,
+      "t_low": 31.15,
+      "t_close": 33.15,
+      "days_since_t": 5,
+      "phase4_activated": false,
+      "cond9_vol_ratio": 0.3,
+      "stock_id": "2221",
+      "name": "大甲",
+      "market": "TPEX"
+    },
+    {
+      "close": 32.3,
+      "ma60": 30.54,
+      "deviation_ma60": 5.75,
+      "t_date": "2026-04-13",
+      "t_change_pct": 5.93,
+      "t_vol_ratio": 10.1,
+      "t_low": 31.6,
+      "t_close": 32.15,
+      "days_since_t": 3,
+      "phase4_activated": false,
+      "cond9_vol_ratio": 0.29,
+      "stock_id": "5410",
+      "name": "國眾",
+      "market": "TPEX"
+    },
+    {
+      "close": 56.0,
+      "ma60": 50.93,
+      "deviation_ma60": 9.95,
+      "t_date": "2026-04-10",
+      "t_change_pct": 7.68,
+      "t_vol_ratio": 3.1,
+      "t_low": 55.0,
+      "t_close": 57.5,
+      "days_since_t": 4,
+      "phase4_activated": false,
+      "cond9_vol_ratio": 0.76,
+      "stock_id": "8047",
+      "name": "星雲",
+      "market": "TPEX"
+    }
+  ]
 }
