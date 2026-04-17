@@ -218,9 +218,9 @@ def main(quick_test=False):
 
     print(f"    合計：{len(stocks)} 支\n")
 
-    # 資料範圍：EMA120 需要足夠天數，抓 200 個日曆天
+    # 資料範圍：EMA120 需要 130 個交易日，300 個日曆天可確保取到足夠資料
     end_date   = datetime.now().strftime("%Y-%m-%d")
-    start_date = (datetime.now() - timedelta(days=200)).strftime("%Y-%m-%d")
+    start_date = (datetime.now() - timedelta(days=300)).strftime("%Y-%m-%d")
 
     # ── 並發下載全市場資料（FinMind）──
     print("[2] 下載股價資料（FinMind）...")

@@ -5,142 +5,160 @@ FinMind API 共用工具模組
 
 使用前請設定環境變數：
   export FINMIND_API_TOKEN=your_token_here
+
+【資料抓取策略】
+  使用「月份批次 + 全市場」方式：不指定 data_id，一次抓取該月份所有股票。
+  ~7 次 API 呼叫取得 6~7 個月全市場資料，vs 逐支抓取需要 ~1900 次。
 """
 
 import time
-import threading
-from concurrent.futures import ThreadPoolExecutor
+from datetime import datetime, timedelta
 
 import pandas as pd
 import requests
 
 FINMIND_API_URL = "https://api.finmindtrade.com/api/v4/data"
 
-# 致命錯誤旗標（401 / 402）—— 觸發後中止所有後續請求
-_abort_event = threading.Event()
+
+def _next_month_start(dt):
+    """回傳下個月 1 日的 datetime。"""
+    if dt.month == 12:
+        return dt.replace(year=dt.year + 1, month=1, day=1)
+    return dt.replace(month=dt.month + 1, day=1)
 
 
-def fetch_stock_prices(stock_id, start_date, end_date, token, max_retries=2):
+def fetch_all_stocks(stock_list, start_date, end_date, token, **_kwargs):
     """
-    從 FinMind TaiwanStockPrice 取得單支股票日線資料。
+    下載全市場歷史 OHLCV 日線資料。
 
-    回傳 DataFrame(index=DatetimeIndex, columns=[Open, High, Low, Close, Volume])
-    無資料或失敗時回傳 None。
-    致命錯誤（401 / 402）會設定 _abort_event 並立即回傳 None。
-    """
-    if _abort_event.is_set():
-        return None
-
-    params = {
-        "dataset":    "TaiwanStockPrice",
-        "data_id":    stock_id,
-        "start_date": start_date,
-        "end_date":   end_date,
-        "token":      token,
-    }
-
-    for attempt in range(max_retries + 1):
-        try:
-            resp    = requests.get(FINMIND_API_URL, params=params, timeout=30)
-            payload = resp.json()
-            status  = payload.get("status", 0)
-
-            # ── 致命錯誤：中止所有後續請求 ──
-            if status == 401:
-                _abort_event.set()
-                print("\n[FinMind] 致命錯誤：API Token 無效（401），"
-                      "請確認 FINMIND_API_TOKEN 環境變數")
-                return None
-
-            if status == 402:
-                _abort_event.set()
-                print("\n[FinMind] 致命錯誤：超出每日 API 請求限制（402），"
-                      "請明日再試或升級 FinMind 方案")
-                return None
-
-            # ── 無資料（正常，如新上市或休市）──
-            if status != 200 or not payload.get("data"):
-                return None
-
-            # ── 整理 DataFrame ──
-            df = pd.DataFrame(payload["data"])
-            df["date"] = pd.to_datetime(df["date"])
-            df = df.sort_values("date").reset_index(drop=True)
-            df = df.rename(columns={
-                "open":           "Open",
-                "max":            "High",
-                "min":            "Low",
-                "close":          "Close",
-                "Trading_Volume": "Volume",
-            })
-            for col in ["Open", "High", "Low", "Close", "Volume"]:
-                df[col] = pd.to_numeric(df[col], errors="coerce")
-            df = df.dropna(subset=["Close", "Volume"])
-            df.set_index("date", inplace=True)
-            return df[["Open", "High", "Low", "Close", "Volume"]]
-
-        except Exception:
-            if attempt < max_retries and not _abort_event.is_set():
-                time.sleep(3 * (attempt + 1))
-
-    return None
-
-
-def fetch_all_stocks(stock_list, start_date, end_date, token,
-                     max_workers=8, req_interval=0.15):
-    """
-    並發下載全市場股票的歷史 OHLCV 日線資料。
+    內部以「月份批次、不指定 data_id」方式呼叫 FinMind，
+    將原本 ~1900 次 per-stock 請求降至 ~7 次，大幅節省每日 API 配額。
 
     Parameters
     ----------
-    stock_list   : list[dict]，每個元素包含 stock_id / name / market
-    start_date   : str，格式 "YYYY-MM-DD"
-    end_date     : str，格式 "YYYY-MM-DD"
-    token        : str，FinMind API Token
-    max_workers  : int，最大並行請求數（預設 8）
-    req_interval : float，每次請求最小間隔秒數，避免打爆 FinMind（預設 0.15s ≈ 6~7 req/s）
+    stock_list : list[dict]，每個元素包含 stock_id / name / market
+    start_date : str，格式 "YYYY-MM-DD"
+    end_date   : str，格式 "YYYY-MM-DD"
+    token      : str，FinMind API Token
+    **_kwargs  : 舊介面相容參數（max_workers / req_interval），忽略
 
     Returns
     -------
-    dict[str, pd.DataFrame]：{stock_id: DataFrame}
+    dict[str, pd.DataFrame]：{stock_id: DataFrame(index=date, cols=[Open,High,Low,Close,Volume])}
     """
-    _abort_event.clear()
+    # 僅保留需要的 stock_id 集合，用於最後過濾
+    needed_ids = {s["stock_id"] for s in stock_list}
 
-    results   = {}
-    lock      = threading.Lock()
-    rate_lock = threading.Lock()
-    counter   = {"done": 0, "ok": 0}
-    last_call = [0.0]
-    total     = len(stock_list)
+    start_dt = datetime.strptime(start_date, "%Y-%m-%d")
+    end_dt   = datetime.strptime(end_date,   "%Y-%m-%d")
 
-    def fetch_one(s):
-        if _abort_event.is_set():
-            return
+    all_rows = []
 
-        # ── 速率限制：確保請求間隔 ≥ req_interval ──
-        with rate_lock:
-            gap = req_interval - (time.time() - last_call[0])
-            if gap > 0:
-                time.sleep(gap)
-            last_call[0] = time.time()
+    # ── 按月份逐批下載 ──
+    current = start_dt.replace(day=1)   # 從該月 1 日起
+    total_months = 0
+    while current <= end_dt:
+        total_months += 1
+        current = _next_month_start(current)
+    current = start_dt.replace(day=1)
+    month_idx = 0
 
-        df = fetch_stock_prices(s["stock_id"], start_date, end_date, token)
+    while current <= end_dt:
+        period_end = min(_next_month_start(current) - timedelta(days=1), end_dt)
+        month_idx += 1
+        label = current.strftime("%Y-%m")
+        print(f"  [{month_idx}/{total_months}] 下載 {label} 全市場資料...",
+              end="", flush=True)
 
-        with lock:
-            counter["done"] += 1
-            if df is not None:
-                results[s["stock_id"]] = df
-                counter["ok"] += 1
-            if counter["done"] % 100 == 0:
-                print(f"  進度：{counter['done']:>4} / {total}，"
-                      f"成功 {counter['ok']} 支", flush=True)
+        success = False
+        for attempt in range(3):
+            try:
+                resp = requests.get(
+                    FINMIND_API_URL,
+                    params={
+                        "dataset":    "TaiwanStockPrice",
+                        "start_date": current.strftime("%Y-%m-%d"),
+                        "end_date":   period_end.strftime("%Y-%m-%d"),
+                        "token":      token,
+                    },
+                    timeout=120,
+                )
+                payload = resp.json()
+                status  = payload.get("status", 0)
 
-    with ThreadPoolExecutor(max_workers=max_workers) as executor:
-        list(executor.map(fetch_one, stock_list))
+                if status == 401:
+                    print(f"\n[FinMind] 致命錯誤：API Token 無效（401），"
+                          "請確認 FINMIND_API_TOKEN")
+                    return {}
 
-    if _abort_event.is_set():
-        print(f"  下載中止（致命錯誤），已取得 {counter['ok']} 支資料")
-    else:
-        print(f"  完成：{counter['ok']} / {total} 支資料下載成功")
+                if status == 402:
+                    print(f"\n[FinMind] 致命錯誤：超出每日 API 請求限制（402），"
+                          "請明日再試或升級 FinMind 方案")
+                    return {}
 
+                if status == 200:
+                    rows = payload.get("data") or []
+                    all_rows.extend(rows)
+                    print(f" {len(rows):,} 筆")
+                    success = True
+                    break
+
+                # 其他非 200 狀態
+                print(f" status={status}，跳過")
+                success = True   # 非致命，繼續下一個月
+                break
+
+            except Exception as e:
+                if attempt < 2:
+                    wait = 10 * (attempt + 1)
+                    print(f" 重試({attempt+1}/2，等 {wait}s)...", end="", flush=True)
+                    time.sleep(wait)
+                else:
+                    print(f" 失敗：{e}")
+
+        if not success:
+            print(f"  {label} 下載最終失敗，跳過該月")
+
+        current = _next_month_start(current)
+
+    if not all_rows:
+        print("  未取得任何資料")
+        return {}
+
+    print(f"  共 {len(all_rows):,} 筆原始資料，整理中...", flush=True)
+
+    # ── 整理成 per-stock DataFrame ──
+    df_all = pd.DataFrame(all_rows)
+
+    # 確保必要欄位存在
+    required_cols = {"stock_id", "date", "open", "max", "min", "close", "Trading_Volume"}
+    if not required_cols.issubset(df_all.columns):
+        missing = required_cols - set(df_all.columns)
+        print(f"  FinMind 回傳欄位缺失：{missing}")
+        return {}
+
+    df_all["date"] = pd.to_datetime(df_all["date"])
+    df_all = df_all.rename(columns={
+        "open":           "Open",
+        "max":            "High",
+        "min":            "Low",
+        "close":          "Close",
+        "Trading_Volume": "Volume",
+    })
+    for col in ["Open", "High", "Low", "Close", "Volume"]:
+        df_all[col] = pd.to_numeric(df_all[col], errors="coerce")
+    df_all = df_all.dropna(subset=["Close", "Volume"])
+
+    # 只保留股票清單中需要的 stock_id
+    df_all = df_all[df_all["stock_id"].isin(needed_ids)]
+
+    results = {}
+    for sid, group in df_all.groupby("stock_id"):
+        df = (group
+              .sort_values("date")
+              .set_index("date")[["Open", "High", "Low", "Close", "Volume"]]
+              .copy())
+        results[str(sid)] = df
+
+    print(f"  完成：{len(results)} / {len(needed_ids)} 支股票資料整理完成")
     return results
