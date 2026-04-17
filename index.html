@@ -275,6 +275,44 @@ tbody tr:hover .spark-bar{opacity:.9}
 .watch-card-remove:hover{color:var(--red)}
 .watch-empty{padding:20px 14px;color:var(--text3);font-size:12px;text-align:center;line-height:1.7}
 
+/* ── AI 推薦區塊 ─────────────────────────────── */
+.ai-section-divider{height:1px;background:var(--border)}
+.ai-section{padding:12px;display:flex;flex-direction:column;gap:8px}
+.ai-apikey-input{
+  width:100%;box-sizing:border-box;
+  font-size:11px;font-family:var(--mono);
+  padding:6px 8px;border:1px solid var(--border);
+  border-radius:5px;background:var(--bg);color:var(--text2);outline:none;
+}
+.ai-apikey-input:focus{border-color:var(--green)}
+.ai-prefs-input{
+  width:100%;box-sizing:border-box;resize:none;
+  font-size:11px;font-family:var(--sans);
+  padding:6px 8px;border:1px solid var(--border);
+  border-radius:5px;background:var(--bg);color:var(--text2);
+  outline:none;line-height:1.5;
+}
+.ai-prefs-input:focus{border-color:var(--green)}
+.ai-run-btn{
+  width:100%;padding:7px;
+  background:var(--green-dim);border:1px solid var(--green);
+  color:var(--green);font-size:12px;font-weight:600;
+  border-radius:5px;cursor:pointer;transition:all .15s;
+}
+.ai-run-btn:hover{background:var(--green);color:#fff}
+.ai-run-btn:disabled{opacity:.5;cursor:not-allowed}
+.ai-result-item{
+  font-size:11px;color:var(--text);line-height:1.6;
+  padding:7px 8px;background:var(--bg3);border-radius:5px;
+  border-left:3px solid var(--green);
+}
+.ai-loading{font-size:11px;color:var(--text3);text-align:center;padding:12px 0}
+.ai-error{
+  font-size:11px;color:var(--red);
+  padding:7px 8px;background:rgba(168,0,0,.05);border-radius:5px;
+}
+.ai-empty{font-size:11px;color:var(--text3);text-align:center;padding:12px 8px;line-height:1.7}
+
 
 /* ── Coming Soon panel ───────────────────────── */
 .coming-soon{
@@ -379,6 +417,11 @@ thead th:nth-child(4),
       <span class="section-title">觀察清單</span>
     </div>
     <div class="watch-list" id="watchlistGrid"></div>
+    <div class="ai-section-divider"></div>
+    <div class="sidebar-header">
+      <span class="section-title">✦ AI 推薦</span>
+    </div>
+    <div class="ai-section" id="aiSectionContent"></div>
   </aside>
 </div>
 
@@ -1262,6 +1305,110 @@ function etToggleExpand(sid) {
 }
 
 // ════════════════════════════════════════════════════
+//  AI 推薦
+// ════════════════════════════════════════════════════
+const AI_APIKEY_KEY = 'ai_apikey';
+const AI_PREFS_KEY  = 'ai_prefs';
+
+function _esc(s) {
+  return String(s).replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;');
+}
+
+function initAiSection() {
+  const el = document.getElementById('aiSectionContent');
+  if (!el) return;
+  const apiKey = localStorage.getItem(AI_APIKEY_KEY) || '';
+  const prefs  = localStorage.getItem(AI_PREFS_KEY)  || '';
+  el.innerHTML = `
+    <input class="ai-apikey-input" id="aiApiKey" type="password"
+           placeholder="Anthropic API Key"
+           value="${_esc(apiKey)}"
+           oninput="localStorage.setItem('${AI_APIKEY_KEY}',this.value)">
+    <textarea class="ai-prefs-input" id="aiPrefs" rows="2"
+              placeholder="投資偏好（例：短線突破、低風險穩健…）"
+              oninput="localStorage.setItem('${AI_PREFS_KEY}',this.value)">${_esc(prefs)}</textarea>
+    <button class="ai-run-btn" id="aiRunBtn" onclick="runAiRec()">✦ 分析前三名</button>
+    <div id="aiResult"></div>
+  `;
+}
+
+function _getWatchlistData() {
+  return watchlist.map(sid => {
+    for (const s of STRATEGIES) {
+      if (!s.available || !s.dataKey) continue;
+      const item = (DATA[s.dataKey] || []).find(d => d.stock_id === sid);
+      if (item) return { stratName: s.name, ...item };
+    }
+    return null;
+  }).filter(Boolean);
+}
+
+async function runAiRec() {
+  const apiKey = (document.getElementById('aiApiKey')?.value || '').trim();
+  const prefs  = (document.getElementById('aiPrefs')?.value  || '').trim();
+  const result = document.getElementById('aiResult');
+
+  if (!apiKey) {
+    result.innerHTML = '<div class="ai-error">請先填入 Anthropic API Key</div>';
+    return;
+  }
+
+  const stocks = _getWatchlistData();
+  if (!stocks.length) {
+    result.innerHTML = '<div class="ai-empty">觀察清單是空的<br>請先加入股票</div>';
+    return;
+  }
+
+  const btn = document.getElementById('aiRunBtn');
+  btn.disabled = true;
+  btn.textContent = '分析中…';
+  result.innerHTML = '<div class="ai-loading">AI 分析中，請稍候…</div>';
+
+  const stockDesc = stocks.map(s => {
+    const parts = [`${s.stock_id} ${s.name}（${s.stratName}）`];
+    if (s.close           != null) parts.push(`現價${s.close}`);
+    if (s.deviation       != null) parts.push(`EMA乖離${s.deviation}%`);
+    if (s.big_pct_latest  != null) parts.push(`大戶${s.big_pct_latest}%，4w增${s.big_4w_chg}%`);
+    if (s.t_change_pct    != null) parts.push(`突破+${s.t_change_pct}%，爆量${s.t_vol_ratio}x，距今${s.days_since_t}天`);
+    if (s.tangle_pct      != null) parts.push(`糾結${s.tangle_pct}%，均量${s.vol_20ma}張`);
+    return parts.join('，');
+  }).join('\n');
+
+  const prompt = `你是台股選股顧問。以下是觀察清單的股票資料：\n\n${stockDesc}\n\n用戶偏好：${prefs || '不限，綜合評估'}\n\n請從中選出最值得關注的前3名，每支佔一行，格式：\n「1. 代號 股名 — 理由（20字內）」\n只輸出3行，不要多餘說明。`;
+
+  try {
+    const res = await fetch('https://api.anthropic.com/v1/messages', {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+        'x-api-key': apiKey,
+        'anthropic-version': '2023-06-01',
+        'anthropic-dangerous-direct-browser-access': 'true'
+      },
+      body: JSON.stringify({
+        model: 'claude-haiku-4-5-20251001',
+        max_tokens: 256,
+        messages: [{ role: 'user', content: prompt }]
+      })
+    });
+
+    const json = await res.json();
+    if (!res.ok) throw new Error(json.error?.message || `HTTP ${res.status}`);
+
+    const lines = json.content[0].text.trim().split('\n').filter(l => l.trim()).slice(0, 3);
+    result.innerHTML = lines.map(l =>
+      `<div class="ai-result-item">${_esc(l.trim())}</div>`
+    ).join('');
+
+  } catch (e) {
+    result.innerHTML = `<div class="ai-error">錯誤：${_esc(e.message)}</div>`;
+  } finally {
+    btn.disabled = false;
+    btn.textContent = '✦ 分析前三名';
+  }
+}
+
+// ════════════════════════════════════════════════════
 //  INIT — 從 JSON 載入資料後再渲染
 // ════════════════════════════════════════════════════
 async function loadData() {
@@ -1300,6 +1447,7 @@ async function loadData() {
   // 資料載入完成後渲染
   renderNav();
   renderStrategy();
+  initAiSection();
   document.getElementById('headerMeta').textContent =
     `策略數 ${STRATEGIES.filter(s=>s.available).length} / 觀察 ${watchlist.length}`;
 }
