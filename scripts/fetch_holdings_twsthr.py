@@ -71,11 +71,17 @@ def parse_csv(path: str, encoding: str) -> tuple[dict, list]:
 
             # 市值（去除千分位逗號）
             mc_raw = (row.get("市值(億)") or "").replace(",", "").strip()
-            market_cap = float(mc_raw) if mc_raw else None
+            try:
+                market_cap = float(mc_raw) if mc_raw else None
+            except ValueError:
+                market_cap = None
 
             # 收盤價（CSV 最後一次更新的價格，僅備用）
             close_raw = (row.get(close_col) or "").strip() if close_col else ""
-            csv_close = float(close_raw) if close_raw else None
+            try:
+                csv_close = float(close_raw) if close_raw else None
+            except ValueError:
+                csv_close = None
 
             # 各週持股比例
             pct_map = {}
