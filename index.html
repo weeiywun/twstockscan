@@ -467,9 +467,9 @@ tbody tr:hover .spark-bar{opacity:.9}
   .table-wrap{border-radius:8px}
   .table-scroll{overflow-x:auto;-webkit-overflow-scrolling:touch}
 
-  /* 隱藏次要欄位：僅隱藏趨勢圖欄（第6欄），保留乖離率（第3欄） */
-  thead th:nth-child(6),
-  tbody td:nth-child(6){display:none}
+  /* 隱藏次要欄位：僅隱藏大戶掃描的趨勢圖欄（第6欄），保留乖離率（第3欄） */
+  .bigscan-table thead th:nth-child(6),
+  .bigscan-table tbody td:nth-child(6){display:none}
 }
 
 /* ── ≤480px: compact ─────────────────────────── */
@@ -479,8 +479,8 @@ tbody tr:hover .spark-bar{opacity:.9}
 
   .strat-tab{padding:10px 12px 11px;font-size:12px}
 
-thead th:nth-child(4),
-  tbody td:nth-child(4){display:none}
+  .bigscan-table thead th:nth-child(4),
+  .bigscan-table tbody td:nth-child(4){display:none}
 }
 
 /* ── Performance tracking ─────────────────────── */
@@ -820,7 +820,7 @@ function renderStrategy() {
         </div>
       </div>
       <div class="table-scroll ${vscrollClass}">
-      <table id="resultsTable">
+      <table id="resultsTable" class="bigscan-table">
         <thead>
           <tr>
             <th onclick="sort('stock_id')">代號 / 名稱${sortIcon('stock_id')}</th>
@@ -1355,6 +1355,13 @@ function chipsSort(col) {
   renderChipsHolder(strat, document.getElementById('mainContent'));
 }
 
+function vsSort(col) {
+  if (sortCol === col) sortAsc = !sortAsc;
+  else { sortCol = col; sortAsc = false; }
+  const strat = STRATEGIES.find(s => s.id === 'volume_signal');
+  renderVolumeSignal(strat, document.getElementById('mainContent'));
+}
+
 function exportCSVChips() {
   const data = DATA.chips_big_holder_data || [];
   if (!data.length) return;
@@ -1396,7 +1403,15 @@ function renderVolumeSignal(strat, main) {
     return (tags || []).map(t => `<span class="tag-badge" style="background:${tagColor[t]||'#888'}">${t}</span>`).join('');
   }
 
-  const rows = data.map(d => {
+  const sortIcon = col => `<span class="sort-icon">${sortCol===col ? (sortAsc?'↑':'↓') : '·'}</span>`;
+
+  const sortedData = data.slice().sort((a, b) => {
+    const va = a[sortCol] ?? -9999, vb = b[sortCol] ?? -9999;
+    if (va !== vb) return sortAsc ? va - vb : vb - va;
+    return (b.cumulative_3w || 0) - (a.cumulative_3w || 0);
+  });
+
+  const rows = sortedData.map(d => {
     const ratioClass = d.vol_ratio >= 2.5 ? 'neg' : 'amber-text';
     return `<tr onclick="toggleExpand('vs-${d.stock_id}')" id="row-vs-${d.stock_id}">
       <td>
@@ -1481,12 +1496,12 @@ function renderVolumeSignal(strat, main) {
         <table>
           <thead>
             <tr>
-              <th>代號 / 名稱</th>
-              <th>現價</th>
-              <th data-tip="當日量/10日均量">量比 / 當日量</th>
-              <th>EMA5</th>
-              <th>大戶比例</th>
-              <th data-tip="千張大戶3週累積增幅">三周累積增幅</th>
+              <th onclick="vsSort('stock_id')" style="cursor:pointer">代號 / 名稱${sortIcon('stock_id')}</th>
+              <th onclick="vsSort('close')" style="cursor:pointer">現價${sortIcon('close')}</th>
+              <th onclick="vsSort('vol_ratio')" style="cursor:pointer" data-tip="當日量/10日均量">量比 / 當日量${sortIcon('vol_ratio')}</th>
+              <th onclick="vsSort('ema5')" style="cursor:pointer">EMA5${sortIcon('ema5')}</th>
+              <th onclick="vsSort('big_pct_1000')" style="cursor:pointer">大戶比例${sortIcon('big_pct_1000')}</th>
+              <th onclick="vsSort('cumulative_3w')" style="cursor:pointer" data-tip="千張大戶3週累積增幅">三周累積增幅${sortIcon('cumulative_3w')}</th>
               <th>籌碼標籤</th>
             </tr>
           </thead>
@@ -2097,7 +2112,7 @@ function renderPerformance(strat, main) {
         <td style="font-family:var(--mono)">${p.shares.toLocaleString()}</td>
         <td style="font-family:var(--mono)">${p.cost_price.toFixed(2)}</td>
         <td style="font-family:var(--mono)">${cp != null ? cp.toFixed(2) : '<span style="color:var(--text3)">—</span>'}</td>
-        <td><span style="font-family:var(--mono);color:${pc};font-weight:600">${ps}${pnlPct.toFixed(2)}%</span></td>
+        <td><span style="font-family:var(--mono);color:${pc};font-weight:600">${ps}${pnlPct.toFixed(2)}%</span><br><span style="font-family:var(--mono);font-size:11px;color:${pc}">${ps}${Math.round(posVal - posCost).toLocaleString()}</span></td>
         <td style="font-family:var(--mono);font-size:12px;color:var(--green)">${p.tp_price != null ? p.tp_price.toFixed(2) : '<span style="color:var(--text3)">—</span>'}</td>
         <td style="font-family:var(--mono);font-size:12px;color:var(--red)">${p.sl_price != null ? p.sl_price.toFixed(2) : '<span style="color:var(--text3)">—</span>'}</td>
         <td style="white-space:nowrap">
