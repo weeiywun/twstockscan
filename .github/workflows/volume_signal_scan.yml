@@ -38,16 +38,14 @@ jobs:
         run: |
           git config user.name  "github-actions[bot]"
           git config user.email "github-actions[bot]@users.noreply.github.com"
+
+          git fetch origin main
+          git reset --soft origin/main
           git add data/volume_signal.json data/performance.json
 
           if ! git diff --staged --quiet; then
             git commit -m "data: volume_signal & performance update $(date -u +%Y-%m-%d)"
-
-            for i in {1..4}; do
-              git pull --rebase --autostash origin main && git push && break || {
-                if [ $i -lt 4 ]; then sleep $((2 ** i)); else exit 1; fi
-              }
-            done
+            git push origin HEAD:main
           else
             echo "資料無變動，略過提交"
           fi
