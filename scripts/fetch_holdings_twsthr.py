@@ -1,26 +1,21 @@
 #!/usr/bin/env python3
 """
-大戶持股分析器 v2.2
+大戶持股分析器 v3.0  (Layer 1 週末籌碼海選)
 讀取 data/big1000.csv（千張大戶）與 data/big400.csv（400張大戶）
-篩選條件：兩個門檻「同時」維持 4 週 >= 趨勢
-股價來自 TWSE/TPEX OpenAPI；EMA120 透過個股月份資料計算。
-產生 data/chips_big_holder.json
+股價/EMA120 透過 FinMind API 取得。
 
-每週手動更新 CSV 後，由 GitHub Actions 自動執行此腳本。
+篩選邏輯：
+  先決安全濾網：5日均量 > 500張、|乖離EMA120| <= 10%、千張大戶比例 > 30%
+  標籤（可複選）：
+    持續成長 +1：連續兩週 R > 0%（任一門檻）
+    雙軌觸發 +3：R_400 >= 2.0% 或 R_1000 >= 1.25%
+    單周增幅 +5：最新一週 R > 3.0%（任一門檻）
+  R = (本週持股% - 上週持股%) / 上週持股% * 100%
 """
 
-import csv
-import json
-import os
-import re
-import sys
-import time
-import warnings
+import csv, json, os, re, time
 from datetime import datetime, timedelta, timezone
-
-import requests
-
-warnings.filterwarnings("ignore")
+from finmind_client import fetch_stock_price
 
 SCRIPT_DIR  = os.path.dirname(os.path.abspath(__file__))
 DATA_DIR    = os.path.join(SCRIPT_DIR, "..", "data")
@@ -28,54 +23,40 @@ CSV_1000    = os.path.join(DATA_DIR, "big1000.csv")
 CSV_400     = os.path.join(DATA_DIR, "big400.csv")
 OUTPUT_PATH = os.path.join(DATA_DIR, "chips_big_holder.json")
 
-TW_TZ       = timezone(timedelta(hours=8))
-TODAY       = datetime.now(TW_TZ).strftime("%Y-%m-%d")
-
-BIG_PCT_MIN = 30.0   # 千張大戶最低持股比例 (%)
-TREND_WEEKS = 4      # 需連續幾週 >= 趨勢
-EMA_PERIOD  = 120    # 日線 EMA120（≈ 週線 EMA24，約 6 個月）
-EMA_MONTHS  = 7      # 抓取月份數（7 個月 ≈ 154 交易日，足夠收斂）
-DEV_MIN     = -10.0  # EMA120 乖離率下限 (%)
-DEV_MAX     =   5.0  # EMA120 乖離率上限 (%)
-
-FLEX_MAX_STOCKS    = 15
-FLEX_COLOR_PRIMARY = "#e66e29"
-FLEX_COLOR_ACCENT  = "#0c6b3e"
+TW_TZ         = timezone(timedelta(hours=8))
+TODAY         = datetime.now(TW_TZ).strftime("%Y-%m-%d")
+START_DATE    = (datetime.now(TW_TZ) - timedelta(days=180)).strftime("%Y-%m-%d")
+BIG_PCT_MIN   = 30.0
+EMA_PERIOD    = 120
+VOL_MIN_LOTS  = 500
+DEV_MIN, DEV_MAX = -10.0, 10.0
+FINMIND_SLEEP = 0.35
+FLEX_MAX      = 15
+FC_PRIMARY    = "#e66e29"
+FC_ACCENT     = "#0c6b3e"
 
 
-# ─────────────────────────────────────────────────────────────
-#  Step 1：讀取 CSV
-# ─────────────────────────────────────────────────────────────
+# ── CSV 解析 ──────────────────────────────────────────────────
 
-def parse_csv(path: str, encoding: str) -> tuple[dict, list]:
+def parse_csv(path, encoding):
     stocks = {}
     with open(path, encoding=encoding, newline="") as f:
         reader = csv.DictReader(f)
         headers   = reader.fieldnames or []
-        date_cols = sorted([h for h in headers if re.fullmatch(r"\d{8}", h)])
-        close_col = next((h for h in headers if "收盤" in h), None)
-
+        date_cols = sorted([h for h in headers if re.fullmatch(r"\\d{8}", h)])
         for row in reader:
             raw = (row.get("股票") or "").strip()
             if not raw:
                 continue
             parts = raw.split(None, 1)
-            if len(parts) < 2 or not re.fullmatch(r"\d{4}", parts[0]):
+            if len(parts) < 2 or not re.fullmatch(r"\\d{4}", parts[0]):
                 continue
             sid, name = parts[0], parts[1].strip()
-
             mc_raw = (row.get("市值(億)") or "").replace(",", "").strip()
             try:
                 market_cap = float(mc_raw) if mc_raw else None
             except ValueError:
                 market_cap = None
-
-            close_raw = (row.get(close_col) or "").strip() if close_col else ""
-            try:
-                csv_close = float(close_raw) if close_raw else None
-            except ValueError:
-                csv_close = None
-
             pct_map = {}
             for d in date_cols:
                 val = (row.get(d) or "").strip()
@@ -83,128 +64,61 @@ def parse_csv(path: str, encoding: str) -> tuple[dict, list]:
                     pct_map[d] = float(val)
                 except ValueError:
                     pass
-
             stocks[sid] = {
-                "name":       name,
-                "industry":   (row.get("類別") or "").strip(),
-                "market_cap": market_cap,
-                "csv_close":  csv_close,
-                "pct_map":    pct_map,
+                "name": name, "industry": (row.get("類別") or "").strip(),
+                "market_cap": market_cap, "pct_map": pct_map,
             }
-
     return stocks, date_cols
 
 
-# ─────────────────────────────────────────────────────────────
-#  Step 2：策略篩選
-# ─────────────────────────────────────────────────────────────
+# ── 標籤計算 ──────────────────────────────────────────────────
 
-def passes_trend(pct_map: dict, date_cols: list, n: int = TREND_WEEKS) -> bool:
+def calc_r(pct_map, date_cols, week_offset=0):
     valid = [d for d in date_cols if d in pct_map]
-    if len(valid) < n:
-        return False
-    recent = valid[-n:]
-    for i in range(1, n):
-        if pct_map[recent[i]] < pct_map[recent[i - 1]]:
-            return False
-    return True
+    idx = -(week_offset + 1)
+    if len(valid) < abs(idx) + 1:
+        return None
+    this_w = pct_map[valid[idx]]
+    prev_w = pct_map[valid[idx - 1]]
+    if prev_w == 0:
+        return None
+    return (this_w - prev_w) / prev_w * 100.0
 
 
-# ─────────────────────────────────────────────────────────────
-#  Step 3：取得市場對照表 + 今日股價
-# ─────────────────────────────────────────────────────────────
+def compute_tags(pct_1000, dates_1000, pct_400, dates_400):
+    tags, score = [], 0
+    r1n = calc_r(pct_1000, dates_1000, 0)
+    r1p = calc_r(pct_1000, dates_1000, 1)
+    r4n = calc_r(pct_400, dates_400, 0) if pct_400 else None
+    r4p = calc_r(pct_400, dates_400, 1) if pct_400 else None
 
-def get_market_and_price() -> tuple[dict, dict]:
-    """
-    mmap: {stock_id: 'TWSE'|'TPEX'}
-    pmap: {stock_id: {close, vol_lots}}
-    """
-    mmap, pmap = {}, {}
-    sources = [
-        ("https://openapi.twse.com.tw/v1/exchangeReport/STOCK_DAY_ALL",
-         "TWSE", "Code", "ClosingPrice", "TradeVolume"),
-        ("https://www.tpex.org.tw/openapi/v1/tpex_mainboard_daily_close_quotes",
-         "TPEX", "SecuritiesCompanyCode", "Close", "TradeVolume"),
-    ]
-    for url, market, code_key, close_key, vol_key in sources:
-        try:
-            r = requests.get(url, timeout=20, headers={"User-Agent": "Mozilla/5.0"})
-            for item in r.json():
-                sid = (item.get(code_key) or "").strip()
-                if not re.fullmatch(r"\d{4}", sid):
-                    continue
-                mmap[sid] = market
-                try:
-                    close    = float(str(item.get(close_key) or "").replace(",", ""))
-                    vol_lots = int(float(str(item.get(vol_key) or "0").replace(",", ""))) // 1000
-                    if close > 0:
-                        pmap[sid] = {"close": close, "vol_lots": vol_lots}
-                except (ValueError, TypeError):
-                    pass
-        except Exception as e:
-            print(f"  ⚠️  {market} 資料取得失敗：{e}")
-    return mmap, pmap
+    g1 = r1n is not None and r1p is not None and r1n > 0 and r1p > 0
+    g4 = r4n is not None and r4p is not None and r4n > 0 and r4p > 0
+    if g1 or g4:
+        tags.append("持續成長"); score += 1
+
+    if (r4n is not None and r4n >= 2.0) or (r1n is not None and r1n >= 1.25):
+        tags.append("雙軌觸發"); score += 3
+
+    if (r1n is not None and r1n > 3.0) or (r4n is not None and r4n > 3.0):
+        tags.append("單周增幅"); score += 5
+
+    return tags, score
 
 
-# ─────────────────────────────────────────────────────────────
-#  Step 4：個股月份資料 → EMA120
-# ─────────────────────────────────────────────────────────────
-
-def _month_list(n: int) -> list[tuple[int, int]]:
-    """回傳最近 n 個月的 (year, month)，由舊到新。"""
-    now = datetime.now(TW_TZ)
-    result, y, m = [], now.year, now.month
-    for _ in range(n):
-        result.append((y, m))
-        m -= 1
-        if m == 0:
-            m, y = 12, y - 1
-    return list(reversed(result))
+def calc_cumulative_3w(pct_map, date_cols):
+    valid = [d for d in date_cols if d in pct_map]
+    if len(valid) < 4:
+        return None
+    latest, three_ago = pct_map[valid[-1]], pct_map[valid[-4]]
+    if three_ago == 0:
+        return None
+    return round((latest - three_ago) / three_ago * 100.0, 2)
 
 
-def _fetch_closes_twse(stock_id: str, year: int, month: int) -> list[float]:
-    url = (f"https://www.twse.com.tw/rwd/zh/afterTrading/STOCK_DAY"
-           f"?stockNo={stock_id}&date={year}{month:02d}01&response=json")
-    try:
-        r = requests.get(url, timeout=15, headers={"User-Agent": "Mozilla/5.0"})
-        data = r.json()
-        if data.get("stat") != "OK":
-            return []
-        closes = []
-        for row in data.get("data", []):
-            try:
-                val = str(row[6]).replace(",", "")
-                if val not in ("--", ""):
-                    closes.append(float(val))
-            except (ValueError, IndexError):
-                pass
-        return closes
-    except Exception:
-        return []
+# ── FinMind 價格 ──────────────────────────────────────────────
 
-
-def _fetch_closes_tpex(stock_id: str, year: int, month: int) -> list[float]:
-    roc = year - 1911
-    url = (f"https://www.tpex.org.tw/web/stock/aftertrading/daily_trading_info/"
-           f"st43_result.php?l=zh-tw&d={roc}/{month:02d}&stkno={stock_id}&s=0,asc&o=json")
-    try:
-        r = requests.get(url, timeout=15, headers={"User-Agent": "Mozilla/5.0"})
-        data = r.json()
-        rows = data.get("aaData") or data.get("data", [])
-        closes = []
-        for row in rows:
-            try:
-                val = str(row[6]).replace(",", "")
-                if val not in ("--", "", "0"):
-                    closes.append(float(val))
-            except (ValueError, IndexError):
-                pass
-        return closes
-    except Exception:
-        return []
-
-
-def _calc_ema(closes: list[float], span: int) -> float | None:
+def _calc_ema(closes, span):
     if len(closes) < span // 2:
         return None
     k = 2 / (span + 1)
@@ -214,295 +128,191 @@ def _calc_ema(closes: list[float], span: int) -> float | None:
     return ema
 
 
-def fetch_ema120(stock_id: str, is_twse: bool, current_close: float) -> dict | None:
-    """取近 EMA_MONTHS 個月日收盤，計算 EMA120 與乖離率。"""
-    closes = []
-    for y, m in _month_list(EMA_MONTHS):
-        if is_twse:
-            closes.extend(_fetch_closes_twse(stock_id, y, m))
-        else:
-            closes.extend(_fetch_closes_tpex(stock_id, y, m))
-        time.sleep(0.2)
-
-    ema = _calc_ema(closes, EMA_PERIOD)
-    if ema is None:
+def enrich_with_price(stock_id, token):
+    df = fetch_stock_price(stock_id, START_DATE, TODAY, token)
+    if df is None or len(df) < 10:
         return None
-
+    closes  = df["close"].tolist()
+    volumes = df["volume_lots"].tolist()
+    ema120  = _calc_ema(closes, EMA_PERIOD)
+    if ema120 is None:
+        return None
+    close_now = closes[-1]
+    deviation = round((close_now - ema120) / ema120 * 100.0, 2)
+    vol_5d    = round(sum(volumes[-5:]) / min(5, len(volumes)), 0)
+    wago      = closes[-6] if len(closes) >= 6 else closes[0]
+    week_chg  = round((close_now - wago) / wago * 100.0, 2) if wago else None
     return {
-        "ema120":    round(ema, 2),
-        "deviation": round((current_close - ema) / ema * 100, 2),
+        "close": round(close_now, 2), "ema120": round(ema120, 2),
+        "deviation": deviation, "vol_5d_avg": int(vol_5d), "week_chg_pct": week_chg,
     }
 
 
-# ─────────────────────────────────────────────────────────────
-#  LINE 推播（Flex Message）
-# ─────────────────────────────────────────────────────────────
+# ── LINE 推播 ──────────────────────────────────────────────────
 
-def build_flex_message(results_1000: list) -> dict:
-    if not results_1000:
-        bubble = {
-            "type": "bubble", "size": "mega",
-            "header": {
-                "type": "box", "layout": "vertical",
-                "contents": [{"type": "text", "text": "◈ 籌碼集中選股",
-                               "weight": "bold", "size": "lg", "color": FLEX_COLOR_PRIMARY}],
-                "paddingAll": "20px", "backgroundColor": "#f7f8fa"
-            },
-            "body": {
-                "type": "box", "layout": "vertical",
-                "contents": [{"type": "text", "text": "本週無符合條件標的",
-                               "size": "md", "color": "#888888", "align": "center", "margin": "xl"}],
-                "paddingAll": "20px"
-            }
-        }
-        return {"type": "flex", "altText": f"◈ 籌碼集中選股 {TODAY}：無符合條件標的", "contents": bubble}
-
-    stock_rows = []
-    for r in results_1000[:FLEX_MAX_STOCKS]:
-        chg_color = FLEX_COLOR_ACCENT if r["big_4w_chg"] >= 0 else "#c0392b"
-        dev_text  = f"乖離 {r['deviation']:+.1f}%" if r.get("deviation") is not None else "乖離 —"
-        stock_rows.append({"type": "separator", "margin": "md"})
-        stock_rows.append({
-            "type": "box", "layout": "horizontal",
-            "contents": [
-                {
-                    "type": "box", "layout": "vertical", "flex": 3,
-                    "contents": [
-                        {"type": "text", "text": r["stock_id"], "size": "md",
-                         "weight": "bold", "color": FLEX_COLOR_PRIMARY},
-                        {"type": "text", "text": r["name"], "size": "xs", "color": "#555555"}
-                    ]
-                },
-                {
-                    "type": "box", "layout": "vertical", "flex": 2,
-                    "contents": [
-                        {"type": "text", "text": f"{r['close']:.2f}" if r.get("close") else "—",
-                         "size": "sm", "align": "center", "weight": "bold"},
-                        {"type": "text", "text": dev_text, "size": "xs",
-                         "align": "center", "color": "#888888"}
-                    ]
-                },
-                {
-                    "type": "box", "layout": "vertical", "flex": 2,
-                    "contents": [
-                        {"type": "text", "text": f"{r['big_pct_latest']:.1f}%",
-                         "size": "sm", "align": "center", "weight": "bold"},
-                        {"type": "text", "text": f"4週 {r['big_4w_chg']:+.2f}",
-                         "size": "xs", "align": "center", "color": chg_color}
-                    ]
-                }
-            ],
-            "margin": "md", "paddingAll": "4px"
-        })
-
-    if len(results_1000) > FLEX_MAX_STOCKS:
-        stock_rows += [
-            {"type": "separator", "margin": "md"},
-            {"type": "text", "text": f"...還有 {len(results_1000) - FLEX_MAX_STOCKS} 支，請查看完整報告",
-             "size": "xs", "color": "#aaaaaa", "margin": "md", "align": "center"}
-        ]
-
-    bubble = {
-        "type": "bubble", "size": "mega",
-        "header": {
-            "type": "box", "layout": "vertical",
-            "contents": [
-                {"type": "text", "text": "◈ 籌碼集中選股",
-                 "weight": "bold", "size": "lg", "color": FLEX_COLOR_PRIMARY},
-                {
-                    "type": "box", "layout": "horizontal", "margin": "md",
-                    "contents": [
-                        {"type": "text", "text": f"📅 {TODAY}", "size": "xs", "color": "#aaaaaa"},
-                        {"type": "text", "text": f"✅ {len(results_1000)} 支符合",
-                         "size": "xs", "color": FLEX_COLOR_ACCENT, "align": "end"},
-                    ]
-                },
-                {
-                    "type": "box", "layout": "horizontal", "margin": "sm",
-                    "contents": [
-                        {"type": "text", "text": "千張+400張雙門檻 4週增持，EMA120 低基期",
-                         "size": "xxs", "color": "#aaaaaa"}
-                    ]
-                }
-            ],
-            "paddingAll": "20px", "backgroundColor": "#f7f8fa"
-        },
-        "body": {
-            "type": "box", "layout": "vertical", "paddingAll": "20px",
-            "contents": [
-                {
-                    "type": "box", "layout": "horizontal",
-                    "contents": [
-                        {"type": "text", "text": "代號/名稱", "size": "xxs", "color": "#aaaaaa", "flex": 3},
-                        {"type": "text", "text": "收盤/乖離", "size": "xxs", "color": "#aaaaaa",
-                         "flex": 2, "align": "center"},
-                        {"type": "text", "text": "千張%/4週", "size": "xxs", "color": "#aaaaaa",
-                         "flex": 2, "align": "center"},
-                    ]
-                },
-                *stock_rows
-            ]
-        },
-        "footer": {
-            "type": "box", "layout": "vertical", "paddingAll": "12px",
-            "contents": [{
-                "type": "button",
-                "action": {"type": "uri", "label": "📈 查看完整報告",
-                           "uri": "https://weeiywun.github.io/twstockscan/"},
-                "style": "primary", "color": FLEX_COLOR_PRIMARY, "height": "sm"
-            }]
-        }
-    }
-    return {"type": "flex", "altText": f"◈ 籌碼集中選股 {TODAY}：{len(results_1000)} 支符合條件",
-            "contents": bubble}
-
-
-def send_line_notification(results_1000: list):
+def send_line_notification(results):
+    import requests as req
     token   = os.environ.get("LINE_CHANNEL_ACCESS_TOKEN")
     raw_ids = os.environ.get("LINE_USER_IDS") or os.environ.get("LINE_USER_ID")
     if not token or not raw_ids:
-        print("\n[LINE] 環境變數未設定，跳過推播通知")
-        return
-    user_ids = [uid.strip() for uid in raw_ids.split(",") if uid.strip()]
-    print(f"[LINE] 推播對象：{len(user_ids)} 人")
-    flex_msg = build_flex_message(results_1000)
+        print("[LINE] 未設定，跳過"); return
+    user_ids = [u.strip() for u in raw_ids.split(",") if u.strip()]
+    items = sorted(results, key=lambda r: r["tag_score"], reverse=True)[:FLEX_MAX]
+    rows = []
+    for r in items:
+        tag_str  = " ".join(r["tags"]) if r["tags"] else "—"
+        cum_text = f"3週 {r['cumulative_3w']:+.1f}%" if r.get("cumulative_3w") is not None else "—"
+        dev_text = f"乖離 {r['deviation']:+.1f}%" if r.get("deviation") is not None else "—"
+        rows.append({"type": "separator", "margin": "md"})
+        rows.append({"type": "box", "layout": "horizontal", "margin": "md", "paddingAll": "4px",
+                     "contents": [
+                         {"type": "box", "layout": "vertical", "flex": 3, "contents": [
+                             {"type": "text", "text": r["stock_id"], "size": "md",
+                              "weight": "bold", "color": FC_PRIMARY},
+                             {"type": "text", "text": r["name"], "size": "xs", "color": "#555"},
+                             {"type": "text", "text": tag_str, "size": "xxs", "color": FC_PRIMARY}]},
+                         {"type": "box", "layout": "vertical", "flex": 2, "contents": [
+                             {"type": "text", "text": f"{r['close']:.1f}" if r.get("close") else "—",
+                              "size": "sm", "align": "center", "weight": "bold"},
+                             {"type": "text", "text": dev_text, "size": "xs",
+                              "align": "center", "color": "#888"}]},
+                         {"type": "box", "layout": "vertical", "flex": 2, "contents": [
+                             {"type": "text", "text": f"{r['big_pct_1000']:.1f}%",
+                              "size": "sm", "align": "center", "weight": "bold"},
+                             {"type": "text", "text": cum_text, "size": "xs",
+                              "align": "center", "color": FC_ACCENT}]}]})
+    if len(results) > FLEX_MAX:
+        rows.append({"type": "text",
+                     "text": f"...還有 {len(results) - FLEX_MAX} 支，請查看完整報告",
+                     "size": "xs", "color": "#aaa", "margin": "md", "align": "center"})
+    bubble = {
+        "type": "bubble", "size": "mega",
+        "header": {"type": "box", "layout": "vertical", "paddingAll": "20px",
+                   "backgroundColor": "#f7f8fa", "contents": [
+                       {"type": "text", "text": "◈ 籌碼集中選股",
+                        "weight": "bold", "size": "lg", "color": FC_PRIMARY},
+                       {"type": "box", "layout": "horizontal", "margin": "md",
+                        "contents": [
+                            {"type": "text", "text": f"📅 {TODAY}", "size": "xs", "color": "#aaa"},
+                            {"type": "text", "text": f"✅ {len(results)} 支符合",
+                             "size": "xs", "color": FC_ACCENT, "align": "end"}]}]},
+        "body": {"type": "box", "layout": "vertical", "paddingAll": "20px",
+                 "contents": [
+                     {"type": "box", "layout": "horizontal", "contents": [
+                         {"type": "text", "text": "代號/名稱/標籤", "size": "xxs",
+                          "color": "#aaa", "flex": 3},
+                         {"type": "text", "text": "收盤/乖離", "size": "xxs",
+                          "color": "#aaa", "flex": 2, "align": "center"},
+                         {"type": "text", "text": "千張%/3週", "size": "xxs",
+                          "color": "#aaa", "flex": 2, "align": "center"}]},
+                     *rows]},
+        "footer": {"type": "box", "layout": "vertical", "paddingAll": "12px",
+                   "contents": [{"type": "button", "style": "primary", "height": "sm",
+                                 "color": FC_PRIMARY,
+                                 "action": {"type": "uri", "label": "📈 查看完整報告",
+                                            "uri": "https://weeiywun.github.io/twstockscan/"}}]},
+    }
+    flex_msg = {"type": "flex",
+                "altText": f"◈ 籌碼集中選股 {TODAY}：{len(results)} 支符合條件",
+                "contents": bubble}
     try:
-        resp = requests.post(
+        resp = req.post(
             "https://api.line.me/v2/bot/message/multicast",
             json={"to": user_ids, "messages": [flex_msg]},
-            headers={"Content-Type": "application/json",
-                     "Authorization": f"Bearer {token}"},
-            timeout=15,
-        )
-        if resp.status_code == 200:
-            print("[LINE] 推播通知已成功送出")
-        else:
-            print(f"[LINE] 推播失敗：HTTP {resp.status_code} - {resp.text}")
+            headers={"Content-Type": "application/json", "Authorization": f"Bearer {token}"},
+            timeout=15)
+        print("[LINE] 推播成功" if resp.status_code == 200
+              else f"[LINE] 推播失敗：HTTP {resp.status_code}")
     except Exception as e:
-        print(f"[LINE] 推播通知發生例外：{e}")
+        print(f"[LINE] 推播例外：{e}")
 
 
-# ─────────────────────────────────────────────────────────────
-#  主程式
-# ─────────────────────────────────────────────────────────────
+# ── 主程式 ────────────────────────────────────────────────────
 
-def now_tw() -> str:
+def now_tw():
     return datetime.now(TW_TZ).strftime("%Y-%m-%dT%H:%M:%S+08:00")
 
 
-def main():
-    print("=== 大戶持股分析器 v2.2 ===")
+def _write_output(results):
+    output = {"strategy_id": "chips_big_holder", "updated": now_tw(), "results": results}
+    with open(OUTPUT_PATH, "w", encoding="utf-8") as f:
+        json.dump(output, f, ensure_ascii=False, indent=2)
+    print(f"✅ 已寫入 {OUTPUT_PATH}")
 
-    # Step 1：讀取 CSV
+
+def main():
+    print("=== 大戶持股分析器 v3.0 (Layer 1) ===")
+    finmind_token = os.environ.get("FINMIND_TOKEN", "")
+    if not finmind_token:
+        print("⚠️  FINMIND_TOKEN 未設定")
+
     print("\nStep 1：讀取 big1000.csv / big400.csv...")
     stocks_1000, dates_1000 = parse_csv(CSV_1000, "utf-8-sig")
     stocks_400,  dates_400  = parse_csv(CSV_400,  "utf-8")
     print(f"  big1000: {len(stocks_1000)} 支，{len(dates_1000)} 週")
     print(f"  big400:  {len(stocks_400)} 支，{len(dates_400)} 週")
 
-    # Step 2：策略篩選（千張 AND 400張 同時符合）
-    print(f"\nStep 2：篩選（千張 AND 400張 均 {TREND_WEEKS} 週≥趨勢，千張>{BIG_PCT_MIN}%）...")
+    print(f"\nStep 2：初篩（千張大戶比例 > {BIG_PCT_MIN}%）並計算標籤...")
     candidates = []
-    for sid in sorted(set(stocks_1000) & set(stocks_400)):
-        s1 = stocks_1000[sid]
-        s4 = stocks_400[sid]
-        latest = max(s1["pct_map"].keys()) if s1["pct_map"] else None
-        if not latest or s1["pct_map"][latest] < BIG_PCT_MIN:
+    for sid, s1 in stocks_1000.items():
+        if not s1["pct_map"]:
             continue
-        if not passes_trend(s1["pct_map"], dates_1000):
+        latest_pct = s1["pct_map"].get(max(s1["pct_map"]))
+        if latest_pct is None or latest_pct < BIG_PCT_MIN:
             continue
-        if not passes_trend(s4["pct_map"], dates_400):
+        s4 = stocks_400.get(sid)
+        tags, score = compute_tags(
+            s1["pct_map"], dates_1000,
+            s4["pct_map"] if s4 else None,
+            dates_400     if s4 else None)
+        if score == 0:
             continue
-        candidates.append(sid)
-    print(f"  通過：{len(candidates)} 支")
+        recent_d  = [d for d in dates_1000 if d in s1["pct_map"]][-4:]
+        pct_trend = [round(s1["pct_map"][d], 2) for d in recent_d]
+        d_labels  = [f"{d[4:6]}/{d[6:8]}" for d in recent_d]
+        pct_400_t = None
+        if s4:
+            r4d = [d for d in dates_400 if d in s4["pct_map"]][-4:]
+            pct_400_t = [round(s4["pct_map"][d], 2) for d in r4d]
+        candidates.append({
+            "stock_id":       sid,
+            "name":           s1["name"],
+            "industry":       s1["industry"],
+            "market_cap":     s1["market_cap"],
+            "big_pct_1000":   round(latest_pct, 2),
+            "big_pct_400":    round(s4["pct_map"].get(max(s4["pct_map"]), 0), 2) if s4 and s4["pct_map"] else None,
+            "cumulative_3w":  calc_cumulative_3w(s1["pct_map"], dates_1000),
+            "tags":           tags,
+            "tag_score":      score,
+            "big_trend_1000": pct_trend,
+            "big_trend_400":  pct_400_t,
+            "date_labels":    d_labels,
+        })
 
+    print(f"  通過標籤篩選：{len(candidates)} 支")
     if not candidates:
-        print("⚠️  無符合條件股票，輸出空結果")
-        _write_output([], [])
-        return
+        print("⚠️  無符合條件股票")
+        _write_output([]); return
 
-    # Step 3：市場清單 + 今日股價
-    print("\nStep 3：取得市場清單與今日股價...")
-    mmap, pmap = get_market_and_price()
-    print(f"  上市+上櫃：{len(mmap)} 支，有股價：{len(pmap)} 支")
-    if "2330" in pmap:
-        p = pmap["2330"]
-        print(f"  [診斷] 2330 ✅ close={p['close']}  vol={p['vol_lots']}張")
-    else:
-        print("  [診斷] 2330 ❌ 未取得股價，請確認 TWSE API 回應")
-
-    # Step 4：個股月份資料 → EMA120
-    print(f"\nStep 4：計算 EMA120（{len(candidates)} 支，每支 {EMA_MONTHS} 個月資料）...")
-    results_1000, results_400 = [], []
-    ema_ok, ema_fail = 0, 0
-
-    for i, sid in enumerate(candidates, 1):
-        s1      = stocks_1000[sid]
-        s4      = stocks_400[sid]
-        price   = pmap.get(sid)
-        is_twse = mmap.get(sid, "TWSE") == "TWSE"
-
-        ema_data = None
-        if price:
-            ema_data = fetch_ema120(sid, is_twse, price["close"])
-
-        if ema_data:
-            ema_ok += 1
-            if not (DEV_MIN <= ema_data["deviation"] <= DEV_MAX):
-                continue
+    print(f"\nStep 3：FinMind 取得股價（{len(candidates)} 支，間隔 {FINMIND_SLEEP}s）...")
+    results, ok, fail = [], 0, 0
+    for i, c in enumerate(candidates, 1):
+        price = enrich_with_price(c["stock_id"], finmind_token)
+        if price is None:
+            fail += 1
+        elif price["vol_5d_avg"] < VOL_MIN_LOTS or not (DEV_MIN <= price["deviation"] <= DEV_MAX):
+            pass
         else:
-            ema_fail += 1
-            continue  # 無法取得 EMA 則略過
-
-        recent_1000 = sorted(s1["pct_map"])[-TREND_WEEKS:]
-        recent_400  = sorted(s4["pct_map"])[-TREND_WEEKS:]
-        pcts_1000   = [round(s1["pct_map"][d], 2) for d in recent_1000]
-        pcts_400    = [round(s4["pct_map"][d], 2) for d in recent_400]
-        labels      = [f"{d[4:6]}-{d[6:8]}" for d in recent_1000]
-
-        base = {
-            "stock_id":    sid,
-            "name":        s1["name"],
-            "industry":    s1["industry"],
-            "market_cap":  s1["market_cap"],
-            "close":       price["close"]       if price    else None,
-            "ema120":      ema_data["ema120"]   if ema_data else None,
-            "deviation":   ema_data["deviation"] if ema_data else None,
-            "vol_lots":    price["vol_lots"]    if price    else None,
-            "date_labels": labels,
-        }
-        results_1000.append({**base,
-            "big_pct_latest": pcts_1000[-1],
-            "big_4w_chg":     round(pcts_1000[-1] - pcts_1000[0], 2),
-            "big_trend":      pcts_1000,
-        })
-        results_400.append({**base,
-            "big_pct_latest": pcts_400[-1],
-            "big_4w_chg":     round(pcts_400[-1] - pcts_400[0], 2),
-            "big_trend":      pcts_400,
-        })
-
+            ok += 1
+            results.append({**c, **price})
         if i % 50 == 0:
-            print(f"  進度：{i}/{len(candidates)}，EMA 成功 {ema_ok} / 失敗 {ema_fail}")
+            print(f"  進度：{i}/{len(candidates)}，通過 {len(results)} / 失敗 {fail}")
+        time.sleep(FINMIND_SLEEP)
 
-    results_1000.sort(key=lambda r: r["big_4w_chg"], reverse=True)
-    results_400.sort(key=lambda r: r["big_4w_chg"],  reverse=True)
-
-    print(f"\n  EMA120：成功 {ema_ok} 支 / 失敗 {ema_fail} 支")
-    print(f"  最終：千張 {len(results_1000)} 支 / 400張 {len(results_400)} 支")
-    _write_output(results_1000, results_400)
-
-
-def _write_output(results_1000: list, results_400: list):
-    output = {
-        "strategy_id": "chips_big_holder",
-        "updated":     now_tw(),
-        "results":     results_1000,
-        "results_400": results_400,
-    }
-    with open(OUTPUT_PATH, "w", encoding="utf-8") as f:
-        json.dump(output, f, ensure_ascii=False, indent=2)
-    print(f"✅ 已寫入 {OUTPUT_PATH}")
+    results.sort(key=lambda r: (r.get("cumulative_3w") or -999), reverse=True)
+    print(f"\n  最終入池 {len(results)} 支")
+    _write_output(results)
+    send_line_notification(results)
 
 
 if __name__ == "__main__":
