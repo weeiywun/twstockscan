@@ -7,27 +7,28 @@
 <link rel="icon" type="image/svg+xml" href="favicon.svg">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400;500;600&family=Noto+Sans+TC:wght@300;400;500;700&display=swap" rel="stylesheet">
+<script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.0/dist/chart.umd.min.js"></script>
 <style>
-/* ── Variables (Light Theme) ─────────────────── */
+/* ── Variables (Dark Theme) ──────────────────── */
 :root {
-  --bg:        #f2f4f7;
-  --bg2:       #ffffff;
-  --bg3:       #f7f8fa;
-  --border:    rgba(0,0,0,0.08);
-  --border2:   rgba(0,0,0,0.14);
-  --text:      #1a1d2e;
-  --text2:     #515869;
-  --text3:     #96a0b0;
-  --green:     #0c6b3e;
-  --green-dim: rgba(12,107,62,0.08);
-  --green-glow:rgba(12,107,62,0.15);
-  --amber:     #a86200;
-  --red:       #c0392b;
-  --blue:      #1a5fa8;
+  --bg:        #0d1117;
+  --bg2:       #161b22;
+  --bg3:       #1c2128;
+  --border:    rgba(255,255,255,0.08);
+  --border2:   rgba(255,255,255,0.15);
+  --text:      #e6edf3;
+  --text2:     #8b949e;
+  --text3:     #6e7681;
+  --green:     #3fb950;
+  --green-dim: rgba(63,185,80,0.1);
+  --green-glow:rgba(63,185,80,0.2);
+  --amber:     #f0883e;
+  --red:       #f85149;
+  --blue:      #58a6ff;
   --mono:      'IBM Plex Mono', monospace;
   --sans:      'Noto Sans TC', sans-serif;
-  --shadow-sm: 0 1px 4px rgba(0,0,0,0.06);
-  --shadow:    0 2px 10px rgba(0,0,0,0.08);
+  --shadow-sm: 0 1px 4px rgba(0,0,0,0.4);
+  --shadow:    0 2px 10px rgba(0,0,0,0.5);
   --radius:    10px;
 }
 
@@ -48,7 +49,7 @@ body{
 /* ── Header ─────────────────────────────────── */
 header{
   position:sticky;top:0;z-index:100;
-  background:#fff;
+  background:var(--bg2);
   border-bottom:1px solid var(--border);
   box-shadow:var(--shadow-sm);
   height:54px;
@@ -83,7 +84,7 @@ header .page-inner{
 
 /* ── Strategy Nav ───────────────────────────── */
 .strategy-nav{
-  background:#fff;border-bottom:1px solid var(--border);
+  background:var(--bg2);border-bottom:1px solid var(--border);
 }
 .strategy-nav .page-inner{
   display:flex;gap:0;
@@ -110,7 +111,7 @@ header .page-inner{
   background:var(--green-dim);color:var(--green);
   font-size:10px;font-weight:600;margin-left:6px;
 }
-.strat-tab.locked .badge{background:rgba(0,0,0,0.05);color:var(--text3)}
+.strat-tab.locked .badge{background:rgba(255,255,255,0.05);color:var(--text3)}
 .strat-tab.locked{opacity:.5;cursor:not-allowed}
 
 /* ── Tag badges ──────────────────────────────── */
@@ -124,10 +125,10 @@ header .page-inner{
 /* ── View mode toggle ────────────────────────── */
 .view-btn{
   padding:4px 12px;border-radius:6px;font-size:12px;cursor:pointer;
-  border:1px solid var(--border);background:#fff;color:var(--text2);
+  border:1px solid var(--border);background:var(--bg3);color:var(--text2);
   font-family:var(--sans);transition:all .15s;
 }
-.view-btn.active{background:var(--green);border-color:var(--green);color:#fff;}
+.view-btn.active{background:var(--green);border-color:var(--green);color:#0d1117;}
 .view-btn:hover:not(.active){background:var(--bg2);}
 
 /* ── Industry group header row ───────────────── */
@@ -159,7 +160,7 @@ main{padding:24px 0 0;}
 .cond{
   display:flex;align-items:center;gap:5px;
   padding:4px 10px;border-radius:20px;
-  background:#fff;border:1px solid var(--border);
+  background:var(--bg3);border:1px solid var(--border);
   font-size:12px;color:var(--text2);
   box-shadow:var(--shadow-sm);
 }
@@ -171,7 +172,7 @@ main{padding:24px 0 0;}
   margin-bottom:24px;
 }
 .summary-card{
-  background:#fff;border:1px solid var(--border);
+  background:var(--bg2);border:1px solid var(--border);
   border-radius:var(--radius);padding:14px 16px;
   box-shadow:var(--shadow-sm);
 }
@@ -183,7 +184,7 @@ main{padding:24px 0 0;}
 
 /* ── Results table ──────────────────────────── */
 .table-wrap{
-  background:#fff;border:1px solid var(--border);
+  background:var(--bg2);border:1px solid var(--border);
   border-radius:var(--radius);overflow:hidden;margin-bottom:24px;
   box-shadow:var(--shadow-sm);
 }
@@ -201,7 +202,7 @@ main{padding:24px 0 0;}
   display:flex;align-items:center;gap:5px;
   transition:background .15s,border-color .15s;
 }
-.btn-csv:hover{background:#e8f0fe;border-color:#aac4f7;color:#1a5fa8}
+.btn-csv:hover{background:rgba(88,166,255,0.1);border-color:var(--blue);color:var(--blue)}
 
 .table-scroll{overflow-x:auto;-webkit-overflow-scrolling:touch}
 table{width:100%;border-collapse:collapse;min-width:560px}
@@ -222,7 +223,7 @@ tbody tr{
   transition:background .12s;cursor:pointer;
 }
 tbody tr:last-child{border-bottom:none}
-tbody tr:hover{background:#f8fafc}
+tbody tr:hover{background:rgba(255,255,255,0.03)}
 tbody tr.expanded{background:var(--green-dim)}
 
 td{padding:12px 14px;vertical-align:middle}
@@ -258,7 +259,7 @@ tbody tr:hover .spark-bar{opacity:.9}
 .expand-flat{
   display:flex;align-items:flex-start;gap:16px;
   padding:14px 16px 14px 20px;
-  background:#fafbfc;border-top:1px solid var(--border);
+  background:var(--bg3);border-top:1px solid var(--border);
 }
 .expand-trend-wrap{flex:1;min-width:0;overflow-x:auto;-webkit-overflow-scrolling:touch}
 .expand-table{
@@ -267,7 +268,7 @@ tbody tr:hover .spark-bar{opacity:.9}
 .expand-table th{
   font-size:10px;font-weight:600;color:var(--text3);letter-spacing:.04em;
   padding:4px 10px;text-align:center;border-bottom:1px solid var(--border);
-  white-space:nowrap;background:#fafbfc;
+  white-space:nowrap;background:var(--bg3);
 }
 .expand-table th:first-child{text-align:left}
 .expand-table td{
@@ -290,7 +291,7 @@ tbody tr:hover .spark-bar{opacity:.9}
 }
 .watchlist-sidebar{
   position:sticky;top:112px;
-  background:#fff;border:1px solid var(--border);
+  background:var(--bg2);border:1px solid var(--border);
   border-radius:var(--radius);overflow:hidden;
   box-shadow:var(--shadow-sm);
 }
@@ -399,7 +400,7 @@ tbody tr:hover .spark-bar{opacity:.9}
 
 /* ── Industry bar chart ──────────────────────── */
 .industry-chart{
-  background:#fff;border:1px solid var(--border);
+  background:var(--bg2);border:1px solid var(--border);
   border-radius:var(--radius);padding:14px 16px;
   margin-bottom:16px;box-shadow:var(--shadow-sm);
 }
@@ -481,6 +482,51 @@ tbody tr:hover .spark-bar{opacity:.9}
 thead th:nth-child(4),
   tbody td:nth-child(4){display:none}
 }
+
+/* ── Performance tracking ─────────────────────── */
+.perf-modal{
+  position:fixed;inset:0;background:rgba(0,0,0,0.65);
+  display:flex;align-items:center;justify-content:center;z-index:200;
+}
+.perf-modal-box{
+  background:var(--bg2);border:1px solid var(--border2);
+  border-radius:var(--radius);padding:24px 28px;max-width:480px;width:92%;
+}
+.perf-modal-title{font-size:14px;font-weight:700;color:var(--text);margin-bottom:12px}
+.perf-modal-desc{font-size:12px;color:var(--text2);line-height:1.8;margin-bottom:8px}
+.perf-modal-desc code{
+  background:var(--bg3);border:1px solid var(--border);
+  border-radius:3px;padding:1px 5px;font-family:var(--mono);font-size:11px;color:var(--amber);
+}
+.perf-input{
+  background:var(--bg3);border:1px solid var(--border2);border-radius:6px;
+  color:var(--text);font-family:var(--mono);font-size:12px;
+  padding:6px 10px;outline:none;transition:border-color .15s;
+}
+.perf-input:focus{border-color:var(--green)}
+.perf-input-label{font-size:10px;color:var(--text3);margin-bottom:4px;letter-spacing:.04em;text-transform:uppercase}
+.perf-chart-wrap{
+  background:var(--bg2);border:1px solid var(--border);
+  border-radius:var(--radius);padding:16px;margin-bottom:20px;
+  height:280px;position:relative;box-shadow:var(--shadow-sm);
+}
+.perf-section{margin-bottom:24px}
+.perf-section-hd{
+  display:flex;align-items:center;justify-content:space-between;margin-bottom:10px;
+}
+.perf-btn{
+  font-size:12px;font-weight:500;padding:5px 12px;border-radius:6px;
+  border:1px solid var(--border2);background:var(--bg3);
+  color:var(--text2);cursor:pointer;font-family:var(--sans);
+  transition:all .15s;white-space:nowrap;
+}
+.perf-btn:hover{border-color:var(--text3);color:var(--text)}
+.perf-btn-confirm{background:var(--green);border-color:var(--green);color:#0d1117;font-weight:700}
+.perf-btn-confirm:hover{filter:brightness(1.12)}
+.perf-btn-exit{border-color:rgba(240,136,62,0.4);color:var(--amber);background:rgba(240,136,62,0.08)}
+.perf-btn-add{background:var(--green-dim);border-color:var(--green);color:var(--green);font-weight:600}
+.perf-btn-del{border-color:rgba(248,81,73,0.3);color:var(--red);background:rgba(248,81,73,0.06)}
+.perf-pos-row:hover{background:rgba(255,255,255,0.025)}
 </style>
 </head>
 <body>
@@ -490,7 +536,7 @@ thead th:nth-child(4),
     <div class="logo">
       <span class="logo-mark"></span>
       SR_PC
-      <span class="version-badge">v0.3.0</span>
+      <span class="version-badge">v0.4.0</span>
     </div>
     <div class="header-meta" id="headerMeta">載入中...</div>
   </div>
@@ -553,6 +599,25 @@ const STRATEGIES = [
     dataSource: "FinMind（每日盤後）",
     dataKey: "volume_signal_data",
   },
+  {
+    id: "stock_analysis",
+    name: "標的分析",
+    shortName: "標的分析",
+    icon: "◎",
+    available: true,
+    description: "針對入池標的進行深度基本面與籌碼綜合分析。",
+    conditions: [],
+    comingSoon: "建置中",
+  },
+  {
+    id: "performance",
+    name: "績效追蹤",
+    shortName: "績效追蹤",
+    icon: "◐",
+    available: true,
+    description: "記錄建倉出場，追蹤整體投組績效。",
+    conditions: [],
+  },
 ];
 
 
@@ -562,6 +627,7 @@ const STRATEGIES = [
 const DATA = {
   chips_big_holder_data: [],
   volume_signal_data:    [],
+  performance_data:      null,
 };
 let DATE_LABELS = [];
 
@@ -654,10 +720,18 @@ function trendBars(trend, label, colorClass) {
 function renderNav() {
   const nav = document.getElementById('strategyNav');
   nav.innerHTML = STRATEGIES.map(s => {
-    const data = DATA[s.dataKey] || [];
-    const badge = s.available
-      ? `<span class="badge">${data.length}</span>`
-      : `<span class="badge">—</span>`;
+    let badgeText;
+    if (!s.available) {
+      badgeText = '—';
+    } else if (s.id === 'performance') {
+      const active = (DATA.performance_data?.positions || []).filter(p => !p.confirmed).length;
+      badgeText = active;
+    } else if (s.id === 'stock_analysis') {
+      badgeText = '—';
+    } else {
+      badgeText = (DATA[s.dataKey] || []).length;
+    }
+    const badge = `<span class="badge">${badgeText}</span>`;
     return `<button class="strat-tab ${s.id===activeStratId?'active':''} ${!s.available?'locked':''}"
       onclick="${s.available ? `setStrategy('${s.id}')` : ''}"
       title="${!s.available ? (s.comingSoon||'即將推出') : ''}">
@@ -682,13 +756,15 @@ function renderStrategy() {
     return;
   }
 
-  if (strat.id === 'chips_big_holder') {
-    renderChipsHolder(strat, main);
-    return;
-  }
-
-  if (strat.id === 'volume_signal') {
-    renderVolumeSignal(strat, main);
+  if (strat.id === 'chips_big_holder') { renderChipsHolder(strat, main); return; }
+  if (strat.id === 'volume_signal')    { renderVolumeSignal(strat, main); return; }
+  if (strat.id === 'performance')      { renderPerformance(strat, main);  return; }
+  if (strat.id === 'stock_analysis') {
+    main.innerHTML = `<div class="coming-soon">
+      <div class="coming-icon">◎</div>
+      <div class="coming-title">標的分析</div>
+      <div class="coming-desc">深度基本面與籌碼綜合分析<br>即將推出</div>
+    </div>`;
     return;
   }
 
@@ -824,13 +900,13 @@ function renderRow(d) {
           <div class="expand-section">
             <h4>操作</h4>
             <button onclick="event.stopPropagation();toggleWatch('${d.stock_id}','${d.name}')"
-              style="background:${inWatch?'var(--green-dim)':'#fff'};border:1px solid ${inWatch?'var(--green)':'var(--border)'};color:${inWatch?'var(--green)':'var(--text2)'};padding:8px 14px;border-radius:6px;cursor:pointer;font-size:12px;font-family:var(--sans);width:100%;margin-bottom:8px"
+              style="background:${inWatch?'var(--green-dim)':'var(--bg3)'};border:1px solid ${inWatch?'var(--green)':'var(--border)'};color:${inWatch?'var(--green)':'var(--text2)'};padding:8px 14px;border-radius:6px;cursor:pointer;font-size:12px;font-family:var(--sans);width:100%;margin-bottom:8px"
               id="watchBtn-${d.stock_id}">
               ${inWatch ? '✓ 已加入觀察清單' : '+ 加入觀察清單'}
             </button>
             <a href="https://tw.stock.yahoo.com/quote/${d.stock_id}" target="_blank"
               onclick="event.stopPropagation()"
-              style="display:block;text-align:center;background:#fff;border:1px solid var(--border);color:var(--text2);padding:8px 14px;border-radius:6px;font-size:12px;text-decoration:none">
+              style="display:block;text-align:center;background:var(--bg3);border:1px solid var(--border);color:var(--text2);padding:8px 14px;border-radius:6px;font-size:12px;text-decoration:none">
               Yahoo 股市 ↗
             </a>
           </div>
@@ -1138,12 +1214,13 @@ function renderChipsHolder(strat, main) {
                 const labels = d.date_labels || DATE_LABELS;
                 const t1000  = d.big_trend_1000 || [];
                 const t400   = d.big_trend_400  || [];
-                const cum400 = t400.length >= 2 ? t400[t400.length-1] - t400[0] : null;
-                const cum400Sign = cum400 != null && cum400 >= 0 ? '+' : '';
-                const cum3Sign   = (d.cumulative_3w || 0) >= 0 ? '+' : '';
-                const dateHdrs = labels.map(l => `<th>${l}</th>`).join('');
-                const cells1000 = t1000.map(v => `<td>${v.toFixed(2)}%</td>`).join('');
-                const cells400  = t400.map(v  => `<td>${v.toFixed(2)}%</td>`).join('');
+                const cum1000 = t1000.length >= 3 ? t1000[t1000.length-1] - t1000[t1000.length-3] : null;
+                const cum400  = t400.length  >= 3 ? t400[t400.length-1]   - t400[t400.length-3]   : null;
+                const cum1000Sign = cum1000 != null && cum1000 >= 0 ? '+' : '';
+                const cum400Sign  = cum400  != null && cum400  >= 0 ? '+' : '';
+                const dateHdrs = [...labels].reverse().map(l => `<th>${l}</th>`).join('');
+                const cells1000 = [...t1000].reverse().map(v => `<td>${v.toFixed(2)}%</td>`).join('');
+                const cells400  = [...t400].reverse().map(v  => `<td>${v.toFixed(2)}%</td>`).join('');
                 return `<table class="expand-table">
                   <thead><tr>
                     <th></th><th>3週增幅</th>${dateHdrs}
@@ -1151,7 +1228,7 @@ function renderChipsHolder(strat, main) {
                   <tbody>
                     <tr>
                       <td>千張大戶</td>
-                      <td class="expand-cum ${(d.cumulative_3w||0)>=0?'pos':'neg'}">${d.cumulative_3w!=null?cum3Sign+d.cumulative_3w.toFixed(2)+'%':'—'}</td>
+                      <td class="expand-cum ${cum1000!=null&&cum1000>=0?'pos':'neg'}">${cum1000!=null?cum1000Sign+cum1000.toFixed(2)+'%':'—'}</td>
                       ${cells1000}
                     </tr>
                     <tr>
@@ -1165,7 +1242,7 @@ function renderChipsHolder(strat, main) {
             </div>
             <div class="expand-actions">
               <button onclick="event.stopPropagation();toggleWatch('${d.stock_id}','${d.name}')"
-                style="background:${inWatch?'var(--green-dim)':'#fff'};border:1px solid ${inWatch?'var(--green)':'var(--border)'};color:${inWatch?'var(--green)':'var(--text2)'};padding:8px 14px;border-radius:6px;cursor:pointer;font-size:12px;font-family:var(--sans);white-space:nowrap"
+                style="background:${inWatch?'var(--green-dim)':'var(--bg3)'};border:1px solid ${inWatch?'var(--green)':'var(--border)'};color:${inWatch?'var(--green)':'var(--text2)'};padding:8px 14px;border-radius:6px;cursor:pointer;font-size:12px;font-family:var(--sans);white-space:nowrap"
                 id="watchBtn-${d.stock_id}">
                 ${inWatch ? '✓ 已加入' : '+ 加入觀察清單'}
               </button>
@@ -1360,7 +1437,7 @@ function renderVolumeSignal(strat, main) {
             <h4>操作</h4>
             <a href="https://tw.stock.yahoo.com/quote/${d.stock_id}" target="_blank"
               onclick="event.stopPropagation()"
-              style="display:block;text-align:center;background:#fff;border:1px solid var(--border);color:var(--text2);padding:8px 14px;border-radius:6px;font-size:12px;text-decoration:none">
+              style="display:block;text-align:center;background:var(--bg3);border:1px solid var(--border);color:var(--text2);padding:8px 14px;border-radius:6px;font-size:12px;text-decoration:none">
               Yahoo 股市 ↗
             </a>
           </div>
@@ -1559,7 +1636,7 @@ function renderVolumeBreakout(strat, main) {
                 const mkt = d.market === 'TWSE' ? 'TWSE' : 'TPEX';
                 const tvSymbol = `${mkt}:${d.stock_id}`;
                 const p4badge = d.phase4_activated
-                  ? `<span style="background:#fff3cd;color:#a86200;border:1px solid #f5c842;border-radius:4px;padding:2px 6px;font-size:11px;font-weight:600">★ 發動</span>`
+                  ? `<span style="background:rgba(240,136,62,0.15);color:var(--amber);border:1px solid rgba(240,136,62,0.4);border-radius:4px;padding:2px 6px;font-size:11px;font-weight:600">★ 發動</span>`
                   : `<span style="color:var(--text3);font-size:11px">—</span>`;
                 return `<tr>
                   <td>
@@ -1776,13 +1853,13 @@ function renderEmaTangling(strat, main) {
                       <div class="expand-section">
                         <h4>操作</h4>
                         <button onclick="event.stopPropagation();toggleWatch('${d.stock_id}','${d.name}')"
-                          style="background:${inWatch?'var(--green-dim)':'#fff'};border:1px solid ${inWatch?'var(--green)':'var(--border)'};color:${inWatch?'var(--green)':'var(--text2)'};padding:8px 14px;border-radius:6px;cursor:pointer;font-size:12px;font-family:var(--sans);width:100%;margin-bottom:8px"
+                          style="background:${inWatch?'var(--green-dim)':'var(--bg3)'};border:1px solid ${inWatch?'var(--green)':'var(--border)'};color:${inWatch?'var(--green)':'var(--text2)'};padding:8px 14px;border-radius:6px;cursor:pointer;font-size:12px;font-family:var(--sans);width:100%;margin-bottom:8px"
                           id="watchBtn-${d.stock_id}">
                           ${inWatch ? '✓ 已加入觀察清單' : '+ 加入觀察清單'}
                         </button>
                         <a href="https://tw.stock.yahoo.com/quote/${d.stock_id}" target="_blank"
                           onclick="event.stopPropagation()"
-                          style="display:block;text-align:center;background:#fff;border:1px solid var(--border);color:var(--text2);padding:8px 14px;border-radius:6px;font-size:12px;text-decoration:none">
+                          style="display:block;text-align:center;background:var(--bg3);border:1px solid var(--border);color:var(--text2);padding:8px 14px;border-radius:6px;font-size:12px;text-decoration:none">
                           Yahoo 股市 ↗
                         </a>
                       </div>
@@ -1822,6 +1899,448 @@ function etToggleExpand(sid) {
 }
 
 // ════════════════════════════════════════════════════
+//  GITHUB API HELPERS
+// ════════════════════════════════════════════════════
+const GH_OWNER = 'weeiywun';
+const GH_REPO  = 'twstockscan';
+const GH_PERF  = 'data/performance.json';
+
+function ghToken() { return localStorage.getItem('gh_token') || ''; }
+
+async function ghWritePerf(data) {
+  const token = ghToken();
+  if (!token) { alert('請先設定 GitHub Token'); return false; }
+  try {
+    const infoRes = await fetch(
+      `https://api.github.com/repos/${GH_OWNER}/${GH_REPO}/contents/${GH_PERF}`,
+      { headers: { Authorization: `token ${token}`, Accept: 'application/vnd.github.v3+json' } }
+    );
+    if (!infoRes.ok) throw new Error('讀取 SHA 失敗，請確認 Token 權限');
+    const { sha } = await infoRes.json();
+    const content = btoa(unescape(encodeURIComponent(JSON.stringify(data, null, 2))));
+    const writeRes = await fetch(
+      `https://api.github.com/repos/${GH_OWNER}/${GH_REPO}/contents/${GH_PERF}`,
+      {
+        method: 'PUT',
+        headers: { Authorization: `token ${token}`, 'Content-Type': 'application/json', Accept: 'application/vnd.github.v3+json' },
+        body: JSON.stringify({
+          message: `perf: update ${new Date().toISOString().slice(0, 10)}`,
+          content, sha
+        })
+      }
+    );
+    if (!writeRes.ok) { const e = await writeRes.json(); throw new Error(e.message || '寫入失敗'); }
+    return true;
+  } catch(e) { alert('儲存失敗：' + e.message); return false; }
+}
+
+function openTokenModal() {
+  const m = document.getElementById('tokenModal');
+  if (m) { m.style.display = 'flex'; const inp = document.getElementById('tokenInput'); if(inp) inp.value = ghToken(); }
+}
+function closeTokenModal() {
+  const m = document.getElementById('tokenModal'); if (m) m.style.display = 'none';
+}
+function saveToken() {
+  const val = document.getElementById('tokenInput')?.value?.trim();
+  if (val) localStorage.setItem('gh_token', val); else localStorage.removeItem('gh_token');
+  closeTokenModal(); renderStrategy();
+}
+
+// ════════════════════════════════════════════════════
+//  PERFORMANCE — 指標計算
+// ════════════════════════════════════════════════════
+function computePortfolioMetrics(pd) {
+  const startCap = pd?.starting_capital || 450000;
+  const positions = pd?.positions || [];
+  const priceHistory = pd?.price_history || {};
+  const today = new Date().toISOString().slice(0, 10);
+  let totalCost = 0, mktValue = 0, realizedPnl = 0;
+  positions.forEach(p => {
+    const cost = p.shares * p.cost_price;
+    totalCost += cost;
+    if (p.confirmed && p.exit_price != null) {
+      const val = p.shares * p.exit_price;
+      mktValue += val; realizedPnl += val - cost;
+    } else {
+      const hist = priceHistory[p.stock_id] || {};
+      const dates = Object.keys(hist).filter(d => d <= today).sort();
+      const price = dates.length ? hist[dates[dates.length - 1]] : p.cost_price;
+      mktValue += p.shares * price;
+    }
+  });
+  const cash = startCap - totalCost;
+  const portfolioValue = cash + mktValue;
+  const returnPct = positions.length ? ((portfolioValue / startCap) - 1) * 100 : 0;
+  return { startCap, portfolioValue, returnPct, realizedPnl };
+}
+
+// ════════════════════════════════════════════════════
+//  PERFORMANCE — 圖表資料
+// ════════════════════════════════════════════════════
+function buildPerfChartData(pd) {
+  if (!pd || !(pd.positions || []).length) return null;
+  const startCap = pd.starting_capital || 450000;
+  const positions = pd.positions || [];
+  const priceHistory = pd.price_history || {};
+  const allDates = new Set();
+  Object.values(priceHistory).forEach(h => Object.keys(h).forEach(d => allDates.add(d)));
+  positions.forEach(p => { if (p.entry_date) allDates.add(p.entry_date); });
+  const sorted = [...allDates].sort();
+  if (sorted.length < 2) return null;
+  const totalCost = positions.reduce((s, p) => s + p.shares * p.cost_price, 0);
+  const cash = startCap - totalCost;
+  const totalLine = [], realizedLine = [];
+  sorted.forEach(date => {
+    let mktVal = 0, realVal = 0;
+    positions.forEach(p => {
+      const cost = p.shares * p.cost_price;
+      if (date < p.entry_date) { mktVal += cost; realVal += cost; return; }
+      if (p.confirmed && p.exit_date && date >= p.exit_date) {
+        const ev = p.shares * p.exit_price;
+        mktVal += ev; realVal += ev;
+      } else {
+        const hist = priceHistory[p.stock_id] || {};
+        const dates = Object.keys(hist).filter(d => d <= date).sort();
+        const price = dates.length ? hist[dates[dates.length - 1]] : cost / p.shares;
+        mktVal += p.shares * price; realVal += cost;
+      }
+    });
+    totalLine.push(parseFloat(((cash + mktVal) / startCap * 100 - 100).toFixed(2)));
+    realizedLine.push(parseFloat(((cash + realVal) / startCap * 100 - 100).toFixed(2)));
+  });
+  return { labels: sorted, totalLine, realizedLine };
+}
+
+// ════════════════════════════════════════════════════
+//  PERFORMANCE — 圖表初始化
+// ════════════════════════════════════════════════════
+let perfChart = null;
+function initPerfChart(pd) {
+  const canvas = document.getElementById('perfChart');
+  if (!canvas || typeof Chart === 'undefined') return;
+  if (perfChart) { perfChart.destroy(); perfChart = null; }
+  const cd = buildPerfChartData(pd);
+  perfChart = new Chart(canvas, {
+    type: 'line',
+    data: {
+      labels: cd ? cd.labels : [],
+      datasets: [
+        {
+          label: '總報酬（含持倉）',
+          data: cd ? cd.totalLine : [],
+          borderColor: '#f0883e', backgroundColor: 'transparent',
+          borderWidth: 2, borderDash: [5, 4],
+          pointRadius: cd && cd.labels.length < 30 ? 3 : 1, tension: 0.3,
+        },
+        {
+          label: '已實現損益',
+          data: cd ? cd.realizedLine : [],
+          borderColor: '#3fb950', backgroundColor: 'rgba(63,185,80,0.1)',
+          borderWidth: 2, fill: true,
+          pointRadius: cd && cd.labels.length < 30 ? 3 : 1, tension: 0.3,
+        }
+      ]
+    },
+    options: {
+      responsive: true, maintainAspectRatio: false,
+      plugins: {
+        legend: { labels: { color: '#8b949e', font: { size: 11 } } },
+        tooltip: {
+          backgroundColor: '#1c2128', titleColor: '#e6edf3',
+          bodyColor: '#8b949e', borderColor: 'rgba(255,255,255,0.1)', borderWidth: 1,
+          callbacks: { label: ctx => ` ${ctx.dataset.label}：${ctx.parsed.y >= 0 ? '+' : ''}${ctx.parsed.y.toFixed(2)}%` }
+        }
+      },
+      scales: {
+        x: { ticks: { color: '#6e7681', font: { size: 10 } }, grid: { color: 'rgba(255,255,255,0.04)' } },
+        y: {
+          ticks: { color: '#6e7681', font: { size: 10 }, callback: v => (v >= 0 ? '+' : '') + v.toFixed(1) + '%' },
+          grid: { color: 'rgba(255,255,255,0.04)' }
+        }
+      }
+    }
+  });
+}
+
+// ════════════════════════════════════════════════════
+//  PERFORMANCE — 渲染主頁
+// ════════════════════════════════════════════════════
+function renderPerformance(strat, main) {
+  const pd = DATA.performance_data;
+  const token = ghToken();
+  const positions = pd?.positions || [];
+  const priceHistory = pd?.price_history || {};
+  const startCap = pd?.starting_capital || 450000;
+  const today = new Date().toISOString().slice(0, 10);
+  const active = positions.filter(p => !p.confirmed);
+  const closed  = positions.filter(p => p.confirmed);
+  const { portfolioValue, returnPct, realizedPnl } = computePortfolioMetrics(pd);
+
+  function getLatestPrice(stockId) {
+    const hist = priceHistory[stockId] || {};
+    const dates = Object.keys(hist).filter(d => d <= today).sort();
+    return dates.length ? hist[dates[dates.length - 1]] : null;
+  }
+
+  function activeRow(p) {
+    const cp = getLatestPrice(p.stock_id);
+    const posVal = (cp ?? p.cost_price) * p.shares;
+    const posCost = p.cost_price * p.shares;
+    const pnlPct = ((posVal / posCost) - 1) * 100;
+    const pc = pnlPct >= 0 ? 'var(--green)' : 'var(--red)';
+    const ps = pnlPct >= 0 ? '+' : '';
+    return `
+      <tr class="perf-pos-row">
+        <td><span class="stock-code">${p.stock_id}</span>${p.name && p.name !== p.stock_id ? `<span style="font-size:11px;color:var(--text3);margin-left:5px">${p.name}</span>` : ''}</td>
+        <td style="font-family:var(--mono);font-size:12px">${p.entry_date}</td>
+        <td style="font-family:var(--mono)">${p.shares.toLocaleString()}</td>
+        <td style="font-family:var(--mono)">${p.cost_price.toFixed(2)}</td>
+        <td style="font-family:var(--mono)">${cp != null ? cp.toFixed(2) : '<span style="color:var(--text3)">—</span>'}</td>
+        <td><span style="font-family:var(--mono);color:${pc};font-weight:600">${ps}${pnlPct.toFixed(2)}%</span></td>
+        <td style="font-family:var(--mono);font-size:12px;color:var(--green)">${p.tp_price != null ? p.tp_price.toFixed(2) : '<span style="color:var(--text3)">—</span>'}</td>
+        <td style="font-family:var(--mono);font-size:12px;color:var(--red)">${p.sl_price != null ? p.sl_price.toFixed(2) : '<span style="color:var(--text3)">—</span>'}</td>
+        <td style="white-space:nowrap">
+          <button class="perf-btn perf-btn-exit" onclick="perfShowExitForm('${p.id}')">出場</button>
+          <button class="perf-btn perf-btn-del" style="margin-left:4px" onclick="perfDeletePos('${p.id}')">刪除</button>
+        </td>
+      </tr>
+      <tr id="exit-form-${p.id}" style="display:none">
+        <td colspan="9" style="padding:12px 16px;background:var(--bg3);border-bottom:1px solid var(--border)">
+          <div style="display:flex;align-items:flex-end;gap:12px;flex-wrap:wrap">
+            <span style="font-size:12px;color:var(--text2);font-weight:600;padding-bottom:2px">出場資訊</span>
+            <div><div class="perf-input-label">賣出價格 *</div>
+              <input id="ep-${p.id}" type="number" step="0.01" class="perf-input" placeholder="0.00" style="width:110px"></div>
+            <div><div class="perf-input-label">賣出日期 *</div>
+              <input id="ed-${p.id}" type="date" class="perf-input" value="${today}" style="width:140px"></div>
+            <div style="display:flex;gap:6px">
+              <button class="perf-btn perf-btn-confirm" onclick="perfConfirmExit('${p.id}')">確認賣出</button>
+              <button class="perf-btn" onclick="document.getElementById('exit-form-${p.id}').style.display='none'">取消</button>
+            </div>
+          </div>
+          <div style="margin-top:8px;font-size:11px;color:var(--text3)">
+            ⚠ 確認後損益將鎖定，此筆移至「已出場」，並自動寫入 Repo（需先設定 Token）
+          </div>
+        </td>
+      </tr>`;
+  }
+
+  function closedRow(p) {
+    const exitVal = p.shares * p.exit_price;
+    const costVal = p.shares * p.cost_price;
+    const pnl = exitVal - costVal;
+    const pnlPct = ((exitVal / costVal) - 1) * 100;
+    const c = pnl >= 0 ? 'var(--green)' : 'var(--red)';
+    const s = pnl >= 0 ? '+' : '';
+    return `<tr>
+      <td><span class="stock-code">${p.stock_id}</span>${p.name && p.name !== p.stock_id ? `<span style="font-size:11px;color:var(--text3);margin-left:5px">${p.name}</span>` : ''}</td>
+      <td style="font-family:var(--mono);font-size:12px">${p.entry_date}</td>
+      <td style="font-family:var(--mono);font-size:12px">${p.exit_date}</td>
+      <td style="font-family:var(--mono)">${p.shares.toLocaleString()}</td>
+      <td style="font-family:var(--mono)">${p.cost_price.toFixed(2)}</td>
+      <td style="font-family:var(--mono)">${p.exit_price.toFixed(2)}</td>
+      <td><span style="font-family:var(--mono);color:${c};font-weight:700">${s}${Math.round(pnl).toLocaleString()}</span></td>
+      <td><span style="font-family:var(--mono);color:${c}">${s}${pnlPct.toFixed(2)}%</span></td>
+    </tr>`;
+  }
+
+  const pnlColor = returnPct >= 0 ? 'var(--green)' : 'var(--red)';
+  const pnlSign  = returnPct >= 0 ? '+' : '';
+  const rColor = realizedPnl >= 0 ? 'var(--green)' : 'var(--red)';
+  const rSign  = realizedPnl >= 0 ? '+' : '';
+
+  main.innerHTML = `
+    <div id="tokenModal" class="perf-modal" style="display:none" onclick="if(event.target===this)closeTokenModal()">
+      <div class="perf-modal-box">
+        <div class="perf-modal-title">⚙ 設定 GitHub Token</div>
+        <p class="perf-modal-desc">
+          貼上你的 <code>Personal Access Token (PAT)</code>，需要 <code>Contents: Read &amp; Write</code> 權限。<br>
+          Token 僅存於本裝置 <code>localStorage</code>，不傳送至任何第三方伺服器。
+        </p>
+        <a href="https://github.com/settings/tokens/new?scopes=repo&description=twstockscan-perf" target="_blank"
+          style="font-size:12px;color:var(--blue);display:block;margin-bottom:14px">→ 點此前往 GitHub 產生 Token（勾選 repo 權限）</a>
+        <input id="tokenInput" type="password" class="perf-input" placeholder="ghp_xxxxxxxxxxxxxxxxxxxx" style="width:100%;margin-bottom:16px">
+        <div style="display:flex;gap:8px;justify-content:flex-end">
+          <button class="perf-btn" onclick="closeTokenModal()">取消</button>
+          <button class="perf-btn perf-btn-confirm" onclick="saveToken()">儲存</button>
+        </div>
+      </div>
+    </div>
+
+    <div class="strategy-panel active">
+      <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:20px;flex-wrap:wrap;gap:10px">
+        <div class="strat-title">◐ 績效追蹤</div>
+        <div style="display:flex;align-items:center;gap:8px;flex-wrap:wrap">
+          <span style="font-size:11px;color:${token ? 'var(--green)' : 'var(--text3)'}">
+            ${token ? '● Token 已設定' : '○ 未設定 Token（僅可瀏覽，無法儲存）'}
+          </span>
+          <button class="perf-btn" onclick="openTokenModal()">⚙ 設定 Token</button>
+          <button class="perf-btn" onclick="perfSyncData()">↻ 同步資料</button>
+        </div>
+      </div>
+
+      <div class="summary-row" style="grid-template-columns:repeat(4,minmax(140px,1fr))">
+        <div class="summary-card">
+          <div class="summary-label">起始資金</div>
+          <div class="summary-value" style="font-size:16px">$${startCap.toLocaleString()}</div>
+          <div class="summary-sub">NT$，於 performance.json 設定</div>
+        </div>
+        <div class="summary-card">
+          <div class="summary-label">投組總值</div>
+          <div class="summary-value" style="font-size:16px">${pd ? '$' + Math.round(portfolioValue).toLocaleString() : '—'}</div>
+          <div class="summary-sub">含未實現持倉估值</div>
+        </div>
+        <div class="summary-card">
+          <div class="summary-label">整體報酬率</div>
+          <div class="summary-value" style="color:${pnlColor}">${pd ? pnlSign + returnPct.toFixed(2) + '%' : '—'}</div>
+          <div class="summary-sub">相對起始資金</div>
+        </div>
+        <div class="summary-card">
+          <div class="summary-label">已實現損益</div>
+          <div class="summary-value" style="font-size:16px;color:${rColor}">${pd ? rSign + '$' + Math.abs(Math.round(realizedPnl)).toLocaleString() : '—'}</div>
+          <div class="summary-sub">出場標的加總</div>
+        </div>
+      </div>
+
+      <div class="perf-chart-wrap">
+        <canvas id="perfChart" style="width:100%;height:100%"></canvas>
+        ${!pd || !positions.length ? `<div style="position:absolute;inset:0;display:flex;align-items:center;justify-content:center;color:var(--text3);font-size:13px;pointer-events:none">新增持倉並同步資料後，圖表將自動產生</div>` : ''}
+      </div>
+
+      <div class="perf-section">
+        <div class="perf-section-hd">
+          <span class="section-title">持倉中　<span style="font-weight:400;color:var(--text3);font-size:12px">${active.length} 檔</span></span>
+          <button class="perf-btn perf-btn-add" onclick="perfShowAddForm()">＋ 新增持倉</button>
+        </div>
+        <div class="table-wrap">
+          <div class="table-scroll">
+            <table>
+              <thead><tr>
+                <th>股票</th><th>建倉日</th><th>股數</th><th>成本</th>
+                <th>現價</th><th>損益%</th><th>停利</th><th>停損</th><th>操作</th>
+              </tr></thead>
+              <tbody id="perfActiveBody">
+                ${active.length ? active.map(activeRow).join('') : `<tr id="perfEmptyRow"><td colspan="9" style="text-align:center;color:var(--text3);padding:24px 16px;font-size:13px">尚無持倉，點擊右上角「新增持倉」開始記錄</td></tr>`}
+                <tr id="perfAddFormRow" style="display:none">
+                  <td colspan="9" style="padding:14px 16px;background:var(--bg3);border-top:1px solid var(--border)">
+                    <div style="display:grid;grid-template-columns:repeat(auto-fill,minmax(120px,1fr));gap:10px 12px;margin-bottom:12px">
+                      <div><div class="perf-input-label">股票代號 *</div><input id="af-sid" class="perf-input" placeholder="2330" style="width:100%"></div>
+                      <div><div class="perf-input-label">名稱</div><input id="af-name" class="perf-input" placeholder="台積電" style="width:100%"></div>
+                      <div><div class="perf-input-label">建倉日期 *</div><input id="af-date" type="date" class="perf-input" value="${today}" style="width:100%"></div>
+                      <div><div class="perf-input-label">股數 *</div><input id="af-shares" type="number" class="perf-input" placeholder="1000" style="width:100%"></div>
+                      <div><div class="perf-input-label">成本價 *</div><input id="af-cost" type="number" step="0.01" class="perf-input" placeholder="850.00" style="width:100%"></div>
+                      <div><div class="perf-input-label">停利價</div><input id="af-tp" type="number" step="0.01" class="perf-input" placeholder="950.00" style="width:100%"></div>
+                      <div><div class="perf-input-label">停損價</div><input id="af-sl" type="number" step="0.01" class="perf-input" placeholder="800.00" style="width:100%"></div>
+                    </div>
+                    <div style="display:flex;gap:8px;align-items:center;flex-wrap:wrap">
+                      <button class="perf-btn perf-btn-confirm" onclick="perfSaveAdd()">儲存並寫入 Repo</button>
+                      <button class="perf-btn" onclick="document.getElementById('perfAddFormRow').style.display='none'">取消</button>
+                      <span style="font-size:11px;color:var(--text3)">⚠ 需先設定 GitHub Token 才能寫入</span>
+                    </div>
+                  </td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+        </div>
+      </div>
+
+      <div class="perf-section">
+        <div class="perf-section-hd">
+          <span class="section-title">已出場　<span style="font-weight:400;color:var(--text3);font-size:12px">${closed.length} 檔</span></span>
+        </div>
+        <div class="table-wrap">
+          <div class="table-scroll">
+            <table>
+              <thead><tr>
+                <th>股票</th><th>建倉日</th><th>出場日</th><th>股數</th>
+                <th>成本</th><th>賣出價</th><th>損益（NT$）</th><th>損益率</th>
+              </tr></thead>
+              <tbody>
+                ${closed.length ? closed.map(closedRow).join('') : `<tr><td colspan="8" style="text-align:center;color:var(--text3);padding:24px 16px;font-size:13px">尚無出場記錄</td></tr>`}
+              </tbody>
+            </table>
+          </div>
+        </div>
+      </div>
+    </div>`;
+
+  setTimeout(() => initPerfChart(pd), 60);
+}
+
+// ════════════════════════════════════════════════════
+//  PERFORMANCE — 互動函式
+// ════════════════════════════════════════════════════
+function perfShowAddForm() {
+  const row = document.getElementById('perfAddFormRow');
+  const emptyRow = document.getElementById('perfEmptyRow');
+  if (row) { row.style.display = 'table-row'; if (emptyRow) emptyRow.style.display = 'none'; }
+  document.getElementById('af-sid')?.focus();
+}
+
+function perfShowExitForm(id) {
+  const row = document.getElementById(`exit-form-${id}`);
+  if (row) row.style.display = row.style.display === 'none' ? 'table-row' : 'none';
+}
+
+async function perfSaveAdd() {
+  const sid    = document.getElementById('af-sid')?.value.trim();
+  const name   = document.getElementById('af-name')?.value.trim();
+  const date   = document.getElementById('af-date')?.value;
+  const shares = parseFloat(document.getElementById('af-shares')?.value);
+  const cost   = parseFloat(document.getElementById('af-cost')?.value);
+  const tp     = parseFloat(document.getElementById('af-tp')?.value) || null;
+  const sl     = parseFloat(document.getElementById('af-sl')?.value) || null;
+  if (!sid || !date || !shares || !cost) { alert('請填寫必填欄位（標記 * 的欄位）'); return; }
+  if (!DATA.performance_data) {
+    DATA.performance_data = { starting_capital: 450000, last_updated: '', positions: [], price_history: {} };
+  }
+  const newPos = {
+    id: 'p' + Date.now(), stock_id: sid, name: name || sid,
+    entry_date: date, shares, cost_price: cost,
+    tp_price: tp, sl_price: sl,
+    exit_price: null, exit_date: null, confirmed: false
+  };
+  DATA.performance_data.positions.push(newPos);
+  DATA.performance_data.last_updated = new Date().toISOString().slice(0, 10);
+  const ok = await ghWritePerf(DATA.performance_data);
+  if (ok) renderStrategy(); else DATA.performance_data.positions.pop();
+}
+
+async function perfConfirmExit(id) {
+  const exitPrice = parseFloat(document.getElementById(`ep-${id}`)?.value);
+  const exitDate  = document.getElementById(`ed-${id}`)?.value;
+  if (!exitPrice || exitPrice <= 0 || !exitDate) { alert('請填寫賣出價格與日期'); return; }
+  const pd  = DATA.performance_data;
+  const pos = pd.positions.find(p => p.id === id);
+  if (!pos) return;
+  const prev = { exit_price: pos.exit_price, exit_date: pos.exit_date, confirmed: pos.confirmed };
+  pos.exit_price = exitPrice; pos.exit_date = exitDate; pos.confirmed = true;
+  pd.last_updated = new Date().toISOString().slice(0, 10);
+  const ok = await ghWritePerf(pd);
+  if (ok) renderStrategy(); else Object.assign(pos, prev);
+}
+
+async function perfDeletePos(id) {
+  if (!confirm('確認刪除此持倉記錄？此操作無法復原。')) return;
+  const pd  = DATA.performance_data;
+  const idx = pd.positions.findIndex(p => p.id === id);
+  if (idx === -1) return;
+  const [removed] = pd.positions.splice(idx, 1);
+  pd.last_updated = new Date().toISOString().slice(0, 10);
+  const ok = await ghWritePerf(pd);
+  if (ok) renderStrategy(); else pd.positions.splice(idx, 0, removed);
+}
+
+async function perfSyncData() {
+  try {
+    const res = await fetch(`data/performance.json?t=${Date.now()}`, { cache: 'no-store' });
+    if (res.ok) { DATA.performance_data = await res.json(); renderStrategy(); }
+    else alert('同步失敗，請確認 performance.json 已建立於 data/ 目錄');
+  } catch(e) { alert('同步失敗：' + e.message); }
+}
+
+// ════════════════════════════════════════════════════
 //  INIT — 從 JSON 載入資料後再渲染
 // ════════════════════════════════════════════════════
 async function loadData() {
@@ -1829,10 +2348,11 @@ async function loadData() {
   const timestamp = new Date().getTime();
 
   try {
-    const [chipsRes, vsRes, aiRes] = await Promise.all([
+    const [chipsRes, vsRes, aiRes, perfRes] = await Promise.all([
       fetch(`data/chips_big_holder.json?t=${timestamp}`, { cache: 'no-store' }).then(r => r.ok ? r.json() : null).catch(() => null),
       fetch(`data/volume_signal.json?t=${timestamp}`,    { cache: 'no-store' }).then(r => r.ok ? r.json() : null).catch(() => null),
       fetch(`data/ai_recommendations.json?t=${timestamp}`, { cache: 'no-store' }).then(r => r.ok ? r.json() : null).catch(() => null),
+      fetch(`data/performance.json?t=${timestamp}`,     { cache: 'no-store' }).then(r => r.ok ? r.json() : null).catch(() => null),
     ]);
 
     if (chipsRes && chipsRes.results) {
@@ -1849,6 +2369,10 @@ async function loadData() {
 
     if (aiRes && aiRes.ranked) {
       aiData = aiRes;
+    }
+
+    if (perfRes) {
+      DATA.performance_data = perfRes;
     }
   } catch (e) {
     console.error('資料載入失敗:', e);

@@ -17,6 +17,7 @@ SCRIPT_DIR  = os.path.dirname(os.path.abspath(__file__))
 DATA_DIR    = os.path.join(SCRIPT_DIR, "..", "data")
 POOL_PATH   = os.path.join(DATA_DIR, "chips_big_holder.json")
 OUTPUT_PATH = os.path.join(DATA_DIR, "volume_signal.json")
+PERF_PATH   = os.path.join(DATA_DIR, "performance.json")
 
 TW_TZ      = timezone(timedelta(hours=8))
 TODAY      = datetime.now(TW_TZ).strftime("%Y-%m-%d")
@@ -112,6 +113,38 @@ def main():
     results.sort(key=lambda r: r.get("vol_ratio") or 0, reverse=True)
     print(f"\n觸發訊號：{len(results)} 支")
     _write_output(results)
+
+    # 更新績效持倉的收盤價
+    _update_performance_prices(finmind_token)
+
+
+def _update_performance_prices(token):
+    if not os.path.exists(PERF_PATH):
+        return
+    with open(PERF_PATH, encoding="utf-8") as f:
+        perf = json.load(f)
+    positions = perf.get("positions", [])
+    open_ids = list({p["stock_id"] for p in positions if not p.get("confirmed", False)})
+    if not open_ids:
+        return
+    print(f"\n📊 更新績效持倉收盤價：{len(open_ids)} 支")
+    price_history = perf.get("price_history", {})
+    for sid in open_ids:
+        df = fetch_stock_price(sid, START_DATE, TODAY, token)
+        if df is None or len(df) == 0:
+            continue
+        if sid not in price_history:
+            price_history[sid] = {}
+        for _, row in df.iterrows():
+            d = str(row["date"])[:10]
+            price_history[sid][d] = round(float(row["close"]), 2)
+        print(f"  ✅ {sid} 收盤價已更新")
+        time.sleep(FINMIND_SLEEP)
+    perf["price_history"] = price_history
+    perf["last_updated"] = TODAY
+    with open(PERF_PATH, "w", encoding="utf-8") as f:
+        json.dump(perf, f, ensure_ascii=False, indent=2)
+    print(f"✅ performance.json 已更新")
 
 
 def _write_output(results):
