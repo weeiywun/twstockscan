@@ -416,7 +416,16 @@ def main():
 
     # Step 4：yfinance 取股價（僅供顯示，不過濾）
     print(f"\nStep 4：取股價（{len(candidates)} 支）...")
+
+    # 診斷：先用台積電確認 yfinance 可正常運作
+    _probe = fetch_price_ema("2330", ".TW")
+    if _probe:
+        print(f"  [診斷] 2330.TW ✅ close={_probe['close']}  ema120={_probe['ema120']}  dev={_probe['deviation']}%  vol={_probe['vol_lots']}張")
+    else:
+        print("  [診斷] 2330.TW ❌ yfinance 無法取得資料，後續股價欄位將為空")
+
     results_1000, results_400 = [], []
+    price_ok, price_fail = 0, 0
 
     for sid in candidates:
         s1     = stocks_1000[sid]
@@ -424,6 +433,10 @@ def main():
         suffix = ".TW" if mmap.get(sid, "TWSE") == "TWSE" else ".TWO"
 
         price = fetch_price_ema(sid, suffix)
+        if price:
+            price_ok += 1
+        else:
+            price_fail += 1
 
         recent_1000 = sorted(s1["pct_map"])[-TREND_WEEKS:]
         recent_400  = sorted(s4["pct_map"])[-TREND_WEEKS:]
@@ -460,7 +473,8 @@ def main():
     results_1000.sort(key=lambda r: r["big_4w_chg"], reverse=True)
     results_400.sort(key=lambda r: r["big_4w_chg"],  reverse=True)
 
-    print(f"\n  最終：千張 {len(results_1000)} 支 / 400張 {len(results_400)} 支")
+    print(f"\n  股價抓取：成功 {price_ok} 支 / 失敗 {price_fail} 支")
+    print(f"  最終：千張 {len(results_1000)} 支 / 400張 {len(results_400)} 支")
     _write_output(results_1000, results_400)
 
 
