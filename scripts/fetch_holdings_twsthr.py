@@ -43,13 +43,13 @@ def parse_csv(path, encoding):
     with open(path, encoding=encoding, newline="") as f:
         reader = csv.DictReader(f)
         headers   = reader.fieldnames or []
-        date_cols = sorted([h for h in headers if re.fullmatch(r"\\d{8}", h)])
+        date_cols = sorted([h for h in headers if re.fullmatch(r"\d{8}", h)])
         for row in reader:
             raw = (row.get("股票") or "").strip()
             if not raw:
                 continue
             parts = raw.split(None, 1)
-            if len(parts) < 2 or not re.fullmatch(r"\\d{4}", parts[0]):
+            if len(parts) < 2 or not re.fullmatch(r"\d{4}", parts[0]):
                 continue
             sid, name = parts[0], parts[1].strip()
             mc_raw = (row.get("市值(億)") or "").replace(",", "").strip()
