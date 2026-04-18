@@ -468,8 +468,8 @@ const STRATEGIES = [
   },
   {
     id: "volume_breakout",
-    name: "爆量追蹤",
-    shortName: "爆量追蹤",
+    name: "大量追蹤",
+    shortName: "大量追蹤",
     icon: "◆",
     available: true,
     description: "找出近期發生「異常爆量突破」、隨後進入「縮量洗盤」的個股，捕捉主力蓄勢後二次啟動的進場機會。",
@@ -647,7 +647,7 @@ function renderStrategy() {
     return;
   }
 
-  // 爆量追蹤策略使用獨立渲染器
+  // 大量追蹤策略使用獨立渲染器
   if (strat.id === 'volume_breakout') {
     renderVolumeBreakout(strat, main);
     return;
@@ -984,7 +984,7 @@ function exportCSV() {
 }
 
 // ════════════════════════════════════════════════════
-//  爆量追蹤：渲染器
+//  大量追蹤：渲染器
 // ════════════════════════════════════════════════════
 function renderVolumeBreakout(strat, main) {
   const rawData = DATA.volume_breakout_data || [];
@@ -1004,7 +1004,7 @@ function renderVolumeBreakout(strat, main) {
           <div class="coming-icon" style="font-size:28px">◆</div>
           <div class="coming-title">資料尚未生成</div>
           <div class="coming-desc">
-            請至 GitHub Actions → <b>爆量追蹤選股</b> → <b>Run workflow</b><br>
+            請至 GitHub Actions → <b>大量追蹤選股</b> → <b>Run workflow</b><br>
             手動觸發首次掃描，或等待盤後 15:30 自動執行。
           </div>
         </div>
@@ -1092,7 +1092,7 @@ function renderVolumeBreakout(strat, main) {
       <!-- Table -->
       <div class="table-wrap">
         <div class="table-toolbar">
-          <span class="table-title">爆量追蹤結果</span>
+          <span class="table-title">大量追蹤結果</span>
           <div class="toolbar-right">
             <span class="updated-tag">更新：${strat.dataUpdated}</span>
             <button class="btn-csv" onclick="exportVbCSV()">↓ 匯出 CSV</button>
