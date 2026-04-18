@@ -42,7 +42,7 @@ VOL_MIN     = 1000   # 最低日均量（張）
 PRICE_DAYS  = 200    # yfinance 抓取天數（確保 EMA120 收斂）
 
 FLEX_MAX_STOCKS    = 15
-FLEX_COLOR_PRIMARY = "#7b4fa8"   # 紫色：籌碼集中策略專屬
+FLEX_COLOR_PRIMARY = "#e66e29"   # 橘色：籌碼集中策略專屬
 FLEX_COLOR_ACCENT  = "#0c6b3e"   # 綠色：增幅正值
 
 
