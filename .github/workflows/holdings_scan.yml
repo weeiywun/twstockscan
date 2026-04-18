@@ -32,6 +32,7 @@ jobs:
 
       - name: Run holdings analysis
         env:
+          FINMIND_TOKEN: ${{ secrets.FINMIND_TOKEN }}
           LINE_CHANNEL_ACCESS_TOKEN: ${{ secrets.LINE_CHANNEL_ACCESS_TOKEN }}
           LINE_USER_IDS: ${{ secrets.LINE_USER_IDS }}
         run: python scripts/fetch_holdings_twsthr.py

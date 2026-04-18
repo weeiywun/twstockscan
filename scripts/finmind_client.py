@@ -1,94 +1,69 @@
 #!/usr/bin/env python3
 """
-股價資料下載模組（yfinance 批次版）
-供 scan_ema_tangling.py 和 scan_volume_breakout.py 共用。
+股價資料下載模組（FinMind API 版）
+供 fetch_holdings_twsthr.py、scan_ema_tangling.py、scan_volume_breakout.py 共用。
 """
 
+import os
 import time
 
 import pandas as pd
-import yfinance as yf
+import requests
+
+FINMIND_API = "https://api.finmindtrade.com/api/v4/data"
 
 
-def fetch_all_stocks(stock_list, start_date, end_date, token=None, **_kwargs):
+def fetch_stock_price(stock_id: str, start_date: str, end_date: str, token: str) -> pd.DataFrame | None:
+    """取得單支股票日線資料。回傳 DataFrame 或 None。"""
+    try:
+        r = requests.get(FINMIND_API, params={
+            "dataset":    "TaiwanStockPrice",
+            "data_id":    stock_id,
+            "start_date": start_date,
+            "end_date":   end_date,
+            "token":      token,
+        }, timeout=20)
+        data = r.json()
+        if data.get("status") != 200 or not data.get("data"):
+            return None
+        df = pd.DataFrame(data["data"])
+        df["date"] = pd.to_datetime(df["date"])
+        df = df.sort_values("date").reset_index(drop=True)
+        df["volume_lots"] = (df["Trading_Volume"] / 1000).round(0).astype(int)
+        return df[["date", "open", "max", "min", "close", "volume_lots"]]
+    except Exception:
+        return None
+
+
+def fetch_all_stocks(stock_list, start_date, end_date, token=None, sleep=0.35, **_kwargs):
     """
-    下載全市場歷史 OHLCV 日線資料（yfinance 批次版）。
+    批次下載全市場歷史 OHLCV 日線資料（FinMind API 版）。
 
     Parameters
     ----------
-    stock_list : list[dict]，每個元素包含 stock_id / name / market
-    start_date : str，格式 "YYYY-MM-DD"
-    end_date   : str，格式 "YYYY-MM-DD"
-    token      : 忽略（相容舊介面）
+    stock_list : list[dict]  每個元素含 stock_id / name / market
+    start_date : str  "YYYY-MM-DD"
+    end_date   : str  "YYYY-MM-DD"
+    token      : str  FinMind API token（優先，否則讀環境變數 FINMIND_TOKEN）
 
     Returns
     -------
-    dict[str, pd.DataFrame]：{stock_id: DataFrame(index=date, cols=[Open,High,Low,Close,Volume])}
+    dict[str, pd.DataFrame]  {stock_id: DataFrame(date, open, max, min, close, volume_lots)}
     """
-    BATCH = 100
+    if not token:
+        token = os.environ.get("FINMIND_TOKEN", "")
 
-    # 建立 ticker → stock_id 對照表
-    ticker_map = {}
-    for s in stock_list:
-        suffix = ".TW" if s["market"] == "TWSE" else ".TWO"
-        ticker_map[s["stock_id"] + suffix] = s["stock_id"]
-
-    tickers = list(ticker_map.keys())
-    total   = len(tickers)
-    n_batches = (total + BATCH - 1) // BATCH
     results = {}
+    total = len(stock_list)
 
-    for b_idx in range(n_batches):
-        batch   = tickers[b_idx * BATCH:(b_idx + 1) * BATCH]
-        ticker_str = " ".join(batch)
-        print(f"  [{b_idx+1}/{n_batches}] 下載 {len(batch)} 支...", end="", flush=True)
+    for i, s in enumerate(stock_list, 1):
+        sid = s["stock_id"]
+        df = fetch_stock_price(sid, start_date, end_date, token)
+        if df is not None and not df.empty:
+            results[sid] = df
+        if i % 100 == 0:
+            print(f"  進度：{i}/{total}，成功 {len(results)} 支")
+        time.sleep(sleep)
 
-        try:
-            raw = yf.download(
-                ticker_str,
-                start=start_date,
-                end=end_date,
-                group_by="ticker",
-                auto_adjust=True,
-                progress=False,
-                threads=True,
-            )
-            if raw is None or raw.empty:
-                print(" 無資料")
-                continue
-
-            hits = 0
-            for ticker in batch:
-                sid = ticker_map[ticker]
-                try:
-                    if len(batch) == 1:
-                        df = raw.dropna(how="all")
-                    else:
-                        lvl0 = raw.columns.get_level_values(0)
-                        if ticker not in lvl0:
-                            continue
-                        df = raw[ticker].dropna(how="all")
-
-                    if df is None or df.empty:
-                        continue
-
-                    df = df[["Open", "High", "Low", "Close", "Volume"]].copy()
-                    for col in ["Open", "High", "Low", "Close", "Volume"]:
-                        df[col] = pd.to_numeric(df[col], errors="coerce")
-                    df = df.dropna(subset=["Close", "Volume"])
-
-                    if not df.empty:
-                        results[sid] = df
-                        hits += 1
-                except Exception:
-                    pass
-
-            print(f" {hits} 支有效")
-
-        except Exception as e:
-            print(f" 失敗：{e}")
-
-        time.sleep(1.2)
-
-    print(f"  完成：{len(results)} / {len(stock_list)} 支股票資料整理完成")
+    print(f"  完成：{len(results)} / {total} 支")
     return results

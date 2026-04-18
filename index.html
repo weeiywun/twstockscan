@@ -113,6 +113,33 @@ header .page-inner{
 .strat-tab.locked .badge{background:rgba(0,0,0,0.05);color:var(--text3)}
 .strat-tab.locked{opacity:.5;cursor:not-allowed}
 
+/* ── Tag badges ──────────────────────────────── */
+.tag-badge{
+  display:inline-block;padding:1px 6px;border-radius:10px;
+  font-size:10px;font-weight:600;color:#fff;margin:1px 2px 1px 0;
+  white-space:nowrap;
+}
+
+/* ── View mode toggle ────────────────────────── */
+.view-btn{
+  padding:4px 12px;border-radius:6px;font-size:12px;cursor:pointer;
+  border:1px solid var(--border);background:#fff;color:var(--text2);
+  font-family:var(--sans);transition:all .15s;
+}
+.view-btn.active{background:var(--green);border-color:var(--green);color:#fff;}
+.view-btn:hover:not(.active){background:var(--bg2);}
+
+/* ── Industry group header row ───────────────── */
+tr.industry-header-row td{
+  background:var(--bg2);padding:8px 12px;border-top:2px solid var(--border2);
+}
+.industry-name{font-weight:700;font-size:13px;color:var(--text);margin-right:10px;}
+.industry-avg{font-size:12px;color:var(--green);font-weight:600;margin-right:8px;}
+.industry-count{font-size:11px;color:var(--text3);}
+
+/* ── Amber text ──────────────────────────────── */
+.amber-text{color:var(--amber);font-weight:600;}
+
 /* ── Main layout ─────────────────────────────── */
 main{padding:24px 0 0;}
 
@@ -454,17 +481,34 @@ const STRATEGIES = [
     shortName: "籌碼集中",
     icon: "◈",
     available: true,
-    description: "同時追蹤千張大戶（≥1000張）與 400 張大戶的持股比例，篩選出兩個門檻均呈持續增持趨勢、且股價位於均線低基期的標的。籌碼由大戶雙層確認，訊號更可靠。",
+    description: "週末籌碼海選：追蹤千張大戶與 400 張大戶持股相對成長率（R），標記持續成長、雙軌觸發、單周增幅三類標籤，篩選低基期且量能充足的標的。",
     conditions: [
-      "日均成交量 ≥ 1,000 張",
+      "5日均量 > 500 張",
       "千張大戶比例 > 30%",
-      "千張大戶：近 4 週每週 ≥ 前週（不下降）",
-      "400 張大戶：近 4 週每週 ≥ 前週（同步增持）",
-      "股價乖離 EMA120：−10% ～ +5%",
+      "股價乖離 EMA120：±10% 以內",
+      "🏷 持續成長 +1：連續兩週 R > 0%",
+      "🏷 雙軌觸發 +3：R_400 ≥ 2.0% 或 R_1000 ≥ 1.25%",
+      "🏷 單周增幅 +5：任一門檻單週 R > 3.0%",
     ],
     dataUpdated: "載入中...",
-    dataSource: "集保開放資料 + TWSE/TPEx",
+    dataSource: "集保開放資料 + FinMind",
     dataKey: "chips_big_holder_data",
+  },
+  {
+    id: "volume_signal",
+    name: "量增訊號",
+    shortName: "量增訊號",
+    icon: "◆",
+    available: true,
+    description: "每日盤後針對籌碼集中入池標的掃描量能突破訊號，捕捉主力啟動時機。",
+    conditions: [
+      "來源：籌碼集中入池標的",
+      "當日成交量 ≥ 10日均量 × 1.5",
+      "收盤價 > EMA5",
+    ],
+    dataUpdated: "載入中...",
+    dataSource: "FinMind（每日盤後）",
+    dataKey: "volume_signal_data",
   },
 ];
 
@@ -474,9 +518,7 @@ const STRATEGIES = [
 // ════════════════════════════════════════════════════
 const DATA = {
   chips_big_holder_data: [],
-  chips_big_holder_400:  {},
-  volume_breakout_data:  [],
-  ema_tangling_data:     [],
+  volume_signal_data:    [],
 };
 let DATE_LABELS = [];
 
@@ -484,8 +526,9 @@ let DATE_LABELS = [];
 //  STATE
 // ════════════════════════════════════════════════════
 let activeStratId = STRATEGIES[0].id;
-let sortCol = "big_4w_chg";
+let sortCol = "cumulative_3w";
 let sortAsc = false;
+let chipsViewMode = "stock"; // "stock" | "industry"
 let expandedRow = null;
 let watchlist = JSON.parse(localStorage.getItem("watchlist") || "[]");
 let aiData = null;
@@ -593,15 +636,13 @@ function renderStrategy() {
     return;
   }
 
-  // 大量追蹤策略使用獨立渲染器
-  if (strat.id === 'volume_breakout') {
-    renderVolumeBreakout(strat, main);
+  if (strat.id === 'chips_big_holder') {
+    renderChipsHolder(strat, main);
     return;
   }
 
-  // 均線糾結策略使用獨立渲染器
-  if (strat.id === 'ema_tangling') {
-    renderEmaTangling(strat, main);
+  if (strat.id === 'volume_signal') {
+    renderVolumeSignal(strat, main);
     return;
   }
 
@@ -927,6 +968,363 @@ function exportCSV() {
   a.download = `${strat.id}_${strat.dataUpdated}.csv`;
   a.click();
   URL.revokeObjectURL(url);
+}
+
+// ════════════════════════════════════════════════════
+//  籌碼集中：渲染器
+// ════════════════════════════════════════════════════
+function renderChipsHolder(strat, main) {
+  const allData = DATA.chips_big_holder_data || [];
+
+  if (allData.length === 0) {
+    main.innerHTML = `<div class="coming-soon">
+      <div class="coming-icon">${strat.icon}</div>
+      <div class="coming-title">${strat.name}</div>
+      <div class="coming-desc">資料尚未產生，請至 GitHub Actions → <b>大戶持股分析</b> → <b>Run workflow</b><br>執行後約 5 分鐘資料將自動更新。</div>
+    </div>`;
+    return;
+  }
+
+  // 排序（個股模式）
+  const sortedData = allData.slice().sort((a, b) => {
+    const va = a[sortCol] ?? -9999, vb = b[sortCol] ?? -9999;
+    return sortAsc ? va - vb : vb - va;
+  });
+
+  // 族群模式：按族群平均三周累積增幅分組
+  function buildIndustryGroups(data) {
+    const groups = {};
+    data.forEach(d => {
+      const ind = d.industry || '其他';
+      if (!groups[ind]) groups[ind] = [];
+      groups[ind].push(d);
+    });
+    return Object.entries(groups).map(([name, items]) => {
+      const avg = items.reduce((s, d) => s + (d.cumulative_3w || 0), 0) / items.length;
+      items.sort((a, b) => (b.cumulative_3w || 0) - (a.cumulative_3w || 0));
+      return { name, items, avg: Math.round(avg * 100) / 100 };
+    }).sort((a, b) => b.avg - a.avg);
+  }
+
+  const tagColor = { '持續成長': '#3a86ff', '雙軌觸發': '#e66e29', '單周增幅': '#e63946' };
+
+  function tagBadges(tags) {
+    if (!tags || !tags.length) return '';
+    return tags.map(t =>
+      `<span class="tag-badge" style="background:${tagColor[t] || '#888'}">${t}</span>`
+    ).join('');
+  }
+
+  function chipsRow(d) {
+    const devSign  = d.deviation >= 0 ? '+' : '';
+    const weekSign = (d.week_chg_pct >= 0) ? '+' : '';
+    const weekClass = d.week_chg_pct >= 0 ? 'pos' : 'neg';
+    const devClass  = d.deviation  >= 0 ? 'pos' : 'neg';
+    const cum3Sign  = (d.cumulative_3w || 0) >= 0 ? '+' : '';
+    const inWatch   = watchlist.includes(d.stock_id);
+    return `
+      <tr onclick="toggleExpand('${d.stock_id}')" id="row-${d.stock_id}">
+        <td>
+          <a href="https://www.tradingview.com/chart/?symbol=${getTVSymbol(d)}"
+            onclick="openTV('${getTVSymbol(d)}', event)"
+            style="text-decoration:none;display:inline-block">
+            <div class="stock-code" style="display:flex;align-items:center;gap:5px">
+              ${d.stock_id}<span style="font-size:9px;opacity:.45;font-family:var(--mono)">↗</span>
+            </div>
+            <div class="stock-name">${d.name}</div>
+          </a>
+          <div class="stock-industry">${d.industry || ''}</div>
+        </td>
+        <td><span class="price-cell">${d.close != null ? d.close.toFixed(1) : '—'}</span></td>
+        <td><span class="deviation ${weekClass}">${d.week_chg_pct != null ? weekSign + d.week_chg_pct.toFixed(2) + '%' : '—'}</span></td>
+        <td>
+          <span class="ema-cell">${d.ema120 != null ? d.ema120.toFixed(2) : '—'}</span><br>
+          <span class="deviation ${devClass}">${d.deviation != null ? devSign + d.deviation.toFixed(2) + '%' : '—'}</span>
+        </td>
+        <td><span class="big-pct">${d.big_pct_1000 != null ? d.big_pct_1000.toFixed(2) + '%' : '—'}</span></td>
+        <td><span class="big-pct ${(d.cumulative_3w || 0) >= 0 ? 'pos' : 'neg'}">${d.cumulative_3w != null ? cum3Sign + d.cumulative_3w.toFixed(2) + '%' : '—'}</span></td>
+        <td><div class="spark">${sparkBars(d.big_trend_1000 || [])}</div></td>
+        <td>${tagBadges(d.tags)}</td>
+      </tr>
+      <tr class="expand-row" id="expand-${d.stock_id}" style="display:none">
+        <td colspan="8">
+          <div class="expand-content">
+            <div class="expand-section">
+              <h4>千張大戶趨勢</h4>
+              ${trendBars(d.big_trend_1000 || [], '千張', '')}
+            </div>
+            <div class="expand-section">
+              <h4>400張大戶趨勢</h4>
+              ${d.big_trend_400 ? trendBars(d.big_trend_400, '400張', '') : '<div style="color:var(--text3);font-size:12px;padding:4px 0">資料不足</div>'}
+            </div>
+            <div class="expand-section">
+              <h4>操作</h4>
+              <button onclick="event.stopPropagation();toggleWatch('${d.stock_id}','${d.name}')"
+                style="background:${inWatch?'var(--green-dim)':'#fff'};border:1px solid ${inWatch?'var(--green)':'var(--border)'};color:${inWatch?'var(--green)':'var(--text2)'};padding:8px 14px;border-radius:6px;cursor:pointer;font-size:12px;font-family:var(--sans);width:100%;margin-bottom:8px"
+                id="watchBtn-${d.stock_id}">
+                ${inWatch ? '✓ 已加入觀察清單' : '+ 加入觀察清單'}
+              </button>
+              <a href="https://tw.stock.yahoo.com/quote/${d.stock_id}" target="_blank"
+                onclick="event.stopPropagation()"
+                style="display:block;text-align:center;background:#fff;border:1px solid var(--border);color:var(--text2);padding:8px 14px;border-radius:6px;font-size:12px;text-decoration:none">
+                Yahoo 股市 ↗
+              </a>
+            </div>
+          </div>
+        </td>
+      </tr>`;
+  }
+
+  function industryGroupHTML(groups) {
+    return groups.map(g => {
+      const avgSign = g.avg >= 0 ? '+' : '';
+      const rows = g.items.map(d => chipsRow(d)).join('');
+      return `
+        <tr class="industry-header-row">
+          <td colspan="8">
+            <span class="industry-name">${g.name}</span>
+            <span class="industry-avg">平均3週增幅 ${avgSign}${g.avg.toFixed(2)}%</span>
+            <span class="industry-count">${g.items.length} 支</span>
+          </td>
+        </tr>
+        ${rows}`;
+    }).join('');
+  }
+
+  const sortIcon = col => `<span class="sort-icon">${sortCol===col ? (sortAsc?'↑':'↓') : '·'}</span>`;
+  const vscrollClass = allData.length > 6 ? 'table-vscroll' : '';
+  const maxCum = Math.max(...allData.map(d => d.cumulative_3w || 0));
+
+  const tableBody = chipsViewMode === 'stock'
+    ? sortedData.map(d => chipsRow(d)).join('')
+    : industryGroupHTML(buildIndustryGroups(allData));
+
+  main.innerHTML = `
+    <div class="strategy-panel active">
+      <div class="strat-header">
+        <div class="strat-title">${strat.icon} ${strat.name}策略</div>
+        <div class="strat-desc">${strat.description}</div>
+      </div>
+      <div class="conditions">
+        ${strat.conditions.map(c => `<div class="cond"><span class="cond-dot"></span>${c}</div>`).join('')}
+      </div>
+      <div class="summary-row">
+        <div class="summary-card">
+          <div class="summary-label">入池標的</div>
+          <div class="summary-value green">${allData.length}</div>
+          <div class="summary-sub">符合全部條件</div>
+        </div>
+        <div class="summary-card">
+          <div class="summary-label">最高3週增幅</div>
+          <div class="summary-value amber">${maxCum >= 0 ? '+' : ''}${maxCum.toFixed(2)}%</div>
+          <div class="summary-sub">千張大戶累積增幅</div>
+        </div>
+        <div class="summary-card">
+          <div class="summary-label">資料日期</div>
+          <div class="summary-value" style="font-size:16px;font-family:var(--mono)">${strat.dataUpdated}</div>
+          <div class="summary-sub">${strat.dataSource}</div>
+        </div>
+        <div class="summary-card">
+          <div class="summary-label">排列方式</div>
+          <div style="display:flex;gap:6px;margin-top:6px">
+            <button class="view-btn ${chipsViewMode==='stock'?'active':''}" onclick="setChipsView('stock')">個股</button>
+            <button class="view-btn ${chipsViewMode==='industry'?'active':''}" onclick="setChipsView('industry')">族群</button>
+          </div>
+        </div>
+      </div>
+      <div class="table-wrap">
+        <div class="table-toolbar">
+          <span class="table-title">篩選結果</span>
+          <div class="toolbar-right">
+            <span class="updated-tag">更新：${strat.dataUpdated}</span>
+            <button class="btn-csv" onclick="exportCSVChips()" title="匯出 CSV">↓ 匯出 CSV</button>
+          </div>
+        </div>
+        <div class="table-scroll">
+        <div class="${vscrollClass}">
+        <table id="resultsTable">
+          <thead>
+            <tr>
+              <th onclick="chipsSort('stock_id')">代號 / 名稱${sortIcon('stock_id')}</th>
+              <th onclick="chipsSort('close')">現價${sortIcon('close')}</th>
+              <th onclick="chipsSort('week_chg_pct')">周漲跌${sortIcon('week_chg_pct')}</th>
+              <th onclick="chipsSort('deviation')" data-tip="(現價-EMA120)/EMA120">乖離EMA120${sortIcon('deviation')}</th>
+              <th onclick="chipsSort('big_pct_1000')" data-tip="千張大戶持股%">大戶比例${sortIcon('big_pct_1000')}</th>
+              <th onclick="chipsSort('cumulative_3w')" data-tip="千張大戶3週累積增幅R">三周累積增幅${sortIcon('cumulative_3w')}</th>
+              <th>趨勢</th>
+              <th>篩選條件</th>
+            </tr>
+          </thead>
+          <tbody>${tableBody}</tbody>
+        </table>
+        </div>
+        </div>
+      </div>
+      ${renderAICard()}
+    </div>`;
+
+  const grid = document.getElementById('watchlistGrid');
+  if (grid) grid.innerHTML = renderWatchlist();
+}
+
+function setChipsView(mode) {
+  chipsViewMode = mode;
+  const strat = STRATEGIES.find(s => s.id === 'chips_big_holder');
+  renderChipsHolder(strat, document.getElementById('mainContent'));
+}
+
+function chipsSort(col) {
+  if (sortCol === col) sortAsc = !sortAsc;
+  else { sortCol = col; sortAsc = false; }
+  const strat = STRATEGIES.find(s => s.id === 'chips_big_holder');
+  renderChipsHolder(strat, document.getElementById('mainContent'));
+}
+
+function exportCSVChips() {
+  const data = DATA.chips_big_holder_data || [];
+  if (!data.length) return;
+  const strat = STRATEGIES.find(s => s.id === 'chips_big_holder');
+  const headers = ['代號','名稱','族群','現價','周漲跌(%)','乖離EMA120(%)','大戶比例(%)','三周累積增幅(%)','標籤','分數'];
+  const rows = data.map(d => [
+    d.stock_id, d.name, d.industry || '',
+    d.close?.toFixed(1) || '',
+    d.week_chg_pct != null ? d.week_chg_pct.toFixed(2) : '',
+    d.deviation != null ? d.deviation.toFixed(2) : '',
+    d.big_pct_1000?.toFixed(2) || '',
+    d.cumulative_3w != null ? d.cumulative_3w.toFixed(2) : '',
+    (d.tags || []).join(' '),
+    d.tag_score || 0,
+  ]);
+  const csv = [headers, ...rows].map(r => r.map(v => `"${String(v).replace(/"/g,'""')}"`).join(',')).join('\r\n');
+  const blob = new Blob(['\uFEFF' + csv], { type: 'text/csv;charset=utf-8' });
+  const a = Object.assign(document.createElement('a'), { href: URL.createObjectURL(blob), download: `chips_${strat.dataUpdated}.csv` });
+  a.click();
+}
+
+// ════════════════════════════════════════════════════
+//  量增訊號：渲染器
+// ════════════════════════════════════════════════════
+function renderVolumeSignal(strat, main) {
+  const data = DATA.volume_signal_data || [];
+
+  if (data.length === 0) {
+    main.innerHTML = `<div class="coming-soon">
+      <div class="coming-icon">${strat.icon}</div>
+      <div class="coming-title">${strat.name}</div>
+      <div class="coming-desc">今日無量增訊號，或資料尚未更新。<br>資料每個交易日 16:10 後自動更新。</div>
+    </div>`;
+    return;
+  }
+
+  const tagColor = { '持續成長': '#3a86ff', '雙軌觸發': '#e66e29', '單周增幅': '#e63946' };
+  function tagBadges(tags) {
+    return (tags || []).map(t => `<span class="tag-badge" style="background:${tagColor[t]||'#888'}">${t}</span>`).join('');
+  }
+
+  const rows = data.map(d => {
+    const ratioClass = d.vol_ratio >= 2.5 ? 'neg' : 'amber-text';
+    return `<tr onclick="toggleExpand('vs-${d.stock_id}')" id="row-vs-${d.stock_id}">
+      <td>
+        <a href="https://www.tradingview.com/chart/?symbol=${getTVSymbol(d)}"
+          onclick="openTV('${getTVSymbol(d)}', event)"
+          style="text-decoration:none;display:inline-block">
+          <div class="stock-code" style="display:flex;align-items:center;gap:5px">
+            ${d.stock_id}<span style="font-size:9px;opacity:.45;font-family:var(--mono)">↗</span>
+          </div>
+          <div class="stock-name">${d.name}</div>
+        </a>
+        <div class="stock-industry">${d.industry || ''}</div>
+      </td>
+      <td><span class="price-cell">${d.close?.toFixed(1) || '—'}</span></td>
+      <td>
+        <span class="${ratioClass}" style="font-weight:600">${d.vol_ratio != null ? d.vol_ratio.toFixed(2) + 'x' : '—'}</span><br>
+        <span style="font-size:11px;color:var(--text3)">${d.vol_today != null ? (d.vol_today).toLocaleString() : '—'} 張</span>
+      </td>
+      <td><span class="ema-cell">${d.ema5?.toFixed(2) || '—'}</span></td>
+      <td><span class="big-pct">${d.big_pct_1000 != null ? d.big_pct_1000.toFixed(2) + '%' : '—'}</span></td>
+      <td><span class="big-pct ${(d.cumulative_3w||0)>=0?'pos':'neg'}">${d.cumulative_3w != null ? ((d.cumulative_3w>=0?'+':'') + d.cumulative_3w.toFixed(2) + '%') : '—'}</span></td>
+      <td>${tagBadges(d.tags)}</td>
+    </tr>
+    <tr class="expand-row" id="expand-vs-${d.stock_id}" style="display:none">
+      <td colspan="7">
+        <div class="expand-content">
+          <div class="expand-section" style="flex:1">
+            <h4>量能分析</h4>
+            <div style="font-size:12px;color:var(--text2);line-height:1.8">
+              <div>當日量：<b>${d.vol_today?.toLocaleString() || '—'} 張</b></div>
+              <div>10日均量：<b>${d.vol_10d_avg?.toLocaleString() || '—'} 張</b></div>
+              <div>量比：<b style="color:${d.vol_ratio>=2?'var(--green)':'var(--text)'}">${d.vol_ratio?.toFixed(2) || '—'}x</b></div>
+              <div>EMA5：<b>${d.ema5?.toFixed(2) || '—'}</b></div>
+              <div>訊號日：<b>${d.signal_date || '—'}</b></div>
+            </div>
+          </div>
+          <div class="expand-section">
+            <h4>操作</h4>
+            <a href="https://tw.stock.yahoo.com/quote/${d.stock_id}" target="_blank"
+              onclick="event.stopPropagation()"
+              style="display:block;text-align:center;background:#fff;border:1px solid var(--border);color:var(--text2);padding:8px 14px;border-radius:6px;font-size:12px;text-decoration:none">
+              Yahoo 股市 ↗
+            </a>
+          </div>
+        </div>
+      </td>
+    </tr>`;
+  }).join('');
+
+  main.innerHTML = `
+    <div class="strategy-panel active">
+      <div class="strat-header">
+        <div class="strat-title">${strat.icon} ${strat.name}</div>
+        <div class="strat-desc">${strat.description}</div>
+      </div>
+      <div class="conditions">
+        ${strat.conditions.map(c => `<div class="cond"><span class="cond-dot"></span>${c}</div>`).join('')}
+      </div>
+      <div class="summary-row">
+        <div class="summary-card">
+          <div class="summary-label">今日訊號</div>
+          <div class="summary-value green">${data.length}</div>
+          <div class="summary-sub">量增入池標的</div>
+        </div>
+        <div class="summary-card">
+          <div class="summary-label">最高量比</div>
+          <div class="summary-value amber">${Math.max(...data.map(d => d.vol_ratio||0)).toFixed(2)}x</div>
+          <div class="summary-sub">當日量 / 10日均量</div>
+        </div>
+        <div class="summary-card">
+          <div class="summary-label">資料日期</div>
+          <div class="summary-value" style="font-size:16px;font-family:var(--mono)">${strat.dataUpdated}</div>
+          <div class="summary-sub">${strat.dataSource}</div>
+        </div>
+      </div>
+      <div class="table-wrap">
+        <div class="table-toolbar">
+          <span class="table-title">量增訊號標的</span>
+          <div class="toolbar-right"><span class="updated-tag">更新：${strat.dataUpdated}</span></div>
+        </div>
+        <div class="table-scroll">
+        <div class="${data.length > 6 ? 'table-vscroll' : ''}">
+        <table>
+          <thead>
+            <tr>
+              <th>代號 / 名稱</th>
+              <th>現價</th>
+              <th data-tip="當日量/10日均量">量比 / 當日量</th>
+              <th>EMA5</th>
+              <th>大戶比例</th>
+              <th data-tip="千張大戶3週累積增幅">三周累積增幅</th>
+              <th>籌碼標籤</th>
+            </tr>
+          </thead>
+          <tbody>${rows}</tbody>
+        </table>
+        </div>
+        </div>
+      </div>
+    </div>`;
+
+  const grid = document.getElementById('watchlistGrid');
+  if (grid) grid.innerHTML = renderWatchlist();
 }
 
 // ════════════════════════════════════════════════════
@@ -1335,32 +1733,22 @@ async function loadData() {
   const timestamp = new Date().getTime();
 
   try {
-    const [chipsRes, vbRes, etRes, aiRes] = await Promise.all([
+    const [chipsRes, vsRes, aiRes] = await Promise.all([
       fetch(`data/chips_big_holder.json?t=${timestamp}`, { cache: 'no-store' }).then(r => r.ok ? r.json() : null).catch(() => null),
-      fetch(`data/volume_breakout.json?t=${timestamp}`,  { cache: 'no-store' }).then(r => r.ok ? r.json() : null).catch(() => null),
-      fetch(`data/ema_tangling.json?t=${timestamp}`,     { cache: 'no-store' }).then(r => r.ok ? r.json() : null).catch(() => null),
+      fetch(`data/volume_signal.json?t=${timestamp}`,    { cache: 'no-store' }).then(r => r.ok ? r.json() : null).catch(() => null),
       fetch(`data/ai_recommendations.json?t=${timestamp}`, { cache: 'no-store' }).then(r => r.ok ? r.json() : null).catch(() => null),
     ]);
 
     if (chipsRes && chipsRes.results) {
       DATA.chips_big_holder_data = chipsRes.results;
-      DATA.chips_big_holder_400 = {};
-      (chipsRes.results_400 || []).forEach(r => { DATA.chips_big_holder_400[r.stock_id] = r; });
-      DATE_LABELS = (chipsRes.results[0]?.date_labels || []).map(d => d.replace(/-/g, '/'));
       const strat = STRATEGIES.find(s => s.id === 'chips_big_holder');
-      if (strat) strat.dataUpdated = chipsRes.updated || strat.dataUpdated;
+      if (strat) strat.dataUpdated = (chipsRes.updated || '').slice(0, 10) || strat.dataUpdated;
     }
 
-    if (vbRes && vbRes.results) {
-      DATA.volume_breakout_data = vbRes.results;
-      const strat = STRATEGIES.find(s => s.id === 'volume_breakout');
-      if (strat) strat.dataUpdated = vbRes.updated || strat.dataUpdated;
-    }
-
-    if (etRes && etRes.results) {
-      DATA.ema_tangling_data = etRes.results;
-      const strat = STRATEGIES.find(s => s.id === 'ema_tangling');
-      if (strat) strat.dataUpdated = etRes.updated || strat.dataUpdated;
+    if (vsRes && vsRes.results) {
+      DATA.volume_signal_data = vsRes.results;
+      const strat = STRATEGIES.find(s => s.id === 'volume_signal');
+      if (strat) strat.dataUpdated = (vsRes.updated || '').slice(0, 10) || strat.dataUpdated;
     }
 
     if (aiRes && aiRes.ranked) {
