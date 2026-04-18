@@ -119,6 +119,7 @@ header .page-inner{
   font-size:10px;font-weight:600;color:#fff;margin:1px 2px 1px 0;
   white-space:nowrap;
 }
+.tag-cell{display:flex;flex-wrap:wrap;gap:2px;min-width:0}
 
 /* ── View mode toggle ────────────────────────── */
 .view-btn{
@@ -325,9 +326,9 @@ tbody tr:hover .spark-bar{opacity:.9}
 }
 [data-tip]:hover::after{opacity:1}
 
-/* ── 垂直捲軸（超過6筆啟用）───────────────────── */
+/* ── 垂直捲軸（超過10筆啟用）──────────────────── */
 .table-vscroll{
-  max-height:312px;
+  max-height:580px;
   overflow-y:auto;
   scrollbar-width:thin;
   scrollbar-color:var(--border2) transparent;
@@ -400,6 +401,9 @@ tbody tr:hover .spark-bar{opacity:.9}
   header{height:50px}
   .logo{font-size:15px}
   .header-meta{display:none}
+
+  thead th:last-child{white-space:normal;min-width:80px}
+  .tag-cell{gap:2px}
 
 .page-layout{
     grid-template-columns:1fr;
@@ -542,15 +546,18 @@ function openTV(tvSymbol, event) {
   event.stopPropagation();
   event.preventDefault();
   const isMobile = /iPhone|iPad|iPod|Android/i.test(navigator.userAgent);
+  // 使用完整 https URL；iOS/Android 上 TradingView 已註冊 universal link，
+  // 安裝後會自動攔截並在 App 內開啟正確標的圖表。
   const webUrl = `https://www.tradingview.com/chart/?symbol=${tvSymbol}`;
   if (isMobile) {
-    const appUrl = `tradingview://chart?symbol=${encodeURIComponent(tvSymbol)}`;
-    // 嘗試喚起 App；若 App 未安裝，500ms 後 fallback 到網頁版
+    // 先嘗試 custom scheme（冒號不編碼，App 才能正確解析 symbol）
+    const appUrl = `tradingview://chart?symbol=${tvSymbol}`;
     const t0 = Date.now();
     window.location.href = appUrl;
+    // App 未安裝時 300ms 後 fallback 到網頁版（universal link）
     setTimeout(() => {
-      if (Date.now() - t0 < 1200) window.open(webUrl, '_blank');
-    }, 500);
+      if (Date.now() - t0 < 800) window.open(webUrl, '_blank');
+    }, 300);
   } else {
     window.open(webUrl, '_blank');
   }
@@ -685,7 +692,7 @@ function renderStrategy() {
 
   // Table
   const sortIcon = (col) => `<span class="sort-icon">${sortCol===col ? (sortAsc?'↑':'↓') : '·'}</span>`;
-  const vscrollClass = data.length > 6 ? 'table-vscroll' : '';
+  const vscrollClass = data.length > 10 ? 'table-vscroll' : '';
   const tableHTML = `
     <div class="table-wrap">
       <div class="table-toolbar">
@@ -727,7 +734,6 @@ function renderStrategy() {
       ${condsHTML}
       ${summaryHTML}
       ${tableHTML}
-      ${renderAICard()}
     </div>`;
 
   // 更新右側 sidebar
@@ -988,7 +994,9 @@ function renderChipsHolder(strat, main) {
   // 排序（個股模式）
   const sortedData = allData.slice().sort((a, b) => {
     const va = a[sortCol] ?? -9999, vb = b[sortCol] ?? -9999;
-    return sortAsc ? va - vb : vb - va;
+    if (va !== vb) return sortAsc ? va - vb : vb - va;
+    // 同分時以三周累積增幅降序為次要排序
+    return (b.cumulative_3w || 0) - (a.cumulative_3w || 0);
   });
 
   // 族群模式：按族群平均三周累積增幅分組
@@ -1044,7 +1052,7 @@ function renderChipsHolder(strat, main) {
         <td><span class="big-pct">${d.big_pct_1000 != null ? d.big_pct_1000.toFixed(2) + '%' : '—'}</span></td>
         <td><span class="big-pct ${(d.cumulative_3w || 0) >= 0 ? 'pos' : 'neg'}">${d.cumulative_3w != null ? cum3Sign + d.cumulative_3w.toFixed(2) + '%' : '—'}</span></td>
         <td><div class="spark">${sparkBars(d.big_trend_1000 || [])}</div></td>
-        <td>${tagBadges(d.tags)}</td>
+        <td><div class="tag-cell">${tagBadges(d.tags)}</div></td>
       </tr>
       <tr class="expand-row" id="expand-${d.stock_id}" style="display:none">
         <td colspan="8">
@@ -1092,7 +1100,7 @@ function renderChipsHolder(strat, main) {
   }
 
   const sortIcon = col => `<span class="sort-icon">${sortCol===col ? (sortAsc?'↑':'↓') : '·'}</span>`;
-  const vscrollClass = allData.length > 6 ? 'table-vscroll' : '';
+  const vscrollClass = allData.length > 10 ? 'table-vscroll' : '';
   const maxCum = Math.max(...allData.map(d => d.cumulative_3w || 0));
 
   const tableBody = chipsViewMode === 'stock'
@@ -1152,7 +1160,7 @@ function renderChipsHolder(strat, main) {
               <th onclick="chipsSort('big_pct_1000')" data-tip="千張大戶持股%">大戶比例${sortIcon('big_pct_1000')}</th>
               <th onclick="chipsSort('cumulative_3w')" data-tip="千張大戶3週累積增幅R">三周累積增幅${sortIcon('cumulative_3w')}</th>
               <th>趨勢</th>
-              <th>篩選條件</th>
+              <th onclick="chipsSort('tag_score')" data-tip="依積分排序：單周增幅+5、雙軌觸發+3、持續成長+1">篩選條件${sortIcon('tag_score')}</th>
             </tr>
           </thead>
           <tbody>${tableBody}</tbody>
@@ -1160,7 +1168,6 @@ function renderChipsHolder(strat, main) {
         </div>
         </div>
       </div>
-      ${renderAICard()}
     </div>`;
 
   const grid = document.getElementById('watchlistGrid');
@@ -1243,7 +1250,7 @@ function renderVolumeSignal(strat, main) {
       <td><span class="ema-cell">${d.ema5?.toFixed(2) || '—'}</span></td>
       <td><span class="big-pct">${d.big_pct_1000 != null ? d.big_pct_1000.toFixed(2) + '%' : '—'}</span></td>
       <td><span class="big-pct ${(d.cumulative_3w||0)>=0?'pos':'neg'}">${d.cumulative_3w != null ? ((d.cumulative_3w>=0?'+':'') + d.cumulative_3w.toFixed(2) + '%') : '—'}</span></td>
-      <td>${tagBadges(d.tags)}</td>
+      <td><div class="tag-cell">${tagBadges(d.tags)}</div></td>
     </tr>
     <tr class="expand-row" id="expand-vs-${d.stock_id}" style="display:none">
       <td colspan="7">
@@ -1303,7 +1310,7 @@ function renderVolumeSignal(strat, main) {
           <div class="toolbar-right"><span class="updated-tag">更新：${strat.dataUpdated}</span></div>
         </div>
         <div class="table-scroll">
-        <div class="${data.length > 6 ? 'table-vscroll' : ''}">
+        <div class="${data.length > 10 ? 'table-vscroll' : ''}">
         <table>
           <thead>
             <tr>
