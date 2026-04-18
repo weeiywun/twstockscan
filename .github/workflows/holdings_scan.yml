@@ -1,15 +1,15 @@
-name: PHASE3 大戶持股抓取 (Holdings Scanner)
+name: PHASE3 大戶持股分析 (Holdings Scanner)
 
 on:
-  # 每週五台灣時間 08:00（UTC 00:00）執行
-  # TDCC 週四下午公布，FinMind/norway.twsthr.info 通常隔天早上已更新
+  # 每週六台灣時間 18:00（UTC 10:00）執行
+  # 請先手動更新 data/big1000.csv 與 data/big400.csv，再等此排程自動跑分析
   schedule:
-    - cron: '0 0 * * 5'
-  # 允許手動觸發
+    - cron: '0 10 * * 6'
+  # 允許手動觸發（上傳 CSV 後可立即執行）
   workflow_dispatch:
 
 jobs:
-  fetch:
+  analyze:
     runs-on: ubuntu-latest
     timeout-minutes: 30
 
@@ -30,7 +30,7 @@ jobs:
       - name: Install dependencies
         run: pip install -r scripts/requirements.txt
 
-      - name: Fetch holdings data
+      - name: Run holdings analysis
         run: python scripts/fetch_holdings_twsthr.py
 
       - name: Commit and push results
@@ -73,5 +73,5 @@ jobs:
             -H "Authorization: Bearer $LINE_CHANNEL_ACCESS_TOKEN" \
             -d "{
               \"userIds\": $USER_IDS_JSON,
-              \"messages\": [{\"type\": \"text\", \"text\": \"⚠️ 大戶持股抓取 workflow 執行失敗\n\n日期：$(date -u +%Y-%m-%d)\n\n請至 GitHub Actions 查看錯誤日誌：\n$RUN_URL\"}]
+              \"messages\": [{\"type\": \"text\", \"text\": \"⚠️ 大戶持股分析 workflow 執行失敗\\n\\n日期：$(date -u +%Y-%m-%d)\\n\\n請至 GitHub Actions 查看錯誤日誌：\\n$RUN_URL\"}]
             }"

@@ -1,17 +1,14 @@
 #!/usr/bin/env python3
 """
-大戶持股抓取器 v1.0
-從 norway.twsthr.info/StockBoardTop.aspx 抓取 TDCC 千張大戶持股比例資料，
-搭配 yfinance 股價資料，產生 data/chips_big_holder.json。
+大戶持股分析器 v2.0
+讀取 data/big1000.csv（千張大戶）與 data/big400.csv（400張大戶）
+篩選條件：兩個門檻「同時」維持 4 週 >= 趨勢
+搭配 yfinance 股價，產生 data/chips_big_holder.json
 
-取代原本 GAS 的 FinMind TaiwanStockHoldingSharesPercentage 查詢。
-
-策略篩選條件：
-  1. 千張大戶持股比例 > 30%
-  2. 最近 4 週持續增持（每週比前一週高）
-  3. 現價對 EMA26 的乖離率 -10% ~ +5%
+每週手動更新 CSV 後，由 GitHub Actions 自動執行此腳本。
 """
 
+import csv
 import json
 import os
 import re
@@ -24,211 +21,107 @@ import numpy as np
 import pandas as pd
 import requests
 import yfinance as yf
-from bs4 import BeautifulSoup
 
 warnings.filterwarnings("ignore")
 
-SCRIPT_DIR   = os.path.dirname(os.path.abspath(__file__))
-OUTPUT_PATH  = os.path.join(SCRIPT_DIR, "..", "data", "chips_big_holder.json")
+SCRIPT_DIR  = os.path.dirname(os.path.abspath(__file__))
+DATA_DIR    = os.path.join(SCRIPT_DIR, "..", "data")
+CSV_1000    = os.path.join(DATA_DIR, "big1000.csv")
+CSV_400     = os.path.join(DATA_DIR, "big400.csv")
+OUTPUT_PATH = os.path.join(DATA_DIR, "chips_big_holder.json")
 
-SOURCE_URL   = "https://norway.twsthr.info/StockBoardTop.aspx"
-TW_TZ        = timezone(timedelta(hours=8))
+TW_TZ       = timezone(timedelta(hours=8))
 
-BIG_PCT_MIN  = 30.0   # 千張大戶持股比例最低門檻 (%)
-TREND_WEEKS  = 4      # 需要連續幾週增持
-EMA_PERIOD   = 26
-DEV_MIN      = -10.0  # EMA26 乖離率下限 (%)
-DEV_MAX      =   5.0  # EMA26 乖離率上限 (%)
-PRICE_DAYS   = 80     # yfinance 抓取天數（確保 EMA26 收斂）
+BIG_PCT_MIN = 30.0   # 千張大戶最低持股比例 (%)
+TREND_WEEKS = 4      # 需連續幾週 >= 趨勢
+EMA_PERIOD  = 26
+DEV_MIN     = -10.0  # EMA26 乖離率下限 (%)
+DEV_MAX     =   5.0  # EMA26 乖離率上限 (%)
+VOL_MIN     = 1000   # 最低日均量（張）
+PRICE_DAYS  = 80     # yfinance 抓取天數（確保 EMA26 收斂）
 
 
 # ─────────────────────────────────────────────────────────────
-#  Step 1：從網站抓取持股資料
+#  Step 1：讀取 CSV
 # ─────────────────────────────────────────────────────────────
 
-def fetch_page() -> bytes:
-    headers = {
-        "User-Agent": (
-            "Mozilla/5.0 (Windows NT 10.0; Win64; x64) "
-            "AppleWebKit/537.36 (KHTML, like Gecko) "
-            "Chrome/124.0.0.0 Safari/537.36"
-        ),
-        "Accept": (
-            "text/html,application/xhtml+xml,application/xml;"
-            "q=0.9,image/avif,image/webp,image/apng,*/*;q=0.8"
-        ),
-        "Accept-Language": "zh-TW,zh;q=0.9,en-US;q=0.8,en;q=0.7",
-        "Accept-Encoding": "gzip, deflate, br",
-        "Referer": "https://norway.twsthr.info/",
-        "Connection": "keep-alive",
-        "Upgrade-Insecure-Requests": "1",
-    }
-    for attempt in range(3):
-        try:
-            resp = requests.get(SOURCE_URL, headers=headers, timeout=30)
-            resp.raise_for_status()
-            return resp.content
-        except Exception as e:
-            if attempt < 2:
-                wait = 2 ** attempt
-                print(f"  抓取失敗（{e}），{wait}s 後重試...")
-                time.sleep(wait)
-            else:
-                raise
-
-
-def _mmdd_to_label(mmdd: str, ref_year: int, today: datetime) -> str:
-    """'0410' → '04-10'，並處理跨年邊界。"""
-    mm, dd = int(mmdd[:2]), int(mmdd[2:])
-    for year in (ref_year, ref_year - 1):
-        try:
-            d = datetime(year, mm, dd, tzinfo=TW_TZ)
-            if d <= today + timedelta(days=8):
-                return d.strftime("%m-%d")
-        except ValueError:
-            continue
-    return f"{mmdd[:2]}-{mmdd[2:]}"
-
-
-def parse_holdings(html: bytes):
+def parse_csv(path: str, encoding: str) -> tuple[dict, list]:
     """
-    解析持股表格。
-    回傳 (stocks, date_labels)
-      stocks: list of {stock_id, name, industry, weekly_pct}
-              weekly_pct 由新到舊排列（index 0 = 最新週）
-      date_labels: list of "MM-DD" 由新到舊
+    讀取持股 CSV，回傳 (stocks_dict, sorted_date_cols)。
+    stocks_dict: {stock_id: {name, industry, market_cap, csv_close, pct_map}}
+    pct_map: {YYYYMMDD: float}
     """
-    soup = BeautifulSoup(html, "lxml")
-    today = datetime.now(TW_TZ)
-    ref_year = today.year
+    stocks = {}
+    with open(path, encoding=encoding, newline="") as f:
+        reader = csv.DictReader(f)
+        headers = reader.fieldnames or []
+        date_cols = sorted([h for h in headers if re.fullmatch(r"\d{8}", h)])
 
-    # ── 找主要資料表格 ──
-    main_table = None
-    best_count = 0
-    for t in soup.find_all("table"):
-        cnt = len(t.find_all("a", href=re.compile(r'[Ss]=\d{4}')))
-        if cnt > best_count:
-            best_count = cnt
-            main_table = t
+        # 找收盤價欄位（含「收盤」的欄位名）
+        close_col = next((h for h in headers if "收盤" in h), None)
 
-    if main_table is None or best_count < 5:
-        raise ValueError("找不到股票資料表格（可能被 403 擋住）")
-
-    rows = main_table.find_all("tr")
-
-    # ── 從表頭取得日期欄位 ──
-    date_labels = []
-    for row in rows[:8]:
-        for cell in row.find_all(["th", "td"]):
-            txt = cell.get_text(strip=True)
-            # 年份標記
-            if re.fullmatch(r'20\d{2}', txt):
-                ref_year = int(txt)
-            # MMDD 格式
-            elif re.fullmatch(r'\d{4}', txt):
-                mm = int(txt[:2])
-                dd = int(txt[2:])
-                if 1 <= mm <= 12 and 1 <= dd <= 31:
-                    date_labels.append(_mmdd_to_label(txt, ref_year, today))
-        if len(date_labels) >= 4:
-            break
-
-    if len(date_labels) < 4:
-        raise ValueError(f"日期欄位不足（只找到 {len(date_labels)} 個）")
-
-    n_dates = len(date_labels)
-    print(f"  日期欄：{date_labels}（共 {n_dates} 週）")
-
-    # ── 解析股票列 ──
-    stocks = []
-    seen = set()
-
-    for row in rows:
-        link = row.find("a", href=re.compile(r'[Ss]=\d{4}'))
-        if not link:
-            continue
-
-        href = link.get("href", "")
-        m = re.search(r'[Ss]=(\d{4})', href)
-        if not m:
-            continue
-        sid = m.group(1)
-        if sid in seen:
-            continue
-
-        # 股票名稱（去除代號）
-        raw_name = link.get_text(strip=True)
-        name = re.sub(r'^\d{4}\s*', '', raw_name).strip() or raw_name
-
-        # 產業類別
-        industry = ""
-        for cell in row.find_all("td"):
-            if cell.find("a"):
+        for row in reader:
+            raw = (row.get("股票") or "").strip()
+            if not raw:
                 continue
-            txt = cell.get_text(strip=True)
-            # 純中文（可含破折號、英文字母）、長度 1-8
-            if re.fullmatch(r'[\u4e00-\u9fff\w－\-]{1,8}', txt) and not txt.isdigit():
-                industry = txt
-                break
+            parts = raw.split(None, 1)
+            if len(parts) < 2 or not re.fullmatch(r"\d{4}", parts[0]):
+                continue
+            sid, name = parts[0], parts[1].strip()
 
-        # 從所有 td 抽取數字
-        all_nums = []
-        for cell in row.find_all("td"):
-            for s in cell.stripped_strings:
-                clean = s.replace(',', '').replace('+', '').strip()
+            # 市值（去除千分位逗號）
+            mc_raw = (row.get("市值(億)") or "").replace(",", "").strip()
+            market_cap = float(mc_raw) if mc_raw else None
+
+            # 收盤價（CSV 最後一次更新的價格，僅備用）
+            close_raw = (row.get(close_col) or "").strip() if close_col else ""
+            csv_close = float(close_raw) if close_raw else None
+
+            # 各週持股比例
+            pct_map = {}
+            for d in date_cols:
+                val = (row.get(d) or "").strip()
                 try:
-                    all_nums.append(float(clean))
+                    pct_map[d] = float(val)
                 except ValueError:
                     pass
 
-        # 持股比例 > 5%（大戶通常 > 10%），差異值絕對值通常 < 5
-        pct_vals = [v for v in all_nums if v > 5.0]
+            stocks[sid] = {
+                "name":       name,
+                "industry":   (row.get("類別") or "").strip(),
+                "market_cap": market_cap,
+                "csv_close":  csv_close,
+                "pct_map":    pct_map,
+            }
 
-        if len(pct_vals) < n_dates:
-            continue
-
-        # 取最前面 n_dates 個（表格由新到舊排列）
-        weekly_pct = pct_vals[:n_dates]
-
-        seen.add(sid)
-        stocks.append({
-            "stock_id":   sid,
-            "name":       name,
-            "industry":   industry,
-            "weekly_pct": weekly_pct,   # index 0 = 最新週
-        })
-
-    print(f"  解析到 {len(stocks)} 支股票")
-    return stocks, date_labels
+    return stocks, date_cols
 
 
 # ─────────────────────────────────────────────────────────────
 #  Step 2：策略篩選
 # ─────────────────────────────────────────────────────────────
 
-def passes_holding_filter(weekly_pct: list) -> bool:
+def passes_trend(pct_map: dict, date_cols: list, n: int = TREND_WEEKS) -> bool:
     """
-    篩選條件：
-      - 最新週持股比例 > BIG_PCT_MIN
-      - 最近 TREND_WEEKS 週連續增持（每週高於前一週）
+    檢查最近 n 週是否每週 >= 前一週（允許持平，不能下降）。
+    date_cols 已排序由舊到新。
     """
-    if len(weekly_pct) < TREND_WEEKS:
+    valid = [d for d in date_cols if d in pct_map]
+    if len(valid) < n:
         return False
-    if weekly_pct[0] < BIG_PCT_MIN:
-        return False
-    # weekly_pct[0] 最新，weekly_pct[1] 前一週，以此類推
-    for i in range(TREND_WEEKS - 1):
-        if weekly_pct[i] <= weekly_pct[i + 1]:
+    recent = valid[-n:]  # 最近 n 週，由舊到新
+    for i in range(1, n):
+        if pct_map[recent[i]] < pct_map[recent[i - 1]]:
             return False
     return True
 
 
 # ─────────────────────────────────────────────────────────────
-#  Step 3：取得股價與 EMA26
+#  Step 3：取得市場對照表
 # ─────────────────────────────────────────────────────────────
 
 def get_market_map() -> dict:
-    """回傳 {stock_id: 'TWSE'|'TPEX'} 對照表。"""
+    """回傳 {stock_id: 'TWSE'|'TPEX'}"""
     mmap = {}
     for url, market in [
         ("https://openapi.twse.com.tw/v1/exchangeReport/STOCK_DAY_ALL", "TWSE"),
@@ -237,25 +130,23 @@ def get_market_map() -> dict:
         try:
             r = requests.get(url, timeout=20, headers={"User-Agent": "Mozilla/5.0"})
             for item in r.json():
-                sid = (
-                    item.get("Code") or item.get("SecuritiesCompanyCode") or ""
-                ).strip()
-                if re.fullmatch(r'\d{4}', sid):
+                sid = (item.get("Code") or item.get("SecuritiesCompanyCode") or "").strip()
+                if re.fullmatch(r"\d{4}", sid):
                     mmap[sid] = market
         except Exception as e:
-            print(f"  市場清單取得失敗（{market}）：{e}")
+            print(f"  ⚠️  市場清單取得失敗（{market}）：{e}")
     return mmap
 
 
+# ─────────────────────────────────────────────────────────────
+#  Step 4：yfinance 取股價與 EMA26
+# ─────────────────────────────────────────────────────────────
+
 def fetch_price_ema(stock_id: str, suffix: str) -> dict | None:
-    """
-    用 yfinance 取得最新收盤價與 EMA26。
-    回傳 {close, ema26, deviation, vol_lots} 或 None。
-    """
+    """回傳 {close, ema26, deviation, vol_lots}，失敗回傳 None。"""
     ticker = f"{stock_id}{suffix}"
     end   = datetime.now(TW_TZ)
     start = end - timedelta(days=PRICE_DAYS)
-
     try:
         df = yf.download(
             ticker,
@@ -269,122 +160,150 @@ def fetch_price_ema(stock_id: str, suffix: str) -> dict | None:
 
         close_arr = df["Close"].dropna().values.astype(float)
         vol_arr   = df["Volume"].dropna().values.astype(float)
-
         if len(close_arr) < 10:
             return None
 
-        ema26 = float(
-            pd.Series(close_arr).ewm(span=EMA_PERIOD, adjust=False).mean().iloc[-1]
-        )
-        close = float(close_arr[-1])
+        ema26     = float(pd.Series(close_arr).ewm(span=EMA_PERIOD, adjust=False).mean().iloc[-1])
+        close     = float(close_arr[-1])
         deviation = round((close - ema26) / ema26 * 100, 2)
-
-        avg_vol = float(np.mean(vol_arr[-20:])) if len(vol_arr) >= 20 else float(np.mean(vol_arr))
-        vol_lots = round(avg_vol / 1000, 0)
+        vol_lots  = int(round(np.mean(vol_arr[-20:]) / 1000)) if len(vol_arr) >= 20 else int(round(np.mean(vol_arr) / 1000))
 
         return {
             "close":     round(close, 2),
             "ema26":     round(ema26, 2),
             "deviation": deviation,
-            "vol_lots":  int(vol_lots),
+            "vol_lots":  vol_lots,
         }
     except Exception:
         return None
 
 
 # ─────────────────────────────────────────────────────────────
-#  Step 4：組合輸出
+#  主程式
 # ─────────────────────────────────────────────────────────────
 
-def now_tw_str() -> str:
+def now_tw() -> str:
     return datetime.now(TW_TZ).strftime("%Y-%m-%dT%H:%M:%S+08:00")
 
 
 def main():
-    print("=== 大戶持股抓取器 v1.0 ===")
+    print("=== 大戶持股分析器 v2.0 ===")
 
-    # Step 1：抓網頁
-    print("\nStep 1：抓取 norway.twsthr.info...")
-    html = fetch_page()
-    stocks_raw, date_labels = parse_holdings(html)
+    # Step 1：讀取 CSV
+    print("\nStep 1：讀取 big1000.csv / big400.csv...")
+    stocks_1000, dates_1000 = parse_csv(CSV_1000, "gbk")
+    stocks_400,  dates_400  = parse_csv(CSV_400,  "utf-8")
+    print(f"  big1000: {len(stocks_1000)} 支，{len(dates_1000)} 週")
+    print(f"  big400:  {len(stocks_400)} 支，{len(dates_400)} 週")
 
-    # Step 2：持股篩選
-    print(f"\nStep 2：策略篩選（大戶>{BIG_PCT_MIN}%、連續{TREND_WEEKS}週增持）...")
-    candidates = [s for s in stocks_raw if passes_holding_filter(s["weekly_pct"])]
-    print(f"  通過：{len(candidates)} / {len(stocks_raw)} 支")
+    # Step 2：策略篩選（千張 AND 400張 同時符合）
+    print(f"\nStep 2：篩選（千張 AND 400張 均 {TREND_WEEKS} 週≥趨勢，千張>{BIG_PCT_MIN}%）...")
+    candidates = []
+    common_sids = set(stocks_1000) & set(stocks_400)
+
+    for sid in sorted(common_sids):
+        s1 = stocks_1000[sid]
+        s4 = stocks_400[sid]
+
+        # 千張：最新持股 > 30%
+        latest_date = max(s1["pct_map"].keys()) if s1["pct_map"] else None
+        if not latest_date or s1["pct_map"][latest_date] < BIG_PCT_MIN:
+            continue
+
+        # 千張：4 週 >= 趨勢
+        if not passes_trend(s1["pct_map"], dates_1000):
+            continue
+
+        # 400張：4 週 >= 趨勢
+        if not passes_trend(s4["pct_map"], dates_400):
+            continue
+
+        candidates.append(sid)
+
+    print(f"  通過：{len(candidates)} 支")
 
     if not candidates:
         print("⚠️  無符合條件股票，輸出空結果")
-        _write_output([], date_labels)
+        _write_output([], [])
         return
 
-    # Step 3：取得市場對照表
+    # Step 3：市場清單
     print("\nStep 3：取得市場清單...")
     mmap = get_market_map()
     print(f"  上市+上櫃：{len(mmap)} 支")
 
-    # Step 4：逐批抓 yfinance 股價
-    print(f"\nStep 4：取得股價與 EMA26（共 {len(candidates)} 支）...")
-    results = []
-    batch_size = 20
+    # Step 4：yfinance 取股價 + EMA26 篩選
+    print(f"\nStep 4：取股價與 EMA26 篩選（{len(candidates)} 支）...")
+    results_1000, results_400 = [], []
 
-    for i in range(0, len(candidates), batch_size):
-        batch = candidates[i:i + batch_size]
-        for s in batch:
-            sid    = s["stock_id"]
-            market = mmap.get(sid, "TWSE")
-            suffix = ".TW" if market == "TWSE" else ".TWO"
-            price_data = fetch_price_ema(sid, suffix)
-            if price_data is None:
-                continue
+    for sid in candidates:
+        s1     = stocks_1000[sid]
+        s4     = stocks_400[sid]
+        suffix = ".TW" if mmap.get(sid, "TWSE") == "TWSE" else ".TWO"
 
-            dev = price_data["deviation"]
-            if not (DEV_MIN <= dev <= DEV_MAX):
-                continue
+        price = fetch_price_ema(sid, suffix)
+        if price is None:
+            continue
 
-            pcts = s["weekly_pct"]
-            # date_labels[0] = 最新；trend 由舊到新（for chart）
-            trend_labels = list(reversed(date_labels[:TREND_WEEKS]))
-            trend_pcts   = list(reversed(pcts[:TREND_WEEKS]))
+        # 量能篩選
+        if price["vol_lots"] < VOL_MIN:
+            continue
 
-            results.append({
-                "stock_id":       sid,
-                "name":           s["name"],
-                "industry":       s["industry"],
-                "close":          price_data["close"],
-                "ema26":          price_data["ema26"],
-                "deviation":      dev,
-                "vol_lots":       price_data["vol_lots"],
-                "big_pct_latest": round(pcts[0], 2),
-                "big_4w_chg":     round(pcts[0] - pcts[TREND_WEEKS - 1], 2),
-                "big_trend":      [round(v, 2) for v in trend_pcts],
-                "date_labels":    trend_labels,
-            })
-            sys.stdout.write(".")
-            sys.stdout.flush()
+        # EMA26 乖離篩選
+        dev = price["deviation"]
+        if not (DEV_MIN <= dev <= DEV_MAX):
+            continue
 
-        time.sleep(0.5)
+        # 最近 TREND_WEEKS 週資料（由舊到新）
+        recent_1000 = sorted(s1["pct_map"])[-TREND_WEEKS:]
+        recent_400  = sorted(s4["pct_map"])[-TREND_WEEKS:]
+        pcts_1000   = [round(s1["pct_map"][d], 2) for d in recent_1000]
+        pcts_400    = [round(s4["pct_map"][d], 2) for d in recent_400]
+        labels      = [f"{d[4:6]}-{d[6:8]}" for d in recent_1000]
 
-    print(f"\n  最終結果：{len(results)} 支通過乖離率篩選")
+        base = {
+            "stock_id":   sid,
+            "name":       s1["name"],
+            "industry":   s1["industry"],
+            "market_cap": s1["market_cap"],
+            "close":      price["close"],
+            "ema26":      price["ema26"],
+            "deviation":  dev,
+            "vol_lots":   price["vol_lots"],
+            "date_labels": labels,
+        }
 
-    # 依 big_4w_chg 降冪排列
-    results.sort(key=lambda r: r["big_4w_chg"], reverse=True)
+        results_1000.append({**base,
+            "big_pct_latest": pcts_1000[-1],
+            "big_4w_chg":     round(pcts_1000[-1] - pcts_1000[0], 2),
+            "big_trend":      pcts_1000,
+        })
+        results_400.append({**base,
+            "big_pct_latest": pcts_400[-1],
+            "big_4w_chg":     round(pcts_400[-1] - pcts_400[0], 2),
+            "big_trend":      pcts_400,
+        })
+        sys.stdout.write(".")
+        sys.stdout.flush()
+        time.sleep(0.3)
 
-    _write_output(results, date_labels)
+    results_1000.sort(key=lambda r: r["big_4w_chg"], reverse=True)
+    results_400.sort(key=lambda r: r["big_4w_chg"],  reverse=True)
+
+    print(f"\n  最終：千張 {len(results_1000)} 支 / 400張 {len(results_400)} 支")
+    _write_output(results_1000, results_400)
 
 
-def _write_output(results, date_labels):
+def _write_output(results_1000: list, results_400: list):
     output = {
         "strategy_id": "chips_big_holder",
-        "updated":     now_tw_str(),
-        "source":      SOURCE_URL,
-        "date_labels": date_labels,
-        "results":     results,
+        "updated":     now_tw(),
+        "results":     results_1000,   # 千張大戶（主策略，供 AI ranking 使用）
+        "results_400": results_400,    # 400張大戶（參考）
     }
-    os.makedirs(os.path.dirname(OUTPUT_PATH), exist_ok=True)
     with open(OUTPUT_PATH, "w", encoding="utf-8") as f:
         json.dump(output, f, ensure_ascii=False, indent=2)
-    print(f"\n✅ 已寫入 {OUTPUT_PATH}（{len(results)} 支）")
+    print(f"✅ 已寫入 {OUTPUT_PATH}")
 
 
 if __name__ == "__main__":
