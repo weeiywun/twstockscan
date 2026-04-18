@@ -42,7 +42,7 @@ VOL_MIN     = 1000   # 最低日均量（張）
 PRICE_DAYS  = 200    # yfinance 抓取天數（確保 EMA120 收斂）
 
 FLEX_MAX_STOCKS    = 15
-FLEX_COLOR_PRIMARY = "#7b4fa8"   # 紫色：籌碼集中策略專屬
+FLEX_COLOR_PRIMARY = "#e66e29"   # 橘色：籌碼集中策略專屬
 FLEX_COLOR_ACCENT  = "#0c6b3e"   # 綠色：增幅正值
 
 
@@ -407,7 +407,6 @@ def main():
     if not candidates:
         print("⚠️  無符合條件股票，輸出空結果")
         _write_output([], [])
-        send_line_notification([])
         return
 
     # Step 3：市場清單
@@ -415,9 +414,18 @@ def main():
     mmap = get_market_map()
     print(f"  上市+上櫃：{len(mmap)} 支")
 
-    # Step 4：yfinance 取股價 + EMA120 篩選
-    print(f"\nStep 4：取股價與 EMA120 篩選（{len(candidates)} 支）...")
+    # Step 4：yfinance 取股價（僅供顯示，不過濾）
+    print(f"\nStep 4：取股價（{len(candidates)} 支）...")
+
+    # 診斷：先用台積電確認 yfinance 可正常運作
+    _probe = fetch_price_ema("2330", ".TW")
+    if _probe:
+        print(f"  [診斷] 2330.TW ✅ close={_probe['close']}  ema120={_probe['ema120']}  dev={_probe['deviation']}%  vol={_probe['vol_lots']}張")
+    else:
+        print("  [診斷] 2330.TW ❌ yfinance 無法取得資料，後續股價欄位將為空")
+
     results_1000, results_400 = [], []
+    price_ok, price_fail = 0, 0
 
     for sid in candidates:
         s1     = stocks_1000[sid]
@@ -425,15 +433,10 @@ def main():
         suffix = ".TW" if mmap.get(sid, "TWSE") == "TWSE" else ".TWO"
 
         price = fetch_price_ema(sid, suffix)
-        if price is None:
-            continue
-
-        if price["vol_lots"] < VOL_MIN:
-            continue
-
-        dev = price["deviation"]
-        if not (DEV_MIN <= dev <= DEV_MAX):
-            continue
+        if price:
+            price_ok += 1
+        else:
+            price_fail += 1
 
         recent_1000 = sorted(s1["pct_map"])[-TREND_WEEKS:]
         recent_400  = sorted(s4["pct_map"])[-TREND_WEEKS:]
@@ -446,10 +449,10 @@ def main():
             "name":        s1["name"],
             "industry":    s1["industry"],
             "market_cap":  s1["market_cap"],
-            "close":       price["close"],
-            "ema120":      price["ema120"],
-            "deviation":   dev,
-            "vol_lots":    price["vol_lots"],
+            "close":       price["close"]     if price else None,
+            "ema120":      price["ema120"]    if price else None,
+            "deviation":   price["deviation"] if price else None,
+            "vol_lots":    price["vol_lots"]  if price else None,
             "date_labels": labels,
         }
 
@@ -470,9 +473,9 @@ def main():
     results_1000.sort(key=lambda r: r["big_4w_chg"], reverse=True)
     results_400.sort(key=lambda r: r["big_4w_chg"],  reverse=True)
 
-    print(f"\n  最終：千張 {len(results_1000)} 支 / 400張 {len(results_400)} 支")
+    print(f"\n  股價抓取：成功 {price_ok} 支 / 失敗 {price_fail} 支")
+    print(f"  最終：千張 {len(results_1000)} 支 / 400張 {len(results_400)} 支")
     _write_output(results_1000, results_400)
-    send_line_notification(results_1000)
 
 
 def _write_output(results_1000: list, results_400: list):

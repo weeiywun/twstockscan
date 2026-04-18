@@ -766,10 +766,10 @@ function renderRow(d) {
         </a>
         <div class="stock-industry">${d.industry}</div>
       </td>
-      <td><span class="price-cell">${d.close.toFixed(1)}</span></td>
+      <td><span class="price-cell">${d.close != null ? d.close.toFixed(1) : '—'}</span></td>
       <td>
-        <span class="ema-cell">${d.ema120.toFixed(2)}</span><br>
-        <span class="deviation ${devClass}">${devSign}${d.deviation.toFixed(2)}%</span>
+        <span class="ema-cell">${d.ema120 != null ? d.ema120.toFixed(2) : '—'}</span><br>
+        <span class="deviation ${devClass}">${d.deviation != null ? devSign + d.deviation.toFixed(2) + '%' : '—'}</span>
       </td>
       <td><span class="big-pct">${d.big_pct_latest.toFixed(2)}%</span></td>
       <td>
