@@ -1,9 +1,6 @@
 name: 大量追蹤選股
 
 on:
-  # 每個交易日 15:30 台灣時間執行（UTC 07:30）（作為備用）
-  schedule:
-    - cron: '30 7 * * 1-5'
   # 允許外部 API 觸發（例如 Google Apps Script）
   repository_dispatch:
     types: [volume-breakout-trigger]
