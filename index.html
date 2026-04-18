@@ -466,62 +466,8 @@ const STRATEGIES = [
     dataSource: "集保開放資料 + TWSE/TPEx",
     dataKey: "chips_big_holder_data",
   },
-  {
-    id: "volume_breakout",
-    name: "大量追蹤",
-    shortName: "大量追蹤",
-    icon: "◆",
-    available: true,
-    description: "找出近期發生「異常爆量突破」、隨後進入「縮量洗盤」的個股，捕捉主力蓄勢後二次啟動的進場機會。",
-    conditions: [
-      "收盤 > 季線(60MA)，季線走平或向上",
-      "T日（3~8交易日前）：單日量 > 20日均量 × 3倍",
-      "T日：收盤漲幅 > 4%，收實體紅K",
-      "T+1至今：每日量 < T日量 × 35%（量能急凍）",
-      "T+1至今：每日收盤 ≥ T日最低（底線防守）",
-      "★模組四（進階）：今日放量 > 前5日均量×1.5 且突破洗盤區最高",
-    ],
-    dataUpdated: "載入中...",
-    dataSource: "TWSE + TPEx（盤後自動更新）",
-    dataKey: "volume_breakout_data",
-  },
-  {
-    id: "ema_tangling",
-    name: "均線糾結",
-    shortName: "均線糾結",
-    icon: "◇",
-    available: true,
-    description: "篩選 EMA20/60/120 三條均線互相糾結（乖離 ≤ 10%）且股價站上任意兩條均線的標的，捕捉蓄勢待發的突破機會。",
-    conditions: [
-      "EMA20、EMA60、EMA120 三線最大最小差距 / 最小值 ≤ 10%",
-      "收盤價站上 EMA20、EMA60、EMA120 其中任意兩條",
-      "20 日均量 ≥ 500 張",
-    ],
-    dataUpdated: "載入中...",
-    dataSource: "TWSE + TPEx（盤後自動更新）",
-    dataKey: "ema_tangling_data",
-  },
-  {
-    id: "institutional_flow",
-    name: "三大法人買超",
-    shortName: "法人動向",
-    icon: "◉",
-    available: false,
-    description: "追蹤外資、投信、自營商的買賣超趨勢，篩選出法人持續淨買入的標的。",
-    conditions: [],
-    comingSoon: "預計 Phase 4 實裝",
-  },
-  {
-    id: "short_squeeze",
-    name: "融券增加監控",
-    shortName: "融券動態",
-    icon: "◎",
-    available: false,
-    description: "監控融券餘額快速增加的個股，搭配大戶增持判斷潛在軋空機會。",
-    conditions: [],
-    comingSoon: "預計 Phase 5 實裝",
-  },
 ];
+
 
 // ════════════════════════════════════════════════════
 //  DATA
