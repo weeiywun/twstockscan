@@ -191,7 +191,7 @@ def main():
 
     # Step 1：讀取 CSV
     print("\nStep 1：讀取 big1000.csv / big400.csv...")
-    stocks_1000, dates_1000 = parse_csv(CSV_1000, "gbk")
+    stocks_1000, dates_1000 = parse_csv(CSV_1000, "cp950")
     stocks_400,  dates_400  = parse_csv(CSV_400,  "utf-8")
     print(f"  big1000: {len(stocks_1000)} 支，{len(dates_1000)} 週")
     print(f"  big400:  {len(stocks_400)} 支，{len(dates_400)} 週")
