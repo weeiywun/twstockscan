@@ -35,6 +35,8 @@ BIG_PCT_MIN = 30.0   # 千張大戶最低持股比例 (%)
 TREND_WEEKS = 4      # 需連續幾週 >= 趨勢
 EMA_PERIOD  = 120    # 日線 EMA120（≈ 週線 EMA24，約 6 個月）
 EMA_MONTHS  = 7      # 抓取月份數（7 個月 ≈ 154 交易日，足夠收斂）
+DEV_MIN     = -10.0  # EMA120 乖離率下限 (%)
+DEV_MAX     =   5.0  # EMA120 乖離率上限 (%)
 
 FLEX_MAX_STOCKS    = 15
 FLEX_COLOR_PRIMARY = "#e66e29"
@@ -446,8 +448,11 @@ def main():
 
         if ema_data:
             ema_ok += 1
+            if not (DEV_MIN <= ema_data["deviation"] <= DEV_MAX):
+                continue
         else:
             ema_fail += 1
+            continue  # 無法取得 EMA 則略過
 
         recent_1000 = sorted(s1["pct_map"])[-TREND_WEEKS:]
         recent_400  = sorted(s4["pct_map"])[-TREND_WEEKS:]
