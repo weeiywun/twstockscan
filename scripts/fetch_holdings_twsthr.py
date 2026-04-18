@@ -407,7 +407,6 @@ def main():
     if not candidates:
         print("⚠️  無符合條件股票，輸出空結果")
         _write_output([], [])
-        send_line_notification([])
         return
 
     # Step 3：市場清單
@@ -415,8 +414,8 @@ def main():
     mmap = get_market_map()
     print(f"  上市+上櫃：{len(mmap)} 支")
 
-    # Step 4：yfinance 取股價 + EMA120 篩選
-    print(f"\nStep 4：取股價與 EMA120 篩選（{len(candidates)} 支）...")
+    # Step 4：yfinance 取股價（僅供顯示，不過濾）
+    print(f"\nStep 4：取股價（{len(candidates)} 支）...")
     results_1000, results_400 = [], []
 
     for sid in candidates:
@@ -425,15 +424,6 @@ def main():
         suffix = ".TW" if mmap.get(sid, "TWSE") == "TWSE" else ".TWO"
 
         price = fetch_price_ema(sid, suffix)
-        if price is None:
-            continue
-
-        if price["vol_lots"] < VOL_MIN:
-            continue
-
-        dev = price["deviation"]
-        if not (DEV_MIN <= dev <= DEV_MAX):
-            continue
 
         recent_1000 = sorted(s1["pct_map"])[-TREND_WEEKS:]
         recent_400  = sorted(s4["pct_map"])[-TREND_WEEKS:]
@@ -446,10 +436,10 @@ def main():
             "name":        s1["name"],
             "industry":    s1["industry"],
             "market_cap":  s1["market_cap"],
-            "close":       price["close"],
-            "ema120":      price["ema120"],
-            "deviation":   dev,
-            "vol_lots":    price["vol_lots"],
+            "close":       price["close"]     if price else None,
+            "ema120":      price["ema120"]    if price else None,
+            "deviation":   price["deviation"] if price else None,
+            "vol_lots":    price["vol_lots"]  if price else None,
             "date_labels": labels,
         }
 
@@ -472,7 +462,6 @@ def main():
 
     print(f"\n  最終：千張 {len(results_1000)} 支 / 400張 {len(results_400)} 支")
     _write_output(results_1000, results_400)
-    send_line_notification(results_1000)
 
 
 def _write_output(results_1000: list, results_400: list):
