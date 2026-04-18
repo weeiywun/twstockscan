@@ -3,7 +3,7 @@
 大戶持股分析器 v2.1
 讀取 data/big1000.csv（千張大戶）與 data/big400.csv（400張大戶）
 篩選條件：兩個門檻「同時」維持 4 週 >= 趨勢
-搭配 yfinance 股價，產生 data/chips_big_holder.json
+搭配 TWSE/TPEX OpenAPI 股價，產生 data/chips_big_holder.json
 
 每週手動更新 CSV 後，由 GitHub Actions 自動執行此腳本。
 """
@@ -13,14 +13,10 @@ import json
 import os
 import re
 import sys
-import time
 import warnings
 from datetime import datetime, timedelta, timezone
 
-import numpy as np
-import pandas as pd
 import requests
-import yfinance as yf
 
 warnings.filterwarnings("ignore")
 
@@ -35,11 +31,7 @@ TODAY       = datetime.now(TW_TZ).strftime("%Y-%m-%d")
 
 BIG_PCT_MIN = 30.0   # 千張大戶最低持股比例 (%)
 TREND_WEEKS = 4      # 需連續幾週 >= 趨勢
-EMA_PERIOD  = 120    # 日線 EMA120（≈ 週線 EMA24，約 6 個月）
-DEV_MIN     = -10.0  # EMA120 乖離率下限 (%)
-DEV_MAX     =   5.0  # EMA120 乖離率上限 (%)
-VOL_MIN     = 1000   # 最低日均量（張）
-PRICE_DAYS  = 200    # yfinance 抓取天數（確保 EMA120 收斂）
+VOL_MIN     = 1000   # 最低日均量（張，備用，目前未過濾）
 
 FLEX_MAX_STOCKS    = 15
 FLEX_COLOR_PRIMARY = "#e66e29"   # 橘色：籌碼集中策略專屬
@@ -124,56 +116,40 @@ def passes_trend(pct_map: dict, date_cols: list, n: int = TREND_WEEKS) -> bool:
 
 
 # ─────────────────────────────────────────────────────────────
-#  Step 3：取得市場對照表
+#  Step 3：取得市場對照表 + 今日股價
 # ─────────────────────────────────────────────────────────────
 
-def get_market_map() -> dict:
-    """回傳 {stock_id: 'TWSE'|'TPEX'}"""
-    mmap = {}
-    for url, market in [
-        ("https://openapi.twse.com.tw/v1/exchangeReport/STOCK_DAY_ALL", "TWSE"),
-        ("https://www.tpex.org.tw/openapi/v1/tpex_mainboard_daily_close_quotes", "TPEX"),
-    ]:
+def get_market_and_price() -> tuple[dict, dict]:
+    """
+    同時回傳：
+      mmap:  {stock_id: 'TWSE'|'TPEX'}
+      pmap:  {stock_id: {close, vol_lots}}  — 來自 TWSE/TPEX OpenAPI 今日資料
+    """
+    mmap, pmap = {}, {}
+    sources = [
+        ("https://openapi.twse.com.tw/v1/exchangeReport/STOCK_DAY_ALL",
+         "TWSE", "Code", "ClosingPrice", "TradeVolume"),
+        ("https://www.tpex.org.tw/openapi/v1/tpex_mainboard_daily_close_quotes",
+         "TPEX", "SecuritiesCompanyCode", "Close", "TradeVolume"),
+    ]
+    for url, market, code_key, close_key, vol_key in sources:
         try:
             r = requests.get(url, timeout=20, headers={"User-Agent": "Mozilla/5.0"})
             for item in r.json():
-                sid = (item.get("Code") or item.get("SecuritiesCompanyCode") or "").strip()
-                if re.fullmatch(r"\d{4}", sid):
-                    mmap[sid] = market
+                sid = (item.get(code_key) or "").strip()
+                if not re.fullmatch(r"\d{4}", sid):
+                    continue
+                mmap[sid] = market
+                try:
+                    close    = float(str(item.get(close_key) or "").replace(",", ""))
+                    vol_lots = int(float(str(item.get(vol_key) or "0").replace(",", ""))) // 1000
+                    if close > 0:
+                        pmap[sid] = {"close": close, "vol_lots": vol_lots}
+                except (ValueError, TypeError):
+                    pass
         except Exception as e:
-            print(f"  ⚠️  市場清單取得失敗（{market}）：{e}")
-    return mmap
-
-
-# ─────────────────────────────────────────────────────────────
-#  Step 4：yfinance 取股價與 EMA120
-# ─────────────────────────────────────────────────────────────
-
-def fetch_price_ema(stock_id: str, suffix: str) -> dict | None:
-    """回傳 {close, ema120, deviation, vol_lots}，失敗回傳 None。"""
-    ticker = f"{stock_id}{suffix}"
-    end   = datetime.now(TW_TZ)
-    start = end - timedelta(days=PRICE_DAYS)
-    try:
-        df = yf.download(
-            ticker,
-            start=start.strftime("%Y-%m-%d"),
-            end=end.strftime("%Y-%m-%d"),
-            progress=False,
-            auto_adjust=True,
-        )
-        if df is None or df.empty or len(df) < 10:
-            return None
-
-        close_arr = df["Close"].dropna().values.astype(float)
-        vol_arr   = df["Volume"].dropna().values.astype(float)
-        if len(close_arr) < 10:
-            return None
-
-        ema120    = float(pd.Series(close_arr).ewm(span=EMA_PERIOD, adjust=False).mean().iloc[-1])
-        close     = float(close_arr[-1])
-        deviation = round((close - ema120) / ema120 * 100, 2)
-        vol_lots  = int(round(np.mean(vol_arr[-20:]) / 1000)) if len(vol_arr) >= 20 else int(round(np.mean(vol_arr) / 1000))
+            print(f"  ⚠️  {market} 資料取得失敗：{e}")
+    return mmap, pmap
 
         return {
             "close":     round(close, 2),
@@ -409,30 +385,27 @@ def main():
         _write_output([], [])
         return
 
-    # Step 3：市場清單
-    print("\nStep 3：取得市場清單...")
-    mmap = get_market_map()
-    print(f"  上市+上櫃：{len(mmap)} 支")
+    # Step 3：市場清單 + 今日股價（TWSE/TPEX OpenAPI）
+    print("\nStep 3：取得市場清單與今日股價...")
+    mmap, pmap = get_market_and_price()
+    print(f"  上市+上櫃：{len(mmap)} 支，有股價：{len(pmap)} 支")
 
-    # Step 4：yfinance 取股價（僅供顯示，不過濾）
-    print(f"\nStep 4：取股價（{len(candidates)} 支）...")
-
-    # 診斷：先用台積電確認 yfinance 可正常運作
-    _probe = fetch_price_ema("2330", ".TW")
-    if _probe:
-        print(f"  [診斷] 2330.TW ✅ close={_probe['close']}  ema120={_probe['ema120']}  dev={_probe['deviation']}%  vol={_probe['vol_lots']}張")
+    # 診斷：確認 2330 是否有取到價格
+    if "2330" in pmap:
+        p = pmap["2330"]
+        print(f"  [診斷] 2330 ✅ close={p['close']}  vol={p['vol_lots']}張")
     else:
-        print("  [診斷] 2330.TW ❌ yfinance 無法取得資料，後續股價欄位將為空")
+        print("  [診斷] 2330 ❌ 未取得股價，請確認 TWSE API 回應")
 
+    # Step 4：整合股價資料
+    print(f"\nStep 4：整合股價（{len(candidates)} 支）...")
     results_1000, results_400 = [], []
     price_ok, price_fail = 0, 0
 
     for sid in candidates:
-        s1     = stocks_1000[sid]
-        s4     = stocks_400[sid]
-        suffix = ".TW" if mmap.get(sid, "TWSE") == "TWSE" else ".TWO"
-
-        price = fetch_price_ema(sid, suffix)
+        s1    = stocks_1000[sid]
+        s4    = stocks_400[sid]
+        price = pmap.get(sid)
         if price:
             price_ok += 1
         else:
@@ -449,10 +422,10 @@ def main():
             "name":        s1["name"],
             "industry":    s1["industry"],
             "market_cap":  s1["market_cap"],
-            "close":       price["close"]     if price else None,
-            "ema120":      price["ema120"]    if price else None,
-            "deviation":   price["deviation"] if price else None,
-            "vol_lots":    price["vol_lots"]  if price else None,
+            "close":       price["close"]    if price else None,
+            "ema120":      None,
+            "deviation":   None,
+            "vol_lots":    price["vol_lots"] if price else None,
             "date_labels": labels,
         }
 
@@ -466,14 +439,11 @@ def main():
             "big_4w_chg":     round(pcts_400[-1] - pcts_400[0], 2),
             "big_trend":      pcts_400,
         })
-        sys.stdout.write(".")
-        sys.stdout.flush()
-        time.sleep(0.3)
 
     results_1000.sort(key=lambda r: r["big_4w_chg"], reverse=True)
     results_400.sort(key=lambda r: r["big_4w_chg"],  reverse=True)
 
-    print(f"\n  股價抓取：成功 {price_ok} 支 / 失敗 {price_fail} 支")
+    print(f"  股價取得：成功 {price_ok} 支 / 失敗 {price_fail} 支")
     print(f"  最終：千張 {len(results_1000)} 支 / 400張 {len(results_400)} 支")
     _write_output(results_1000, results_400)
 
