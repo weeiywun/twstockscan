@@ -450,16 +450,16 @@ thead th:nth-child(4),
 const STRATEGIES = [
   {
     id: "chips_big_holder",
-    name: "千張大戶籌碼",
+    name: "籌碼集中",
     shortName: "籌碼集中",
     icon: "◈",
     available: true,
-    description: "追蹤全市場個股的千張大戶持股比例，篩選出大戶連續增持、散戶持續出場、股價位於低基期的標的。",
+    description: "同時追蹤千張大戶（≥1000張）與 400 張大戶的持股比例，篩選出兩個門檻均呈持續增持趨勢、且股價位於均線低基期的標的。籌碼由大戶雙層確認，訊號更可靠。",
     conditions: [
       "日均成交量 ≥ 1,000 張",
       "千張大戶比例 > 30%",
-      "連續 4 週大戶比例增加",
-      "散戶（≤10張）比例同步下降",
+      "千張大戶：近 4 週每週 ≥ 前週（不下降）",
+      "400 張大戶：近 4 週每週 ≥ 前週（同步增持）",
       "股價乖離 EMA26：−10% ～ +5%",
     ],
     dataUpdated: "載入中...",
@@ -488,7 +488,7 @@ const STRATEGIES = [
   {
     id: "ema_tangling",
     name: "均線糾結",
-    shortName: "PHASE3",
+    shortName: "均線糾結",
     icon: "◇",
     available: true,
     description: "篩選 EMA20/60/120 三條均線互相糾結（乖離 ≤ 10%）且股價站上任意兩條均線的標的，捕捉蓄勢待發的突破機會。",
@@ -528,6 +528,7 @@ const STRATEGIES = [
 // ════════════════════════════════════════════════════
 const DATA = {
   chips_big_holder_data: [],
+  chips_big_holder_400:  {},
   volume_breakout_data:  [],
   ema_tangling_data:     [],
 };
@@ -676,7 +677,7 @@ function renderStrategy() {
       <div class="summary-card">
         <div class="summary-label">最大增幅</div>
         <div class="summary-value amber">+${maxChg.toFixed(2)}%</div>
-        <div class="summary-sub">大戶 4 週增持幅度</div>
+        <div class="summary-sub">兩門檻 4 週增持幅度</div>
       </div>
       <div class="summary-card">
         <div class="summary-label">資料日期</div>
@@ -717,7 +718,7 @@ function renderStrategy() {
             <th onclick="sort('stock_id')">代號 / 名稱${sortIcon('stock_id')}</th>
             <th onclick="sort('close')" data-tip="最新收盤價">現價${sortIcon('close')}</th>
             <th onclick="sort('deviation')" data-tip="(現價 − EMA26) / EMA26">乖離 EMA26${sortIcon('deviation')}</th>
-            <th onclick="sort('big_pct_latest')" data-tip="最新週千張大戶持股比例">大戶比例${sortIcon('big_pct_latest')}</th>
+            <th onclick="sort('big_pct_latest')" data-tip="最新週千張大戶（≥1000張）持股比例">大戶比例${sortIcon('big_pct_latest')}</th>
             <th onclick="sort('big_4w_chg')" data-tip="近4週大戶比例增幅">4週增幅${sortIcon('big_4w_chg')}</th>
             <th data-tip="4週大戶持股趨勢">趨勢</th>
           </tr>
@@ -782,11 +783,13 @@ function renderRow(d) {
         <div class="expand-content">
           <div class="expand-section">
             <h4>千張大戶趨勢</h4>
-            ${trendBars(d.big_trend, '大戶', '')}
+            ${trendBars(d.big_trend, '千張', '')}
           </div>
           <div class="expand-section">
-            <h4>散戶持股趨勢</h4>
-            ${trendBars(d.retail_trend, '散戶', 'retail')}
+            <h4>400張大戶趨勢</h4>
+            ${DATA.chips_big_holder_400[d.stock_id]
+              ? trendBars(DATA.chips_big_holder_400[d.stock_id].big_trend, '400張', '')
+              : '<div style="color:var(--text3);font-size:12px;padding:4px 0">資料不足</div>'}
           </div>
           <div class="expand-section">
             <h4>操作</h4>
@@ -1395,6 +1398,8 @@ async function loadData() {
 
     if (chipsRes && chipsRes.results) {
       DATA.chips_big_holder_data = chipsRes.results;
+      DATA.chips_big_holder_400 = {};
+      (chipsRes.results_400 || []).forEach(r => { DATA.chips_big_holder_400[r.stock_id] = r; });
       DATE_LABELS = (chipsRes.results[0]?.date_labels || []).map(d => d.replace(/-/g, '/'));
       const strat = STRATEGIES.find(s => s.id === 'chips_big_holder');
       if (strat) strat.dataUpdated = chipsRes.updated || strat.dataUpdated;
