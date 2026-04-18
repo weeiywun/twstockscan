@@ -638,9 +638,9 @@ function sparkBars(trend) {
 
 function trendBars(trend, label, colorClass) {
   const max = Math.max(...trend);
-  return trend.map((v, i) => `
+  return [...trend].reverse().map((v, i) => `
     <div class="trend-row">
-      <span class="trend-date">${DATE_LABELS[i]}</span>
+      <span class="trend-date">${DATE_LABELS[DATE_LABELS.length - 1 - i]}</span>
       <div class="trend-bar-wrap">
         <div class="trend-bar ${colorClass}" style="width:${(v/max*100).toFixed(1)}%"></div>
       </div>
