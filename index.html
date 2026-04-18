@@ -211,7 +211,7 @@ thead th{
   letter-spacing:.04em;
   border-bottom:1px solid var(--border);background:var(--bg3);
   cursor:pointer;user-select:none;white-space:nowrap;
-  position:sticky;top:0;z-index:2;
+  position:sticky;top:0;z-index:20;
 }
 thead th:hover{color:var(--text2)}
 thead th .sort-icon{opacity:.3;margin-left:4px;font-size:10px}
@@ -255,22 +255,32 @@ tbody tr:hover .spark-bar{opacity:.9}
 
 /* ── Expand row ─────────────────────────────── */
 .expand-row td{padding:0}
-.expand-content{
-  padding:18px 18px 18px 48px;
-  background:#fafbfc;
-  border-top:1px solid var(--border);
-  display:grid;grid-template-columns:1fr 1fr 1fr;gap:20px;
+.expand-flat{
+  display:flex;align-items:flex-start;gap:16px;
+  padding:14px 16px 14px 20px;
+  background:#fafbfc;border-top:1px solid var(--border);
 }
-.expand-section h4{
-  font-size:11px;font-weight:600;color:var(--text3);
-  letter-spacing:.04em;margin-bottom:10px;
+.expand-trend-wrap{flex:1;min-width:0;overflow-x:auto;-webkit-overflow-scrolling:touch}
+.expand-table{
+  border-collapse:collapse;font-size:12px;width:100%;min-width:360px;
 }
-.trend-row{display:flex;align-items:center;gap:8px;margin-bottom:6px}
-.trend-date{font-family:var(--mono);font-size:11px;color:var(--text3);width:40px}
-.trend-bar-wrap{flex:1;height:5px;background:var(--border);border-radius:3px;overflow:hidden}
-.trend-bar{height:100%;background:var(--green);border-radius:3px;transition:width .5s ease}
-.trend-bar.retail{background:var(--red)}
-.trend-val{font-family:var(--mono);font-size:11px;color:var(--text2);width:44px;text-align:right}
+.expand-table th{
+  font-size:10px;font-weight:600;color:var(--text3);letter-spacing:.04em;
+  padding:4px 10px;text-align:center;border-bottom:1px solid var(--border);
+  white-space:nowrap;background:#fafbfc;
+}
+.expand-table th:first-child{text-align:left}
+.expand-table td{
+  font-family:var(--mono);font-size:12px;color:var(--text2);
+  padding:6px 10px;text-align:center;border-bottom:1px solid var(--border);
+  white-space:nowrap;
+}
+.expand-table td:first-child{color:var(--text);font-weight:600;text-align:left;font-family:var(--sans)}
+.expand-table td.expand-cum{font-weight:700}
+.expand-table td.expand-cum.pos{color:var(--green)}
+.expand-table td.expand-cum.neg{color:var(--red)}
+.expand-table tbody tr:last-child td{border-bottom:none}
+.expand-actions{flex:0 0 auto;display:flex;flex-direction:column;gap:6px;min-width:120px}
 
 /* ── Page layout (content + sidebar) ────────── */
 .page-layout{
@@ -327,15 +337,17 @@ tbody tr:hover .spark-bar{opacity:.9}
 [data-tip]:hover::after{opacity:1}
 
 /* ── 垂直捲軸（超過10筆啟用）──────────────────── */
-.table-vscroll{
+.table-scroll.table-vscroll{
   max-height:580px;
   overflow-y:auto;
+}
+.table-scroll{
   scrollbar-width:thin;
   scrollbar-color:var(--border2) transparent;
 }
-.table-vscroll::-webkit-scrollbar{width:4px}
-.table-vscroll::-webkit-scrollbar-track{background:transparent}
-.table-vscroll::-webkit-scrollbar-thumb{background:var(--border2);border-radius:2px}
+.table-scroll::-webkit-scrollbar{width:4px;height:4px}
+.table-scroll::-webkit-scrollbar-track{background:transparent}
+.table-scroll::-webkit-scrollbar-thumb{background:var(--border2);border-radius:2px}
 
 /* ── AI 推薦卡片 ─────────────────────────────── */
 .ai-card{
@@ -385,6 +397,39 @@ tbody tr:hover .spark-bar{opacity:.9}
   padding:28px 16px;text-align:center;font-size:13px;color:var(--text3);
 }
 
+/* ── Industry bar chart ──────────────────────── */
+.industry-chart{
+  background:#fff;border:1px solid var(--border);
+  border-radius:var(--radius);padding:14px 16px;
+  margin-bottom:16px;box-shadow:var(--shadow-sm);
+}
+.industry-chart-hd{
+  font-size:11px;font-weight:600;color:var(--text2);
+  letter-spacing:.04em;margin-bottom:12px;
+}
+.ind-bar-row{display:flex;align-items:center;gap:10px;margin-bottom:8px}
+.ind-bar-row:last-child{margin-bottom:0}
+.ind-bar-label{
+  font-size:12px;color:var(--text2);width:76px;flex-shrink:0;
+  white-space:nowrap;overflow:hidden;text-overflow:ellipsis;
+}
+.ind-bar-track{
+  flex:1;background:var(--bg3);border-radius:4px;height:22px;overflow:hidden;
+}
+.ind-bar-fill{
+  height:100%;background:var(--green-dim);border-right:2px solid var(--green);
+  border-radius:4px;display:flex;align-items:center;padding:0 8px;
+  min-width:28px;transition:width .4s ease;
+}
+.ind-bar-count{
+  font-family:var(--mono);font-size:11px;font-weight:600;
+  color:var(--green);white-space:nowrap;
+}
+.ind-bar-avg{
+  font-family:var(--mono);font-size:11px;color:var(--text3);
+  width:52px;text-align:right;flex-shrink:0;
+}
+
 /* ════════════════════════════════════════════════
    RESPONSIVE  (RWD)
 ════════════════════════════════════════════════ */
@@ -417,12 +462,6 @@ tbody tr:hover .spark-bar{opacity:.9}
   }
 
   .summary-row{grid-template-columns:1fr 1fr}
-
-  .expand-content{
-    grid-template-columns:1fr;
-    gap:14px;
-    padding:16px;
-  }
 
   .table-wrap{border-radius:8px}
   .table-scroll{overflow-x:auto;-webkit-overflow-scrolling:touch}
@@ -704,8 +743,7 @@ function renderStrategy() {
           </button>
         </div>
       </div>
-      <div class="table-scroll">
-      <div class="${vscrollClass}">
+      <div class="table-scroll ${vscrollClass}">
       <table id="resultsTable">
         <thead>
           <tr>
@@ -721,7 +759,6 @@ function renderStrategy() {
           ${data.map(d => renderRow(d)).join('')}
         </tbody>
       </table>
-      </div>
       </div>
     </div>`;
 
@@ -977,6 +1014,45 @@ function exportCSV() {
 }
 
 // ════════════════════════════════════════════════════
+//  族群柱狀圖 TOP 6（按入選數量，同數量以平均增幅排序）
+// ════════════════════════════════════════════════════
+function renderIndustryChart(allData) {
+  const groups = {};
+  allData.forEach(d => {
+    const ind = d.industry || '其他';
+    if (!groups[ind]) groups[ind] = [];
+    groups[ind].push(d);
+  });
+  const top6 = Object.entries(groups)
+    .map(([name, items]) => ({
+      name,
+      count: items.length,
+      avg: items.reduce((s, d) => s + (d.cumulative_3w || 0), 0) / items.length
+    }))
+    .sort((a, b) => b.count !== a.count ? b.count - a.count : b.avg - a.avg)
+    .slice(0, 6);
+  if (!top6.length) return '';
+  const maxCount = top6[0].count;
+  const bars = top6.map(g => {
+    const pct = (g.count / maxCount * 100).toFixed(1);
+    const avgSign = g.avg >= 0 ? '+' : '';
+    return `<div class="ind-bar-row">
+      <div class="ind-bar-label" title="${g.name}">${g.name}</div>
+      <div class="ind-bar-track">
+        <div class="ind-bar-fill" style="width:${pct}%">
+          <span class="ind-bar-count">${g.count} 支</span>
+        </div>
+      </div>
+      <div class="ind-bar-avg">${avgSign}${g.avg.toFixed(2)}%</div>
+    </div>`;
+  }).join('');
+  return `<div class="industry-chart">
+    <div class="industry-chart-hd">族群分布 TOP 6　<span style="font-weight:400;color:var(--text3)">依入選數量 / 同數量以平均3週增幅排序</span></div>
+    ${bars}
+  </div>`;
+}
+
+// ════════════════════════════════════════════════════
 //  籌碼集中：渲染器
 // ════════════════════════════════════════════════════
 function renderChipsHolder(strat, main) {
@@ -1056,27 +1132,43 @@ function renderChipsHolder(strat, main) {
       </tr>
       <tr class="expand-row" id="expand-${d.stock_id}" style="display:none">
         <td colspan="8">
-          <div class="expand-content">
-            <div class="expand-section">
-              <h4>千張大戶趨勢</h4>
-              ${trendBars(d.big_trend_1000 || [], '千張', '')}
+          <div class="expand-flat">
+            <div class="expand-trend-wrap">
+              ${(() => {
+                const labels = d.date_labels || DATE_LABELS;
+                const t1000  = d.big_trend_1000 || [];
+                const t400   = d.big_trend_400  || [];
+                const cum400 = t400.length >= 2 ? t400[t400.length-1] - t400[0] : null;
+                const cum400Sign = cum400 != null && cum400 >= 0 ? '+' : '';
+                const cum3Sign   = (d.cumulative_3w || 0) >= 0 ? '+' : '';
+                const dateHdrs = labels.map(l => `<th>${l}</th>`).join('');
+                const cells1000 = t1000.map(v => `<td>${v.toFixed(2)}%</td>`).join('');
+                const cells400  = t400.map(v  => `<td>${v.toFixed(2)}%</td>`).join('');
+                return `<table class="expand-table">
+                  <thead><tr>
+                    <th></th><th>3週增幅</th>${dateHdrs}
+                  </tr></thead>
+                  <tbody>
+                    <tr>
+                      <td>千張大戶</td>
+                      <td class="expand-cum ${(d.cumulative_3w||0)>=0?'pos':'neg'}">${d.cumulative_3w!=null?cum3Sign+d.cumulative_3w.toFixed(2)+'%':'—'}</td>
+                      ${cells1000}
+                    </tr>
+                    <tr>
+                      <td>400張大戶</td>
+                      <td class="expand-cum ${cum400!=null&&cum400>=0?'pos':'neg'}">${cum400!=null?cum400Sign+cum400.toFixed(2)+'%':'—'}</td>
+                      ${cells400}
+                    </tr>
+                  </tbody>
+                </table>`;
+              })()}
             </div>
-            <div class="expand-section">
-              <h4>400張大戶趨勢</h4>
-              ${d.big_trend_400 ? trendBars(d.big_trend_400, '400張', '') : '<div style="color:var(--text3);font-size:12px;padding:4px 0">資料不足</div>'}
-            </div>
-            <div class="expand-section">
-              <h4>操作</h4>
+            <div class="expand-actions">
               <button onclick="event.stopPropagation();toggleWatch('${d.stock_id}','${d.name}')"
-                style="background:${inWatch?'var(--green-dim)':'#fff'};border:1px solid ${inWatch?'var(--green)':'var(--border)'};color:${inWatch?'var(--green)':'var(--text2)'};padding:8px 14px;border-radius:6px;cursor:pointer;font-size:12px;font-family:var(--sans);width:100%;margin-bottom:8px"
+                style="background:${inWatch?'var(--green-dim)':'#fff'};border:1px solid ${inWatch?'var(--green)':'var(--border)'};color:${inWatch?'var(--green)':'var(--text2)'};padding:8px 14px;border-radius:6px;cursor:pointer;font-size:12px;font-family:var(--sans);white-space:nowrap"
                 id="watchBtn-${d.stock_id}">
-                ${inWatch ? '✓ 已加入觀察清單' : '+ 加入觀察清單'}
+                ${inWatch ? '✓ 已加入' : '+ 加入觀察清單'}
               </button>
-              <a href="https://tw.stock.yahoo.com/quote/${d.stock_id}" target="_blank"
-                onclick="event.stopPropagation()"
-                style="display:block;text-align:center;background:#fff;border:1px solid var(--border);color:var(--text2);padding:8px 14px;border-radius:6px;font-size:12px;text-decoration:none">
-                Yahoo 股市 ↗
-              </a>
             </div>
           </div>
         </td>
@@ -1140,6 +1232,7 @@ function renderChipsHolder(strat, main) {
           </div>
         </div>
       </div>
+      ${renderIndustryChart(allData)}
       <div class="table-wrap">
         <div class="table-toolbar">
           <span class="table-title">篩選結果</span>
@@ -1148,8 +1241,7 @@ function renderChipsHolder(strat, main) {
             <button class="btn-csv" onclick="exportCSVChips()" title="匯出 CSV">↓ 匯出 CSV</button>
           </div>
         </div>
-        <div class="table-scroll">
-        <div class="${vscrollClass}">
+        <div class="table-scroll ${vscrollClass}">
         <table id="resultsTable">
           <thead>
             <tr>
@@ -1165,7 +1257,6 @@ function renderChipsHolder(strat, main) {
           </thead>
           <tbody>${tableBody}</tbody>
         </table>
-        </div>
         </div>
       </div>
     </div>`;
@@ -1309,8 +1400,7 @@ function renderVolumeSignal(strat, main) {
           <span class="table-title">量增訊號標的</span>
           <div class="toolbar-right"><span class="updated-tag">更新：${strat.dataUpdated}</span></div>
         </div>
-        <div class="table-scroll">
-        <div class="${data.length > 10 ? 'table-vscroll' : ''}">
+        <div class="table-scroll ${data.length > 10 ? 'table-vscroll' : ''}">
         <table>
           <thead>
             <tr>
@@ -1325,7 +1415,6 @@ function renderVolumeSignal(strat, main) {
           </thead>
           <tbody>${rows}</tbody>
         </table>
-        </div>
         </div>
       </div>
     </div>`;
