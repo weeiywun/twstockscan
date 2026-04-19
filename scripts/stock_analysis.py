@@ -151,8 +151,8 @@ PROMPT_TEMPLATE = """你是台股分析師，請根據以下資料對股票進�
 }}"""
 
 
-def call_gemini(stock: dict, news_text: str, api_key: str) -> dict | None:
-    """呼叫 Gemini API，回傳解析後的 dict 或 None"""
+def call_gemini(stock: dict, news_text: str, api_key: str, retries: int = 3) -> dict | None:
+    """呼叫 Gemini API，429 時自動 retry，回傳解析後的 dict 或 None"""
     prompt = PROMPT_TEMPLATE.format(
         ticker        = stock["stock_id"],
         name          = stock["name"],
@@ -167,20 +167,28 @@ def call_gemini(stock: dict, news_text: str, api_key: str) -> dict | None:
         "contents": [{"parts": [{"text": prompt}]}],
         "generationConfig": {"temperature": 0.2, "responseMimeType": "application/json"},
     }
-    try:
-        resp = requests.post(
-            GEMINI_API_URL, params={"key": api_key}, json=payload, timeout=30
-        )
-        resp.raise_for_status()
-        raw = resp.json()["candidates"][0]["content"]["parts"][0]["text"]
-        json_match = re.search(r'\{.*\}', raw, re.DOTALL)
-        if not json_match:
-            print(f"  ⚠️  Gemini 回覆無法解析 JSON：{raw[:80]}")
-            return None
-        return json.loads(json_match.group())
-    except Exception as e:
-        print(f"  ⚠️  Gemini API 錯誤：{e}")
-        return None
+    for attempt in range(1, retries + 1):
+        try:
+            resp = requests.post(
+                GEMINI_API_URL, params={"key": api_key}, json=payload, timeout=30
+            )
+            if resp.status_code == 429:
+                wait = 15 * attempt   # 15s, 30s, 45s
+                print(f"  ⏳ 429 Rate limit，等待 {wait}s (attempt {attempt}/{retries})...")
+                time.sleep(wait)
+                continue
+            resp.raise_for_status()
+            raw = resp.json()["candidates"][0]["content"]["parts"][0]["text"]
+            json_match = re.search(r'\{.*\}', raw, re.DOTALL)
+            if not json_match:
+                print(f"  ⚠️  Gemini 回覆無法解析 JSON：{raw[:80]}")
+                return None
+            return json.loads(json_match.group())
+        except Exception as e:
+            print(f"  ⚠️  Gemini API 錯誤（attempt {attempt}）：{e}")
+            if attempt < retries:
+                time.sleep(10)
+    return None
 
 
 # ════════════════════════════════════════════════════
@@ -255,7 +263,7 @@ def main():
         ai_result = None
         if gemini_key:
             ai_result = call_gemini(stock, news_text, gemini_key)
-            time.sleep(0.5)   # API rate limit buffer
+            time.sleep(4)     # gemini-2.0-flash free tier: 15 req/min → 4s 間隔
 
         if ai_result:
             claude_scores = ai_result.get("scores", {})
