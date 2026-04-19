@@ -1,6 +1,658 @@
 {
   "last_updated": "2026-04-19",
-  "active": [],
+  "active": [
+    {
+      "ticker": "1626",
+      "name": "艾美特-KY",
+      "industry": "電器",
+      "trigger_date": "2026-04-19",
+      "expire_date": "2026-05-01",
+      "days_remaining": 10,
+      "entry_price": 12.0,
+      "current_price": 12.0,
+      "pnl_pct": 0.0,
+      "repeat": false,
+      "repeat_count": 1,
+      "ai_analysis_date": "2026-04-19",
+      "composite_score": 29,
+      "recommendation": "avoid",
+      "base_score": 48.4,
+      "multiplier": 0.6,
+      "action_log": "觸發致命懲罰 (營收衰退或主力未買)",
+      "rev_grade": "C",
+      "quant_scores": {
+        "trend_score": 1.5,
+        "chip_score": 10.0,
+        "rev_score": 4.0
+      },
+      "ai_scores": {
+        "ai_news_score": 4.0,
+        "ai_industry_score": 5.0
+      },
+      "summary": "營收同比下滑11.5%，環比反彈155.3%，基期低墊；近期無重大新聞催化。",
+      "risk": "年營收衰退趨勢未見扭轉，電器產業景氣疲弱，匯率波動風險。"
+    },
+    {
+      "ticker": "2302",
+      "name": "麗正",
+      "industry": "半導",
+      "trigger_date": "2026-04-19",
+      "expire_date": "2026-05-01",
+      "days_remaining": 10,
+      "entry_price": 19.4,
+      "current_price": 19.4,
+      "pnl_pct": 0.0,
+      "repeat": false,
+      "repeat_count": 1,
+      "ai_analysis_date": "2026-04-19",
+      "composite_score": 33,
+      "recommendation": "avoid",
+      "base_score": 55.2,
+      "multiplier": 0.6,
+      "action_log": "觸發致命懲罰 (營收衰退或主力未買)",
+      "rev_grade": "A",
+      "quant_scores": {
+        "trend_score": 0.1,
+        "chip_score": 10.0,
+        "rev_score": 8.0
+      },
+      "ai_scores": {
+        "ai_news_score": 4.0,
+        "ai_industry_score": 6.0
+      },
+      "summary": "營收溫和成長，近期無重大訊息，半導體產業景氣待觀察。",
+      "risk": "半導體產業景氣波動風險，營收成長動能不足，缺乏催化劑。"
+    },
+    {
+      "ticker": "2312",
+      "name": "金寶",
+      "industry": "他電",
+      "trigger_date": "2026-04-19",
+      "expire_date": "2026-05-01",
+      "days_remaining": 10,
+      "entry_price": 24.55,
+      "current_price": 24.55,
+      "pnl_pct": 0.0,
+      "repeat": false,
+      "repeat_count": 1,
+      "ai_analysis_date": "2026-04-19",
+      "composite_score": 25,
+      "recommendation": "avoid",
+      "base_score": 42.0,
+      "multiplier": 0.6,
+      "action_log": "觸發致命懲罰 (營收衰退或主力未買)",
+      "rev_grade": "C",
+      "quant_scores": {
+        "trend_score": 1.5,
+        "chip_score": 10.0,
+        "rev_score": 4.0
+      },
+      "ai_scores": {
+        "ai_news_score": 2.0,
+        "ai_industry_score": 4.0
+      },
+      "summary": "營收年衰13%，近期新聞缺乏實質利多，僅有散戶炒作跡象，基本面堪憂。",
+      "risk": "營收持續衰退，月營收YoY負成長，散戶炒作易形成風險，產業景氣不佳。"
+    },
+    {
+      "ticker": "3230",
+      "name": "錦明",
+      "industry": "櫃光電",
+      "trigger_date": "2026-04-19",
+      "expire_date": "2026-05-01",
+      "days_remaining": 10,
+      "entry_price": 43.35,
+      "current_price": 43.35,
+      "pnl_pct": 0.0,
+      "repeat": false,
+      "repeat_count": 1,
+      "ai_analysis_date": "2026-04-19",
+      "composite_score": 71,
+      "recommendation": "buy",
+      "base_score": 70.7,
+      "multiplier": 1.0,
+      "action_log": "基礎計分",
+      "rev_grade": "S",
+      "quant_scores": {
+        "trend_score": 5.1,
+        "chip_score": 10.0,
+        "rev_score": 10.0
+      },
+      "ai_scores": {
+        "ai_news_score": 4.0,
+        "ai_industry_score": 7.0
+      },
+      "summary": "營收動能強勁環比增28%，但缺乏新聞催化劑支撑股價走勢",
+      "risk": "櫃光電產業景氣循環風險高，營收成長能否持續有待觀察"
+    },
+    {
+      "ticker": "2597",
+      "name": "潤弘",
+      "industry": "營建",
+      "trigger_date": "2026-04-19",
+      "expire_date": "2026-05-01",
+      "days_remaining": 10,
+      "entry_price": 165.5,
+      "current_price": 165.5,
+      "pnl_pct": 0.0,
+      "repeat": false,
+      "repeat_count": 1,
+      "ai_analysis_date": "2026-04-19",
+      "composite_score": 30,
+      "recommendation": "avoid",
+      "base_score": 49.8,
+      "multiplier": 0.6,
+      "action_log": "觸發致命懲罰 (營收衰退或主力未買)",
+      "rev_grade": "S",
+      "quant_scores": {
+        "trend_score": 0.2,
+        "chip_score": 3.9,
+        "rev_score": 10.0
+      },
+      "ai_scores": {
+        "ai_news_score": 5.0,
+        "ai_industry_score": 6.0
+      },
+      "summary": "近期無重大新聞，營收小幅成長，月營收環比強勁反彈，需觀察後續表現。",
+      "risk": "營建業景氣循環風險高，利率政策變化與房市政策可能衝擊需求。"
+    },
+    {
+      "ticker": "1442",
+      "name": "名軒",
+      "industry": "營建",
+      "trigger_date": "2026-04-19",
+      "expire_date": "2026-05-01",
+      "days_remaining": 10,
+      "entry_price": 29.0,
+      "current_price": 29.0,
+      "pnl_pct": 0.0,
+      "repeat": false,
+      "repeat_count": 1,
+      "ai_analysis_date": "2026-04-19",
+      "composite_score": 18,
+      "recommendation": "avoid",
+      "base_score": 29.7,
+      "multiplier": 0.6,
+      "action_log": "觸發致命懲罰 (營收衰退或主力未買)",
+      "rev_grade": "C",
+      "quant_scores": {
+        "trend_score": 0.3,
+        "chip_score": 0.8,
+        "rev_score": 4.0
+      },
+      "ai_scores": {
+        "ai_news_score": 6.0,
+        "ai_industry_score": 3.0
+      },
+      "summary": "配息政策穩健，惟月營收YoY大幅衰退85.9%，營建景氣面臨嚴峻挑戰。",
+      "risk": "營收急劇萎縮，營建產業景氣低迷，後續獲利與配息能力恐難以維持。"
+    },
+    {
+      "ticker": "3045",
+      "name": "台灣大",
+      "industry": "通信",
+      "trigger_date": "2026-04-19",
+      "expire_date": "2026-05-01",
+      "days_remaining": 10,
+      "entry_price": 112.5,
+      "current_price": 112.5,
+      "pnl_pct": 0.0,
+      "repeat": false,
+      "repeat_count": 1,
+      "ai_analysis_date": "2026-04-19",
+      "composite_score": 26,
+      "recommendation": "avoid",
+      "base_score": 44.1,
+      "multiplier": 0.6,
+      "action_log": "觸發致命懲罰 (營收衰退或主力未買)",
+      "rev_grade": "S",
+      "quant_scores": {
+        "trend_score": 0.1,
+        "chip_score": 0.0,
+        "rev_score": 10.0
+      },
+      "ai_scores": {
+        "ai_news_score": 6.0,
+        "ai_industry_score": 6.0
+      },
+      "summary": "營收成長穩健，惟缺乏催化新聞；通信產業競爭激烈，成長動能有限。",
+      "risk": "電信市場飽和，5G建設進度趨緩，競爭價格戰風險持續。"
+    },
+    {
+      "ticker": "2353",
+      "name": "宏卅卅",
+      "industry": "電腦",
+      "trigger_date": "2026-04-19",
+      "expire_date": "2026-05-01",
+      "days_remaining": 10,
+      "entry_price": 28.7,
+      "current_price": 28.7,
+      "pnl_pct": 0.0,
+      "repeat": false,
+      "repeat_count": 1,
+      "ai_analysis_date": "2026-04-19",
+      "composite_score": 42,
+      "recommendation": "avoid",
+      "base_score": 41.6,
+      "multiplier": 1.0,
+      "action_log": "基礎計分",
+      "rev_grade": "A",
+      "quant_scores": {
+        "trend_score": 2.2,
+        "chip_score": 3.1,
+        "rev_score": 8.0
+      },
+      "ai_scores": {
+        "ai_news_score": 3.0,
+        "ai_industry_score": 5.0
+      },
+      "summary": "還債50億顯示財務壓力，營收成長力道有限，需觀察後續償債進展。",
+      "risk": "負債規模大，現金流面臨壓力；電腦產業競爭激烈，市場需求不確定。"
+    },
+    {
+      "ticker": "2645",
+      "name": "長榮航太",
+      "industry": "航運",
+      "trigger_date": "2026-04-19",
+      "expire_date": "2026-05-01",
+      "days_remaining": 10,
+      "entry_price": 160.5,
+      "current_price": 160.5,
+      "pnl_pct": 0.0,
+      "repeat": false,
+      "repeat_count": 1,
+      "ai_analysis_date": "2026-04-19",
+      "composite_score": 29,
+      "recommendation": "avoid",
+      "base_score": 48.3,
+      "multiplier": 0.6,
+      "action_log": "觸發致命懲罰 (營收衰退或主力未買)",
+      "rev_grade": "S",
+      "quant_scores": {
+        "trend_score": 0.5,
+        "chip_score": 0.9,
+        "rev_score": 10.0
+      },
+      "ai_scores": {
+        "ai_news_score": 6.0,
+        "ai_industry_score": 7.0
+      },
+      "summary": "營收動能強勁，月增28.4%、年增12.2%，惟近期無新聞催化劑支撐。",
+      "risk": "航運景氣週期性風險，國際運費波動及地緣政治影響運價走勢。"
+    },
+    {
+      "ticker": "2606",
+      "name": "裕民",
+      "industry": "航運",
+      "trigger_date": "2026-04-19",
+      "expire_date": "2026-05-01",
+      "days_remaining": 10,
+      "entry_price": 65.0,
+      "current_price": 65.0,
+      "pnl_pct": 0.0,
+      "repeat": false,
+      "repeat_count": 1,
+      "ai_analysis_date": "2026-04-19",
+      "composite_score": 63,
+      "recommendation": "watch",
+      "base_score": 63.5,
+      "multiplier": 1.0,
+      "action_log": "基礎計分",
+      "rev_grade": "S",
+      "quant_scores": {
+        "trend_score": 2.6,
+        "chip_score": 6.4,
+        "rev_score": 10.0
+      },
+      "ai_scores": {
+        "ai_news_score": 6.0,
+        "ai_industry_score": 7.0
+      },
+      "summary": "營收動能強勁，月增29%、年增17.7%，航運景氣持續支撐，惟缺乏近期催化新聞。",
+      "risk": "航運景氣循環風險、油價與運價波動、地緣政治衝擊運輸路線。"
+    },
+    {
+      "ticker": "2356",
+      "name": "英業達",
+      "industry": "電腦",
+      "trigger_date": "2026-04-19",
+      "expire_date": "2026-05-01",
+      "days_remaining": 10,
+      "entry_price": 45.75,
+      "current_price": 45.75,
+      "pnl_pct": 0.0,
+      "repeat": false,
+      "repeat_count": 1,
+      "ai_analysis_date": "2026-04-19",
+      "composite_score": 42,
+      "recommendation": "avoid",
+      "base_score": 70.7,
+      "multiplier": 0.6,
+      "action_log": "觸發致命懲罰 (營收衰退或主力未買)",
+      "rev_grade": "S",
+      "quant_scores": {
+        "trend_score": 1.3,
+        "chip_score": 9.3,
+        "rev_score": 10.0
+      },
+      "ai_scores": {
+        "ai_news_score": 7.0,
+        "ai_industry_score": 8.0
+      },
+      "summary": "營收強勁成長，受惠AI伺服器投資浪潮，產業前景看好。",
+      "risk": "股價漲幅快，市場擔心估值偏高與獲利能否持續。"
+    },
+    {
+      "ticker": "2634",
+      "name": "漢翔",
+      "industry": "航運",
+      "trigger_date": "2026-04-19",
+      "expire_date": "2026-05-01",
+      "days_remaining": 10,
+      "entry_price": 50.4,
+      "current_price": 50.4,
+      "pnl_pct": 0.0,
+      "repeat": false,
+      "repeat_count": 1,
+      "ai_analysis_date": "2026-04-19",
+      "composite_score": 32,
+      "recommendation": "avoid",
+      "base_score": 53.0,
+      "multiplier": 0.6,
+      "action_log": "觸發致命懲罰 (營收衰退或主力未買)",
+      "rev_grade": "C",
+      "quant_scores": {
+        "trend_score": 0.0,
+        "chip_score": 10.0,
+        "rev_score": 4.0
+      },
+      "ai_scores": {
+        "ai_news_score": 7.0,
+        "ai_industry_score": 5.0
+      },
+      "summary": "數位轉型成果獲肯定，AI應用提升稼動率；惟營收YoY衰退7%需關注。",
+      "risk": "月營收年減7%，景氣復甦不確定性高，轉型成效待驗證。"
+    },
+    {
+      "ticker": "2342",
+      "name": "茂矽",
+      "industry": "半導",
+      "trigger_date": "2026-04-19",
+      "expire_date": "2026-05-01",
+      "days_remaining": 10,
+      "entry_price": 30.5,
+      "current_price": 30.5,
+      "pnl_pct": 0.0,
+      "repeat": false,
+      "repeat_count": 1,
+      "ai_analysis_date": "2026-04-19",
+      "composite_score": 17,
+      "recommendation": "avoid",
+      "base_score": 28.9,
+      "multiplier": 0.6,
+      "action_log": "觸發致命懲罰 (營收衰退或主力未買)",
+      "rev_grade": "C",
+      "quant_scores": {
+        "trend_score": 0.0,
+        "chip_score": 1.7,
+        "rev_score": 4.0
+      },
+      "ai_scores": {
+        "ai_news_score": 4.0,
+        "ai_industry_score": 5.0
+      },
+      "summary": "月營收環比回升但年衰退持續，近期無新聞催化，需觀察後續反彈力道。",
+      "risk": "年衰退幅度達-10.8%，半導體景氣復甦進度不確定，營收趨勢仍需確認。"
+    },
+    {
+      "ticker": "1513",
+      "name": "中興電",
+      "industry": "電機",
+      "trigger_date": "2026-04-19",
+      "expire_date": "2026-05-01",
+      "days_remaining": 10,
+      "entry_price": 153.0,
+      "current_price": 153.0,
+      "pnl_pct": 0.0,
+      "repeat": false,
+      "repeat_count": 1,
+      "ai_analysis_date": "2026-04-19",
+      "composite_score": 40,
+      "recommendation": "avoid",
+      "base_score": 65.8,
+      "multiplier": 0.6,
+      "action_log": "觸發致命懲罰 (營收衰退或主力未買)",
+      "rev_grade": "S",
+      "quant_scores": {
+        "trend_score": 0.0,
+        "chip_score": 6.9,
+        "rev_score": 10.0
+      },
+      "ai_scores": {
+        "ai_news_score": 8.0,
+        "ai_industry_score": 8.0
+      },
+      "summary": "AI資料中心與電子廠擴產帶動接單，月營收YoY+4.8%、MoM+31.9%成長強勁。",
+      "risk": "AI產業景氣循環風險、重電設備交期長、競爭加劇可能壓低毛利率。"
+    },
+    {
+      "ticker": "2912",
+      "name": "統一超",
+      "industry": "貿易",
+      "trigger_date": "2026-04-19",
+      "expire_date": "2026-05-01",
+      "days_remaining": 10,
+      "entry_price": 237.5,
+      "current_price": 237.5,
+      "pnl_pct": 0.0,
+      "repeat": false,
+      "repeat_count": 1,
+      "ai_analysis_date": "2026-04-19",
+      "composite_score": 29,
+      "recommendation": "avoid",
+      "base_score": 48.2,
+      "multiplier": 0.6,
+      "action_log": "觸發致命懲罰 (營收衰退或主力未買)",
+      "rev_grade": "A",
+      "quant_scores": {
+        "trend_score": 1.8,
+        "chip_score": 0.3,
+        "rev_score": 8.0
+      },
+      "ai_scores": {
+        "ai_news_score": 7.0,
+        "ai_industry_score": 7.0
+      },
+      "summary": "點數生態系績優表現支撐，營收穩健成長，惟需觀察後續消費動能。",
+      "risk": "零售景氣循環風險、通膨壓力對消費的潛在衝擊。"
+    },
+    {
+      "ticker": "2371",
+      "name": "大同",
+      "industry": "電機",
+      "trigger_date": "2026-04-19",
+      "expire_date": "2026-05-01",
+      "days_remaining": 10,
+      "entry_price": 33.1,
+      "current_price": 33.1,
+      "pnl_pct": 0.0,
+      "repeat": false,
+      "repeat_count": 1,
+      "ai_analysis_date": "2026-04-19",
+      "composite_score": 41,
+      "recommendation": "avoid",
+      "base_score": 68.0,
+      "multiplier": 0.6,
+      "action_log": "觸發致命懲罰 (營收衰退或主力未買)",
+      "rev_grade": "S",
+      "quant_scores": {
+        "trend_score": 0.7,
+        "chip_score": 10.0,
+        "rev_score": 10.0
+      },
+      "ai_scores": {
+        "ai_news_score": 7.0,
+        "ai_industry_score": 6.0
+      },
+      "summary": "成立全球控股公司進軍海外，營收月增42.9%，但需觀察執行力與實質獲利能力。",
+      "risk": "大同過往轉型進展不如預期，全球控股公司能否真正帶動獲利成長仍有不確定性。"
+    },
+    {
+      "ticker": "2059",
+      "name": "川湖",
+      "industry": "電零",
+      "trigger_date": "2026-04-19",
+      "expire_date": "2026-05-01",
+      "days_remaining": 10,
+      "entry_price": 3640.0,
+      "current_price": 3640.0,
+      "pnl_pct": 0.0,
+      "repeat": false,
+      "repeat_count": 1,
+      "ai_analysis_date": "2026-04-19",
+      "composite_score": 44,
+      "recommendation": "avoid",
+      "base_score": 73.2,
+      "multiplier": 0.6,
+      "action_log": "觸發致命懲罰 (營收衰退或主力未買)",
+      "rev_grade": "S",
+      "quant_scores": {
+        "trend_score": 1.9,
+        "chip_score": 10.0,
+        "rev_score": 10.0
+      },
+      "ai_scores": {
+        "ai_news_score": 7.0,
+        "ai_industry_score": 8.0
+      },
+      "summary": "營收強勁成長38.9%YoY，近期漲幅8.5%，電零產業景氣向上，基本面支撐股價。",
+      "risk": "高股價基數下，營收成長能否持續；電子產業景氣循環風險。"
+    },
+    {
+      "ticker": "2630",
+      "name": "亞航",
+      "industry": "航運",
+      "trigger_date": "2026-04-19",
+      "expire_date": "2026-05-01",
+      "days_remaining": 10,
+      "entry_price": 49.3,
+      "current_price": 49.3,
+      "pnl_pct": 0.0,
+      "repeat": false,
+      "repeat_count": 1,
+      "ai_analysis_date": "2026-04-19",
+      "composite_score": 49,
+      "recommendation": "avoid",
+      "base_score": 48.7,
+      "multiplier": 1.0,
+      "action_log": "基礎計分",
+      "rev_grade": "C",
+      "quant_scores": {
+        "trend_score": 3.1,
+        "chip_score": 10.0,
+        "rev_score": 4.0
+      },
+      "ai_scores": {
+        "ai_news_score": 4.0,
+        "ai_industry_score": 3.0
+      },
+      "summary": "近5天無新聞，月營收同比下滑15.2%，環比反彈26%，航運景氣仍弱。",
+      "risk": "全球貿易疲軟、運費低迷、匯率波動風險大，航運景氣復甦緩慢。"
+    },
+    {
+      "ticker": "2014",
+      "name": "中鴻",
+      "industry": "鋼鐵",
+      "trigger_date": "2026-04-19",
+      "expire_date": "2026-05-01",
+      "days_remaining": 10,
+      "entry_price": 18.65,
+      "current_price": 18.65,
+      "pnl_pct": 0.0,
+      "repeat": false,
+      "repeat_count": 1,
+      "ai_analysis_date": "2026-04-19",
+      "composite_score": 27,
+      "recommendation": "avoid",
+      "base_score": 45.1,
+      "multiplier": 0.6,
+      "action_log": "觸發致命懲罰 (營收衰退或主力未買)",
+      "rev_grade": "C",
+      "quant_scores": {
+        "trend_score": 1.3,
+        "chip_score": 10.0,
+        "rev_score": 4.0
+      },
+      "ai_scores": {
+        "ai_news_score": 4.0,
+        "ai_industry_score": 3.0
+      },
+      "summary": "月營收跌幅深(-24.7% YoY)，近期漲幅缺乏基本面支撐，存在反彈風險。",
+      "risk": "鋼鐵產業需求疲弱，營收衰退幅度大，股價漲幅可能難以持續。"
+    },
+    {
+      "ticker": "3016",
+      "name": "嘉晶",
+      "industry": "半導",
+      "trigger_date": "2026-04-19",
+      "expire_date": "2026-05-01",
+      "days_remaining": 10,
+      "entry_price": 63.1,
+      "current_price": 63.1,
+      "pnl_pct": 0.0,
+      "repeat": false,
+      "repeat_count": 1,
+      "ai_analysis_date": "2026-04-19",
+      "composite_score": 41,
+      "recommendation": "avoid",
+      "base_score": 68.5,
+      "multiplier": 0.6,
+      "action_log": "觸發致命懲罰 (營收衰退或主力未買)",
+      "rev_grade": "S",
+      "quant_scores": {
+        "trend_score": 1.7,
+        "chip_score": 7.7,
+        "rev_score": 10.0
+      },
+      "ai_scores": {
+        "ai_news_score": 7.0,
+        "ai_industry_score": 8.0
+      },
+      "summary": "矽晶圓補漲題材發酵，營收成長強勁，技術面接近前高，短期漲勢明確。",
+      "risk": "股價已漲停附近，籌碼偏空，技術壓力大，回檔風險不容忽視。"
+    },
+    {
+      "ticker": "3466",
+      "name": "德晉",
+      "industry": "櫃通信",
+      "trigger_date": "2026-04-19",
+      "expire_date": "2026-05-01",
+      "days_remaining": 10,
+      "entry_price": 41.0,
+      "current_price": 41.0,
+      "pnl_pct": 0.0,
+      "repeat": false,
+      "repeat_count": 1,
+      "ai_analysis_date": "2026-04-19",
+      "composite_score": 28,
+      "recommendation": "avoid",
+      "base_score": 45.8,
+      "multiplier": 0.6,
+      "action_log": "觸發致命懲罰 (營收衰退或主力未買)",
+      "rev_grade": "S",
+      "quant_scores": {
+        "trend_score": 0.0,
+        "chip_score": 4.7,
+        "rev_score": 10.0
+      },
+      "ai_scores": {
+        "ai_news_score": 3.0,
+        "ai_industry_score": 6.0
+      },
+      "summary": "營收暴增但缺乏新聞披露，增長可持續性存疑，需觀察後續動向。",
+      "risk": "月營收環比暴漲1384%，可能為單月異常或季節性，難以維持，下跌風險高。"
+    }
+  ],
   "expired": [
     {
       "ticker": "2303",
