@@ -96,7 +96,7 @@ def calculate_v1_6_score(
 
     multiplier = 1.0
     action_log = "基礎計分"
-    if rev_grade == 'D' or trend_score <= 2:
+    if rev_grade == 'D' and trend_score <= 2:
         multiplier = 0.6
         action_log = "觸發致命懲罰 (營收衰退或主力未買)"
     elif trend_score >= 8 and rev_grade == 'C':
