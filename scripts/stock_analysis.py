@@ -8,11 +8,10 @@
 
 import json
 import os
-import re
 import time
 from datetime import date, datetime, timedelta, timezone
 
-import requests
+import anthropic
 
 from finmind_client import fetch_stock_price
 from news_crawler import fetch_news, format_news_for_prompt
@@ -115,8 +114,7 @@ def trading_days_remaining(expire: date, today: date) -> int:
 #  Claude API 分析
 # ════════════════════════════════════════════════════
 
-GEMINI_MODEL = "gemini-2.0-flash"
-GEMINI_API_URL = f"https://generativelanguage.googleapis.com/v1beta/models/{GEMINI_MODEL}:generateContent"
+CLAUDE_MODEL = "claude-haiku-4-5-20251001"
 
 PROMPT_TEMPLATE = """你是台股分析師，請根據以下資料對股票進行客觀評分分析。
 
@@ -151,8 +149,8 @@ PROMPT_TEMPLATE = """你是台股分析師，請根據以下資料對股票進�
 }}"""
 
 
-def call_gemini(stock: dict, news_text: str, api_key: str, retries: int = 3) -> dict | None:
-    """呼叫 Gemini API，429 時自動 retry，回傳解析後的 dict 或 None"""
+def call_claude(stock: dict, news_text: str, api_key: str) -> dict | None:
+    """呼叫 Claude API，回傳解析後的 dict 或 None"""
     prompt = PROMPT_TEMPLATE.format(
         ticker        = stock["stock_id"],
         name          = stock["name"],
@@ -163,32 +161,24 @@ def call_gemini(stock: dict, news_text: str, api_key: str, retries: int = 3) -> 
         vol_ratio     = stock.get("vol_ratio") or "—",
         news_text     = news_text,
     )
-    payload = {
-        "contents": [{"parts": [{"text": prompt}]}],
-        "generationConfig": {"temperature": 0.2, "responseMimeType": "application/json"},
-    }
-    for attempt in range(1, retries + 1):
-        try:
-            resp = requests.post(
-                GEMINI_API_URL, params={"key": api_key}, json=payload, timeout=30
-            )
-            if resp.status_code == 429:
-                wait = 15 * attempt   # 15s, 30s, 45s
-                print(f"  ⏳ 429 Rate limit，等待 {wait}s (attempt {attempt}/{retries})...")
-                time.sleep(wait)
-                continue
-            resp.raise_for_status()
-            raw = resp.json()["candidates"][0]["content"]["parts"][0]["text"]
-            json_match = re.search(r'\{.*\}', raw, re.DOTALL)
-            if not json_match:
-                print(f"  ⚠️  Gemini 回覆無法解析 JSON：{raw[:80]}")
-                return None
-            return json.loads(json_match.group())
-        except Exception as e:
-            print(f"  ⚠️  Gemini API 錯誤（attempt {attempt}）：{e}")
-            if attempt < retries:
-                time.sleep(10)
-    return None
+    try:
+        client = anthropic.Anthropic(api_key=api_key)
+        message = client.messages.create(
+            model      = CLAUDE_MODEL,
+            max_tokens = 512,
+            messages   = [{"role": "user", "content": prompt}],
+        )
+        raw = message.content[0].text.strip()
+        # 擷取 JSON 區塊
+        start = raw.find("{")
+        end   = raw.rfind("}") + 1
+        if start == -1 or end == 0:
+            print(f"  ⚠️  Claude 回覆無法解析 JSON：{raw[:80]}")
+            return None
+        return json.loads(raw[start:end])
+    except Exception as e:
+        print(f"  ⚠️  Claude API 錯誤：{e}")
+        return None
 
 
 # ════════════════════════════════════════════════════
@@ -220,11 +210,11 @@ def save_json(path: str, data: dict):
 
 def main():
     print("=== 標的分析腳本 ===")
-    gemini_key    = os.environ.get("GEMINI_API_KEY", "")
+    anthropic_key = os.environ.get("ANTHROPIC_API_KEY", "")
     finmind_token = os.environ.get("FINMIND_TOKEN", "")
 
-    if not gemini_key:
-        print("⚠️  GEMINI_API_KEY 未設定，跳過 AI 分析")
+    if not anthropic_key:
+        print("⚠️  ANTHROPIC_API_KEY 未設定，跳過 AI 分析")
     if not finmind_token:
         print("⚠️  FINMIND_TOKEN 未設定，無法更新現價")
 
@@ -261,9 +251,8 @@ def main():
 
         # Claude 評分
         ai_result = None
-        if gemini_key:
-            ai_result = call_gemini(stock, news_text, gemini_key)
-            time.sleep(4)     # gemini-2.0-flash free tier: 15 req/min → 4s 間隔
+        if anthropic_key:
+            ai_result = call_claude(stock, news_text, anthropic_key)
 
         if ai_result:
             claude_scores = ai_result.get("scores", {})

@@ -2,11 +2,11 @@
 """
 新聞爬蟲模組
 主要來源：鉅亨網 cnyes API
-備援來源：yfinance
+備援來源：FinMind TaiwanStockNews
 每支股票抓近 5 天、最多 10 篇標題 + 摘要（不需全文，節省 token）
 """
 
-import time
+import os
 import requests
 from datetime import datetime, timedelta, timezone
 
@@ -20,6 +20,8 @@ HEADERS = {
     "Accept": "application/json",
     "Referer": "https://news.cnyes.com/",
 }
+
+FINMIND_API = "https://api.finmindtrade.com/api/v4/data"
 
 
 # ── 鉅亨網 ───────────────────────────────────────────
@@ -58,22 +60,32 @@ def _cnyes_fetch(stock_id: str, limit: int = 10) -> list[dict]:
         return []
 
 
-# ── yfinance 備援 ─────────────────────────────────────
+# ── FinMind 備援 ──────────────────────────────────────
 
-def _yfinance_fetch(stock_id: str, limit: int = 10) -> list[dict]:
-    """yfinance 備援，回傳英文新聞，聊勝於無"""
+def _finmind_fetch(stock_id: str, limit: int = 10) -> list[dict]:
+    """FinMind TaiwanStockNews 備援"""
+    token      = os.environ.get("FINMIND_TOKEN", "")
+    start_date = (datetime.now(TW_TZ) - timedelta(days=5)).strftime("%Y-%m-%d")
+
     try:
-        import yfinance as yf
-        ticker = yf.Ticker(f"{stock_id}.TW")
-        news = ticker.news or []
+        r = requests.get(FINMIND_API, params={
+            "dataset":    "TaiwanStockNews",
+            "data_id":    stock_id,
+            "start_date": start_date,
+            "token":      token,
+        }, timeout=15)
+        if r.status_code != 200:
+            return []
+        data = r.json()
+        if data.get("status") != 200:
+            return []
+        items = data.get("data", [])
         results = []
-        for item in news[:limit]:
+        for item in items[:limit]:
             results.append({
                 "title":   item.get("title", "").strip(),
-                "summary": item.get("summary", "").strip()[:200],
-                "date":    datetime.fromtimestamp(
-                    item.get("providerPublishTime", 0), tz=TW_TZ
-                ).strftime("%Y-%m-%d") if item.get("providerPublishTime") else "",
+                "summary": item.get("description", "").strip()[:200],
+                "date":    item.get("date", "")[:10],
             })
         return results
     except Exception:
@@ -84,12 +96,12 @@ def _yfinance_fetch(stock_id: str, limit: int = 10) -> list[dict]:
 
 def fetch_news(stock_id: str, limit: int = 10) -> list[dict]:
     """
-    抓取個股新聞，優先鉅亨網，失敗則用 yfinance。
+    抓取個股新聞，優先鉅亨網，失敗則用 FinMind。
     回傳 list of {"title", "summary", "date"}
     """
     news = _cnyes_fetch(stock_id, limit)
     if not news:
-        news = _yfinance_fetch(stock_id, limit)
+        news = _finmind_fetch(stock_id, limit)
     return news
 
 
