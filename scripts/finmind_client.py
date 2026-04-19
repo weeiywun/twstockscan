@@ -67,3 +67,26 @@ def fetch_all_stocks(stock_list, start_date, end_date, token=None, sleep=0.35, *
 
     print(f"  完成：{len(results)} / {total} 支")
     return results
+
+
+def fetch_month_revenue(stock_id: str, token: str, months: int = 15) -> list[dict] | None:
+    """
+    取得個股月營收（近 months 個月）。
+    回傳 [{"date": "YYYY-MM-01", "revenue": float}, ...] 按日期升序，或 None。
+    """
+    from datetime import date, timedelta
+    start_date = (date.today().replace(day=1) - timedelta(days=months * 31)).strftime("%Y-%m-%d")
+    try:
+        r = requests.get(FINMIND_API, params={
+            "dataset":    "TaiwanStockMonthRevenue",
+            "data_id":    stock_id,
+            "start_date": start_date,
+            "token":      token,
+        }, timeout=20)
+        data = r.json()
+        if data.get("status") != 200 or not data.get("data"):
+            return None
+        rows = sorted(data["data"], key=lambda x: x["date"])
+        return [{"date": row["date"], "revenue": float(row["revenue"])} for row in rows]
+    except Exception:
+        return None

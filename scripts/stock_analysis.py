@@ -13,7 +13,7 @@ from datetime import date, datetime, timedelta, timezone
 
 import anthropic
 
-from finmind_client import fetch_stock_price
+from finmind_client import fetch_stock_price, fetch_month_revenue
 from news_crawler import fetch_news, format_news_for_prompt
 
 # ── 路徑 ──────────────────────────────────────────────
@@ -29,60 +29,102 @@ TODAY = datetime.now(TW_TZ).strftime("%Y-%m-%d")
 # ── 觀察天數 ──────────────────────────────────────────
 OBSERVE_TRADING_DAYS = 10   # 入選後觀察 10 個交易日
 
-# ── 評分權重（第一版，後續迭代調整） ─────────────────────
-# 質性（Claude 打分，各 0-10）× 權重
-# 量化（現有數據換算 0-10）× 權重
-# 加總後 × 10 → 最終 0-100 分
-SCORE_WEIGHTS = {
-    "法說會":   0.15,   # qualitative
-    "利多利空": 0.15,   # qualitative
-    "產業預期": 0.12,   # qualitative
-    "特殊因素": 0.08,   # qualitative
-    "籌碼集中": 0.20,   # quantitative: big_pct_1000
-    "籌碼趨勢": 0.20,   # quantitative: cumulative_3w
-    "量能":     0.10,   # quantitative: vol_ratio
-}
-# sum(weights) == 1.0
-
-# ── 建議門檻 ──────────────────────────────────────────
-THRESHOLD_BUY   = 70
-THRESHOLD_WATCH = 50
-
-
 # ════════════════════════════════════════════════════
-#  量化分數換算（0-10）
+#  v1.6 評分引擎
 # ════════════════════════════════════════════════════
 
-def _quant_chip(big_pct: float) -> float:
-    """千張大戶比例 30%→0, 50%→10，線性"""
-    return min(max((big_pct - 30) / 20 * 10, 0), 10)
+def _quant_chip_trapezoid(big_pct: float) -> float:
+    """籌碼集中度：梯形防禦模型 (0-10分)"""
+    if big_pct < 30:             return 0.0
+    elif big_pct < 45:           return (big_pct - 30) / 15 * 10.0
+    elif big_pct <= 65:          return 10.0
+    elif big_pct <= 80:          return (80 - big_pct) / 15 * 10.0
+    else:                        return 0.0
 
 def _quant_trend(cumulative_3w: float) -> float:
-    """3週增幅 0%→0, 5%→10，線性，上限 10"""
-    return min(max(cumulative_3w / 5 * 10, 0), 10)
+    """籌碼趨勢：近三週累積增幅 (0-10分)"""
+    return min(max(cumulative_3w / 5 * 10.0, 0.0), 10.0)
 
-def _quant_vol(vol_ratio: float) -> float:
-    """量比 1.5x→0, 3x→10，線性"""
-    return min(max((vol_ratio - 1.5) / 1.5 * 10, 0), 10)
+def _quant_revenue(yoy_curr: float, mom_curr: float, yoy_last: float) -> tuple[float, str]:
+    """營收動能：雙引擎矩陣 (回傳分數與等級)"""
+    if yoy_curr > 0 and mom_curr > 0:
+        return (10.0, 'S') if yoy_curr > yoy_last else (8.0, 'A')
+    elif yoy_curr > 0:
+        return (6.0, 'B')
+    elif mom_curr > 0:
+        return (4.0, 'C')
+    else:
+        return (0.0, 'D')
 
+def compute_revenue_metrics(revenue_data: list[dict]) -> tuple[float, float, float] | None:
+    """從月營收列表計算 (yoy_curr, mom_curr, yoy_last)，需至少 14 筆。"""
+    if not revenue_data or len(revenue_data) < 14:
+        return None
+    rev_curr       = revenue_data[-1]["revenue"]
+    rev_last_month = revenue_data[-2]["revenue"]
+    rev_12m_ago    = revenue_data[-13]["revenue"]
+    rev_13m_ago    = revenue_data[-14]["revenue"]
+    if not all([rev_last_month, rev_12m_ago, rev_13m_ago]):
+        return None
+    yoy_curr = (rev_curr - rev_12m_ago)    / rev_12m_ago    * 100
+    mom_curr = (rev_curr - rev_last_month) / rev_last_month * 100
+    yoy_last = (rev_last_month - rev_13m_ago) / rev_13m_ago * 100
+    return round(yoy_curr, 1), round(mom_curr, 1), round(yoy_last, 1)
 
-def compute_composite(claude_scores: dict, quant_data: dict) -> int:
-    quant = {
-        "籌碼集中": _quant_chip(quant_data.get("big_pct_1000") or 30),
-        "籌碼趨勢": _quant_trend(quant_data.get("cumulative_3w") or 0),
-        "量能":     _quant_vol(quant_data.get("vol_ratio") or 1.5),
+def calculate_v1_6_score(
+    ai_news_score: float,
+    ai_industry_score: float,
+    chip_3w_pct: float,
+    chip_big_pct: float,
+    rev_yoy_curr: float,
+    rev_mom_curr: float,
+    rev_yoy_last: float,
+) -> dict:
+    """主計算引擎：產出最終 0-100 分與決策建議"""
+    trend_score          = _quant_trend(chip_3w_pct)
+    chip_score           = _quant_chip_trapezoid(chip_big_pct)
+    rev_score, rev_grade = _quant_revenue(rev_yoy_curr, rev_mom_curr, rev_yoy_last)
+
+    base_raw = (
+        ai_news_score     * 0.25 +
+        ai_industry_score * 0.15 +
+        trend_score       * 0.20 +
+        chip_score        * 0.20 +
+        rev_score         * 0.20
+    )
+    base_score = base_raw * 10
+
+    multiplier = 1.0
+    action_log = "基礎計分"
+    if rev_grade == 'D' or trend_score <= 2:
+        multiplier = 0.6
+        action_log = "觸發致命懲罰 (營收衰退或主力未買)"
+    elif trend_score >= 8 and rev_grade == 'C':
+        multiplier = 1.25
+        action_log = "觸發營收破冰共振 (谷底翻揚且主力狂買)"
+
+    final_score = min(round(base_score * multiplier), 100)
+
+    if final_score >= 70:
+        recommendation = "buy"
+    elif final_score >= 50:
+        recommendation = "watch"
+    else:
+        recommendation = "avoid"
+
+    return {
+        "final_score":    final_score,
+        "recommendation": recommendation,
+        "base_score":     round(base_score, 1),
+        "multiplier":     multiplier,
+        "action_log":     action_log,
+        "rev_grade":      rev_grade,
+        "quant_scores": {
+            "trend_score": round(trend_score, 1),
+            "chip_score":  round(chip_score, 1),
+            "rev_score":   round(rev_score, 1),
+        },
     }
-    all_scores = {**claude_scores, **quant}
-    raw = sum(all_scores.get(k, 5) * w for k, w in SCORE_WEIGHTS.items())
-    return round(raw * 10)   # 0-100
-
-
-def recommendation_from_score(score: int) -> str:
-    if score >= THRESHOLD_BUY:
-        return "buy"
-    if score >= THRESHOLD_WATCH:
-        return "watch"
-    return "avoid"
 
 
 # ════════════════════════════════════════════════════
@@ -122,44 +164,38 @@ PROMPT_TEMPLATE = """你是台股分析師，請根據以下資料對股票進�
 代號：{ticker}　名稱：{name}　產業：{industry}
 
 === 量化數據 ===
-現價：{close}　千張大戶比例：{big_pct}%　3週籌碼增幅：{cumulative_3w}%　今日量比：{vol_ratio}x
+現價：{close}　月營收 YoY：{yoy_curr}%　MoM：{mom_curr}%
 
 === 近期新聞（近 5 天）===
 {news_text}
 
 === 評分規則 ===
-請對以下四個維度各給 1~10 分（整數）：
-1. 法說會：近期是否有正面財報、法說會前佈局、獲利上修等訊號
-2. 利多利空：具體事件對股價的正負面影響強度
-3. 產業預期：所屬產業趨勢與市場展望（正面=高分）
-4. 特殊因素：轉單效應、併購、政策利多、技術突破等（無則給 5）
+請對以下兩個維度各給 1~10 分（整數）：
+1. ai_news_score：綜合新聞事件對股價的正負面影響強度（法說會/財報/利多利空/特殊因素）
+2. ai_industry_score：所屬產業趨勢與市場展望（正面=高分，負面=低分）
 
-若新聞不足，請依產業背景合理推估，不可全給 5。
+若新聞不足，請依產業背景合理推估，不可都給 5。
 
 請只回覆以下 JSON，不加任何其他文字：
 {{
-  "scores": {{
-    "法說會": <int>,
-    "利多利空": <int>,
-    "產業預期": <int>,
-    "特殊因素": <int>
-  }},
+  "ai_news_score": <int>,
+  "ai_industry_score": <int>,
   "summary": "<一句話總結，30 字以內>",
   "risk": "<主要風險一句話，30 字以內>"
 }}"""
 
 
-def call_claude(stock: dict, news_text: str, api_key: str) -> dict | None:
+def call_claude(stock: dict, news_text: str, api_key: str,
+                yoy_curr: float = 0.0, mom_curr: float = 0.0) -> dict | None:
     """呼叫 Claude API，回傳解析後的 dict 或 None"""
     prompt = PROMPT_TEMPLATE.format(
-        ticker        = stock["stock_id"],
-        name          = stock["name"],
-        industry      = stock.get("industry", "未知"),
-        close         = stock.get("close", "—"),
-        big_pct       = stock.get("big_pct_1000") or "—",
-        cumulative_3w = stock.get("cumulative_3w") or "—",
-        vol_ratio     = stock.get("vol_ratio") or "—",
-        news_text     = news_text,
+        ticker    = stock["stock_id"],
+        name      = stock["name"],
+        industry  = stock.get("industry", "未知"),
+        close     = stock.get("close", "—"),
+        yoy_curr  = f"{yoy_curr:+.1f}" if yoy_curr else "—",
+        mom_curr  = f"{mom_curr:+.1f}" if mom_curr else "—",
+        news_text = news_text,
     )
     try:
         client = anthropic.Anthropic(api_key=api_key)
@@ -244,6 +280,18 @@ def main():
         name = stock["name"]
         print(f"\n  分析 {sid} {name}...")
 
+        # 月營收
+        yoy_curr = mom_curr = yoy_last = 0.0
+        if finmind_token:
+            rev_data = fetch_month_revenue(sid, finmind_token)
+            metrics  = compute_revenue_metrics(rev_data) if rev_data else None
+            if metrics:
+                yoy_curr, mom_curr, yoy_last = metrics
+                print(f"    月營收 YoY={yoy_curr:+.1f}% MoM={mom_curr:+.1f}%")
+            else:
+                print(f"    月營收資料不足，使用中立值")
+            time.sleep(0.35)
+
         # 新聞爬蟲
         news = fetch_news(sid, limit=10)
         print(f"    新聞：{len(news)} 篇")
@@ -252,21 +300,31 @@ def main():
         # Claude 評分
         ai_result = None
         if anthropic_key:
-            ai_result = call_claude(stock, news_text, anthropic_key)
+            ai_result = call_claude(stock, news_text, anthropic_key, yoy_curr, mom_curr)
 
         if ai_result:
-            claude_scores = ai_result.get("scores", {})
-            summary = ai_result.get("summary", "")
-            risk    = ai_result.get("risk", "")
-            print(f"    評分：{claude_scores}　摘要：{summary[:20]}...")
+            ai_news_score     = float(ai_result.get("ai_news_score", 5))
+            ai_industry_score = float(ai_result.get("ai_industry_score", 5))
+            summary           = ai_result.get("summary", "")
+            risk              = ai_result.get("risk", "")
+            print(f"    AI新聞={ai_news_score} 產業={ai_industry_score}　{summary[:20]}...")
         else:
-            # fallback：質性全給 5（中立）
-            claude_scores = {"法說會": 5, "利多利空": 5, "產業預期": 5, "特殊因素": 5}
+            ai_news_score = ai_industry_score = 5.0
             summary = "AI 分析未能取得，以量化數據為主"
             risk    = "新聞資料不足，請手動確認基本面"
 
-        composite = compute_composite(claude_scores, stock)
-        rec       = recommendation_from_score(composite)
+        # v1.6 評分
+        result = calculate_v1_6_score(
+            ai_news_score     = ai_news_score,
+            ai_industry_score = ai_industry_score,
+            chip_3w_pct       = stock.get("cumulative_3w") or 0.0,
+            chip_big_pct      = stock.get("big_pct_1000") or 40.0,
+            rev_yoy_curr      = yoy_curr,
+            rev_mom_curr      = mom_curr,
+            rev_yoy_last      = yoy_last,
+        )
+        composite = result["final_score"]
+        rec       = result["recommendation"]
 
         expire_obj  = add_trading_days(today_obj, OBSERVE_TRADING_DAYS)
         days_remain = trading_days_remaining(expire_obj, today_obj)
@@ -291,12 +349,20 @@ def main():
             "ai_analysis_date": TODAY,
             "composite_score":  composite,
             "recommendation":   rec,
-            "scores":           claude_scores,
+            "base_score":       result["base_score"],
+            "multiplier":       result["multiplier"],
+            "action_log":       result["action_log"],
+            "rev_grade":        result["rev_grade"],
+            "quant_scores":     result["quant_scores"],
+            "ai_scores": {
+                "ai_news_score":     ai_news_score,
+                "ai_industry_score": ai_industry_score,
+            },
             "summary":          summary,
             "risk":             risk,
         }
         active_list.append(entry)
-        print(f"    ✅ {sid} 綜合評分 {composite}（{rec}），到期 {expire_obj}")
+        print(f"    ✅ {sid} 綜合評分 {composite}（{rec}）{result['action_log']}，到期 {expire_obj}")
 
     # ── 每日更新：active 現價 & 損益 & 剩餘天數 ─────────
     print(f"\n更新 active 標的現價（{len(active_list)} 支）...")
