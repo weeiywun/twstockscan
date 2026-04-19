@@ -52,22 +52,35 @@ function renderVolumeSignal(strat, main) {
     <tr class="expand-row" id="expand-vs-${d.stock_id}" style="display:none">
       <td colspan="7">
         <div class="expand-content">
-          <div class="expand-section" style="flex:1">
-            <h4>量能分析</h4>
-            <div style="font-size:12px;color:var(--text2);line-height:1.8">
+          <div class="expand-section" style="flex:1;min-width:140px">
+            <h4>量能</h4>
+            <div style="font-size:12px;color:var(--text2);line-height:1.9">
               <div>當日量：<b>${d.vol_today?.toLocaleString() || '—'} 張</b></div>
               <div>10日均量：<b>${d.vol_10d_avg?.toLocaleString() || '—'} 張</b></div>
               <div>量比：<b style="color:${d.vol_ratio>=2?'var(--green)':'var(--text)'}">${d.vol_ratio?.toFixed(2) || '—'}x</b></div>
               <div>EMA5：<b>${d.ema5?.toFixed(2) || '—'}</b></div>
-              <div>訊號日：<b>${d.signal_date || '—'}</b></div>
+              <div style="color:var(--text3);font-size:11px">訊號日：${d.signal_date || '—'}</div>
             </div>
           </div>
-          <div class="expand-section">
+          <div class="expand-section" style="flex:1;min-width:140px">
+            <h4>籌碼</h4>
+            <div style="font-size:12px;color:var(--text2);line-height:1.9">
+              <div>千張大戶比：<b>${d.big_pct_1000 != null ? d.big_pct_1000.toFixed(2) + '%' : '—'}</b></div>
+              <div>3週累積增幅：<b class="${(d.cumulative_3w||0)>=0?'pos':'neg'}">${d.cumulative_3w != null ? (d.cumulative_3w>=0?'+':'') + d.cumulative_3w.toFixed(2) + '%' : '—'}</b></div>
+              <div style="margin-top:4px">${(d.tags||[]).map(t=>`<span class="tag-badge" style="background:${{'持續成長':'#3a86ff','雙軌觸發':'#e66e29','單周增幅':'#e63946'}[t]||'#888'}">${t}</span>`).join(' ')}</div>
+            </div>
+          </div>
+          <div class="expand-section" style="flex:1;min-width:100px">
             <h4>操作</h4>
             <a href="https://tw.stock.yahoo.com/quote/${d.stock_id}" target="_blank"
               onclick="event.stopPropagation()"
-              style="display:block;text-align:center;background:var(--bg3);border:1px solid var(--border);color:var(--text2);padding:8px 14px;border-radius:6px;font-size:12px;text-decoration:none">
+              style="display:block;text-align:center;background:var(--bg3);border:1px solid var(--border);color:var(--text2);padding:8px 14px;border-radius:6px;font-size:12px;text-decoration:none;margin-bottom:6px">
               Yahoo 股市 ↗
+            </a>
+            <a href="https://www.tradingview.com/chart/?symbol=${getTVSymbol(d)}"
+              onclick="openTV('${getTVSymbol(d)}', event)"
+              style="display:block;text-align:center;background:var(--bg3);border:1px solid var(--border);color:var(--text2);padding:8px 14px;border-radius:6px;font-size:12px;text-decoration:none">
+              TradingView ↗
             </a>
           </div>
         </div>
