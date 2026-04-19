@@ -232,6 +232,9 @@ def main():
 
     print(f"今日量增訊號：{len(vs_results)} 支　現有追蹤：{len(active_list)} 支")
 
+    # expired 中有記錄代表曾被分析過（重複訊號）
+    expired_map = {e["ticker"]: e for e in expired_list}
+
     # ── 判斷新進標的 ──────────────────────────────────
     new_stocks = [s for s in vs_results if s["stock_id"] not in active_tickers]
     print(f"新進標的：{len(new_stocks)} 支 → 觸發 AI 分析")
@@ -270,6 +273,11 @@ def main():
         expire_obj  = add_trading_days(today_obj, OBSERVE_TRADING_DAYS)
         days_remain = trading_days_remaining(expire_obj, today_obj)
 
+        # 判斷是否為重複訊號（曾在 expired 清單中）
+        prev_expired = expired_map.get(sid)
+        is_repeat    = prev_expired is not None
+        repeat_count = (prev_expired.get("repeat_count", 1) + 1) if is_repeat else 1
+
         entry = {
             "ticker":           sid,
             "name":             name,
@@ -280,8 +288,8 @@ def main():
             "entry_price":      stock.get("close", 0),
             "current_price":    stock.get("close", 0),
             "pnl_pct":          0.0,
-            "repeat":           False,        # 連續訊號由 volume_signal.py 傳入，預留欄位
-            "repeat_count":     1,
+            "repeat":           is_repeat,
+            "repeat_count":     repeat_count,
             "ai_analysis_date": TODAY,
             "composite_score":  composite,
             "recommendation":   rec,
@@ -326,6 +334,7 @@ def main():
                 "composite_score": item["composite_score"],
                 "recommendation":  item["recommendation"],
                 "repeat":          item.get("repeat", False),
+                "repeat_count":    item.get("repeat_count", 1),
                 "remove_date":     remove_date,
             }
             newly_expired.append(expired_entry)

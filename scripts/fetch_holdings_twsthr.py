@@ -240,11 +240,27 @@ def _write_output(results):
     print(f"✅ 已寫入 {OUTPUT_PATH}")
 
 
+def load_prev_consecutive(output_path) -> dict:
+    """載入上週結果，回傳 {stock_id: consecutive_weeks}"""
+    if not os.path.exists(output_path):
+        return {}
+    try:
+        with open(output_path, encoding="utf-8") as f:
+            prev = json.load(f)
+        return {r["stock_id"]: r.get("consecutive_weeks", 1)
+                for r in prev.get("results", [])}
+    except Exception:
+        return {}
+
+
 def main():
     print("=== 大戶持股分析器 v3.0 (Layer 1) ===")
     finmind_token = os.environ.get("FINMIND_TOKEN", "")
     if not finmind_token:
         print("⚠️  FINMIND_TOKEN 未設定")
+
+    # 讀入上週結果，計算連續進榜週數
+    prev_consecutive = load_prev_consecutive(OUTPUT_PATH)
 
     print("\nStep 1：讀取 big1000.csv / big400.csv...")
     stocks_1000, dates_1000 = parse_csv(CSV_1000, "utf-8-sig")
@@ -274,19 +290,23 @@ def main():
         if s4:
             r4d = [d for d in dates_400 if d in s4["pct_map"]][-4:]
             pct_400_t = [round(s4["pct_map"][d], 2) for d in r4d]
+        prev_weeks = prev_consecutive.get(sid, 0)
+        consecutive_weeks = prev_weeks + 1 if prev_weeks >= 1 else 1
+
         candidates.append({
-            "stock_id":       sid,
-            "name":           s1["name"],
-            "industry":       s1["industry"],
-            "market_cap":     s1["market_cap"],
-            "big_pct_1000":   round(latest_pct, 2),
-            "big_pct_400":    round(s4["pct_map"].get(max(s4["pct_map"]), 0), 2) if s4 and s4["pct_map"] else None,
-            "cumulative_3w":  calc_cumulative_3w(s1["pct_map"], dates_1000),
-            "tags":           tags,
-            "tag_score":      score,
-            "big_trend_1000": pct_trend,
-            "big_trend_400":  pct_400_t,
-            "date_labels":    d_labels,
+            "stock_id":          sid,
+            "name":              s1["name"],
+            "industry":          s1["industry"],
+            "market_cap":        s1["market_cap"],
+            "big_pct_1000":      round(latest_pct, 2),
+            "big_pct_400":       round(s4["pct_map"].get(max(s4["pct_map"]), 0), 2) if s4 and s4["pct_map"] else None,
+            "cumulative_3w":     calc_cumulative_3w(s1["pct_map"], dates_1000),
+            "tags":              tags,
+            "tag_score":         score,
+            "big_trend_1000":    pct_trend,
+            "big_trend_400":     pct_400_t,
+            "date_labels":       d_labels,
+            "consecutive_weeks": consecutive_weeks,
         })
 
     print(f"  通過標籤篩選：{len(candidates)} 支")
