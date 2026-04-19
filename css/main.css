@@ -1,23 +1,23 @@
-/* ── Variables (Dark Theme) ──────────────────── */
+/* ── Variables (Light Beige Theme) ──────────── */
 :root {
-  --bg:        #0d1117;
-  --bg2:       #161b22;
-  --bg3:       #1c2128;
-  --border:    rgba(255,255,255,0.08);
-  --border2:   rgba(255,255,255,0.15);
-  --text:      #e6edf3;
-  --text2:     #8b949e;
-  --text3:     #6e7681;
-  --green:     #e8a838;
-  --green-dim: rgba(232,168,56,0.12);
-  --green-glow:rgba(232,168,56,0.22);
-  --amber:     #f0883e;
-  --red:       #f85149;
-  --blue:      #58a6ff;
+  --bg:        #f4efe6;
+  --bg2:       #ece7dd;
+  --bg3:       #e2dbd0;
+  --border:    rgba(0,0,0,0.09);
+  --border2:   rgba(0,0,0,0.17);
+  --text:      #2c2820;
+  --text2:     #5a5248;
+  --text3:     #8a8278;
+  --green:     #2a7d4f;
+  --green-dim: rgba(42,125,79,0.10);
+  --green-glow:rgba(42,125,79,0.24);
+  --amber:     #b85e10;
+  --red:       #c0392b;
+  --blue:      #2b5eb0;
   --mono:      'IBM Plex Mono', monospace;
   --sans:      'Noto Sans TC', sans-serif;
-  --shadow-sm: 0 1px 4px rgba(0,0,0,0.4);
-  --shadow:    0 2px 10px rgba(0,0,0,0.5);
+  --shadow-sm: 0 1px 4px rgba(0,0,0,0.08);
+  --shadow:    0 3px 12px rgba(0,0,0,0.12);
   --radius:    10px;
 }
 
@@ -100,7 +100,7 @@ header .page-inner{
   background:var(--green-dim);color:var(--green);
   font-size:10px;font-weight:600;margin-left:6px;
 }
-.strat-tab.locked .badge{background:rgba(255,255,255,0.05);color:var(--text3)}
+.strat-tab.locked .badge{background:rgba(0,0,0,0.05);color:var(--text3)}
 .strat-tab.locked{opacity:.5;cursor:not-allowed}
 
 /* ── Tag badges ──────────────────────────────── */
@@ -117,7 +117,7 @@ header .page-inner{
   border:1px solid var(--border);background:var(--bg3);color:var(--text2);
   font-family:var(--sans);transition:all .15s;
 }
-.view-btn.active{background:var(--green);border-color:var(--green);color:#0d1117;}
+.view-btn.active{background:var(--green);border-color:var(--green);color:#fff;}
 .view-btn:hover:not(.active){background:var(--bg2);}
 
 /* ── Industry group header row ───────────────── */
@@ -212,8 +212,8 @@ tbody tr{
   transition:background .12s;cursor:pointer;
 }
 tbody tr:last-child{border-bottom:none}
-tbody tr:hover{background:rgba(255,255,255,0.03)}
-tbody tr.expanded{background:var(--green-dim)}
+tbody tr:hover{background:rgba(0,0,0,0.03)}
+tbody tr.expanded{background:rgba(42,125,79,0.06)}
 
 td{padding:12px 14px;vertical-align:middle}
 
@@ -245,8 +245,19 @@ tbody tr:hover .spark-bar{opacity:.9}
 
 /* ── Expand row ─────────────────────────────── */
 .expand-row td{padding:0}
+.expand-content{
+  display:flex;flex-direction:row;flex-wrap:wrap;gap:20px;
+  padding:14px 18px;
+  background:var(--bg3);border-top:1px solid var(--border);
+}
+.expand-section{min-width:120px}
+.expand-section h4{
+  font-size:10px;font-weight:600;color:var(--text3);
+  letter-spacing:.05em;text-transform:uppercase;
+  margin-bottom:8px;padding-bottom:4px;border-bottom:1px solid var(--border);
+}
 .expand-flat{
-  display:flex;align-items:flex-start;gap:16px;
+  display:flex;flex-wrap:wrap;align-items:flex-start;gap:16px;
   padding:14px 16px 14px 20px;
   background:var(--bg3);border-top:1px solid var(--border);
 }
@@ -319,8 +330,8 @@ tbody tr:hover .spark-bar{opacity:.9}
 [data-tip]::after{
   content:attr(data-tip);
   position:absolute;bottom:calc(100% + 6px);left:50%;transform:translateX(-50%);
-  background:var(--text);border:1px solid var(--border2);
-  color:#fff;font-size:11px;padding:4px 8px;border-radius:4px;
+  background:#2c2820;border:1px solid rgba(0,0,0,0.2);
+  color:#f4efe6;font-size:11px;padding:4px 8px;border-radius:4px;
   white-space:nowrap;pointer-events:none;opacity:0;transition:opacity .15s;
   font-family:var(--sans);font-weight:400;z-index:50;
 }
@@ -483,7 +494,7 @@ tbody tr:hover .spark-bar{opacity:.9}
 }
 .sa-history-table td{padding:10px 14px;border-bottom:1px solid var(--border);font-size:12px}
 .sa-history-table tbody tr:last-child td{border-bottom:none}
-.sa-history-table tbody tr:hover td{background:rgba(255,255,255,0.02)}
+.sa-history-table tbody tr:hover td{background:rgba(0,0,0,0.03)}
 
 /* ── Industry bar chart ──────────────────────── */
 .industry-chart{
