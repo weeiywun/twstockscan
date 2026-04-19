@@ -1,23 +1,23 @@
-/* ── Variables (Light Beige Theme) ──────────── */
+/* ── Variables (Clean Light Theme) ──────────── */
 :root {
-  --bg:        #f4efe6;
-  --bg2:       #ece7dd;
-  --bg3:       #e2dbd0;
-  --border:    rgba(0,0,0,0.09);
-  --border2:   rgba(0,0,0,0.17);
-  --text:      #2c2820;
-  --text2:     #5a5248;
-  --text3:     #8a8278;
-  --green:     #2a7d4f;
-  --green-dim: rgba(42,125,79,0.10);
-  --green-glow:rgba(42,125,79,0.24);
-  --amber:     #b85e10;
-  --red:       #c0392b;
-  --blue:      #2b5eb0;
+  --bg:        #f0f2f5;
+  --bg2:       #ffffff;
+  --bg3:       #f5f6f8;
+  --border:    rgba(0,0,0,0.08);
+  --border2:   rgba(0,0,0,0.15);
+  --text:      #111827;
+  --text2:     #4b5563;
+  --text3:     #9ca3af;
+  --green:     #059669;
+  --green-dim: rgba(5,150,105,0.09);
+  --green-glow:rgba(5,150,105,0.22);
+  --amber:     #d97706;
+  --red:       #dc2626;
+  --blue:      #2563eb;
   --mono:      'IBM Plex Mono', monospace;
   --sans:      'Noto Sans TC', sans-serif;
-  --shadow-sm: 0 1px 4px rgba(0,0,0,0.08);
-  --shadow:    0 3px 12px rgba(0,0,0,0.12);
+  --shadow-sm: 0 1px 3px rgba(0,0,0,0.07), 0 1px 2px rgba(0,0,0,0.05);
+  --shadow:    0 4px 16px rgba(0,0,0,0.10);
   --radius:    10px;
 }
 
@@ -40,7 +40,7 @@ header{
   position:sticky;top:0;z-index:100;
   background:var(--bg2);
   border-bottom:1px solid var(--border);
-  box-shadow:var(--shadow-sm);
+  box-shadow:0 1px 0 rgba(0,0,0,0.06);
   height:54px;
 }
 header .page-inner{
@@ -74,6 +74,7 @@ header .page-inner{
 /* ── Strategy Nav ───────────────────────────── */
 .strategy-nav{
   background:var(--bg2);border-bottom:1px solid var(--border);
+  box-shadow:0 1px 0 rgba(0,0,0,0.04);
 }
 .strategy-nav .page-inner{
   display:flex;gap:0;
@@ -330,8 +331,8 @@ tbody tr:hover .spark-bar{opacity:.9}
 [data-tip]::after{
   content:attr(data-tip);
   position:absolute;bottom:calc(100% + 6px);left:50%;transform:translateX(-50%);
-  background:#2c2820;border:1px solid rgba(0,0,0,0.2);
-  color:#f4efe6;font-size:11px;padding:4px 8px;border-radius:4px;
+  background:#1f2937;border:1px solid rgba(0,0,0,0.15);
+  color:#f9fafb;font-size:11px;padding:4px 8px;border-radius:4px;
   white-space:nowrap;pointer-events:none;opacity:0;transition:opacity .15s;
   font-family:var(--sans);font-weight:400;z-index:50;
 }
@@ -619,9 +620,9 @@ tbody tr:hover .spark-bar{opacity:.9}
   transition:all .15s;white-space:nowrap;
 }
 .perf-btn:hover{border-color:var(--text3);color:var(--text)}
-.perf-btn-confirm{background:var(--green);border-color:var(--green);color:#0d1117;font-weight:700}
+.perf-btn-confirm{background:var(--green);border-color:var(--green);color:#fff;font-weight:700}
 .perf-btn-confirm:hover{filter:brightness(1.12)}
 .perf-btn-exit{border-color:rgba(240,136,62,0.4);color:var(--amber);background:rgba(240,136,62,0.08)}
 .perf-btn-add{background:var(--green-dim);border-color:var(--green);color:var(--green);font-weight:600}
 .perf-btn-del{border-color:rgba(248,81,73,0.3);color:var(--red);background:rgba(248,81,73,0.06)}
-.perf-pos-row:hover{background:rgba(255,255,255,0.025)}
+.perf-pos-row:hover{background:rgba(0,0,0,0.025)}
