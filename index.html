@@ -398,6 +398,100 @@ tbody tr:hover .spark-bar{opacity:.9}
   padding:28px 16px;text-align:center;font-size:13px;color:var(--text3);
 }
 
+/* ── 標的分析頁面 ────────────────────────────── */
+.sa-date-group{margin-bottom:24px}
+.sa-date-header{
+  display:flex;align-items:center;gap:8px;
+  padding:8px 0;margin-bottom:12px;
+  font-size:11px;font-weight:600;color:var(--text2);
+  letter-spacing:.04em;border-bottom:1px solid var(--border);
+}
+.sa-date-count{
+  background:var(--bg3);color:var(--text3);
+  border:1px solid var(--border);border-radius:10px;
+  padding:1px 7px;font-size:10px;font-weight:400;
+}
+.sa-cards-grid{
+  display:grid;grid-template-columns:repeat(auto-fill,minmax(280px,1fr));gap:14px;
+}
+.sa-card{
+  background:var(--bg2);border:1px solid var(--border);
+  border-radius:var(--radius);padding:14px 16px;
+  box-shadow:var(--shadow-sm);display:flex;flex-direction:column;gap:10px;
+  transition:border-color .15s;
+}
+.sa-card:hover{border-color:var(--border2)}
+.sa-card-top{
+  display:flex;align-items:flex-start;justify-content:space-between;gap:8px;
+}
+.sa-stock-header{display:flex;align-items:center;gap:6px;flex-wrap:wrap;margin-bottom:3px}
+.sa-days-badge{
+  font-size:10px;font-family:var(--mono);
+  background:var(--bg3);border:1px solid var(--border);
+  color:var(--text3);border-radius:4px;padding:2px 6px;
+}
+.sa-rec-badge{
+  font-size:11px;font-weight:600;border-radius:5px;
+  padding:3px 9px;white-space:nowrap;
+}
+.sa-rec-badge.buy{background:var(--green-dim);color:var(--green);border:1px solid var(--green-glow)}
+.sa-rec-badge.watch{background:rgba(240,136,62,0.12);color:var(--amber);border:1px solid rgba(240,136,62,0.3)}
+.sa-rec-badge.avoid{background:rgba(248,81,73,0.10);color:var(--red);border:1px solid rgba(248,81,73,0.3)}
+.sa-repeat-badge{
+  font-size:10px;font-weight:600;
+  background:rgba(240,136,62,0.12);color:var(--amber);
+  border:1px solid rgba(240,136,62,0.3);border-radius:4px;
+  padding:1px 6px;white-space:nowrap;
+}
+.sa-score-section{display:flex;align-items:center;gap:12px}
+.sa-composite{
+  flex:0 0 auto;text-align:center;
+  font-family:var(--mono);font-size:24px;font-weight:700;line-height:1;
+}
+.sa-composite-label{font-size:10px;color:var(--text3);margin-top:3px;letter-spacing:.02em}
+.sa-score-bars{flex:1;display:flex;flex-direction:column;gap:5px}
+.sa-bar-row{display:flex;align-items:center;gap:6px;font-size:11px}
+.sa-bar-label{color:var(--text3);width:56px;flex-shrink:0}
+.sa-bar-track{flex:1;height:5px;background:var(--bg3);border-radius:3px;overflow:hidden}
+.sa-bar-fill{height:100%;background:var(--green);border-radius:3px;transition:width .4s ease}
+.sa-bar-val{font-family:var(--mono);color:var(--text2);width:12px;text-align:right;flex-shrink:0}
+.sa-summary{
+  font-size:12px;color:var(--text2);line-height:1.6;
+  padding-top:8px;border-top:1px solid var(--border);
+}
+.sa-risk{font-size:11px;color:var(--text3);display:flex;gap:5px;align-items:flex-start;line-height:1.5}
+.sa-analysis-date{font-size:10px;color:var(--text3);font-style:italic}
+.sa-price-row{
+  display:flex;align-items:center;gap:8px;
+  font-family:var(--mono);font-size:11px;color:var(--text3);
+  padding-top:8px;border-top:1px solid var(--border);flex-wrap:wrap;
+}
+.sa-price-val{font-size:12px;color:var(--text2);font-weight:500}
+.sa-pnl-pos{color:var(--green);font-weight:700}
+.sa-pnl-neg{color:var(--red);font-weight:700}
+/* History */
+.sa-history-wrap{
+  background:var(--bg2);border:1px solid var(--border);
+  border-radius:var(--radius);overflow:hidden;
+  box-shadow:var(--shadow-sm);
+}
+.sa-history-header{
+  display:flex;align-items:center;justify-content:space-between;
+  padding:10px 16px;background:var(--bg3);border-bottom:1px solid var(--border);
+  cursor:pointer;user-select:none;
+}
+.sa-history-title{font-size:11px;font-weight:600;color:var(--text2);letter-spacing:.04em}
+.sa-history-count{font-size:11px;color:var(--text3)}
+.sa-history-table{width:100%;border-collapse:collapse;min-width:480px}
+.sa-history-table th{
+  padding:8px 14px;font-size:10px;font-weight:600;color:var(--text3);
+  letter-spacing:.04em;border-bottom:1px solid var(--border);
+  background:var(--bg3);text-align:left;white-space:nowrap;
+}
+.sa-history-table td{padding:10px 14px;border-bottom:1px solid var(--border);font-size:12px}
+.sa-history-table tbody tr:last-child td{border-bottom:none}
+.sa-history-table tbody tr:hover td{background:rgba(255,255,255,0.02)}
+
 /* ── Industry bar chart ──────────────────────── */
 .industry-chart{
   background:var(--bg2);border:1px solid var(--border);
@@ -605,9 +699,8 @@ const STRATEGIES = [
     shortName: "標的分析",
     icon: "◎",
     available: true,
-    description: "針對入池標的進行深度基本面與籌碼綜合分析。",
+    description: "籌碼集中入池標的首次觸發量增訊號時啟動 AI 分析，結合新聞與量化數據評分，追蹤觀察 10 天。",
     conditions: [],
-    comingSoon: "建置中",
   },
   {
     id: "performance",
@@ -625,9 +718,10 @@ const STRATEGIES = [
 //  DATA
 // ════════════════════════════════════════════════════
 const DATA = {
-  chips_big_holder_data: [],
-  volume_signal_data:    [],
-  performance_data:      null,
+  chips_big_holder_data:  [],
+  volume_signal_data:     [],
+  stock_analysis_data:    null,
+  performance_data:       null,
 };
 let DATE_LABELS = [];
 
@@ -727,7 +821,7 @@ function renderNav() {
       const active = (DATA.performance_data?.positions || []).filter(p => !p.confirmed).length;
       badgeText = active;
     } else if (s.id === 'stock_analysis') {
-      badgeText = '—';
+      badgeText = (DATA.stock_analysis_data?.active?.length ?? '—');
     } else {
       badgeText = (DATA[s.dataKey] || []).length;
     }
@@ -756,17 +850,10 @@ function renderStrategy() {
     return;
   }
 
-  if (strat.id === 'chips_big_holder') { renderChipsHolder(strat, main); return; }
-  if (strat.id === 'volume_signal')    { renderVolumeSignal(strat, main); return; }
-  if (strat.id === 'performance')      { renderPerformance(strat, main);  return; }
-  if (strat.id === 'stock_analysis') {
-    main.innerHTML = `<div class="coming-soon">
-      <div class="coming-icon">◎</div>
-      <div class="coming-title">標的分析</div>
-      <div class="coming-desc">深度基本面與籌碼綜合分析<br>即將推出</div>
-    </div>`;
-    return;
-  }
+  if (strat.id === 'chips_big_holder') { renderChipsHolder(strat, main);    return; }
+  if (strat.id === 'volume_signal')    { renderVolumeSignal(strat, main);   return; }
+  if (strat.id === 'stock_analysis')   { renderStockAnalysis(strat, main);  return; }
+  if (strat.id === 'performance')      { renderPerformance(strat, main);    return; }
 
   const data = (DATA[strat.dataKey] || []).slice().sort((a,b) => {
     const va = a[sortCol], vb = b[sortCol];
@@ -1509,6 +1596,216 @@ function renderVolumeSignal(strat, main) {
         </table>
         </div>
       </div>
+    </div>`;
+
+  const grid = document.getElementById('watchlistGrid');
+  if (grid) grid.innerHTML = renderWatchlist();
+}
+
+// ════════════════════════════════════════════════════
+//  標的分析：渲染器
+// ════════════════════════════════════════════════════
+function renderStockAnalysis(strat, main) {
+  const saData = DATA.stock_analysis_data;
+
+  if (!saData) {
+    main.innerHTML = `
+      <div class="strategy-panel active">
+        <div class="strat-header">
+          <div class="strat-title">${strat.icon} ${strat.name}</div>
+          <div class="strat-desc">${strat.description}</div>
+        </div>
+        <div class="coming-soon" style="padding:64px 20px">
+          <div class="coming-icon">◎</div>
+          <div class="coming-title">等待觸發</div>
+          <div class="coming-desc">籌碼集中入池標的首次觸發量增訊號後自動啟動 AI 分析。</div>
+        </div>
+      </div>`;
+    const grid = document.getElementById('watchlistGrid');
+    if (grid) grid.innerHTML = renderWatchlist();
+    return;
+  }
+
+  const active  = saData.active  || [];
+  const expired = saData.expired || [];
+
+  const buyCount   = active.filter(s => s.recommendation === 'buy').length;
+  const watchCount = active.filter(s => s.recommendation === 'watch').length;
+  const avoidCount = active.filter(s => s.recommendation === 'avoid').length;
+
+  // 按 trigger_date 分組，組內依 composite_score 降序
+  const groups = {};
+  active.forEach(s => {
+    if (!groups[s.trigger_date]) groups[s.trigger_date] = [];
+    groups[s.trigger_date].push(s);
+  });
+  Object.values(groups).forEach(g => g.sort((a, b) => b.composite_score - a.composite_score));
+  const sortedDates = Object.keys(groups).sort((a, b) => b.localeCompare(a));
+
+  const recLabel = { buy: '積極買進', watch: '觀察', avoid: '迴避' };
+
+  function scoreColor(score) {
+    if (score >= 70) return 'var(--green)';
+    if (score >= 55) return 'var(--amber)';
+    return 'var(--text2)';
+  }
+
+  function renderCard(s) {
+    const market    = s.market || guessMarket(s.ticker);
+    const tvSymbol  = `${market}:${s.ticker}`;
+    const pnlClass  = s.pnl_pct >= 0 ? 'sa-pnl-pos' : 'sa-pnl-neg';
+    const pnlSign   = s.pnl_pct >= 0 ? '+' : '';
+
+    const repeatBadge = s.repeat
+      ? `<span class="sa-repeat-badge">↺ 第${s.repeat_count}次</span>` : '';
+
+    const analysisMeta = s.ai_analysis_date && s.ai_analysis_date !== s.trigger_date
+      ? `<div class="sa-analysis-date">分析日：${s.ai_analysis_date}（沿用上次結果）</div>` : '';
+
+    const scoreRows = Object.entries(s.scores || {}).map(([label, val]) => `
+      <div class="sa-bar-row">
+        <span class="sa-bar-label">${label}</span>
+        <div class="sa-bar-track">
+          <div class="sa-bar-fill" style="width:${Math.round(val * 10)}%"></div>
+        </div>
+        <span class="sa-bar-val">${val}</span>
+      </div>`).join('');
+
+    return `<div class="sa-card">
+      <div class="sa-card-top">
+        <div>
+          <div class="sa-stock-header">
+            <a href="https://www.tradingview.com/chart/?symbol=${tvSymbol}"
+              onclick="openTV('${tvSymbol}', event)"
+              style="text-decoration:none;display:flex;align-items:center;gap:4px">
+              <span class="stock-code">${s.ticker}</span>
+              <span style="font-size:9px;opacity:.45;font-family:var(--mono)">↗</span>
+            </a>
+            <span class="stock-name">${s.name}</span>
+            ${repeatBadge}
+          </div>
+          <div style="font-size:11px;color:var(--text3);margin-top:2px">${s.industry || ''}</div>
+        </div>
+        <div style="display:flex;flex-direction:column;align-items:flex-end;gap:5px;flex-shrink:0">
+          <span class="sa-rec-badge ${s.recommendation}">${recLabel[s.recommendation] || s.recommendation}</span>
+          <span class="sa-days-badge">剩 ${s.days_remaining} 天</span>
+        </div>
+      </div>
+
+      <div class="sa-score-section">
+        <div style="flex:0 0 auto;text-align:center">
+          <div class="sa-composite" style="color:${scoreColor(s.composite_score)}">${s.composite_score}</div>
+          <div class="sa-composite-label">綜合評分</div>
+        </div>
+        <div class="sa-score-bars">${scoreRows}</div>
+      </div>
+
+      <div class="sa-summary">${s.summary}</div>
+      <div class="sa-risk"><span style="flex-shrink:0">⚠</span> ${s.risk}</div>
+      ${analysisMeta}
+
+      <div class="sa-price-row">
+        <span>入選</span>
+        <span class="sa-price-val">${s.entry_price.toFixed(1)}</span>
+        <span style="color:var(--border2)">|</span>
+        <span>現價</span>
+        <span class="sa-price-val">${s.current_price.toFixed(1)}</span>
+        <span class="${pnlClass}">${pnlSign}${s.pnl_pct.toFixed(2)}%</span>
+      </div>
+    </div>`;
+  }
+
+  const activeHTML = sortedDates.length === 0
+    ? `<div class="coming-soon" style="padding:48px 20px">
+        <div class="coming-icon">◎</div>
+        <div class="coming-title">等待觸發</div>
+        <div class="coming-desc">籌碼集中入池標的觸發量增訊號後自動啟動分析。</div>
+      </div>`
+    : sortedDates.map(date => `
+        <div class="sa-date-group">
+          <div class="sa-date-header">
+            ${date} 入選
+            <span class="sa-date-count">${groups[date].length} 支</span>
+          </div>
+          <div class="sa-cards-grid">
+            ${groups[date].map(renderCard).join('')}
+          </div>
+        </div>`).join('');
+
+  // 歷史區
+  let historyHTML = '';
+  if (expired.length > 0) {
+    const histRows = expired.map(s => {
+      const pnlClass = s.pnl_pct >= 0 ? 'sa-pnl-pos' : 'sa-pnl-neg';
+      const pnlSign  = s.pnl_pct >= 0 ? '+' : '';
+      return `<tr>
+        <td>
+          <span class="stock-code" style="font-size:12px">${s.ticker}</span>
+          <span style="font-size:12px;color:var(--text2);margin-left:5px">${s.name}</span>
+        </td>
+        <td style="font-family:var(--mono);font-size:12px;color:var(--text3)">${s.entry_date}</td>
+        <td style="font-family:var(--mono);font-size:12px">${s.entry_price.toFixed(1)}</td>
+        <td><span style="font-family:var(--mono);font-size:12px;color:${scoreColor(s.composite_score)};font-weight:600">${s.composite_score}</span></td>
+        <td style="font-family:var(--mono);font-size:12px">${s.current_price.toFixed(1)}</td>
+        <td><span class="${pnlClass}" style="font-family:var(--mono);font-size:12px">${pnlSign}${s.pnl_pct.toFixed(2)}%</span></td>
+      </tr>`;
+    }).join('');
+
+    historyHTML = `<div class="sa-history-wrap">
+      <div class="sa-history-header">
+        <span class="sa-history-title">歷史紀錄（保留一個月）</span>
+        <span class="sa-history-count">${expired.length} 筆</span>
+      </div>
+      <div class="table-scroll">
+        <table class="sa-history-table">
+          <thead>
+            <tr>
+              <th>代號 / 名稱</th>
+              <th>入選日</th>
+              <th>入選收盤</th>
+              <th>評分</th>
+              <th>現價</th>
+              <th>損益</th>
+            </tr>
+          </thead>
+          <tbody>${histRows}</tbody>
+        </table>
+      </div>
+    </div>`;
+  }
+
+  main.innerHTML = `
+    <div class="strategy-panel active">
+      <div class="strat-header">
+        <div class="strat-title">${strat.icon} ${strat.name}</div>
+        <div class="strat-desc">${strat.description}</div>
+      </div>
+
+      <div class="summary-row">
+        <div class="summary-card">
+          <div class="summary-label">觀察中</div>
+          <div class="summary-value green">${active.length}</div>
+          <div class="summary-sub">支標的</div>
+        </div>
+        <div class="summary-card">
+          <div class="summary-label">積極買進</div>
+          <div class="summary-value amber">${buyCount}</div>
+          <div class="summary-sub">AI 推薦</div>
+        </div>
+        <div class="summary-card">
+          <div class="summary-label">觀察 / 迴避</div>
+          <div class="summary-value" style="font-size:18px">${watchCount} / ${avoidCount}</div>
+          <div class="summary-sub">持續追蹤中</div>
+        </div>
+        <div class="summary-card">
+          <div class="summary-label">更新時間</div>
+          <div class="summary-value" style="font-size:16px;font-family:var(--mono)">${saData.last_updated}</div>
+          <div class="summary-sub">盤後自動更新</div>
+        </div>
+      </div>
+
+      ${activeHTML}
+      ${historyHTML}
     </div>`;
 
   const grid = document.getElementById('watchlistGrid');
@@ -2363,11 +2660,12 @@ async function loadData() {
   const timestamp = new Date().getTime();
 
   try {
-    const [chipsRes, vsRes, aiRes, perfRes] = await Promise.all([
-      fetch(`data/chips_big_holder.json?t=${timestamp}`, { cache: 'no-store' }).then(r => r.ok ? r.json() : null).catch(() => null),
-      fetch(`data/volume_signal.json?t=${timestamp}`,    { cache: 'no-store' }).then(r => r.ok ? r.json() : null).catch(() => null),
+    const [chipsRes, vsRes, aiRes, saRes, perfRes] = await Promise.all([
+      fetch(`data/chips_big_holder.json?t=${timestamp}`,   { cache: 'no-store' }).then(r => r.ok ? r.json() : null).catch(() => null),
+      fetch(`data/volume_signal.json?t=${timestamp}`,      { cache: 'no-store' }).then(r => r.ok ? r.json() : null).catch(() => null),
       fetch(`data/ai_recommendations.json?t=${timestamp}`, { cache: 'no-store' }).then(r => r.ok ? r.json() : null).catch(() => null),
-      fetch(`data/performance.json?t=${timestamp}`,     { cache: 'no-store' }).then(r => r.ok ? r.json() : null).catch(() => null),
+      fetch(`data/ai_analysis.json?t=${timestamp}`,        { cache: 'no-store' }).then(r => r.ok ? r.json() : null).catch(() => null),
+      fetch(`data/performance.json?t=${timestamp}`,        { cache: 'no-store' }).then(r => r.ok ? r.json() : null).catch(() => null),
     ]);
 
     if (chipsRes && chipsRes.results) {
@@ -2384,6 +2682,10 @@ async function loadData() {
 
     if (aiRes && aiRes.ranked) {
       aiData = aiRes;
+    }
+
+    if (saRes && (saRes.active || saRes.expired)) {
+      DATA.stock_analysis_data = saRes;
     }
 
     if (perfRes) {
