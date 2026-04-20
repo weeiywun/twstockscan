@@ -54,3 +54,19 @@ jobs:
           else
             echo "ai_analysis.json 無變動，略過提交"
           fi
+
+      - name: Notify LINE on failure
+        if: failure()
+        env:
+          LINE_CHANNEL_ACCESS_TOKEN: ${{ secrets.LINE_CHANNEL_ACCESS_TOKEN }}
+          LINE_USER_IDS: ${{ secrets.LINE_USER_IDS }}
+          RUN_URL: ${{ github.server_url }}/${{ github.repository }}/actions/runs/${{ github.run_id }}
+        run: |
+          USER_IDS_JSON=$(echo "$LINE_USER_IDS" | tr ',' '\n' | jq -R . | jq -s .)
+          curl -s -X POST https://api.line.me/v2/bot/message/multicast \
+            -H "Content-Type: application/json" \
+            -H "Authorization: Bearer $LINE_CHANNEL_ACCESS_TOKEN" \
+            -d "{
+              \"userIds\": $USER_IDS_JSON,
+              \"messages\": [{\"type\": \"text\", \"text\": \"⚠️ 標的分析 (AI 評分) workflow 執行失敗\n\n日期：$(date -u +%Y-%m-%d)\n\n請至 GitHub Actions 查看錯誤日誌：\n$RUN_URL\"}]
+            }"
