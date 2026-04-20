@@ -1,40 +1,177 @@
 {
   "strategy_id": "volume_signal",
-  "updated": "2026-04-19T10:49:03+08:00",
+  "updated": "2026-04-20T16:16:51+08:00",
   "results": [
     {
-      "stock_id": "1626",
-      "name": "艾美特-KY",
+      "stock_id": "3230",
+      "name": "錦明",
+      "industry": "櫃光電",
+      "tags": [
+        "雙軌觸發"
+      ],
+      "tag_score": 3,
+      "cumulative_3w": 2.54,
+      "big_pct_1000": 54.41,
+      "close": 42.8,
+      "vol_today": 3339,
+      "vol_10d_avg": 655.0,
+      "vol_ratio": 5.1,
+      "ema5": 40.53,
+      "signal_date": "2026-04-20"
+    },
+    {
+      "stock_id": "1442",
+      "name": "名軒",
+      "industry": "營建",
+      "tags": [
+        "持續成長"
+      ],
+      "tag_score": 1,
+      "cumulative_3w": 0.13,
+      "big_pct_1000": 78.76,
+      "close": 29.7,
+      "vol_today": 2441,
+      "vol_10d_avg": 685.0,
+      "vol_ratio": 3.56,
+      "ema5": 27.56,
+      "signal_date": "2026-04-20"
+    },
+    {
+      "stock_id": "3466",
+      "name": "德晉",
+      "industry": "櫃通信",
+      "tags": [
+        "持續成長"
+      ],
+      "tag_score": 1,
+      "cumulative_3w": -0.24,
+      "big_pct_1000": 37.0,
+      "close": 43.75,
+      "vol_today": 2817,
+      "vol_10d_avg": 796.0,
+      "vol_ratio": 3.54,
+      "ema5": 39.51,
+      "signal_date": "2026-04-20"
+    },
+    {
+      "stock_id": "1605",
+      "name": "華新",
       "industry": "電器",
       "tags": [
         "持續成長"
       ],
       "tag_score": 1,
-      "cumulative_3w": 0.73,
-      "big_pct_1000": 59.63,
-      "close": 12.0,
-      "vol_today": 1868,
-      "vol_10d_avg": 182.0,
-      "vol_ratio": 10.28,
-      "ema5": 10.32,
-      "signal_date": "2026-04-19"
+      "cumulative_3w": 0.71,
+      "big_pct_1000": 68.4,
+      "close": 33.65,
+      "vol_today": 70156,
+      "vol_10d_avg": 20126.0,
+      "vol_ratio": 3.49,
+      "ema5": 32.08,
+      "signal_date": "2026-04-20"
     },
     {
-      "stock_id": "2302",
-      "name": "麗正",
-      "industry": "半導",
+      "stock_id": "3551",
+      "name": "世禾",
+      "industry": "綠能",
       "tags": [
         "持續成長"
       ],
       "tag_score": 1,
-      "cumulative_3w": 0.06,
-      "big_pct_1000": 63.2,
-      "close": 19.4,
-      "vol_today": 3414,
-      "vol_10d_avg": 417.0,
-      "vol_ratio": 8.19,
-      "ema5": 18.12,
-      "signal_date": "2026-04-19"
+      "cumulative_3w": 0.0,
+      "big_pct_1000": 34.24,
+      "close": 209.5,
+      "vol_today": 5198,
+      "vol_10d_avg": 1530.0,
+      "vol_ratio": 3.4,
+      "ema5": 191.8,
+      "signal_date": "2026-04-20"
+    },
+    {
+      "stock_id": "3045",
+      "name": "台灣大",
+      "industry": "通信",
+      "tags": [
+        "持續成長"
+      ],
+      "tag_score": 1,
+      "cumulative_3w": 0.03,
+      "big_pct_1000": 89.5,
+      "close": 113.5,
+      "vol_today": 24298,
+      "vol_10d_avg": 7969.0,
+      "vol_ratio": 3.05,
+      "ema5": 110.8,
+      "signal_date": "2026-04-20"
+    },
+    {
+      "stock_id": "2233",
+      "name": "宇隆",
+      "industry": "汽車",
+      "tags": [
+        "持續成長"
+      ],
+      "tag_score": 1,
+      "cumulative_3w": -4.34,
+      "big_pct_1000": 37.28,
+      "close": 244.5,
+      "vol_today": 2432,
+      "vol_10d_avg": 855.0,
+      "vol_ratio": 2.84,
+      "ema5": 228.64,
+      "signal_date": "2026-04-20"
+    },
+    {
+      "stock_id": "2834",
+      "name": "臺企銀",
+      "industry": "金融",
+      "tags": [
+        "持續成長"
+      ],
+      "tag_score": 1,
+      "cumulative_3w": 0.56,
+      "big_pct_1000": 55.45,
+      "close": 16.9,
+      "vol_today": 79165,
+      "vol_10d_avg": 29344.0,
+      "vol_ratio": 2.7,
+      "ema5": 15.87,
+      "signal_date": "2026-04-20"
+    },
+    {
+      "stock_id": "2645",
+      "name": "長榮航太",
+      "industry": "航運",
+      "tags": [
+        "持續成長"
+      ],
+      "tag_score": 1,
+      "cumulative_3w": 0.27,
+      "big_pct_1000": 78.69,
+      "close": 166.0,
+      "vol_today": 2331,
+      "vol_10d_avg": 967.0,
+      "vol_ratio": 2.41,
+      "ema5": 155.65,
+      "signal_date": "2026-04-20"
+    },
+    {
+      "stock_id": "3231",
+      "name": "緯創",
+      "industry": "電腦",
+      "tags": [
+        "持續成長",
+        "雙軌觸發"
+      ],
+      "tag_score": 4,
+      "cumulative_3w": 3.07,
+      "big_pct_1000": 54.08,
+      "close": 140.5,
+      "vol_today": 79146,
+      "vol_10d_avg": 33272.0,
+      "vol_ratio": 2.38,
+      "ema5": 134.55,
+      "signal_date": "2026-04-20"
     },
     {
       "stock_id": "2312",
@@ -47,166 +184,29 @@
       "tag_score": 4,
       "cumulative_3w": 0.75,
       "big_pct_1000": 45.66,
-      "close": 24.55,
-      "vol_today": 85952,
-      "vol_10d_avg": 12720.0,
-      "vol_ratio": 6.76,
-      "ema5": 23.74,
-      "signal_date": "2026-04-19"
+      "close": 24.7,
+      "vol_today": 48584,
+      "vol_10d_avg": 20557.0,
+      "vol_ratio": 2.36,
+      "ema5": 24.01,
+      "signal_date": "2026-04-20"
     },
     {
-      "stock_id": "3230",
-      "name": "錦明",
-      "industry": "櫃光電",
-      "tags": [
-        "雙軌觸發"
-      ],
-      "tag_score": 3,
-      "cumulative_3w": 2.54,
-      "big_pct_1000": 54.41,
-      "close": 43.35,
-      "vol_today": 2376,
-      "vol_10d_avg": 436.0,
-      "vol_ratio": 5.44,
-      "ema5": 39.12,
-      "signal_date": "2026-04-19"
-    },
-    {
-      "stock_id": "2597",
-      "name": "潤弘",
-      "industry": "營建",
+      "stock_id": "2302",
+      "name": "麗正",
+      "industry": "半導",
       "tags": [
         "持續成長"
       ],
       "tag_score": 1,
-      "cumulative_3w": 0.12,
-      "big_pct_1000": 74.14,
-      "close": 165.5,
-      "vol_today": 1709,
-      "vol_10d_avg": 470.0,
-      "vol_ratio": 3.64,
-      "ema5": 151.95,
-      "signal_date": "2026-04-19"
-    },
-    {
-      "stock_id": "1442",
-      "name": "名軒",
-      "industry": "營建",
-      "tags": [
-        "持續成長"
-      ],
-      "tag_score": 1,
-      "cumulative_3w": 0.13,
-      "big_pct_1000": 78.76,
-      "close": 29.0,
-      "vol_today": 1704,
-      "vol_10d_avg": 530.0,
-      "vol_ratio": 3.22,
-      "ema5": 26.83,
-      "signal_date": "2026-04-19"
-    },
-    {
-      "stock_id": "3045",
-      "name": "台灣大",
-      "industry": "通信",
-      "tags": [
-        "持續成長"
-      ],
-      "tag_score": 1,
-      "cumulative_3w": 0.03,
-      "big_pct_1000": 89.5,
-      "close": 112.5,
-      "vol_today": 19151,
-      "vol_10d_avg": 6517.0,
-      "vol_ratio": 2.94,
-      "ema5": 109.95,
-      "signal_date": "2026-04-19"
-    },
-    {
-      "stock_id": "2353",
-      "name": "宏卅卅",
-      "industry": "電腦",
-      "tags": [
-        "持續成長",
-        "雙軌觸發"
-      ],
-      "tag_score": 4,
-      "cumulative_3w": 1.11,
-      "big_pct_1000": 34.63,
-      "close": 28.7,
-      "vol_today": 42008,
-      "vol_10d_avg": 17030.0,
-      "vol_ratio": 2.47,
-      "ema5": 27.66,
-      "signal_date": "2026-04-19"
-    },
-    {
-      "stock_id": "2645",
-      "name": "長榮航太",
-      "industry": "航運",
-      "tags": [
-        "持續成長"
-      ],
-      "tag_score": 1,
-      "cumulative_3w": 0.27,
-      "big_pct_1000": 78.69,
-      "close": 160.5,
-      "vol_today": 1796,
-      "vol_10d_avg": 833.0,
-      "vol_ratio": 2.16,
-      "ema5": 153.22,
-      "signal_date": "2026-04-19"
-    },
-    {
-      "stock_id": "2606",
-      "name": "裕民",
-      "industry": "航運",
-      "tags": [
-        "持續成長"
-      ],
-      "tag_score": 1,
-      "cumulative_3w": 1.31,
-      "big_pct_1000": 70.45,
-      "close": 65.0,
-      "vol_today": 7333,
-      "vol_10d_avg": 3472.0,
-      "vol_ratio": 2.11,
-      "ema5": 62.17,
-      "signal_date": "2026-04-19"
-    },
-    {
-      "stock_id": "2356",
-      "name": "英業達",
-      "industry": "電腦",
-      "tags": [
-        "持續成長"
-      ],
-      "tag_score": 1,
-      "cumulative_3w": 0.67,
-      "big_pct_1000": 66.08,
-      "close": 45.75,
-      "vol_today": 34823,
-      "vol_10d_avg": 17356.0,
-      "vol_ratio": 2.01,
-      "ema5": 44.38,
-      "signal_date": "2026-04-19"
-    },
-    {
-      "stock_id": "2634",
-      "name": "漢翔",
-      "industry": "航運",
-      "tags": [
-        "持續成長"
-      ],
-      "tag_score": 1,
-      "cumulative_3w": -0.3,
-      "big_pct_1000": 46.62,
-      "close": 50.4,
-      "vol_today": 7467,
-      "vol_10d_avg": 4167.0,
-      "vol_ratio": 1.79,
-      "ema5": 48.09,
-      "signal_date": "2026-04-19"
+      "cumulative_3w": 0.06,
+      "big_pct_1000": 63.2,
+      "close": 18.9,
+      "vol_today": 1713,
+      "vol_10d_avg": 735.0,
+      "vol_ratio": 2.33,
+      "ema5": 18.55,
+      "signal_date": "2026-04-20"
     },
     {
       "stock_id": "2342",
@@ -218,114 +218,63 @@
       "tag_score": 1,
       "cumulative_3w": -2.37,
       "big_pct_1000": 32.55,
-      "close": 30.5,
-      "vol_today": 1716,
-      "vol_10d_avg": 959.0,
-      "vol_ratio": 1.79,
-      "ema5": 29.61,
-      "signal_date": "2026-04-19"
+      "close": 31.3,
+      "vol_today": 2493,
+      "vol_10d_avg": 1078.0,
+      "vol_ratio": 2.31,
+      "ema5": 29.91,
+      "signal_date": "2026-04-20"
     },
     {
-      "stock_id": "1513",
-      "name": "中興電",
-      "industry": "電機",
+      "stock_id": "3034",
+      "name": "聯詠",
+      "industry": "半導",
       "tags": [
         "持續成長"
       ],
       "tag_score": 1,
-      "cumulative_3w": -4.04,
-      "big_pct_1000": 40.38,
-      "close": 153.0,
-      "vol_today": 5866,
-      "vol_10d_avg": 3372.0,
-      "vol_ratio": 1.74,
-      "ema5": 151.89,
-      "signal_date": "2026-04-19"
+      "cumulative_3w": 0.86,
+      "big_pct_1000": 57.48,
+      "close": 415.0,
+      "vol_today": 6356,
+      "vol_10d_avg": 2973.0,
+      "vol_ratio": 2.14,
+      "ema5": 406.88,
+      "signal_date": "2026-04-20"
     },
     {
-      "stock_id": "2912",
-      "name": "統一超",
-      "industry": "貿易",
-      "tags": [
-        "持續成長"
-      ],
-      "tag_score": 1,
-      "cumulative_3w": 0.88,
-      "big_pct_1000": 79.51,
-      "close": 237.5,
-      "vol_today": 3731,
-      "vol_10d_avg": 2179.0,
-      "vol_ratio": 1.71,
-      "ema5": 230.45,
-      "signal_date": "2026-04-19"
-    },
-    {
-      "stock_id": "2371",
-      "name": "大同",
-      "industry": "電機",
-      "tags": [
-        "持續成長"
-      ],
-      "tag_score": 1,
-      "cumulative_3w": 0.37,
-      "big_pct_1000": 45.92,
-      "close": 33.1,
-      "vol_today": 27226,
-      "vol_10d_avg": 16171.0,
-      "vol_ratio": 1.68,
-      "ema5": 32.12,
-      "signal_date": "2026-04-19"
-    },
-    {
-      "stock_id": "2059",
-      "name": "川湖",
+      "stock_id": "2392",
+      "name": "正崴",
       "industry": "電零",
       "tags": [
         "持續成長"
       ],
       "tag_score": 1,
-      "cumulative_3w": 0.93,
-      "big_pct_1000": 56.67,
-      "close": 3640.0,
-      "vol_today": 1006,
-      "vol_10d_avg": 609.0,
-      "vol_ratio": 1.65,
-      "ema5": 3408.73,
-      "signal_date": "2026-04-19"
+      "cumulative_3w": 1.93,
+      "big_pct_1000": 43.21,
+      "close": 40.25,
+      "vol_today": 6111,
+      "vol_10d_avg": 2863.0,
+      "vol_ratio": 2.13,
+      "ema5": 35.92,
+      "signal_date": "2026-04-20"
     },
     {
-      "stock_id": "2630",
-      "name": "亞航",
-      "industry": "航運",
+      "stock_id": "2597",
+      "name": "潤弘",
+      "industry": "營建",
       "tags": [
         "持續成長"
       ],
       "tag_score": 1,
-      "cumulative_3w": 1.56,
-      "big_pct_1000": 64.55,
-      "close": 49.3,
-      "vol_today": 1452,
-      "vol_10d_avg": 896.0,
-      "vol_ratio": 1.62,
-      "ema5": 47.13,
-      "signal_date": "2026-04-19"
-    },
-    {
-      "stock_id": "2014",
-      "name": "中鴻",
-      "industry": "鋼鐵",
-      "tags": [
-        "持續成長"
-      ],
-      "tag_score": 1,
-      "cumulative_3w": 0.66,
-      "big_pct_1000": 45.84,
-      "close": 18.65,
-      "vol_today": 8401,
-      "vol_10d_avg": 5276.0,
-      "vol_ratio": 1.59,
-      "ema5": 18.56,
-      "signal_date": "2026-04-19"
+      "cumulative_3w": 0.12,
+      "big_pct_1000": 74.14,
+      "close": 158.0,
+      "vol_today": 1231,
+      "vol_10d_avg": 578.0,
+      "vol_ratio": 2.13,
+      "ema5": 156.46,
+      "signal_date": "2026-04-20"
     },
     {
       "stock_id": "3016",
@@ -337,29 +286,168 @@
       "tag_score": 1,
       "cumulative_3w": 0.87,
       "big_pct_1000": 68.39,
-      "close": 63.1,
-      "vol_today": 3124,
-      "vol_10d_avg": 2031.0,
-      "vol_ratio": 1.54,
-      "ema5": 60.1,
-      "signal_date": "2026-04-19"
+      "close": 65.9,
+      "vol_today": 4796,
+      "vol_10d_avg": 2267.0,
+      "vol_ratio": 2.12,
+      "ema5": 61.1,
+      "signal_date": "2026-04-20"
     },
     {
-      "stock_id": "3466",
-      "name": "德晉",
-      "industry": "櫃通信",
+      "stock_id": "1513",
+      "name": "中興電",
+      "industry": "電機",
       "tags": [
         "持續成長"
       ],
       "tag_score": 1,
-      "cumulative_3w": -0.24,
-      "big_pct_1000": 37.0,
-      "close": 41.0,
-      "vol_today": 1106,
-      "vol_10d_avg": 721.0,
-      "vol_ratio": 1.53,
-      "ema5": 38.77,
-      "signal_date": "2026-04-19"
+      "cumulative_3w": -4.04,
+      "big_pct_1000": 40.38,
+      "close": 153.5,
+      "vol_today": 7113,
+      "vol_10d_avg": 3365.0,
+      "vol_ratio": 2.11,
+      "ema5": 152.26,
+      "signal_date": "2026-04-20"
+    },
+    {
+      "stock_id": "2356",
+      "name": "英業達",
+      "industry": "電腦",
+      "tags": [
+        "持續成長"
+      ],
+      "tag_score": 1,
+      "cumulative_3w": 0.67,
+      "big_pct_1000": 66.08,
+      "close": 46.6,
+      "vol_today": 36082,
+      "vol_10d_avg": 19609.0,
+      "vol_ratio": 1.84,
+      "ema5": 44.84,
+      "signal_date": "2026-04-20"
+    },
+    {
+      "stock_id": "2030",
+      "name": "彰源",
+      "industry": "鋼鐵",
+      "tags": [
+        "持續成長",
+        "雙軌觸發"
+      ],
+      "tag_score": 4,
+      "cumulative_3w": 2.04,
+      "big_pct_1000": 40.53,
+      "close": 16.5,
+      "vol_today": 1117,
+      "vol_10d_avg": 632.0,
+      "vol_ratio": 1.77,
+      "ema5": 16.39,
+      "signal_date": "2026-04-20"
+    },
+    {
+      "stock_id": "3413",
+      "name": "京鼎",
+      "industry": "半導",
+      "tags": [
+        "持續成長",
+        "雙軌觸發",
+        "單周增幅"
+      ],
+      "tag_score": 9,
+      "cumulative_3w": -4.83,
+      "big_pct_1000": 32.28,
+      "close": 327.5,
+      "vol_today": 3530,
+      "vol_10d_avg": 2022.0,
+      "vol_ratio": 1.75,
+      "ema5": 314.61,
+      "signal_date": "2026-04-20"
+    },
+    {
+      "stock_id": "1626",
+      "name": "艾美特-KY",
+      "industry": "電器",
+      "tags": [
+        "持續成長"
+      ],
+      "tag_score": 1,
+      "cumulative_3w": 0.73,
+      "big_pct_1000": 59.63,
+      "close": 11.35,
+      "vol_today": 587,
+      "vol_10d_avg": 357.0,
+      "vol_ratio": 1.65,
+      "ema5": 10.88,
+      "signal_date": "2026-04-20"
+    },
+    {
+      "stock_id": "1210",
+      "name": "大成",
+      "industry": "食品",
+      "tags": [
+        "持續成長"
+      ],
+      "tag_score": 1,
+      "cumulative_3w": 1.22,
+      "big_pct_1000": 59.58,
+      "close": 55.0,
+      "vol_today": 3671,
+      "vol_10d_avg": 2257.0,
+      "vol_ratio": 1.63,
+      "ema5": 54.51,
+      "signal_date": "2026-04-20"
+    },
+    {
+      "stock_id": "2630",
+      "name": "亞航",
+      "industry": "航運",
+      "tags": [
+        "持續成長"
+      ],
+      "tag_score": 1,
+      "cumulative_3w": 1.56,
+      "big_pct_1000": 64.55,
+      "close": 50.1,
+      "vol_today": 1546,
+      "vol_10d_avg": 971.0,
+      "vol_ratio": 1.59,
+      "ema5": 47.85,
+      "signal_date": "2026-04-20"
+    },
+    {
+      "stock_id": "2884",
+      "name": "玉山金",
+      "industry": "金融",
+      "tags": [
+        "持續成長"
+      ],
+      "tag_score": 1,
+      "cumulative_3w": 0.23,
+      "big_pct_1000": 66.7,
+      "close": 32.85,
+      "vol_today": 38944,
+      "vol_10d_avg": 25858.0,
+      "vol_ratio": 1.51,
+      "ema5": 32.73,
+      "signal_date": "2026-04-20"
+    },
+    {
+      "stock_id": "3479",
+      "name": "安勤",
+      "industry": "櫃電腦",
+      "tags": [
+        "持續成長"
+      ],
+      "tag_score": 1,
+      "cumulative_3w": 0.0,
+      "big_pct_1000": 33.72,
+      "close": 93.3,
+      "vol_today": 623,
+      "vol_10d_avg": 414.0,
+      "vol_ratio": 1.51,
+      "ema5": 91.11,
+      "signal_date": "2026-04-20"
     }
   ]
 }
