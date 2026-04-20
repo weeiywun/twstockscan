@@ -301,6 +301,7 @@ def main():
             "big_pct_1000":      round(latest_pct, 2),
             "big_pct_400":       round(s4["pct_map"].get(max(s4["pct_map"]), 0), 2) if s4 and s4["pct_map"] else None,
             "cumulative_3w":     calc_cumulative_3w(s1["pct_map"], dates_1000),
+            "cumulative_3w_400":  round((pct_400_t[-1] - pct_400_t[0]) / pct_400_t[0] * 100.0, 2) if len(pct_400_t) == 4 and pct_400_t[0] != 0 else None,
             "tags":              tags,
             "tag_score":         score,
             "big_trend_1000":    pct_trend,
@@ -329,7 +330,7 @@ def main():
             print(f"  進度：{i}/{len(candidates)}，通過 {len(results)} / 失敗 {fail}")
         time.sleep(FINMIND_SLEEP)
 
-    results.sort(key=lambda r: (r.get("cumulative_3w") or -999), reverse=True)
+    results.sort(key=lambda r: (r.get("cumulative_3w") or 0) + (r.get("cumulative_3w_400") or 0), reverse=True)
     print(f"\n  最終入池 {len(results)} 支")
     _write_output(results)
     send_line_notification(results)

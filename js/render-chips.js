@@ -53,11 +53,13 @@ function renderChipsHolder(strat, main) {
   }
 
   // 排序（個股模式）
+  function combined3w(d) { return (d.cumulative_3w || 0) + (d.cumulative_3w_400 || 0); }
+
   const sortedData = allData.slice().sort((a, b) => {
-    const va = a[sortCol] ?? -9999, vb = b[sortCol] ?? -9999;
+    const va = sortCol === 'cumulative_3w' ? combined3w(a) : (a[sortCol] ?? -9999);
+    const vb = sortCol === 'cumulative_3w' ? combined3w(b) : (b[sortCol] ?? -9999);
     if (va !== vb) return sortAsc ? va - vb : vb - va;
-    // 同分時以三周累積增幅降序為次要排序
-    return (b.cumulative_3w || 0) - (a.cumulative_3w || 0);
+    return combined3w(b) - combined3w(a);
   });
 
   // 族群模式：按族群平均三周累積增幅分組
@@ -69,8 +71,8 @@ function renderChipsHolder(strat, main) {
       groups[ind].push(d);
     });
     return Object.entries(groups).map(([name, items]) => {
-      const avg = items.reduce((s, d) => s + (d.cumulative_3w || 0), 0) / items.length;
-      items.sort((a, b) => (b.cumulative_3w || 0) - (a.cumulative_3w || 0));
+      const avg = items.reduce((s, d) => s + combined3w(d), 0) / items.length;
+      items.sort((a, b) => combined3w(b) - combined3w(a));
       return { name, items, avg: Math.round(avg * 100) / 100 };
     }).sort((a, b) => b.avg - a.avg);
   }
@@ -94,7 +96,8 @@ function renderChipsHolder(strat, main) {
     const weekSign = (d.week_chg_pct >= 0) ? '+' : '';
     const weekClass = d.week_chg_pct >= 0 ? 'pos' : 'neg';
     const devClass  = d.deviation  >= 0 ? 'pos' : 'neg';
-    const cum3Sign  = (d.cumulative_3w || 0) >= 0 ? '+' : '';
+    const cum3val   = combined3w(d);
+    const cum3Sign  = cum3val >= 0 ? '+' : '';
     const inWatch   = watchlist.includes(d.stock_id);
     return `
       <tr onclick="toggleExpand('${d.stock_id}')" id="row-${d.stock_id}">
@@ -117,7 +120,7 @@ function renderChipsHolder(strat, main) {
           <span class="deviation ${devClass}">${d.deviation != null ? devSign + d.deviation.toFixed(2) + '%' : '—'}</span>
         </td>
         <td><span class="big-pct">${d.big_pct_1000 != null ? d.big_pct_1000.toFixed(2) + '%' : '—'}</span></td>
-        <td><span class="big-pct ${(d.cumulative_3w || 0) >= 0 ? 'pos' : 'neg'}">${d.cumulative_3w != null ? cum3Sign + d.cumulative_3w.toFixed(2) + '%' : '—'}</span></td>
+        <td><span class="big-pct ${cum3val >= 0 ? 'pos' : 'neg'}">${cum3Sign}${cum3val.toFixed(2)}%<br><span style="font-size:10px;opacity:.6">千${d.cumulative_3w != null ? (d.cumulative_3w >= 0 ? '+' : '') + d.cumulative_3w.toFixed(1) : '—'} / 四${d.cumulative_3w_400 != null ? (d.cumulative_3w_400 >= 0 ? '+' : '') + d.cumulative_3w_400.toFixed(1) : '—'}</span></span></td>
         <td><div class="spark">${sparkBars(d.big_trend_1000 || [])}</div></td>
         <td><div class="tag-cell">${tagBadges(d.tags)}</div></td>
       </tr>
@@ -185,7 +188,7 @@ function renderChipsHolder(strat, main) {
 
   const sortIcon = col => `<span class="sort-icon">${sortCol===col ? (sortAsc?'↑':'↓') : '·'}</span>`;
   const vscrollClass = allData.length > 10 ? 'table-vscroll' : '';
-  const maxCum = Math.max(...allData.map(d => d.cumulative_3w || 0));
+  const maxCum = Math.max(...allData.map(d => combined3w(d)));
 
   const tableBody = chipsViewMode === 'stock'
     ? sortedData.map(d => chipsRow(d)).join('')
@@ -209,7 +212,7 @@ function renderChipsHolder(strat, main) {
         <div class="summary-card">
           <div class="summary-label">最高3週增幅</div>
           <div class="summary-value amber">${maxCum >= 0 ? '+' : ''}${maxCum.toFixed(2)}%</div>
-          <div class="summary-sub">千張大戶累積增幅</div>
+          <div class="summary-sub">千張+400張累積增幅</div>
         </div>
         <div class="summary-card">
           <div class="summary-label">資料日期</div>
@@ -242,7 +245,7 @@ function renderChipsHolder(strat, main) {
               <th onclick="chipsSort('week_chg_pct')">周漲跌${sortIcon('week_chg_pct')}</th>
               <th onclick="chipsSort('deviation')" data-tip="(現價-EMA120)/EMA120">乖離EMA120${sortIcon('deviation')}</th>
               <th onclick="chipsSort('big_pct_1000')" data-tip="千張大戶持股%">大戶比例${sortIcon('big_pct_1000')}</th>
-              <th onclick="chipsSort('cumulative_3w')" data-tip="千張大戶3週累積增幅R">三周累積增幅${sortIcon('cumulative_3w')}</th>
+              <th onclick="chipsSort('cumulative_3w')" data-tip="千張+400張 3週累積增幅加總">三周累積增幅${sortIcon('cumulative_3w')}</th>
               <th>趨勢</th>
               <th onclick="chipsSort('tag_score')" data-tip="依積分排序：單周增幅+5、雙軌觸發+3、持續成長+1">篩選條件${sortIcon('tag_score')}</th>
             </tr>
@@ -288,7 +291,7 @@ function exportCSVChips() {
     d.week_chg_pct != null ? d.week_chg_pct.toFixed(2) : '',
     d.deviation != null ? d.deviation.toFixed(2) : '',
     d.big_pct_1000?.toFixed(2) || '',
-    d.cumulative_3w != null ? d.cumulative_3w.toFixed(2) : '',
+    combined3w(d).toFixed(2),
     (d.tags || []).join(' '),
     d.tag_score || 0,
   ]);
