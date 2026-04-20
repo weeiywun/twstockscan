@@ -22,7 +22,32 @@ function renderStockAnalysis(strat, main) {
     return;
   }
 
-  const active  = (saData.active  || []).slice().sort((a, b) => b.composite_score - a.composite_score);
+  const saSortCol = window._saSortCol || 'composite_score';
+  const saSortAsc = window._saSortAsc !== undefined ? window._saSortAsc : false;
+
+  function saCompare(a, b) {
+    const va = a[saSortCol] != null ? a[saSortCol] : '';
+    const vb = b[saSortCol] != null ? b[saSortCol] : '';
+    const numA = parseFloat(va), numB = parseFloat(vb);
+    const cmp = (!isNaN(numA) && !isNaN(numB))
+      ? numA - numB
+      : String(va).localeCompare(String(vb));
+    return saSortAsc ? cmp : -cmp;
+  }
+
+  function saSort(col) {
+    if (window._saSortCol === col) window._saSortAsc = !window._saSortAsc;
+    else { window._saSortCol = col; window._saSortAsc = false; }
+    renderStrategy();
+  }
+  window.saSort = saSort;
+
+  function sortIcon(col) {
+    const isActive = saSortCol === col;
+    return `<span class="sort-icon">${isActive ? (saSortAsc ? '↑' : '↓') : '·'}</span>`;
+  }
+
+  const active  = (saData.active  || []).slice().sort(saCompare);
   const expired = saData.expired || [];
 
   const buyCount   = active.filter(s => s.recommendation === 'buy').length;
@@ -106,7 +131,7 @@ function renderStockAnalysis(strat, main) {
         </div>
         <div style="display:flex;flex-direction:column;align-items:flex-end;gap:5px;flex-shrink:0">
           <span class="sa-rec-badge ${s.recommendation}">${recLabel[s.recommendation] || s.recommendation}</span>
-          <span class="sa-days-badge">剩 ${s.days_remaining} 天</span>
+          <span class="sa-days-badge">入選 ${s.trigger_date || s.entry_date || '—'}</span>
         </div>
       </div>
 
@@ -176,7 +201,7 @@ function renderStockAnalysis(strat, main) {
           <td><span style="font-family:var(--mono);font-size:14px;font-weight:700;color:${scoreColor(s.composite_score)}">${s.composite_score}</span></td>
           <td><span class="sa-rec-badge ${s.recommendation}" style="font-size:10px">${recLabel[s.recommendation]}</span></td>
           <td>${revGradeBadge(s.rev_grade)}</td>
-          <td style="font-family:var(--mono);font-size:12px;color:var(--text3)">剩 ${s.days_remaining}天</td>
+          <td style="font-family:var(--mono);font-size:12px;color:var(--text3)">${s.trigger_date || s.entry_date || '—'}</td>
           <td style="font-family:var(--mono);font-size:12px">${s.entry_price.toFixed(1)}</td>
           <td>
             <span style="font-family:var(--mono);font-size:12px">${s.current_price.toFixed(1)}</span>
@@ -236,13 +261,13 @@ function renderStockAnalysis(strat, main) {
             <thead>
               <tr>
                 <th style="width:28px">#</th>
-                <th>代號 / 名稱</th>
-                <th>評分</th>
-                <th>建議</th>
-                <th>營收等級</th>
-                <th>觀察期</th>
-                <th>入選價</th>
-                <th>現價 / 損益</th>
+                <th onclick="saSort('ticker')" style="cursor:pointer">代號 / 名稱${sortIcon('ticker')}</th>
+                <th onclick="saSort('composite_score')" style="cursor:pointer">評分${sortIcon('composite_score')}</th>
+                <th onclick="saSort('recommendation')" style="cursor:pointer">建議${sortIcon('recommendation')}</th>
+                <th onclick="saSort('rev_grade')" style="cursor:pointer">營收等級${sortIcon('rev_grade')}</th>
+                <th onclick="saSort('trigger_date')" style="cursor:pointer">入選日${sortIcon('trigger_date')}</th>
+                <th onclick="saSort('entry_price')" style="cursor:pointer">入選價${sortIcon('entry_price')}</th>
+                <th onclick="saSort('pnl_pct')" style="cursor:pointer">現價 / 損益${sortIcon('pnl_pct')}</th>
               </tr>
             </thead>
             <tbody>${renderRestRows(rest)}</tbody>
