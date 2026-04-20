@@ -1,8 +1,6 @@
 name: 量增訊號掃描 (Layer 2)
 
 on:
-  schedule:
-    - cron: '10 8 * * 1-5'
   repository_dispatch:
     types: [volume-signal-trigger]
   workflow_dispatch:
