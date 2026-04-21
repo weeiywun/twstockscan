@@ -1,6 +1,7 @@
 //  STRATEGY REGISTRY
 //  新增選股策略只需在這裡加一筆 + 提供 data
 // ════════════════════════════════════════════════════
+const PERF_UNLOCKED = new URLSearchParams(location.search).get('unlock') === 'perf';
 const STRATEGIES = [
   {
     id: "chips_big_holder",
@@ -157,7 +158,7 @@ function trendBars(trend, label, colorClass) {
 // ════════════════════════════════════════════════════
 function renderNav() {
   const nav = document.getElementById('strategyNav');
-  nav.innerHTML = STRATEGIES.map(s => {
+  nav.innerHTML = STRATEGIES.filter(s => s.id !== 'performance' || PERF_UNLOCKED).map(s => {
     let badgeText;
     if (!s.available) {
       badgeText = '—';
