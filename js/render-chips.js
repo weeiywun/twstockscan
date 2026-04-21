@@ -56,10 +56,9 @@ function renderChipsHolder(strat, main) {
   function combined3w(d) { return (d.cumulative_3w || 0) + (d.cumulative_3w_400 || 0); }
 
   const sortedData = allData.slice().sort((a, b) => {
-    const va = sortCol === 'cumulative_3w' ? (a.cumulative_3w ?? -9999) : (a[sortCol] ?? -9999);
-    const vb = sortCol === 'cumulative_3w' ? (b.cumulative_3w ?? -9999) : (b[sortCol] ?? -9999);
-    if (va !== vb) return sortAsc ? va - vb : vb - va;
-    return (b.cumulative_3w_400 ?? -9999) - (a.cumulative_3w_400 ?? -9999);
+    const va = a[sortCol] ?? -9999;
+    const vb = b[sortCol] ?? -9999;
+    return sortAsc ? va - vb : vb - va;
   });
 
   // 族群模式：按族群平均三周累積增幅分組
@@ -96,10 +95,6 @@ function renderChipsHolder(strat, main) {
     const weekSign = (d.week_chg_pct >= 0) ? '+' : '';
     const weekClass = d.week_chg_pct >= 0 ? 'pos' : 'neg';
     const devClass  = d.deviation  >= 0 ? 'pos' : 'neg';
-    const c1000     = d.cumulative_3w;
-    const c400      = d.cumulative_3w_400;
-    const c1000Sign = c1000 != null && c1000 >= 0 ? '+' : '';
-    const c400Sign  = c400  != null && c400  >= 0 ? '+' : '';
     const inWatch   = watchlist.includes(d.stock_id);
     return `
       <tr onclick="toggleExpand('${d.stock_id}')" id="row-${d.stock_id}">
@@ -122,12 +117,13 @@ function renderChipsHolder(strat, main) {
           <span class="deviation ${devClass}">${d.deviation != null ? devSign + d.deviation.toFixed(2) + '%' : '—'}</span>
         </td>
         <td><span class="big-pct">${d.big_pct_1000 != null ? d.big_pct_1000.toFixed(2) + '%' : '—'}</span></td>
-        <td><div style="display:flex;flex-direction:column;gap:3px"><span class="big-pct ${c1000 != null && c1000 >= 0 ? 'pos' : 'neg'}" style="font-size:12px">${c1000 != null ? c1000Sign + c1000.toFixed(2) + '%' : '—'}<span style="font-size:10px;opacity:.5;margin-left:3px">千張</span></span><span class="big-pct ${c400 != null && c400 >= 0 ? 'pos' : 'neg'}" style="font-size:12px">${c400 != null ? c400Sign + c400.toFixed(2) + '%' : '—'}<span style="font-size:10px;opacity:.5;margin-left:3px">400張</span></span></div></td>
+        <td><span class="big-pct ${d.chg_2w_1000 != null && d.chg_2w_1000 >= 0 ? 'pos' : 'neg'}">${d.chg_2w_1000 != null ? (d.chg_2w_1000 > 0 ? '+' : '') + d.chg_2w_1000.toFixed(2) + '%' : '—'}</span></td>
+        <td><span class="big-pct ${d.chg_2w_400 != null && d.chg_2w_400 >= 0 ? 'pos' : 'neg'}">${d.chg_2w_400 != null ? (d.chg_2w_400 > 0 ? '+' : '') + d.chg_2w_400.toFixed(2) + '%' : '—'}</span></td>
         <td><div class="spark">${sparkBars(d.big_trend_1000 || [])}</div></td>
         <td><div class="tag-cell">${tagBadges(d.tags)}</div></td>
       </tr>
       <tr class="expand-row" id="expand-${d.stock_id}" style="display:none">
-        <td colspan="8">
+        <td colspan="9">
           <div class="expand-flat">
             <div class="expand-trend-wrap">
               ${(() => {
@@ -178,7 +174,7 @@ function renderChipsHolder(strat, main) {
       const rows = g.items.map(d => chipsRow(d)).join('');
       return `
         <tr class="industry-header-row">
-          <td colspan="8">
+          <td colspan="9">
             <span class="industry-name">${g.name}</span>
             <span class="industry-avg">平均3週增幅 ${avgSign}${g.avg.toFixed(2)}%</span>
             <span class="industry-count">${g.items.length} 支</span>
@@ -247,7 +243,8 @@ function renderChipsHolder(strat, main) {
               <th onclick="chipsSort('week_chg_pct')">周漲跌${sortIcon('week_chg_pct')}</th>
               <th onclick="chipsSort('deviation')" data-tip="(現價-EMA120)/EMA120">乖離EMA120${sortIcon('deviation')}</th>
               <th onclick="chipsSort('big_pct_1000')" data-tip="千張大戶持股%">大戶比例${sortIcon('big_pct_1000')}</th>
-              <th onclick="chipsSort('cumulative_3w')" data-tip="千張大戶3週增幅（排序），次要以400張排序">千張3週增幅${sortIcon('cumulative_3w')}</th>
+              <th onclick="chipsSort('chg_2w_1000')" data-tip="千張大戶持股% [T日 − (T-14日)] 差值（百分點）">千張 2週${sortIcon('chg_2w_1000')}</th>
+              <th onclick="chipsSort('chg_2w_400')" data-tip="400張大戶持股% [T日 − (T-14日)] 差值（百分點）">400張 2週${sortIcon('chg_2w_400')}</th>
               <th>趨勢</th>
               <th onclick="chipsSort('tag_score')" data-tip="依積分排序：單周增幅+5、雙軌觸發+3、持續成長+1">篩選條件${sortIcon('tag_score')}</th>
             </tr>

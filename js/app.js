@@ -74,7 +74,7 @@ let DATE_LABELS = [];
 //  STATE
 // ════════════════════════════════════════════════════
 let activeStratId = STRATEGIES[0].id;
-let sortCol = "cumulative_3w";
+let sortCol = "chg_2w_1000";
 let sortAsc = false;
 let chipsViewMode = "stock"; // "stock" | "industry"
 let expandedRow = null;
@@ -392,7 +392,15 @@ async function loadData() {
     ]);
 
     if (chipsRes && chipsRes.results) {
-      DATA.chips_big_holder_data = chipsRes.results;
+      DATA.chips_big_holder_data = chipsRes.results.map(d => {
+        const t1 = d.big_trend_1000;
+        const t4 = d.big_trend_400;
+        return {
+          ...d,
+          chg_2w_1000: t1 && t1.length >= 4 ? +(t1[3] - t1[1]).toFixed(2) : null,
+          chg_2w_400:  t4 && t4.length >= 4 ? +(t4[3] - t4[1]).toFixed(2) : null,
+        };
+      });
       const strat = STRATEGIES.find(s => s.id === 'chips_big_holder');
       if (strat) strat.dataUpdated = (chipsRes.updated || '').slice(0, 10) || strat.dataUpdated;
     }
