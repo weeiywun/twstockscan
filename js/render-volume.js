@@ -12,7 +12,7 @@ function renderVolumeSignal(strat, main) {
     return;
   }
 
-  const tagColor = { '持續成長': '#3a86ff', '雙軌觸發': '#e66e29', '單周增幅': '#e63946' };
+  const tagColor = { '持續成長': '#3a86ff', '雙軌觸發': '#e66e29', '單周增幅': '#e63946', '外資連買': '#00b894', '投信連買': '#a29bfe' };
   function tagBadges(tags) {
     return (tags || []).map(t => `<span class="tag-badge" style="background:${tagColor[t]||'#888'}">${t}</span>`).join('');
   }

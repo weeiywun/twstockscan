@@ -11,11 +11,14 @@
     雙軌觸發 +3：R_400 >= 1.0% 且 R_1000 >= 1.0%
     單周增幅 +5：最新一週 R > 3.0%（任一門檻）
   R = (本週持股% - 上週持股%) / 上週持股% * 100%
+  資訊標籤（不計分）：
+    外資連買：近10交易日中超過5日買超且累計淨買 > 0
+    投信連買：近10交易日中超過5日買超且累計淨買 > 0
 """
 
 import csv, json, os, re, time
 from datetime import datetime, timedelta, timezone
-from finmind_client import fetch_stock_price
+from finmind_client import fetch_stock_price, fetch_institutional
 
 SCRIPT_DIR  = os.path.dirname(os.path.abspath(__file__))
 DATA_DIR    = os.path.join(SCRIPT_DIR, "..", "data")
@@ -25,7 +28,8 @@ OUTPUT_PATH = os.path.join(DATA_DIR, "chips_big_holder.json")
 
 TW_TZ         = timezone(timedelta(hours=8))
 TODAY         = datetime.now(TW_TZ).strftime("%Y-%m-%d")
-START_DATE    = (datetime.now(TW_TZ) - timedelta(days=180)).strftime("%Y-%m-%d")
+START_DATE      = (datetime.now(TW_TZ) - timedelta(days=180)).strftime("%Y-%m-%d")
+INST_START_DATE = (datetime.now(TW_TZ) - timedelta(days=20)).strftime("%Y-%m-%d")
 BIG_PCT_MIN   = 30.0
 EMA_PERIOD    = 120
 VOL_MIN_LOTS  = 500
@@ -161,6 +165,27 @@ def enrich_with_price(stock_id, token):
         "deviation": deviation, "vol_5d_avg": int(vol_5d),
         "week_chg_pct": week_chg, "bbw": bbw,
     }
+
+
+# ── 法人標籤（不計分）──────────────────────────────────────────
+
+def compute_institutional_tags(stock_id, token):
+    """
+    近10交易日中超過5日買超且累計淨買>0 → 加資訊標籤（不影響 tag_score）。
+    回傳 list，例如 ["外資連買"] 或 ["外資連買", "投信連買"] 或 []。
+    """
+    inst = fetch_institutional(stock_id, INST_START_DATE, token)
+    if not inst:
+        return []
+    tags = []
+    for key, label in [("foreign", "外資連買"), ("trust", "投信連買")]:
+        vals = inst.get(key, [])[-10:]
+        if not vals:
+            continue
+        buy_days = sum(1 for v in vals if v > 0)
+        if buy_days > 5 and sum(vals) > 0:
+            tags.append(label)
+    return tags
 
 
 # ── LINE 推播 ──────────────────────────────────────────────────
@@ -347,7 +372,11 @@ def main():
             pass
         else:
             ok += 1
-            results.append({**c, **price})
+            inst_tags = compute_institutional_tags(c["stock_id"], finmind_token)
+            time.sleep(FINMIND_SLEEP)
+            merged = {**c, **price}
+            merged["tags"] = c["tags"] + inst_tags
+            results.append(merged)
         if i % 50 == 0:
             print(f"  進度：{i}/{len(candidates)}，通過 {len(results)} / 失敗 {fail}")
         time.sleep(FINMIND_SLEEP)

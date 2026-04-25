@@ -69,6 +69,35 @@ def fetch_all_stocks(stock_list, start_date, end_date, token=None, sleep=0.35, *
     return results
 
 
+def fetch_institutional(stock_id: str, start_date: str, token: str) -> dict | None:
+    """
+    取得個股三大法人買賣超（外資、投信）。
+    回傳 {"foreign": [net_buy, ...], "trust": [net_buy, ...]} 日期升序，或 None。
+    """
+    try:
+        r = requests.get(FINMIND_API, params={
+            "dataset":    "TaiwanStockInstitutionalInvestors",
+            "data_id":    stock_id,
+            "start_date": start_date,
+            "token":      token,
+        }, timeout=20)
+        data = r.json()
+        if data.get("status") != 200 or not data.get("data"):
+            return None
+        rows = sorted(data["data"], key=lambda x: x["date"])
+        foreign, trust = [], []
+        for row in rows:
+            name = row.get("name", "")
+            net  = float(row.get("net_buy", 0))
+            if "外資" in name:
+                foreign.append(net)
+            elif "投信" in name:
+                trust.append(net)
+        return {"foreign": foreign, "trust": trust}
+    except Exception:
+        return None
+
+
 def fetch_month_revenue(stock_id: str, token: str, months: int = 15) -> list[dict] | None:
     """
     取得個股月營收（近 months 個月）。
