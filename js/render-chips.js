@@ -76,7 +76,7 @@ function renderChipsHolder(strat, main) {
     }).sort((a, b) => b.avg - a.avg);
   }
 
-  const tagColor = { '持續成長': '#3a86ff', '雙軌觸發': '#e66e29', '單周增幅': '#e63946', '外資連買': '#00b894', '投信連買': '#a29bfe' };
+  const tagColor = { '持續成長': '#3a86ff', '雙軌觸發': '#e66e29', '單周增幅': '#e63946', '外資連買': '#f0b429', '投信連買': '#f0b429' };
 
   function tagBadges(tags) {
     if (!tags || !tags.length) return '';
