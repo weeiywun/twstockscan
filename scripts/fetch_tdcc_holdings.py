@@ -36,7 +36,7 @@ def fetch_tdcc() -> tuple[list[dict], str]:
                 timeout=90,
             )
             resp.raise_for_status()
-            data = resp.json()
+            raw = resp.json()
             break
         except Exception as e:
             if attempt == 2:
@@ -44,10 +44,12 @@ def fetch_tdcc() -> tuple[list[dict], str]:
             print(f"  第 {attempt+1} 次失敗 ({e})，3 秒後重試...")
             time.sleep(3)
 
-    if not data:
+    if not raw:
         raise ValueError("TDCC API 回傳空資料")
 
-    # 日期欄位已是 YYYYMMDD 格式（例如 20260424），直接使用
+    # 剝除 JSON key 的 BOM（API 回傳的 ﻿資料日期 帶有 U+FEFF 前綴）
+    data = [{k.lstrip("﻿"): v for k, v in row.items()} for row in raw]
+
     date_str = str(data[0].get("資料日期", "")).strip()
     if not re.fullmatch(r"\d{8}", date_str):
         raise ValueError(f"日期格式不符預期：{date_str!r}")
