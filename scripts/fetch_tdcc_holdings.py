@@ -147,7 +147,7 @@ def main() -> None:
 
     print("\nStep 3：更新 CSV...")
     update_csv(CSV_1000, h1000, date_str, "utf-8-sig")
-    update_csv(CSV_400,  h400,  date_str, "utf-8")
+    update_csv(CSV_400,  h400,  date_str, "utf-8-sig")
 
     print("\n=== 完成 ===")
 
