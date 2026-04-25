@@ -30,6 +30,7 @@ BIG_PCT_MIN   = 30.0
 EMA_PERIOD    = 120
 VOL_MIN_LOTS  = 500
 DEV_MIN, DEV_MAX = -10.0, 10.0
+BBW_MAX       = 15.0
 FINMIND_SLEEP = 0.35
 FLEX_MAX      = 15
 FC_PRIMARY    = "#e66e29"
@@ -128,6 +129,18 @@ def _calc_ema(closes, span):
     return ema
 
 
+def _calc_bbw(closes, period=20, num_std=2):
+    """Bollinger Band Width = (Upper - Lower) / Middle × 100%"""
+    if len(closes) < period:
+        return None
+    window = closes[-period:]
+    sma    = sum(window) / period
+    std    = (sum((c - sma) ** 2 for c in window) / period) ** 0.5
+    if sma == 0:
+        return None
+    return round((num_std * 2 * std) / sma * 100.0, 2)
+
+
 def enrich_with_price(stock_id, token):
     df = fetch_stock_price(stock_id, START_DATE, TODAY, token)
     if df is None or len(df) < 10:
@@ -142,9 +155,11 @@ def enrich_with_price(stock_id, token):
     vol_5d    = round(sum(volumes[-5:]) / min(5, len(volumes)), 0)
     wago      = closes[-6] if len(closes) >= 6 else closes[0]
     week_chg  = round((close_now - wago) / wago * 100.0, 2) if wago else None
+    bbw       = _calc_bbw(closes)
     return {
         "close": round(close_now, 2), "ema120": round(ema120, 2),
-        "deviation": deviation, "vol_5d_avg": int(vol_5d), "week_chg_pct": week_chg,
+        "deviation": deviation, "vol_5d_avg": int(vol_5d),
+        "week_chg_pct": week_chg, "bbw": bbw,
     }
 
 
@@ -321,7 +336,9 @@ def main():
         price = enrich_with_price(c["stock_id"], finmind_token)
         if price is None:
             fail += 1
-        elif price["vol_5d_avg"] < VOL_MIN_LOTS or not (DEV_MIN <= price["deviation"] <= DEV_MAX):
+        elif (price["vol_5d_avg"] < VOL_MIN_LOTS
+              or not (DEV_MIN <= price["deviation"] <= DEV_MAX)
+              or (price["bbw"] is not None and price["bbw"] > BBW_MAX)):
             pass
         else:
             ok += 1
