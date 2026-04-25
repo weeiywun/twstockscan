@@ -8,7 +8,7 @@
   先決安全濾網：5日均量 > 500張、|乖離EMA120| <= 10%、千張大戶比例 > 30%
   標籤（可複選）：
     持續成長 +1：連續兩週 R > 0%（任一門檻）
-    雙軌觸發 +3：R_400 >= 2.0% 或 R_1000 >= 1.25%
+    雙軌觸發 +3：R_400 >= 1.0% 且 R_1000 >= 1.0%
     單周增幅 +5：最新一週 R > 3.0%（任一門檻）
   R = (本週持股% - 上週持股%) / 上週持股% * 100%
 """
@@ -98,7 +98,7 @@ def compute_tags(pct_1000, dates_1000, pct_400, dates_400):
     if g1 or g4:
         tags.append("持續成長"); score += 1
 
-    if (r4n is not None and r4n >= 2.0) or (r1n is not None and r1n >= 1.25):
+    if (r4n is not None and r4n >= 1.0) and (r1n is not None and r1n >= 1.0):
         tags.append("雙軌觸發"); score += 3
 
     if (r1n is not None and r1n > 3.0) or (r4n is not None and r4n > 3.0):
