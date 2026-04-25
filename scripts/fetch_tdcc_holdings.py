@@ -1,19 +1,21 @@
 #!/usr/bin/env python3
 """
-從集保中心 OpenAPI 抓取股權分散表，自動更新 big1000.csv / big400.csv。
+從集保中心抓取股權分散表，自動更新 big1000.csv / big400.csv。
+使用 opendata.tdcc.com.tw/getOD.ashx?id=1-5（CSV 格式，當週資料即時可用）
 
 big1000：持股分級 15（1,000,000 股以上 = 1000張+）
 big400 ：持股分級 12~15（400,000 股以上 = 400張+）
 """
 
 import csv
+import io
 import os
 import re
 import time
 
 import requests
 
-TDCC_URL   = "https://openapi.tdcc.com.tw/v1/opendata/1-5"
+TDCC_URL   = "https://opendata.tdcc.com.tw/getOD.ashx?id=1-5"
 SCRIPT_DIR = os.path.dirname(os.path.abspath(__file__))
 DATA_DIR   = os.path.join(SCRIPT_DIR, "..", "data")
 CSV_1000   = os.path.join(DATA_DIR, "big1000.csv")
@@ -30,13 +32,8 @@ def fetch_tdcc() -> tuple[list[dict], str]:
     print(f"  GET {TDCC_URL}")
     for attempt in range(3):
         try:
-            resp = requests.get(
-                TDCC_URL,
-                headers={"accept": "application/json"},
-                timeout=90,
-            )
+            resp = requests.get(TDCC_URL, timeout=90)
             resp.raise_for_status()
-            raw = resp.json()
             break
         except Exception as e:
             if attempt == 2:
@@ -44,13 +41,15 @@ def fetch_tdcc() -> tuple[list[dict], str]:
             print(f"  第 {attempt+1} 次失敗 ({e})，3 秒後重試...")
             time.sleep(3)
 
-    if not raw:
-        raise ValueError("TDCC API 回傳空資料")
+    # CSV 格式，第一欄標頭帶 BOM，用 utf-8-sig 解碼
+    content = resp.content.decode("utf-8-sig")
+    reader  = csv.DictReader(io.StringIO(content))
+    data    = list(reader)
 
-    # 剝除 JSON key 的 BOM（API 回傳的 ﻿資料日期 帶有 U+FEFF 前綴）
-    data = [{k.lstrip("﻿"): v for k, v in row.items()} for row in raw]
+    if not data:
+        raise ValueError("TDCC 回傳空資料")
 
-    date_str = str(data[0].get("資料日期", "")).strip()
+    date_str = data[0].get("資料日期", "").strip()
     if not re.fullmatch(r"\d{8}", date_str):
         raise ValueError(f"日期格式不符預期：{date_str!r}")
 
