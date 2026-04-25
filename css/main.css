@@ -286,10 +286,11 @@ tbody tr:hover .spark-bar{opacity:.9}
 
 /* ── Page layout (content + sidebar) ────────── */
 .page-layout{
-  max-width:1200px;margin:0 auto;padding:0 24px 64px;
+  max-width:1400px;margin:0 auto;padding:0 24px 64px;
   display:grid;grid-template-columns:1fr 220px;gap:20px;
   align-items:start;
 }
+.page-layout.perf-mode{grid-template-columns:1fr 300px}
 .watchlist-sidebar{
   position:sticky;top:112px;
   background:var(--bg2);border:1px solid var(--border);
@@ -626,15 +627,17 @@ tbody tr:hover .spark-bar{opacity:.9}
 .perf-btn-add{background:var(--green-dim);border-color:var(--green);color:var(--green);font-weight:600}
 .perf-btn-del{border-color:rgba(248,81,73,0.3);color:var(--red);background:rgba(248,81,73,0.06)}
 .perf-pos-row:hover{background:rgba(0,0,0,0.025)}
-/* ── 交易日誌 ── */
-.journal-entry{border:1px solid var(--border);border-radius:8px;margin-bottom:8px;overflow:hidden}
-.journal-header{display:flex;align-items:center;gap:10px;padding:12px 16px;cursor:pointer;user-select:none;transition:background .15s;flex-wrap:wrap}
-.journal-header:hover{background:var(--bg3)}
-.journal-date{font-family:var(--mono);font-size:12px;color:var(--text3);white-space:nowrap;flex-shrink:0}
-.journal-title{font-size:14px;font-weight:600;color:var(--text);flex-shrink:0}
-.journal-tags{display:flex;gap:5px;flex-wrap:wrap;flex:1}
-.journal-preview{font-size:12px;color:var(--text3);flex:2;min-width:0;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
-.journal-arrow{font-size:11px;color:var(--text3);margin-left:auto;flex-shrink:0;transition:transform .2s}
-.journal-body{padding:16px;border-top:1px solid var(--border);background:var(--bg2)}
-.journal-content{font-size:13px;color:var(--text2);line-height:1.8;white-space:pre-wrap;word-break:break-word;margin-bottom:12px}
-.journal-actions{display:flex;gap:8px;flex-wrap:wrap}
+/* ── 交易周記（側欄樣式） ── */
+.journal-entry{border-bottom:1px solid var(--border)}
+.journal-entry:last-child{border-bottom:none}
+.journal-header{display:flex;align-items:flex-start;gap:8px;padding:10px 12px;cursor:pointer;user-select:none;transition:background .15s}
+.journal-header:hover{background:rgba(255,255,255,0.03)}
+.journal-date{font-family:var(--mono);font-size:10px;color:var(--text3);white-space:nowrap;flex-shrink:0;padding-top:2px}
+.journal-title-wrap{flex:1;min-width:0}
+.journal-title{font-size:12px;font-weight:600;color:var(--text);display:block;margin-bottom:2px}
+.journal-tags{display:flex;gap:4px;flex-wrap:wrap;margin-bottom:2px}
+.journal-preview{font-size:11px;color:var(--text3);overflow:hidden;text-overflow:ellipsis;white-space:nowrap;display:block;max-width:100%}
+.journal-arrow{font-size:10px;color:var(--text3);flex-shrink:0;padding-top:2px}
+.journal-body{padding:10px 12px;border-top:1px solid var(--border);background:var(--bg3)}
+.journal-content{font-size:12px;color:var(--text2);line-height:1.75;white-space:pre-wrap;word-break:break-word;margin-bottom:10px}
+.journal-actions{display:flex;gap:6px;flex-wrap:wrap}

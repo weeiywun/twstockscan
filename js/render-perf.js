@@ -165,6 +165,21 @@ function initPerfChart(pd) {
 // ════════════════════════════════════════════════════
 //  PERFORMANCE — 渲染主頁
 // ════════════════════════════════════════════════════
+function setPerfSidebarMode(on) {
+  const layout = document.querySelector('.page-layout');
+  const watchlistPanel = document.getElementById('watchlistPanel');
+  const journalPanel   = document.getElementById('journalPanel');
+  if (on) {
+    layout?.classList.add('perf-mode');
+    if (watchlistPanel) watchlistPanel.style.display = 'none';
+    if (journalPanel)   journalPanel.style.display   = 'block';
+  } else {
+    layout?.classList.remove('perf-mode');
+    if (watchlistPanel) watchlistPanel.style.display = 'block';
+    if (journalPanel)   journalPanel.style.display   = 'none';
+  }
+}
+
 function renderPerformance(strat, main) {
   const pd = DATA.performance_data;
   const token = ghToken();
@@ -363,47 +378,16 @@ function renderPerformance(strat, main) {
         </div>
       </div>
 
-      <div class="perf-section">
-        <div class="perf-section-hd">
-          <span class="section-title">交易日誌　<span style="font-weight:400;color:var(--text3);font-size:12px">${(pd?.journal||[]).length} 則</span></span>
-          <button class="perf-btn perf-btn-add" onclick="journalShowAdd()">＋ 新增日誌</button>
-        </div>
-
-        <div id="journalAddForm" style="display:none;background:var(--bg3);border:1px solid var(--border);border-radius:8px;padding:16px;margin-bottom:12px">
-          <div style="display:grid;grid-template-columns:160px 1fr auto;gap:10px;align-items:start;margin-bottom:10px">
-            <div>
-              <div class="perf-input-label">日期 *</div>
-              <input id="jf-date" type="date" class="perf-input" value="${today}" style="width:100%">
-            </div>
-            <div>
-              <div class="perf-input-label">標題 *</div>
-              <input id="jf-title" class="perf-input" placeholder="今日市場觀察、出場心得…" style="width:100%">
-            </div>
-            <div>
-              <div class="perf-input-label">標籤（逗號分隔）</div>
-              <input id="jf-tags" class="perf-input" placeholder="心得, 操作" style="width:160px">
-            </div>
-          </div>
-          <div>
-            <div class="perf-input-label">內文</div>
-            <textarea id="jf-content" class="perf-input" rows="5"
-              style="width:100%;resize:vertical;font-family:var(--sans);line-height:1.7;font-size:13px"
-              placeholder="記錄操作思路、市場觀察、情緒反省…"></textarea>
-          </div>
-          <div style="display:flex;gap:8px;margin-top:10px">
-            <button class="perf-btn perf-btn-confirm" onclick="journalSaveAdd()">儲存並寫入 Repo</button>
-            <button class="perf-btn" onclick="journalShowAdd(false)">取消</button>
-            <span style="font-size:11px;color:var(--text3);align-self:center">⚠ 需先設定 GitHub Token 才能寫入</span>
-          </div>
-        </div>
-
-        <div id="journalList">
-          ${renderJournalList(pd?.journal || [])}
-        </div>
-      </div>
     </div>`;
 
   setTimeout(() => initPerfChart(pd), 60);
+
+  // 切換側欄為周記模式，並渲染列表
+  setPerfSidebarMode(true);
+  const jfDate = document.getElementById('jf-date');
+  if (jfDate && !jfDate.value) jfDate.value = today;
+  const journalList = document.getElementById('journalList');
+  if (journalList) journalList.innerHTML = renderJournalList(pd?.journal || []);
 }
 
 // ════════════════════════════════════════════════════
@@ -484,42 +468,44 @@ async function perfSyncData() {
 
 function renderJournalList(entries) {
   if (!entries.length) return `
-    <div style="text-align:center;color:var(--text3);padding:32px 16px;font-size:13px">
-      尚無日誌記錄，點擊右上角「新增日誌」開始撰寫
+    <div style="text-align:center;color:var(--text3);padding:28px 12px;font-size:12px">
+      尚無周記，點擊右上角「＋ 新增」開始撰寫
     </div>`;
   return [...entries]
     .sort((a, b) => b.date.localeCompare(a.date))
     .map(e => {
       const tags = (e.tags || []).map(t =>
-        `<span style="font-size:10px;padding:2px 7px;border-radius:10px;background:var(--bg3);color:var(--text2);border:1px solid var(--border)">${t}</span>`
+        `<span style="font-size:10px;padding:1px 6px;border-radius:8px;background:var(--bg2);color:var(--text3);border:1px solid var(--border)">${t}</span>`
       ).join('');
-      const preview = (e.content || '').replace(/\n/g, ' ').slice(0, 60);
-      const hasMore = (e.content || '').length > 60;
+      const preview = (e.content || '').replace(/\n/g, ' ').slice(0, 50);
+      const hasMore = (e.content || '').length > 50;
       return `
         <div class="journal-entry" id="je-${e.id}">
           <div class="journal-header" onclick="journalToggle('${e.id}')">
-            <span class="journal-date">${e.date}</span>
-            <span class="journal-title">${e.title}</span>
-            <span class="journal-tags">${tags}</span>
-            <span class="journal-preview" id="jp-${e.id}">${preview}${hasMore ? '…' : ''}</span>
+            <div class="journal-title-wrap">
+              <span class="journal-date">${e.date}</span>
+              <span class="journal-title">${e.title}</span>
+              <span class="journal-tags">${tags}</span>
+              <span class="journal-preview" id="jp-${e.id}">${preview}${hasMore ? '…' : ''}</span>
+            </div>
             <span class="journal-arrow" id="ja-${e.id}">▼</span>
           </div>
           <div class="journal-body" id="jb-${e.id}" style="display:none">
             <div id="jview-${e.id}" class="journal-content">${(e.content||'').replace(/\n/g,'<br>')}</div>
             <div id="jedit-${e.id}" style="display:none">
               <input id="jet-${e.id}" class="perf-input" value="${(e.title||'').replace(/"/g,'&quot;')}"
-                style="width:100%;margin-bottom:8px" placeholder="標題">
+                style="width:100%;margin-bottom:6px;font-size:12px" placeholder="標題">
               <input id="jeta-${e.id}" class="perf-input" value="${(e.tags||[]).join(', ')}"
-                style="width:100%;margin-bottom:8px" placeholder="標籤（逗號分隔）">
-              <textarea id="jec-${e.id}" class="perf-input" rows="6"
-                style="width:100%;resize:vertical;font-family:var(--sans);line-height:1.7;font-size:13px"
+                style="width:100%;margin-bottom:6px;font-size:12px" placeholder="標籤（逗號分隔）">
+              <textarea id="jec-${e.id}" class="perf-input" rows="7"
+                style="width:100%;resize:vertical;font-family:var(--sans);line-height:1.7;font-size:12px"
               >${e.content||''}</textarea>
             </div>
-            <div class="journal-actions">
-              <button class="perf-btn" id="jbtn-edit-${e.id}" onclick="journalStartEdit('${e.id}')">編輯</button>
-              <button class="perf-btn perf-btn-confirm" id="jbtn-save-${e.id}" style="display:none" onclick="journalSaveEdit('${e.id}')">儲存</button>
-              <button class="perf-btn" id="jbtn-cancel-${e.id}" style="display:none" onclick="journalCancelEdit('${e.id}')">取消</button>
-              <button class="perf-btn perf-btn-del" onclick="journalDelete('${e.id}')">刪除</button>
+            <div class="journal-actions" style="margin-top:8px">
+              <button class="perf-btn" style="font-size:11px" id="jbtn-edit-${e.id}" onclick="journalStartEdit('${e.id}')">編輯</button>
+              <button class="perf-btn perf-btn-confirm" style="font-size:11px;display:none" id="jbtn-save-${e.id}" onclick="journalSaveEdit('${e.id}')">儲存</button>
+              <button class="perf-btn" style="font-size:11px;display:none" id="jbtn-cancel-${e.id}" onclick="journalCancelEdit('${e.id}')">取消</button>
+              <button class="perf-btn perf-btn-del" style="font-size:11px" onclick="journalDelete('${e.id}')">刪除</button>
             </div>
           </div>
         </div>`;

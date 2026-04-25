@@ -31,11 +31,46 @@
 <!-- Two-column layout -->
 <div class="page-layout">
   <main id="mainContent"></main>
-  <aside class="watchlist-sidebar">
-    <div class="sidebar-header">
-      <span class="section-title">觀察清單</span>
+  <aside class="watchlist-sidebar" id="rightSidebar">
+    <!-- 觀察清單（非績效頁顯示） -->
+    <div id="watchlistPanel">
+      <div class="sidebar-header">
+        <span class="section-title">觀察清單</span>
+      </div>
+      <div class="watch-list" id="watchlistGrid"></div>
     </div>
-    <div class="watch-list" id="watchlistGrid"></div>
+    <!-- 交易周記（績效頁顯示） -->
+    <div id="journalPanel" style="display:none">
+      <div class="sidebar-header" style="justify-content:space-between">
+        <span class="section-title">交易周記</span>
+        <button class="perf-btn perf-btn-add" style="padding:3px 9px;font-size:11px" onclick="journalShowAdd()">＋ 新增</button>
+      </div>
+      <div id="journalAddForm" style="display:none;padding:12px;border-bottom:1px solid var(--border);background:var(--bg3)">
+        <div style="margin-bottom:8px">
+          <div class="perf-input-label">日期 *</div>
+          <input id="jf-date" type="date" class="perf-input" style="width:100%">
+        </div>
+        <div style="margin-bottom:8px">
+          <div class="perf-input-label">標題 *</div>
+          <input id="jf-title" class="perf-input" placeholder="本週市場回顧…" style="width:100%">
+        </div>
+        <div style="margin-bottom:8px">
+          <div class="perf-input-label">標籤（逗號分隔）</div>
+          <input id="jf-tags" class="perf-input" placeholder="心得, 觀察" style="width:100%">
+        </div>
+        <div style="margin-bottom:8px">
+          <div class="perf-input-label">內文</div>
+          <textarea id="jf-content" class="perf-input" rows="6"
+            style="width:100%;resize:vertical;font-family:var(--sans);line-height:1.7;font-size:12px"
+            placeholder="本週操作回顧、心得、下週計畫…"></textarea>
+        </div>
+        <div style="display:flex;gap:6px">
+          <button class="perf-btn perf-btn-confirm" style="font-size:11px" onclick="journalSaveAdd()">儲存</button>
+          <button class="perf-btn" style="font-size:11px" onclick="journalShowAdd(false)">取消</button>
+        </div>
+      </div>
+      <div id="journalList" style="overflow-y:auto;max-height:calc(100vh - 220px)"></div>
+    </div>
   </aside>
 </div>
 

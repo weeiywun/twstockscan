@@ -195,6 +195,7 @@ function renderStrategy() {
     return;
   }
 
+  if (strat.id !== 'performance' && typeof setPerfSidebarMode === 'function') setPerfSidebarMode(false);
   if (strat.id === 'chips_big_holder') { renderChipsHolder(strat, main);    return; }
   if (strat.id === 'volume_signal')    { renderVolumeSignal(strat, main);   return; }
   if (strat.id === 'stock_analysis')   { renderStockAnalysis(strat, main);  return; }
