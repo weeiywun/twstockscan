@@ -308,6 +308,9 @@ def main():
         prev_weeks = prev_consecutive.get(sid, 0)
         consecutive_weeks = prev_weeks + 1 if prev_weeks >= 1 else 1
 
+        chg_4w_1000 = round(pct_trend[-1] - pct_trend[0], 2) if len(pct_trend) >= 4 else None
+        chg_4w_400  = round(pct_400_t[-1] - pct_400_t[0], 2) if pct_400_t and len(pct_400_t) >= 4 else None
+
         candidates.append({
             "stock_id":          sid,
             "name":              s1["name"],
@@ -316,7 +319,9 @@ def main():
             "big_pct_1000":      round(latest_pct, 2),
             "big_pct_400":       round(s4["pct_map"].get(max(s4["pct_map"]), 0), 2) if s4 and s4["pct_map"] else None,
             "cumulative_3w":     calc_cumulative_3w(s1["pct_map"], dates_1000),
-            "cumulative_3w_400":  round((pct_400_t[-1] - pct_400_t[0]) / pct_400_t[0] * 100.0, 2) if pct_400_t is not None and len(pct_400_t) == 4 and pct_400_t[0] != 0 else None,
+            "cumulative_3w_400": round((pct_400_t[-1] - pct_400_t[0]) / pct_400_t[0] * 100.0, 2) if pct_400_t is not None and len(pct_400_t) == 4 and pct_400_t[0] != 0 else None,
+            "chg_4w_1000":       chg_4w_1000,
+            "chg_4w_400":        chg_4w_400,
             "tags":              tags,
             "tag_score":         score,
             "big_trend_1000":    pct_trend,

@@ -117,8 +117,8 @@ function renderChipsHolder(strat, main) {
           <span class="deviation ${devClass}">${d.deviation != null ? devSign + d.deviation.toFixed(2) + '%' : '—'}</span>
         </td>
         <td><span class="big-pct">${d.big_pct_1000 != null ? d.big_pct_1000.toFixed(2) + '%' : '—'}</span></td>
-        <td><span class="big-pct ${d.chg_2w_1000 != null && d.chg_2w_1000 >= 0 ? 'pos' : 'neg'}">${d.chg_2w_1000 != null ? (d.chg_2w_1000 > 0 ? '+' : '') + d.chg_2w_1000.toFixed(2) + '%' : '—'}</span></td>
-        <td><span class="big-pct ${d.chg_2w_400 != null && d.chg_2w_400 >= 0 ? 'pos' : 'neg'}">${d.chg_2w_400 != null ? (d.chg_2w_400 > 0 ? '+' : '') + d.chg_2w_400.toFixed(2) + '%' : '—'}</span></td>
+        <td><span class="big-pct ${d.chg_4w_1000 != null && d.chg_4w_1000 >= 0 ? 'pos' : 'neg'}">${d.chg_4w_1000 != null ? (d.chg_4w_1000 > 0 ? '+' : '') + d.chg_4w_1000.toFixed(2) + '%' : '—'}</span></td>
+        <td><span class="big-pct ${d.chg_4w_400 != null && d.chg_4w_400 >= 0 ? 'pos' : 'neg'}">${d.chg_4w_400 != null ? (d.chg_4w_400 > 0 ? '+' : '') + d.chg_4w_400.toFixed(2) + '%' : '—'}</span></td>
         <td><div class="spark">${sparkBars(d.big_trend_1000 || [])}</div></td>
         <td><div class="tag-cell">${tagBadges(d.tags)}</div></td>
       </tr>
@@ -130,8 +130,8 @@ function renderChipsHolder(strat, main) {
                 const labels = d.date_labels || DATE_LABELS;
                 const t1000  = d.big_trend_1000 || [];
                 const t400   = d.big_trend_400  || [];
-                const cum1000 = t1000.length >= 3 ? t1000[t1000.length-1] - t1000[t1000.length-3] : null;
-                const cum400  = t400.length  >= 3 ? t400[t400.length-1]   - t400[t400.length-3]   : null;
+                const cum1000 = t1000.length >= 4 ? t1000[t1000.length-1] - t1000[0] : null;
+                const cum400  = t400.length  >= 4 ? t400[t400.length-1]  - t400[0]  : null;
                 const cum1000Sign = cum1000 != null && cum1000 >= 0 ? '+' : '';
                 const cum400Sign  = cum400  != null && cum400  >= 0 ? '+' : '';
                 const dateHdrs = [...labels].reverse().map(l => `<th>${l}</th>`).join('');
@@ -139,7 +139,7 @@ function renderChipsHolder(strat, main) {
                 const cells400  = [...t400].reverse().map(v  => `<td>${v.toFixed(2)}%</td>`).join('');
                 return `<table class="expand-table">
                   <thead><tr>
-                    <th></th><th>3週增幅</th>${dateHdrs}
+                    <th></th><th>4週增幅</th>${dateHdrs}
                   </tr></thead>
                   <tbody>
                     <tr>
@@ -243,8 +243,8 @@ function renderChipsHolder(strat, main) {
               <th onclick="chipsSort('week_chg_pct')">周漲跌${sortIcon('week_chg_pct')}</th>
               <th onclick="chipsSort('deviation')" data-tip="(現價-EMA120)/EMA120">乖離EMA120${sortIcon('deviation')}</th>
               <th onclick="chipsSort('big_pct_1000')" data-tip="千張大戶持股%">大戶比例${sortIcon('big_pct_1000')}</th>
-              <th onclick="chipsSort('chg_2w_1000')" data-tip="千張大戶持股% [T日 − (T-14日)] 差值（百分點）">千張 2週${sortIcon('chg_2w_1000')}</th>
-              <th onclick="chipsSort('chg_2w_400')" data-tip="400張大戶持股% [T日 − (T-14日)] 差值（百分點）">400張 2週${sortIcon('chg_2w_400')}</th>
+              <th onclick="chipsSort('chg_4w_1000')" data-tip="千張大戶持股% [T日 − (T-28日)] 4週差值（百分點）">千張${sortIcon('chg_4w_1000')}</th>
+              <th onclick="chipsSort('chg_4w_400')" data-tip="400張大戶持股% [T日 − (T-28日)] 4週差值（百分點）">400張${sortIcon('chg_4w_400')}</th>
               <th>趨勢</th>
               <th onclick="chipsSort('tag_score')" data-tip="依積分排序：單周增幅+5、雙軌觸發+3、持續成長+1">篩選條件${sortIcon('tag_score')}</th>
             </tr>
