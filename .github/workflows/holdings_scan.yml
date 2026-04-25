@@ -2,10 +2,9 @@ name: 大戶持股分析
 
 on:
   # 每週六台灣時間 18:00（UTC 10:00）執行
-  # 請先手動更新 data/big1000.csv 與 data/big400.csv，再等此排程自動跑分析
+  # 自動從集保中心 OpenAPI 抓取股權分散表，無需手動上傳 CSV
   schedule:
     - cron: '0 10 * * 6'
-  # 允許手動觸發（上傳 CSV 後可立即執行）
   workflow_dispatch:
 
 jobs:
@@ -29,6 +28,20 @@ jobs:
 
       - name: Install dependencies
         run: pip install -r scripts/requirements.txt
+
+      - name: Fetch TDCC holdings data
+        run: python scripts/fetch_tdcc_holdings.py
+
+      - name: Commit updated CSV
+        run: |
+          git config user.name  "github-actions[bot]"
+          git config user.email "github-actions[bot]@users.noreply.github.com"
+          git add data/big1000.csv data/big400.csv
+          if ! git diff --staged --quiet; then
+            git commit -m "data: TDCC holdings CSV update $(date -u +%Y-%m-%d)"
+          else
+            echo "CSV 無變動，略過提交"
+          fi
 
       - name: Run holdings analysis
         env:
