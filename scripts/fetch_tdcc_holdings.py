@@ -9,7 +9,6 @@ big400 ：持股分級 12~15（400,000 股以上 = 400張+）
 import csv
 import os
 import re
-import sys
 import time
 
 import requests
@@ -22,20 +21,7 @@ CSV_400    = os.path.join(DATA_DIR, "big400.csv")
 
 LEVELS_1000 = {15}
 LEVELS_400  = {12, 13, 14, 15}
-
-
-# ── 工具函式 ──────────────────────────────────────────────────────
-
-def roc_to_yyyymmdd(roc: str) -> str:
-    """民國年 '114/04/18' 或 '1140418' → '20250418'"""
-    roc = roc.strip()
-    if "/" in roc or "-" in roc:
-        parts = re.split(r"[/\-]", roc)
-        y, m, d = int(parts[0]) + 1911, int(parts[1]), int(parts[2])
-    else:
-        y = int(roc[:3]) + 1911
-        m, d = int(roc[3:5]), int(roc[5:7])
-    return f"{y}{m:02d}{d:02d}"
+LEVEL_TOTAL = 17  # 合計列，排除不計
 
 
 # ── TDCC 資料抓取 ─────────────────────────────────────────────────
@@ -61,14 +47,17 @@ def fetch_tdcc() -> tuple[list[dict], str]:
     if not data:
         raise ValueError("TDCC API 回傳空資料")
 
-    date_raw = data[0].get("資料日期", "")
-    date_str = roc_to_yyyymmdd(date_raw)
-    print(f"  資料日期：{date_raw} → {date_str}，共 {len(data):,} 筆")
+    # 日期欄位已是 YYYYMMDD 格式（例如 20260424），直接使用
+    date_str = str(data[0].get("資料日期", "")).strip()
+    if not re.fullmatch(r"\d{8}", date_str):
+        raise ValueError(f"日期格式不符預期：{date_str!r}")
+
+    print(f"  資料日期：{date_str}，共 {len(data):,} 筆")
     return data, date_str
 
 
 def compute_holdings(data: list[dict], levels: set[int]) -> dict[str, float]:
-    """計算各股在指定持股分級的合計持股比例"""
+    """計算各股在指定持股分級的合計持股比例（排除 Level 17 合計列）"""
     holdings: dict[str, float] = {}
     for row in data:
         code = str(row.get("證券代號", "")).strip()
@@ -76,10 +65,10 @@ def compute_holdings(data: list[dict], levels: set[int]) -> dict[str, float]:
             continue
         try:
             level = int(row.get("持股分級", 0))
-            pct   = float(str(row.get("占集保庫存數比例%", "0")).replace("%", "").strip())
+            pct   = float(row.get("占集保庫存數比例%", 0))
         except (ValueError, TypeError):
             continue
-        if level not in levels:
+        if level == LEVEL_TOTAL or level not in levels:
             continue
         holdings[code] = round(holdings.get(code, 0.0) + pct, 4)
     return holdings
