@@ -372,16 +372,19 @@ def main():
             pass
         else:
             ok += 1
-            inst_tags = compute_institutional_tags(c["stock_id"], finmind_token)
-            time.sleep(FINMIND_SLEEP)
-            merged = {**c, **price}
-            merged["tags"] = c["tags"] + inst_tags
-            results.append(merged)
+            results.append({**c, **price})
         if i % 50 == 0:
             print(f"  進度：{i}/{len(candidates)}，通過 {len(results)} / 失敗 {fail}")
         time.sleep(FINMIND_SLEEP)
 
     results.sort(key=lambda r: (r.get("cumulative_3w") or 0) + (r.get("cumulative_3w_400") or 0), reverse=True)
+
+    print(f"\nStep 4：法人資料（{len(results)} 支，間隔 {FINMIND_SLEEP}s）...")
+    for r in results:
+        inst_tags = compute_institutional_tags(r["stock_id"], finmind_token)
+        if inst_tags:
+            r["tags"] = r["tags"] + inst_tags
+        time.sleep(FINMIND_SLEEP)
     print(f"\n  最終入池 {len(results)} 支")
     _write_output(results)
     send_line_notification(results)
