@@ -362,6 +362,45 @@ function renderPerformance(strat, main) {
           </div>
         </div>
       </div>
+
+      <div class="perf-section">
+        <div class="perf-section-hd">
+          <span class="section-title">交易日誌　<span style="font-weight:400;color:var(--text3);font-size:12px">${(pd?.journal||[]).length} 則</span></span>
+          <button class="perf-btn perf-btn-add" onclick="journalShowAdd()">＋ 新增日誌</button>
+        </div>
+
+        <div id="journalAddForm" style="display:none;background:var(--bg3);border:1px solid var(--border);border-radius:8px;padding:16px;margin-bottom:12px">
+          <div style="display:grid;grid-template-columns:160px 1fr auto;gap:10px;align-items:start;margin-bottom:10px">
+            <div>
+              <div class="perf-input-label">日期 *</div>
+              <input id="jf-date" type="date" class="perf-input" value="${today}" style="width:100%">
+            </div>
+            <div>
+              <div class="perf-input-label">標題 *</div>
+              <input id="jf-title" class="perf-input" placeholder="今日市場觀察、出場心得…" style="width:100%">
+            </div>
+            <div>
+              <div class="perf-input-label">標籤（逗號分隔）</div>
+              <input id="jf-tags" class="perf-input" placeholder="心得, 操作" style="width:160px">
+            </div>
+          </div>
+          <div>
+            <div class="perf-input-label">內文</div>
+            <textarea id="jf-content" class="perf-input" rows="5"
+              style="width:100%;resize:vertical;font-family:var(--sans);line-height:1.7;font-size:13px"
+              placeholder="記錄操作思路、市場觀察、情緒反省…"></textarea>
+          </div>
+          <div style="display:flex;gap:8px;margin-top:10px">
+            <button class="perf-btn perf-btn-confirm" onclick="journalSaveAdd()">儲存並寫入 Repo</button>
+            <button class="perf-btn" onclick="journalShowAdd(false)">取消</button>
+            <span style="font-size:11px;color:var(--text3);align-self:center">⚠ 需先設定 GitHub Token 才能寫入</span>
+          </div>
+        </div>
+
+        <div id="journalList">
+          ${renderJournalList(pd?.journal || [])}
+        </div>
+      </div>
     </div>`;
 
   setTimeout(() => initPerfChart(pd), 60);
@@ -437,6 +476,134 @@ async function perfSyncData() {
     if (res.ok) { DATA.performance_data = await res.json(); renderStrategy(); }
     else alert('同步失敗，請確認 performance.json 已建立於 data/ 目錄');
   } catch(e) { alert('同步失敗：' + e.message); }
+}
+
+// ════════════════════════════════════════════════════
+//  交易日誌
+// ════════════════════════════════════════════════════
+
+function renderJournalList(entries) {
+  if (!entries.length) return `
+    <div style="text-align:center;color:var(--text3);padding:32px 16px;font-size:13px">
+      尚無日誌記錄，點擊右上角「新增日誌」開始撰寫
+    </div>`;
+  return [...entries]
+    .sort((a, b) => b.date.localeCompare(a.date))
+    .map(e => {
+      const tags = (e.tags || []).map(t =>
+        `<span style="font-size:10px;padding:2px 7px;border-radius:10px;background:var(--bg3);color:var(--text2);border:1px solid var(--border)">${t}</span>`
+      ).join('');
+      const preview = (e.content || '').replace(/\n/g, ' ').slice(0, 60);
+      const hasMore = (e.content || '').length > 60;
+      return `
+        <div class="journal-entry" id="je-${e.id}">
+          <div class="journal-header" onclick="journalToggle('${e.id}')">
+            <span class="journal-date">${e.date}</span>
+            <span class="journal-title">${e.title}</span>
+            <span class="journal-tags">${tags}</span>
+            <span class="journal-preview" id="jp-${e.id}">${preview}${hasMore ? '…' : ''}</span>
+            <span class="journal-arrow" id="ja-${e.id}">▼</span>
+          </div>
+          <div class="journal-body" id="jb-${e.id}" style="display:none">
+            <div id="jview-${e.id}" class="journal-content">${(e.content||'').replace(/\n/g,'<br>')}</div>
+            <div id="jedit-${e.id}" style="display:none">
+              <input id="jet-${e.id}" class="perf-input" value="${(e.title||'').replace(/"/g,'&quot;')}"
+                style="width:100%;margin-bottom:8px" placeholder="標題">
+              <input id="jeta-${e.id}" class="perf-input" value="${(e.tags||[]).join(', ')}"
+                style="width:100%;margin-bottom:8px" placeholder="標籤（逗號分隔）">
+              <textarea id="jec-${e.id}" class="perf-input" rows="6"
+                style="width:100%;resize:vertical;font-family:var(--sans);line-height:1.7;font-size:13px"
+              >${e.content||''}</textarea>
+            </div>
+            <div class="journal-actions">
+              <button class="perf-btn" id="jbtn-edit-${e.id}" onclick="journalStartEdit('${e.id}')">編輯</button>
+              <button class="perf-btn perf-btn-confirm" id="jbtn-save-${e.id}" style="display:none" onclick="journalSaveEdit('${e.id}')">儲存</button>
+              <button class="perf-btn" id="jbtn-cancel-${e.id}" style="display:none" onclick="journalCancelEdit('${e.id}')">取消</button>
+              <button class="perf-btn perf-btn-del" onclick="journalDelete('${e.id}')">刪除</button>
+            </div>
+          </div>
+        </div>`;
+    }).join('');
+}
+
+function journalToggle(id) {
+  const body    = document.getElementById(`jb-${id}`);
+  const arrow   = document.getElementById(`ja-${id}`);
+  const preview = document.getElementById(`jp-${id}`);
+  if (!body) return;
+  const open = body.style.display === 'none';
+  body.style.display    = open ? 'block' : 'none';
+  arrow.textContent     = open ? '▲' : '▼';
+  if (preview) preview.style.display = open ? 'none' : '';
+}
+
+function journalShowAdd(show = true) {
+  const form = document.getElementById('journalAddForm');
+  if (!form) return;
+  form.style.display = show ? 'block' : 'none';
+  if (show) document.getElementById('jf-title')?.focus();
+}
+
+async function journalSaveAdd() {
+  const date    = document.getElementById('jf-date')?.value;
+  const title   = document.getElementById('jf-title')?.value.trim();
+  const tagsRaw = document.getElementById('jf-tags')?.value.trim();
+  const content = document.getElementById('jf-content')?.value.trim();
+  if (!date || !title) { alert('請填寫日期與標題'); return; }
+  const tags = tagsRaw ? tagsRaw.split(',').map(t => t.trim()).filter(Boolean) : [];
+  if (!DATA.performance_data) {
+    DATA.performance_data = { starting_capital: 450000, last_updated: '', positions: [], price_history: {}, journal: [] };
+  }
+  if (!DATA.performance_data.journal) DATA.performance_data.journal = [];
+  const entry = { id: 'j' + Date.now(), date, title, tags, content };
+  DATA.performance_data.journal.push(entry);
+  DATA.performance_data.last_updated = new Date().toISOString().slice(0, 10);
+  const ok = await ghWritePerf(DATA.performance_data);
+  if (ok) renderStrategy(); else DATA.performance_data.journal.pop();
+}
+
+function journalStartEdit(id) {
+  document.getElementById(`jview-${id}`).style.display  = 'none';
+  document.getElementById(`jedit-${id}`).style.display  = 'block';
+  document.getElementById(`jbtn-edit-${id}`).style.display   = 'none';
+  document.getElementById(`jbtn-save-${id}`).style.display   = 'inline-block';
+  document.getElementById(`jbtn-cancel-${id}`).style.display = 'inline-block';
+}
+
+function journalCancelEdit(id) {
+  document.getElementById(`jview-${id}`).style.display  = 'block';
+  document.getElementById(`jedit-${id}`).style.display  = 'none';
+  document.getElementById(`jbtn-edit-${id}`).style.display   = 'inline-block';
+  document.getElementById(`jbtn-save-${id}`).style.display   = 'none';
+  document.getElementById(`jbtn-cancel-${id}`).style.display = 'none';
+}
+
+async function journalSaveEdit(id) {
+  const title   = document.getElementById(`jet-${id}`)?.value.trim();
+  const tagsRaw = document.getElementById(`jeta-${id}`)?.value.trim();
+  const content = document.getElementById(`jec-${id}`)?.value.trim();
+  if (!title) { alert('標題不可空白'); return; }
+  const pd    = DATA.performance_data;
+  const entry = pd.journal.find(e => e.id === id);
+  if (!entry) return;
+  const prev  = { ...entry };
+  entry.title   = title;
+  entry.tags    = tagsRaw ? tagsRaw.split(',').map(t => t.trim()).filter(Boolean) : [];
+  entry.content = content;
+  pd.last_updated = new Date().toISOString().slice(0, 10);
+  const ok = await ghWritePerf(pd);
+  if (ok) renderStrategy(); else Object.assign(entry, prev);
+}
+
+async function journalDelete(id) {
+  if (!confirm('確認刪除此日誌？此操作無法復原。')) return;
+  const pd  = DATA.performance_data;
+  const idx = pd.journal.findIndex(e => e.id === id);
+  if (idx === -1) return;
+  const [removed] = pd.journal.splice(idx, 1);
+  pd.last_updated = new Date().toISOString().slice(0, 10);
+  const ok = await ghWritePerf(pd);
+  if (ok) renderStrategy(); else pd.journal.splice(idx, 0, removed);
 }
 
 // ════════════════════════════════════════════════════
