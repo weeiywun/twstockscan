@@ -176,7 +176,10 @@ def compute_institutional_tags(stock_id, token):
     """
     inst = fetch_institutional(stock_id, INST_START_DATE, token)
     if not inst:
+        print(f"  [法人] {stock_id}: API 無回應或無資料")
         return []
+    foreign, trust = inst.get("foreign", []), inst.get("trust", [])
+    print(f"  [法人] {stock_id}: 外資{len(foreign)}筆 投信{len(trust)}筆")
     tags = []
     for key, label in [("foreign", "外資連買"), ("trust", "投信連買")]:
         vals = inst.get(key, [])[-10:]

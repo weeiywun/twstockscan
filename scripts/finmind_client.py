@@ -83,8 +83,11 @@ def fetch_institutional(stock_id: str, start_date: str, token: str) -> dict | No
         }, timeout=20)
         data = r.json()
         if data.get("status") != 200 or not data.get("data"):
+            print(f"  [法人API] {stock_id}: status={data.get('status')} msg={data.get('msg','')}")
             return None
         rows = sorted(data["data"], key=lambda x: x["date"])
+        if rows:
+            print(f"  [法人API] {stock_id}: {len(rows)} 筆，欄位={list(rows[0].keys())}")
         foreign, trust = [], []
         for row in rows:
             name = row.get("name", "")
