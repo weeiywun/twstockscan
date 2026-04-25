@@ -30,9 +30,13 @@ LEVEL_TOTAL = 17  # 合計列，排除不計
 
 def fetch_tdcc() -> tuple[list[dict], str]:
     print(f"  GET {TDCC_URL}")
+    headers = {
+        "User-Agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/124.0.0.0 Safari/537.36",
+        "Referer": "https://www.tdcc.com.tw/portal/zh/stats/openData",
+    }
     for attempt in range(3):
         try:
-            resp = requests.get(TDCC_URL, timeout=90)
+            resp = requests.get(TDCC_URL, headers=headers, timeout=90)
             resp.raise_for_status()
             break
         except Exception as e:
