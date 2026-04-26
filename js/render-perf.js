@@ -272,15 +272,41 @@ function renderPerformance(strat, main) {
     const pnlPct = ((exitVal / costVal) - 1) * 100;
     const c = pnl >= 0 ? 'var(--green)' : 'var(--red)';
     const s = pnl >= 0 ? '+' : '';
-    return `<tr>
+    const hasNet = p.exit_net != null;
+    return `
+    <tr>
       <td><span class="stock-code">${p.stock_id}</span>${p.name && p.name !== p.stock_id ? `<span style="font-size:11px;color:var(--text3);margin-left:5px">${p.name}</span>` : ''}</td>
       <td style="font-family:var(--mono);font-size:12px">${p.entry_date}</td>
       <td style="font-family:var(--mono);font-size:12px">${p.exit_date}</td>
       <td style="font-family:var(--mono)">${p.shares.toLocaleString()}</td>
       <td style="font-family:var(--mono)">${p.cost_price.toFixed(2)}</td>
-      <td style="font-family:var(--mono)">${p.exit_price.toFixed(2)}</td>
+      <td style="font-family:var(--mono)">${p.exit_price.toFixed(2)}${!hasNet ? '<span title="尚未計入手續費/交易稅" style="color:var(--red);font-size:10px;margin-left:3px">⚠</span>' : ''}</td>
       <td><span style="font-family:var(--mono);color:${c};font-weight:700">${s}${Math.round(pnl).toLocaleString()}</span></td>
       <td><span style="font-family:var(--mono);color:${c}">${s}${pnlPct.toFixed(2)}%</span></td>
+      <td><button class="perf-btn" style="font-size:11px" onclick="perfShowClosedEditForm('${p.id}')">編輯</button></td>
+    </tr>
+    <tr id="closed-edit-form-${p.id}" style="display:none">
+      <td colspan="9" style="padding:12px 16px;background:var(--bg3);border-bottom:1px solid var(--border)">
+        <div style="display:flex;align-items:flex-end;gap:12px;flex-wrap:wrap">
+          <span style="font-size:12px;color:var(--text2);font-weight:600;padding-bottom:2px">修改出場資訊</span>
+          <div><div class="perf-input-label">賣出價格 *</div>
+            <input id="cep-${p.id}" type="number" step="0.01" class="perf-input"
+              value="${p.exit_price}" style="width:110px"
+              data-shares="${p.shares}" oninput="perfUpdateClosedSellPreview('${p.id}')"></div>
+          <div><div class="perf-input-label">賣出日期 *</div>
+            <input id="ced-${p.id}" type="date" class="perf-input" value="${p.exit_date}" style="width:140px"></div>
+          <div style="display:flex;gap:6px">
+            <button class="perf-btn perf-btn-confirm" onclick="perfSaveClosedEdit('${p.id}')">儲存</button>
+            <button class="perf-btn" onclick="document.getElementById('closed-edit-form-${p.id}').style.display='none'">取消</button>
+          </div>
+        </div>
+        <div id="csell-preview-${p.id}" style="display:none;margin-top:8px;font-size:11px;padding:7px 10px;background:var(--bg2);border-radius:6px;color:var(--text2)">
+          賣出金額：<span id="csp-base-${p.id}"></span>
+          手續費：<span style="color:var(--red)">-<span id="csp-fee-${p.id}"></span></span>
+          交易稅：<span style="color:var(--red)">-<span id="csp-tax-${p.id}"></span></span>
+          <strong>實收：<span id="csp-net-${p.id}" style="color:var(--green)"></span></strong>
+        </div>
+      </td>
     </tr>`;
   }
 
@@ -400,10 +426,10 @@ function renderPerformance(strat, main) {
             <table>
               <thead><tr>
                 <th>股票</th><th>建倉日</th><th>出場日</th><th>股數</th>
-                <th>成本</th><th>賣出價</th><th>損益（NT$）</th><th>損益率</th>
+                <th>成本</th><th>賣出價</th><th>損益（NT$）</th><th>損益率</th><th>操作</th>
               </tr></thead>
               <tbody>
-                ${closed.length ? closed.map(closedRow).join('') : `<tr><td colspan="8" style="text-align:center;color:var(--text3);padding:24px 16px;font-size:13px">尚無出場記錄</td></tr>`}
+                ${closed.length ? closed.map(closedRow).join('') : `<tr><td colspan="9" style="text-align:center;color:var(--text3);padding:24px 16px;font-size:13px">尚無出場記錄</td></tr>`}
               </tbody>
             </table>
           </div>
@@ -489,6 +515,46 @@ async function perfDeletePos(id) {
   pd.last_updated = new Date().toISOString().slice(0, 10);
   const ok = await ghWritePerf(pd);
   if (ok) renderStrategy(); else pd.positions.splice(idx, 0, removed);
+}
+
+function perfShowClosedEditForm(id) {
+  const row = document.getElementById(`closed-edit-form-${id}`);
+  if (!row) return;
+  const isOpen = row.style.display !== 'none';
+  row.style.display = isOpen ? 'none' : 'table-row';
+  if (!isOpen) perfUpdateClosedSellPreview(id);
+}
+
+function perfUpdateClosedSellPreview(id) {
+  const inp    = document.getElementById(`cep-${id}`);
+  const price  = parseFloat(inp?.value);
+  const shares = parseFloat(inp?.dataset.shares);
+  const box    = document.getElementById(`csell-preview-${id}`);
+  if (!box) return;
+  if (!price || !shares || price <= 0) { box.style.display = 'none'; return; }
+  const { fee, tax, net } = calcSellNet(price, shares);
+  const fmt = n => Math.round(n).toLocaleString();
+  document.getElementById(`csp-base-${id}`).textContent = 'NT$' + fmt(price * shares) + '　';
+  document.getElementById(`csp-fee-${id}`).textContent  = 'NT$' + fmt(fee) + '　';
+  document.getElementById(`csp-tax-${id}`).textContent  = 'NT$' + fmt(tax) + '　';
+  document.getElementById(`csp-net-${id}`).textContent  = 'NT$' + fmt(net);
+  box.style.display = 'block';
+}
+
+async function perfSaveClosedEdit(id) {
+  const exitPrice = parseFloat(document.getElementById(`cep-${id}`)?.value);
+  const exitDate  = document.getElementById(`ced-${id}`)?.value;
+  if (!exitPrice || exitPrice <= 0 || !exitDate) { alert('請填寫賣出價格與日期'); return; }
+  const pd  = DATA.performance_data;
+  const pos = pd.positions.find(p => p.id === id);
+  if (!pos) return;
+  const { fee, tax, net } = calcSellNet(exitPrice, pos.shares);
+  const prev = { exit_price: pos.exit_price, exit_date: pos.exit_date, exit_net: pos.exit_net, sell_fee: pos.sell_fee, sell_tax: pos.sell_tax };
+  pos.exit_price = exitPrice; pos.exit_date = exitDate;
+  pos.exit_net = net; pos.sell_fee = fee; pos.sell_tax = tax;
+  pd.last_updated = new Date().toISOString().slice(0, 10);
+  const ok = await ghWritePerf(pd);
+  if (ok) renderStrategy(); else Object.assign(pos, prev);
 }
 
 function perfUpdateBuyCostPreview() {
