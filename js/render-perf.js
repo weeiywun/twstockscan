@@ -9,16 +9,17 @@ function ghToken() { return localStorage.getItem('gh_token') || ''; }
 // ════════════════════════════════════════════════════
 //  交易成本計算（手續費 0.1425%、交易稅 0.3%）
 // ════════════════════════════════════════════════════
-const FEE_RATE = 0.001425;  // 手續費率（買賣各）
-const TAX_RATE = 0.003;     // 交易稅率（賣出）
+const FEE_RATE     = 0.001425;  // 手續費率（買賣各）
+const FEE_DISCOUNT = 0.6;       // 手續費折數（6折）
+const TAX_RATE     = 0.003;     // 交易稅率（賣出）
 
 function calcBuyCost(price, shares) {
-  const fee   = Math.ceil(price * shares * FEE_RATE);
+  const fee   = Math.floor(price * shares * FEE_RATE * FEE_DISCOUNT);
   const total = Math.round(price * shares) + fee;
   return { fee, total, costPerShare: parseFloat((total / shares).toFixed(4)) };
 }
 function calcSellNet(price, shares) {
-  const fee = Math.ceil(price * shares * FEE_RATE);
+  const fee = Math.floor(price * shares * FEE_RATE * FEE_DISCOUNT);
   const tax = Math.floor(price * shares * TAX_RATE);
   const net = Math.round(price * shares) - fee - tax;
   return { fee, tax, net };
