@@ -20,6 +20,17 @@ INST_LABELS      = {"外資連買", "投信連買"}
 
 
 def compute_institutional_tags(stock_id, token, debug=False):
+    if debug:
+        # 印原始 API 回應前 3 筆，確認欄位結構
+        import requests as _req
+        r = _req.get("https://api.finmindtrade.com/api/v4/data", params={
+            "dataset": "TaiwanStockInstitutionalInvestorsBuySell",
+            "data_id": stock_id, "start_date": INST_START_DATE, "token": token,
+        }, timeout=20)
+        raw = r.json()
+        print(f"    [{stock_id}] API status={raw.get('status')} 筆數={len(raw.get('data',[]))}")
+        for row in raw.get("data", [])[-3:]:
+            print(f"      {row}")
     inst = fetch_institutional(stock_id, INST_START_DATE, token)
     if not inst:
         if debug:
