@@ -88,7 +88,7 @@ def fetch_institutional(stock_id: str, start_date: str, token: str) -> dict | No
         foreign, trust = [], []
         for row in rows:
             name = row.get("name", "")
-            net  = float(row.get("net_buy") or 0)
+            net  = float(row.get("buy") or 0) - float(row.get("sell") or 0)
             if name in ("Foreign_Investor", "外資及陸資(不含外資自營商)") or "外資" in name:
                 foreign.append(net)
             elif name in ("Investment_Trust", "投信") or "投信" in name:
