@@ -19,17 +19,24 @@ FINMIND_SLEEP    = 0.35
 INST_LABELS      = {"外資連買", "投信連買"}
 
 
-def compute_institutional_tags(stock_id, token):
+def compute_institutional_tags(stock_id, token, debug=False):
     inst = fetch_institutional(stock_id, INST_START_DATE, token)
     if not inst:
+        if debug:
+            print(f"    [{stock_id}] fetch_institutional 回傳 None")
         return []
     tags = []
     for key, label in [("foreign", "外資連買"), ("trust", "投信連買")]:
         vals = inst.get(key, [])[-10:]
         if not vals:
+            if debug:
+                print(f"    [{stock_id}] {label}: 無資料")
             continue
         buy_days = sum(1 for v in vals if v > 0)
-        if buy_days > 5 and sum(vals) > 0:
+        net_sum  = sum(vals)
+        if debug:
+            print(f"    [{stock_id}] {label}: {len(vals)}筆, 買超{buy_days}天, 累計{net_sum:.0f}")
+        if buy_days > 5 and net_sum > 0:
             tags.append(label)
     return tags
 
@@ -50,12 +57,14 @@ def main():
     results = data.get("results", [])
     print(f"載入 {len(results)} 支標的，開始查詢法人資料...")
 
+    # 前 3 支印詳細診斷，其餘正常執行
     updated_count = 0
     for i, r in enumerate(results, 1):
         # 移除舊的法人標籤（支援重複執行）
         r["tags"] = [t for t in r.get("tags", []) if t not in INST_LABELS]
 
-        inst_tags = compute_institutional_tags(r["stock_id"], token)
+        debug = (i <= 3)
+        inst_tags = compute_institutional_tags(r["stock_id"], token, debug=debug)
         if inst_tags:
             r["tags"] = r["tags"] + inst_tags
             updated_count += 1
