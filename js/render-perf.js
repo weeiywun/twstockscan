@@ -6,6 +6,24 @@ const GH_PERF  = 'data/performance.json';
 
 function ghToken() { return localStorage.getItem('gh_token') || ''; }
 
+// ════════════════════════════════════════════════════
+//  交易成本計算（手續費 0.1425%、交易稅 0.3%）
+// ════════════════════════════════════════════════════
+const FEE_RATE = 0.001425;  // 手續費率（買賣各）
+const TAX_RATE = 0.003;     // 交易稅率（賣出）
+
+function calcBuyCost(price, shares) {
+  const fee   = Math.ceil(price * shares * FEE_RATE);
+  const total = Math.round(price * shares) + fee;
+  return { fee, total, costPerShare: parseFloat((total / shares).toFixed(4)) };
+}
+function calcSellNet(price, shares) {
+  const fee = Math.ceil(price * shares * FEE_RATE);
+  const tax = Math.floor(price * shares * TAX_RATE);
+  const net = Math.round(price * shares) - fee - tax;
+  return { fee, tax, net };
+}
+
 async function ghWritePerf(data) {
   const token = ghToken();
   if (!token) { alert('請先設定 GitHub Token'); return false; }
@@ -59,7 +77,7 @@ function computePortfolioMetrics(pd) {
     const cost = p.shares * p.cost_price;
     totalCost += cost;
     if (p.confirmed && p.exit_price != null) {
-      const val = p.shares * p.exit_price;
+      const val = p.exit_net != null ? p.exit_net : p.shares * p.exit_price;
       mktValue += val; realizedPnl += val - cost;
     } else {
       const hist = priceHistory[p.stock_id] || {};
@@ -96,7 +114,7 @@ function buildPerfChartData(pd) {
       const cost = p.shares * p.cost_price;
       if (date < p.entry_date) { mktVal += cost; realVal += cost; return; }
       if (p.confirmed && p.exit_date && date >= p.exit_date) {
-        const ev = p.shares * p.exit_price;
+        const ev = p.exit_net != null ? p.exit_net : p.shares * p.exit_price;
         mktVal += ev; realVal += ev;
       } else {
         const hist = priceHistory[p.stock_id] || {};
@@ -224,13 +242,20 @@ function renderPerformance(strat, main) {
           <div style="display:flex;align-items:flex-end;gap:12px;flex-wrap:wrap">
             <span style="font-size:12px;color:var(--text2);font-weight:600;padding-bottom:2px">出場資訊</span>
             <div><div class="perf-input-label">賣出價格 *</div>
-              <input id="ep-${p.id}" type="number" step="0.01" class="perf-input" placeholder="0.00" style="width:110px"></div>
+              <input id="ep-${p.id}" type="number" step="0.01" class="perf-input" placeholder="0.00" style="width:110px"
+                data-shares="${p.shares}" oninput="perfUpdateSellNetPreview('${p.id}')"></div>
             <div><div class="perf-input-label">賣出日期 *</div>
               <input id="ed-${p.id}" type="date" class="perf-input" value="${today}" style="width:140px"></div>
             <div style="display:flex;gap:6px">
               <button class="perf-btn perf-btn-confirm" onclick="perfConfirmExit('${p.id}')">確認賣出</button>
               <button class="perf-btn" onclick="document.getElementById('exit-form-${p.id}').style.display='none'">取消</button>
             </div>
+          </div>
+          <div id="sell-preview-${p.id}" style="display:none;margin-top:8px;font-size:11px;padding:7px 10px;background:var(--bg2);border-radius:6px;color:var(--text2)">
+            賣出金額：<span id="sp-base-${p.id}"></span>
+            手續費：<span style="color:var(--red)">-<span id="sp-fee-${p.id}"></span></span>
+            交易稅：<span style="color:var(--red)">-<span id="sp-tax-${p.id}"></span></span>
+            <strong>實收：<span id="sp-net-${p.id}" style="color:var(--green)"></span></strong>
           </div>
           <div style="margin-top:8px;font-size:11px;color:var(--text3)">
             ⚠ 確認後損益將鎖定，此筆移至「已出場」，並自動寫入 Repo（需先設定 Token）
@@ -240,7 +265,7 @@ function renderPerformance(strat, main) {
   }
 
   function closedRow(p) {
-    const exitVal = p.shares * p.exit_price;
+    const exitVal = p.exit_net != null ? p.exit_net : p.shares * p.exit_price;
     const costVal = p.shares * p.cost_price;
     const pnl = exitVal - costVal;
     const pnlPct = ((exitVal / costVal) - 1) * 100;
@@ -337,14 +362,20 @@ function renderPerformance(strat, main) {
                 ${active.length ? active.map(activeRow).join('') : `<tr id="perfEmptyRow"><td colspan="9" style="text-align:center;color:var(--text3);padding:24px 16px;font-size:13px">尚無持倉，點擊右上角「新增持倉」開始記錄</td></tr>`}
                 <tr id="perfAddFormRow" style="display:none">
                   <td colspan="9" style="padding:14px 16px;background:var(--bg3);border-top:1px solid var(--border)">
-                    <div style="display:grid;grid-template-columns:repeat(auto-fill,minmax(120px,1fr));gap:10px 12px;margin-bottom:12px">
+                    <div style="display:grid;grid-template-columns:repeat(auto-fill,minmax(120px,1fr));gap:10px 12px;margin-bottom:10px">
                       <div><div class="perf-input-label">股票代號 *</div><input id="af-sid" class="perf-input" placeholder="2330" style="width:100%"></div>
                       <div><div class="perf-input-label">名稱</div><input id="af-name" class="perf-input" placeholder="台積電" style="width:100%"></div>
                       <div><div class="perf-input-label">建倉日期 *</div><input id="af-date" type="date" class="perf-input" value="${today}" style="width:100%"></div>
-                      <div><div class="perf-input-label">股數 *</div><input id="af-shares" type="number" class="perf-input" placeholder="1000" style="width:100%"></div>
-                      <div><div class="perf-input-label">成本價 *</div><input id="af-cost" type="number" step="0.01" class="perf-input" placeholder="850.00" style="width:100%"></div>
+                      <div><div class="perf-input-label">股數 *</div><input id="af-shares" type="number" class="perf-input" placeholder="1000" style="width:100%" oninput="perfUpdateBuyCostPreview()"></div>
+                      <div><div class="perf-input-label">買入價格 *</div><input id="af-cost" type="number" step="0.01" class="perf-input" placeholder="850.00" style="width:100%" oninput="perfUpdateBuyCostPreview()"></div>
                       <div><div class="perf-input-label">停利價</div><input id="af-tp" type="number" step="0.01" class="perf-input" placeholder="950.00" style="width:100%"></div>
                       <div><div class="perf-input-label">停損價</div><input id="af-sl" type="number" step="0.01" class="perf-input" placeholder="800.00" style="width:100%"></div>
+                    </div>
+                    <div id="af-cost-preview" style="display:none;font-size:11px;padding:7px 10px;background:var(--bg2);border-radius:6px;color:var(--text2);margin-bottom:10px">
+                      買入金額：<span id="af-pre-base"></span>
+                      手續費：<span style="color:var(--red)">+<span id="af-pre-fee"></span></span>
+                      <strong>總成本：<span id="af-pre-total" style="color:var(--text1)"></span></strong>
+                      均價：<span id="af-pre-avg"></span> 元/股
                     </div>
                     <div style="display:flex;gap:8px;align-items:center;flex-wrap:wrap">
                       <button class="perf-btn perf-btn-confirm" onclick="perfSaveAdd()">儲存並寫入 Repo</button>
@@ -406,22 +437,24 @@ function perfShowExitForm(id) {
 }
 
 async function perfSaveAdd() {
-  const sid    = document.getElementById('af-sid')?.value.trim();
-  const name   = document.getElementById('af-name')?.value.trim();
-  const date   = document.getElementById('af-date')?.value;
-  const shares = parseFloat(document.getElementById('af-shares')?.value);
-  const cost   = parseFloat(document.getElementById('af-cost')?.value);
-  const tp     = parseFloat(document.getElementById('af-tp')?.value) || null;
-  const sl     = parseFloat(document.getElementById('af-sl')?.value) || null;
-  if (!sid || !date || !shares || !cost) { alert('請填寫必填欄位（標記 * 的欄位）'); return; }
+  const sid        = document.getElementById('af-sid')?.value.trim();
+  const name       = document.getElementById('af-name')?.value.trim();
+  const date       = document.getElementById('af-date')?.value;
+  const shares     = parseFloat(document.getElementById('af-shares')?.value);
+  const entryPrice = parseFloat(document.getElementById('af-cost')?.value);
+  const tp         = parseFloat(document.getElementById('af-tp')?.value) || null;
+  const sl         = parseFloat(document.getElementById('af-sl')?.value) || null;
+  if (!sid || !date || !shares || !entryPrice) { alert('請填寫必填欄位（標記 * 的欄位）'); return; }
+  const { fee, total, costPerShare } = calcBuyCost(entryPrice, shares);
   if (!DATA.performance_data) {
     DATA.performance_data = { starting_capital: 450000, last_updated: '', positions: [], price_history: {} };
   }
   const newPos = {
     id: 'p' + Date.now(), stock_id: sid, name: name || sid,
-    entry_date: date, shares, cost_price: cost,
+    entry_date: date, shares, entry_price: entryPrice,
+    cost_price: costPerShare, buy_fee: fee, buy_total: total,
     tp_price: tp, sl_price: sl,
-    exit_price: null, exit_date: null, confirmed: false
+    exit_price: null, exit_date: null, exit_net: null, confirmed: false
   };
   DATA.performance_data.positions.push(newPos);
   DATA.performance_data.last_updated = new Date().toISOString().slice(0, 10);
@@ -436,8 +469,11 @@ async function perfConfirmExit(id) {
   const pd  = DATA.performance_data;
   const pos = pd.positions.find(p => p.id === id);
   if (!pos) return;
-  const prev = { exit_price: pos.exit_price, exit_date: pos.exit_date, confirmed: pos.confirmed };
-  pos.exit_price = exitPrice; pos.exit_date = exitDate; pos.confirmed = true;
+  const { fee, tax, net } = calcSellNet(exitPrice, pos.shares);
+  const prev = { exit_price: pos.exit_price, exit_date: pos.exit_date, exit_net: pos.exit_net, sell_fee: pos.sell_fee, sell_tax: pos.sell_tax, confirmed: pos.confirmed };
+  pos.exit_price = exitPrice; pos.exit_date = exitDate;
+  pos.exit_net = net; pos.sell_fee = fee; pos.sell_tax = tax;
+  pos.confirmed = true;
   pd.last_updated = new Date().toISOString().slice(0, 10);
   const ok = await ghWritePerf(pd);
   if (ok) renderStrategy(); else Object.assign(pos, prev);
@@ -452,6 +488,37 @@ async function perfDeletePos(id) {
   pd.last_updated = new Date().toISOString().slice(0, 10);
   const ok = await ghWritePerf(pd);
   if (ok) renderStrategy(); else pd.positions.splice(idx, 0, removed);
+}
+
+function perfUpdateBuyCostPreview() {
+  const price  = parseFloat(document.getElementById('af-cost')?.value);
+  const shares = parseFloat(document.getElementById('af-shares')?.value);
+  const box    = document.getElementById('af-cost-preview');
+  if (!box) return;
+  if (!price || !shares || price <= 0 || shares <= 0) { box.style.display = 'none'; return; }
+  const { fee, total, costPerShare } = calcBuyCost(price, shares);
+  const fmt = n => Math.round(n).toLocaleString();
+  document.getElementById('af-pre-base').textContent = 'NT$' + fmt(price * shares);
+  document.getElementById('af-pre-fee').textContent  = 'NT$' + fmt(fee);
+  document.getElementById('af-pre-total').textContent = 'NT$' + fmt(total);
+  document.getElementById('af-pre-avg').textContent  = costPerShare.toFixed(2);
+  box.style.display = 'block';
+}
+
+function perfUpdateSellNetPreview(id) {
+  const inp    = document.getElementById(`ep-${id}`);
+  const price  = parseFloat(inp?.value);
+  const shares = parseFloat(inp?.dataset.shares);
+  const box    = document.getElementById(`sell-preview-${id}`);
+  if (!box) return;
+  if (!price || !shares || price <= 0) { box.style.display = 'none'; return; }
+  const { fee, tax, net } = calcSellNet(price, shares);
+  const fmt = n => Math.round(n).toLocaleString();
+  document.getElementById(`sp-base-${id}`).textContent = 'NT$' + fmt(price * shares) + '　';
+  document.getElementById(`sp-fee-${id}`).textContent  = 'NT$' + fmt(fee) + '　';
+  document.getElementById(`sp-tax-${id}`).textContent  = 'NT$' + fmt(tax) + '　';
+  document.getElementById(`sp-net-${id}`).textContent  = 'NT$' + fmt(net);
+  box.style.display = 'block';
 }
 
 async function perfSyncData() {
