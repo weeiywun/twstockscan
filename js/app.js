@@ -4,10 +4,22 @@
 const PERF_UNLOCKED = new URLSearchParams(location.search).get('unlock') === 'perf';
 const STRATEGIES = [
   {
+    id: "performance",
+    name: "績效追蹤",
+    shortName: "績效追蹤",
+    icon: "◐",
+    group: null,   // null = 不屬於任何策略群組，獨立置頂
+    available: true,
+    description: "記錄建倉出場，追蹤整體投組績效。",
+    conditions: [],
+  },
+  // ── 策略一：籌碼選股 ──
+  {
     id: "chips_big_holder",
     name: "籌碼集中",
     shortName: "籌碼集中",
     icon: "◈",
+    group: "chips",
     available: true,
     description: "週末籌碼海選：追蹤千張大戶與 400 張大戶持股相對成長率（R），標記持續成長、雙軌觸發、單周增幅三類標籤，篩選低基期且量能充足的標的。",
     conditions: [
@@ -28,6 +40,7 @@ const STRATEGIES = [
     name: "量增訊號",
     shortName: "量增訊號",
     icon: "◆",
+    group: "chips",
     available: true,
     description: "每日盤後針對籌碼集中入池標的掃描量能突破訊號，捕捉主力啟動時機。",
     conditions: [
@@ -44,18 +57,28 @@ const STRATEGIES = [
     name: "標的分析",
     shortName: "標的分析",
     icon: "◎",
+    group: "chips",
     available: true,
     description: "籌碼集中入池標的首次觸發量增訊號時啟動 AI 分析，結合新聞與量化數據評分，追蹤觀察 10 天。",
     conditions: [],
   },
+  // ── 策略二：右上角 ──
   {
-    id: "performance",
-    name: "績效追蹤",
-    shortName: "績效追蹤",
-    icon: "◐",
+    id: "right_top",
+    name: "右上角",
+    shortName: "右上角",
+    icon: "▲",
+    group: "right_top",
     available: true,
-    description: "記錄建倉出場，追蹤整體投組績效。",
-    conditions: [],
+    description: "全市場掃描當日創 90 個交易日收盤新高，且量能同步放大的標的，並統計族群共振效應。",
+    conditions: [
+      "今日收盤 > 前 90 個交易日最高收盤（創新高）",
+      "當日成交量 ≥ 10日均量 × 1.5",
+      "掃描範圍：全市場上市 + 上櫃一般股",
+    ],
+    dataUpdated: "載入中...",
+    dataSource: "FinMind（每日盤後）",
+    dataKey: "right_top_data",
   },
 ];
 
@@ -68,6 +91,8 @@ const DATA = {
   volume_signal_data:     [],
   stock_analysis_data:    null,
   performance_data:       null,
+  right_top_data:         [],
+  right_top_industry:     [],
 };
 let DATE_LABELS = [];
 
@@ -157,27 +182,61 @@ function trendBars(trend, label, colorClass) {
 // ════════════════════════════════════════════════════
 //  RENDER STRATEGY TABS
 // ════════════════════════════════════════════════════
+const NAV_GROUP_LABELS = {
+  chips:     '籌碼選股',
+  right_top: '右上角',
+};
+
+function _navBadge(s) {
+  if (!s.available) return '—';
+  if (s.id === 'performance') return (DATA.performance_data?.positions || []).filter(p => !p.confirmed).length;
+  if (s.id === 'stock_analysis') return DATA.stock_analysis_data?.active?.length ?? '—';
+  return (DATA[s.dataKey] || []).length;
+}
+
+function _navTab(s) {
+  const badge = `<span class="badge">${_navBadge(s)}</span>`;
+  return `<button class="strat-tab ${s.id===activeStratId?'active':''} ${!s.available?'locked':''}"
+    onclick="${s.available ? `setStrategy('${s.id}')` : ''}"
+    title="${!s.available ? (s.comingSoon||'即將推出') : ''}">
+    ${s.icon} ${s.shortName}${badge}
+  </button>`;
+}
+
 function renderNav() {
   const nav = document.getElementById('strategyNav');
-  nav.innerHTML = STRATEGIES.filter(s => s.id !== 'performance' || PERF_UNLOCKED).map(s => {
-    let badgeText;
-    if (!s.available) {
-      badgeText = '—';
-    } else if (s.id === 'performance') {
-      const active = (DATA.performance_data?.positions || []).filter(p => !p.confirmed).length;
-      badgeText = active;
-    } else if (s.id === 'stock_analysis') {
-      badgeText = (DATA.stock_analysis_data?.active?.length ?? '—');
-    } else {
-      badgeText = (DATA[s.dataKey] || []).length;
+  let html = '';
+
+  // 績效：獨立置頂（需解鎖）
+  const perf = STRATEGIES.find(s => s.id === 'performance');
+  if (PERF_UNLOCKED && perf) {
+    html += _navTab(perf);
+    html += `<div style="width:1px;background:var(--border);margin:10px 6px;align-self:stretch;flex-shrink:0"></div>`;
+  }
+
+  // 依 group 分組渲染
+  const groupOrder = [];
+  const grouped = {};
+  STRATEGIES.filter(s => s.group !== null).forEach(s => {
+    const g = s.group;
+    if (!grouped[g]) { grouped[g] = []; groupOrder.push(g); }
+    grouped[g].push(s);
+  });
+
+  groupOrder.forEach((g, i) => {
+    if (i > 0) {
+      html += `<div style="width:1px;background:var(--border);margin:10px 6px;align-self:stretch;flex-shrink:0"></div>`;
     }
-    const badge = `<span class="badge">${badgeText}</span>`;
-    return `<button class="strat-tab ${s.id===activeStratId?'active':''} ${!s.available?'locked':''}"
-      onclick="${s.available ? `setStrategy('${s.id}')` : ''}"
-      title="${!s.available ? (s.comingSoon||'即將推出') : ''}">
-      ${s.icon} ${s.shortName}${badge}
-    </button>`;
-  }).join('');
+    if (NAV_GROUP_LABELS[g]) {
+      html += `<div style="display:flex;align-items:center;padding:0 6px 0 4px;font-size:10px;font-weight:600;
+                            color:var(--text3);letter-spacing:.06em;white-space:nowrap;user-select:none">
+                 ${NAV_GROUP_LABELS[g]}
+               </div>`;
+    }
+    grouped[g].forEach(s => { html += _navTab(s); });
+  });
+
+  nav.innerHTML = html;
 }
 
 // ════════════════════════════════════════════════════
@@ -200,6 +259,7 @@ function renderStrategy() {
   if (strat.id === 'chips_big_holder') { renderChipsHolder(strat, main);    return; }
   if (strat.id === 'volume_signal')    { renderVolumeSignal(strat, main);   return; }
   if (strat.id === 'stock_analysis')   { renderStockAnalysis(strat, main);  return; }
+  if (strat.id === 'right_top')        { renderRightTop(strat, main);       return; }
   if (strat.id === 'performance')      { renderPerformance(strat, main);    return; }
 }
 
@@ -385,12 +445,13 @@ async function loadData() {
   const timestamp = new Date().getTime();
 
   try {
-    const [chipsRes, vsRes, aiRes, saRes, perfRes] = await Promise.all([
+    const [chipsRes, vsRes, aiRes, saRes, perfRes, rtRes] = await Promise.all([
       fetch(`data/chips_big_holder.json?t=${timestamp}`,   { cache: 'no-store' }).then(r => r.ok ? r.json() : null).catch(() => null),
       fetch(`data/volume_signal.json?t=${timestamp}`,      { cache: 'no-store' }).then(r => r.ok ? r.json() : null).catch(() => null),
       fetch(`data/ai_recommendations.json?t=${timestamp}`, { cache: 'no-store' }).then(r => r.ok ? r.json() : null).catch(() => null),
       fetch(`data/ai_analysis.json?t=${timestamp}`,        { cache: 'no-store' }).then(r => r.ok ? r.json() : null).catch(() => null),
       fetch(`data/performance.json?t=${timestamp}`,        { cache: 'no-store' }).then(r => r.ok ? r.json() : null).catch(() => null),
+      fetch(`data/right_top.json?t=${timestamp}`,          { cache: 'no-store' }).then(r => r.ok ? r.json() : null).catch(() => null),
     ]);
 
     if (chipsRes && chipsRes.results) {
@@ -423,6 +484,13 @@ async function loadData() {
 
     if (perfRes) {
       DATA.performance_data = perfRes;
+    }
+
+    if (rtRes && rtRes.results) {
+      DATA.right_top_data     = rtRes.results;
+      DATA.right_top_industry = rtRes.industry_stats || [];
+      const strat = STRATEGIES.find(s => s.id === 'right_top');
+      if (strat) strat.dataUpdated = (rtRes.updated || '').slice(0, 10) || strat.dataUpdated;
     }
   } catch (e) {
     console.error('資料載入失敗:', e);
