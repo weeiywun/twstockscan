@@ -70,6 +70,51 @@ function renderRightTop(strat, main) {
   const twseCount = data.filter(d => d.market === 'TWSE').length;
   const tpexCount = data.filter(d => d.market === 'TPEX').length;
 
+  // ── 族群柱狀圖（常駐，TOP 8）──
+  function industryChart() {
+    if (!rawData.length) return '';
+    const groups = {};
+    rawData.forEach(d => {
+      const ind = d.industry || '其他';
+      if (!groups[ind]) groups[ind] = [];
+      groups[ind].push(d);
+    });
+    const top8 = Object.entries(groups)
+      .map(([name, items]) => ({
+        name,
+        count:        items.length,
+        avgVolRatio:  items.reduce((s, d) => s + (d.vol_ratio  || 0), 0) / items.length,
+        avgChgPct:    items.reduce((s, d) => s + (d.change_pct || 0), 0) / items.length,
+      }))
+      .sort((a, b) => b.count !== a.count ? b.count - a.count : b.avgVolRatio - a.avgVolRatio)
+      .slice(0, 8);
+    if (!top8.length) return '';
+    const maxCount = top8[0].count;
+    const bars = top8.map(g => {
+      const pct      = (g.count / maxCount * 100).toFixed(1);
+      const chgSign  = g.avgChgPct >= 0 ? '+' : '';
+      const chgColor = g.avgChgPct >= 0 ? 'var(--green)' : 'var(--red)';
+      return `<div class="ind-bar-row">
+        <div class="ind-bar-label" title="${g.name}">${g.name}</div>
+        <div class="ind-bar-track">
+          <div class="ind-bar-fill" style="width:${pct}%">
+            <span class="ind-bar-count">${g.count} 支</span>
+          </div>
+        </div>
+        <div class="ind-bar-avg" style="display:flex;flex-direction:column;align-items:flex-end;gap:1px;min-width:80px">
+          <span style="font-size:12px;font-family:var(--mono);font-weight:600;color:var(--red)">${g.avgVolRatio.toFixed(2)}x</span>
+          <span style="font-size:11px;font-family:var(--mono);color:${chgColor}">${chgSign}${g.avgChgPct.toFixed(2)}%</span>
+        </div>
+      </div>`;
+    }).join('');
+    return `<div class="industry-chart">
+      <div class="industry-chart-hd">族群分布 TOP 8
+        <span style="font-weight:400;color:var(--text3)">依入選數量　右側：平均量比 / 平均週漲幅</span>
+      </div>
+      ${bars}
+    </div>`;
+  }
+
   // ── CSV 匯出 ──
   function exportRtCSV() {
     const headers = ['代號','名稱','產業','市場','收盤','10週前高','量比','週漲幅(%)','訊號週'];
@@ -238,6 +283,9 @@ function renderRightTop(strat, main) {
           <div class="summary-sub">上市 + 上櫃</div>
         </div>
       </div>
+
+      <!-- 族群柱狀圖（常駐）-->
+      ${industryChart()}
 
       <!-- View toggle -->
       <div style="display:flex;gap:8px;padding:0 0 12px 0">
