@@ -42,7 +42,15 @@ def get_all_stocks(token):
         stocks = []
         for s in data["data"]:
             sid = s.get("stock_id", "")
+            # 只保留 4 位純數字代號
             if not sid.isdigit() or len(sid) != 4:
+                continue
+            # 排除 ETF（4 位代號以 00 開頭，如 0050、0056、0062）
+            if sid.startswith("00"):
+                continue
+            # 排除產業分類標記為 ETF 的標的（安全網）
+            industry = s.get("industry_category", "")
+            if "ETF" in industry:
                 continue
             market = s.get("type", "")
             if market not in ("twse", "tpex", "上市", "上櫃", "TWSE", "TPEX"):
@@ -50,7 +58,7 @@ def get_all_stocks(token):
             stocks.append({
                 "stock_id": sid,
                 "name":     s.get("stock_name", ""),
-                "industry": s.get("industry_category", ""),
+                "industry": industry,
                 "market":   "TWSE" if market in ("twse", "上市", "TWSE") else "TPEX",
             })
         return stocks
