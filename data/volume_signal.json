@@ -1,5 +1,94 @@
 {
   "strategy_id": "volume_signal",
-  "updated": "2026-04-25T09:25:30+08:00",
-  "results": []
+  "updated": "2026-04-27T17:23:50+08:00",
+  "results": [
+    {
+      "stock_id": "2103",
+      "name": "台橡",
+      "industry": "橡膠",
+      "tags": [
+        "持續成長"
+      ],
+      "tag_score": 1,
+      "cumulative_3w": 0.08,
+      "big_pct_1000": 47.75,
+      "close": 20.4,
+      "vol_today": 17691,
+      "vol_10d_avg": 3725.0,
+      "vol_ratio": 4.75,
+      "ema5": 18.82,
+      "signal_date": "2026-04-27"
+    },
+    {
+      "stock_id": "2108",
+      "name": "南帝",
+      "industry": "橡膠",
+      "tags": [
+        "持續成長",
+        "外資連買"
+      ],
+      "tag_score": 1,
+      "cumulative_3w": 0.22,
+      "big_pct_1000": 64.71,
+      "close": 28.0,
+      "vol_today": 6097,
+      "vol_10d_avg": 1403.0,
+      "vol_ratio": 4.35,
+      "ema5": 26.43,
+      "signal_date": "2026-04-27"
+    },
+    {
+      "stock_id": "3526",
+      "name": "凡甲",
+      "industry": "櫃電零",
+      "tags": [
+        "單周增幅"
+      ],
+      "tag_score": 5,
+      "cumulative_3w": -6.4,
+      "big_pct_1000": 31.16,
+      "close": 295.0,
+      "vol_today": 2690,
+      "vol_10d_avg": 750.0,
+      "vol_ratio": 3.59,
+      "ema5": 272.13,
+      "signal_date": "2026-04-27"
+    },
+    {
+      "stock_id": "6015",
+      "name": "宏遠證",
+      "industry": "櫃金融",
+      "tags": [
+        "雙軌觸發",
+        "外資連買"
+      ],
+      "tag_score": 3,
+      "cumulative_3w": 0.74,
+      "big_pct_1000": 42.32,
+      "close": 14.0,
+      "vol_today": 4838,
+      "vol_10d_avg": 2153.0,
+      "vol_ratio": 2.25,
+      "ema5": 13.4,
+      "signal_date": "2026-04-27"
+    },
+    {
+      "stock_id": "2412",
+      "name": "中華電",
+      "industry": "通信",
+      "tags": [
+        "持續成長",
+        "外資連買"
+      ],
+      "tag_score": 1,
+      "cumulative_3w": 0.21,
+      "big_pct_1000": 77.31,
+      "close": 137.0,
+      "vol_today": 17233,
+      "vol_10d_avg": 9727.0,
+      "vol_ratio": 1.77,
+      "ema5": 136.09,
+      "signal_date": "2026-04-27"
+    }
+  ]
 }
