@@ -28,10 +28,13 @@ function renderStockAnalysis(strat, main) {
   function saCompare(a, b) {
     const va = a[saSortCol] != null ? a[saSortCol] : '';
     const vb = b[saSortCol] != null ? b[saSortCol] : '';
+    const isDate = /^\d{4}-\d{2}-\d{2}/.test(va) || /^\d{4}-\d{2}-\d{2}/.test(vb);
     const numA = parseFloat(va), numB = parseFloat(vb);
-    const cmp = (!isNaN(numA) && !isNaN(numB))
-      ? numA - numB
-      : String(va).localeCompare(String(vb));
+    const cmp = isDate
+      ? String(va).localeCompare(String(vb))
+      : (!isNaN(numA) && !isNaN(numB))
+        ? numA - numB
+        : String(va).localeCompare(String(vb));
     return saSortAsc ? cmp : -cmp;
   }
 
