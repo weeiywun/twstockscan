@@ -107,10 +107,19 @@ def check_signal(stock_id, token):
     if close_latest <= high_prev10:
         return None
 
-    # 條件二：最新週量能 >= 20 週均量 * 1.5
+    # 條件一b：上週尚未突破（確保這是第一根突破週K）
+    # 需要至少 12 筆週資料（本週 + 上週 + 上週的前10週）
+    if len(closes) >= 12:
+        high_prev10_last_week = max(closes[-12:-2])
+        if closes[-2] > high_prev10_last_week:
+            return None
+
+    # 條件二：最新週量能 >= 20 週均量 * 1.5，且週均量 >= 500 張
     vol_latest   = volumes[-1]
     vol_20w_avg  = sum(volumes[-VOL_MA_PERIOD - 1:-1]) / VOL_MA_PERIOD
-    if vol_20w_avg == 0 or vol_latest < vol_20w_avg * VOL_MULT:
+    if vol_20w_avg < 500:
+        return None
+    if vol_latest < vol_20w_avg * VOL_MULT:
         return None
 
     prev_close = closes[-2] if len(closes) >= 2 else close_latest
