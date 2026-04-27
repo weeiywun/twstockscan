@@ -72,13 +72,13 @@ function renderRightTop(strat, main) {
 
   // ── CSV 匯出 ──
   function exportRtCSV() {
-    const headers = ['代號','名稱','產業','市場','收盤','90日高','量比','漲幅(%)','訊號日'];
+    const headers = ['代號','名稱','產業','市場','收盤','10週前高','量比','週漲幅(%)','訊號週'];
     const rows = data.map(d => [
       d.stock_id, d.name, d.industry, d.market,
-      d.close, d.high_90d,
+      d.close, d.high_10w,
       d.vol_ratio.toFixed(2) + 'x',
       (d.change_pct >= 0 ? '+' : '') + d.change_pct.toFixed(2) + '%',
-      d.signal_date,
+      d.week_date,
     ]);
     const csv = [headers, ...rows]
       .map(r => r.map(v => `"${String(v).replace(/"/g,'""')}"`).join(',')).join('\r\n');
@@ -107,10 +107,10 @@ function renderRightTop(strat, main) {
                 <th onclick="rtSort('stock_id')" style="cursor:pointer">代號 / 名稱${sortIcon('stock_id')}</th>
                 <th onclick="rtSort('industry')" style="cursor:pointer">產業${sortIcon('industry')}</th>
                 <th onclick="rtSort('close')" style="cursor:pointer" data-tip="今日收盤價">收盤${sortIcon('close')}</th>
-                <th onclick="rtSort('high_90d')" style="cursor:pointer" data-tip="前 90 個交易日最高收盤（已被今日突破）">90日前高${sortIcon('high_90d')}</th>
-                <th onclick="rtSort('vol_ratio')" style="cursor:pointer" data-tip="今日量 ÷ 10日均量">量比${sortIcon('vol_ratio')}</th>
-                <th onclick="rtSort('change_pct')" style="cursor:pointer" data-tip="今日漲幅">漲幅${sortIcon('change_pct')}</th>
-                <th onclick="rtSort('signal_date')" style="cursor:pointer">訊號日${sortIcon('signal_date')}</th>
+                <th onclick="rtSort('high_10w')" style="cursor:pointer" data-tip="前 10 週最高收盤（已被最新週突破）">10週前高${sortIcon('high_10w')}</th>
+                <th onclick="rtSort('vol_ratio')" style="cursor:pointer" data-tip="最新週量 ÷ 20週均量">量比${sortIcon('vol_ratio')}</th>
+                <th onclick="rtSort('change_pct')" style="cursor:pointer" data-tip="最新週漲幅">週漲幅${sortIcon('change_pct')}</th>
+                <th onclick="rtSort('week_date')" style="cursor:pointer">訊號週${sortIcon('week_date')}</th>
               </tr>
             </thead>
             <tbody>
@@ -133,18 +133,18 @@ function renderRightTop(strat, main) {
                   <td><span style="font-size:12px;color:var(--text2)">${d.industry || '—'}</span></td>
                   <td><span class="price-cell">${d.close.toFixed(2)}</span></td>
                   <td>
-                    <span style="font-family:var(--mono);font-size:12px;color:var(--text3)">${d.high_90d.toFixed(2)}</span><br>
+                    <span style="font-family:var(--mono);font-size:12px;color:var(--text3)">${d.high_10w.toFixed(2)}</span><br>
                     <span style="font-size:10px;color:var(--green)">↑ 已突破</span>
                   </td>
                   <td>
                     <span style="font-family:var(--mono);font-size:14px;font-weight:600;color:var(--red)">${d.vol_ratio.toFixed(2)}x</span><br>
-                    <span style="font-size:10px;color:var(--text3)">${Math.round(d.vol_10d_avg)}張均</span>
+                    <span style="font-size:10px;color:var(--text3)">${Math.round(d.vol_20w_avg)}張均</span>
                   </td>
                   <td>
                     <span class="deviation ${chgClass}" style="font-size:13px">${chgSign}${d.change_pct.toFixed(2)}%</span>
                   </td>
                   <td>
-                    <span style="font-family:var(--mono);font-size:12px;color:var(--text3)">${d.signal_date}</span>
+                    <span style="font-family:var(--mono);font-size:12px;color:var(--text3)">${d.week_date}</span>
                   </td>
                 </tr>`;
               }).join('')}
@@ -215,7 +215,7 @@ function renderRightTop(strat, main) {
         <div class="summary-card">
           <div class="summary-label">觸發標的</div>
           <div class="summary-value green">${data.length}</div>
-          <div class="summary-sub">今日創90日新高 + 量增</div>
+          <div class="summary-sub">最新週創10週新高 + 量增</div>
         </div>
         <div class="summary-card">
           <div class="summary-label">最強族群</div>

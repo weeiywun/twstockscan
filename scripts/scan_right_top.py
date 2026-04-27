@@ -1,13 +1,14 @@
 #!/usr/bin/env python3
 """
-右上角選股掃描器
+右上角選股掃描器（週K版）
 掃描全市場，篩選同時滿足：
-  1. 今日收盤價創 90 個交易日新高
-  2. 當日成交量 >= 10 日均量 * 1.5
+  1. 最新完整週收盤價創近 10 週新高
+  2. 最新完整週成交量 >= 20 週均量 * 1.5
 並統計各產業觸發數量。
 """
 
 import json, os, time, requests
+import pandas as pd
 from datetime import datetime, timedelta, timezone
 from finmind_client import fetch_stock_price
 
@@ -17,11 +18,11 @@ OUTPUT_PATH = os.path.join(DATA_DIR, "right_top.json")
 
 TW_TZ      = timezone(timedelta(hours=8))
 TODAY      = datetime.now(TW_TZ).strftime("%Y-%m-%d")
-# 90 個交易日 ≈ 130 個日曆天
-START_DATE = (datetime.now(TW_TZ) - timedelta(days=130)).strftime("%Y-%m-%d")
+# 20 週均量 + 10 週新高 → 至少需要 21 完整週 ≈ 175 個日曆天，取 200 保留緩衝
+START_DATE = (datetime.now(TW_TZ) - timedelta(days=200)).strftime("%Y-%m-%d")
 
-HIGH_PERIOD   = 90    # 取最近幾個交易日作為新高基準
-VOL_MA_PERIOD = 10
+HIGH_PERIOD   = 10   # 週新高基準（週數）
+VOL_MA_PERIOD = 20   # 均量週數
 VOL_MULT      = 1.5
 FINMIND_SLEEP = 0.35
 FINMIND_API   = "https://api.finmindtrade.com/api/v4/data"
@@ -41,7 +42,6 @@ def get_all_stocks(token):
         stocks = []
         for s in data["data"]:
             sid = s.get("stock_id", "")
-            # 只保留 4 位純數字代號（一般股）
             if not sid.isdigit() or len(sid) != 4:
                 continue
             market = s.get("type", "")
@@ -59,40 +59,66 @@ def get_all_stocks(token):
         return []
 
 
+def to_weekly(df):
+    """將日K DataFrame 轉成週K，只保留已完整收盤的週（W-FRI）。"""
+    df = df.copy()
+    df = df.set_index("date")
+    weekly = df.resample("W-FRI").agg({
+        "open":        "first",
+        "max":         "max",
+        "min":         "min",
+        "close":       "last",
+        "volume_lots": "sum",
+    }).dropna(subset=["close"])
+    weekly = weekly.reset_index()
+    # 若最後一列的週結束日期在今天之後，代表該週尚未收盤，剔除
+    today_ts = pd.Timestamp(TODAY)
+    if len(weekly) > 0 and weekly.iloc[-1]["date"] > today_ts:
+        weekly = weekly.iloc[:-1]
+    return weekly.reset_index(drop=True)
+
+
 def check_signal(stock_id, token):
     df = fetch_stock_price(stock_id, START_DATE, TODAY, token)
-    if df is None or len(df) < HIGH_PERIOD + 1:
+    if df is None or df.empty:
         return None
 
-    df_tail = df.tail(HIGH_PERIOD + 1).reset_index(drop=True)
-    closes  = df_tail["close"].tolist()
-    volumes = df_tail["volume_lots"].tolist()
-
-    close_today = closes[-1]
-    high_prev   = max(closes[:-1])  # 前 90 個交易日的最高收盤價
-
-    # 條件一：今日收盤突破前 90 交易日最高價
-    if close_today <= high_prev:
+    wk = to_weekly(df)
+    # 至少需要 HIGH_PERIOD + 1 週（新高判斷）且 VOL_MA_PERIOD + 1 週（均量判斷）
+    min_weeks = max(HIGH_PERIOD, VOL_MA_PERIOD) + 1
+    if len(wk) < min_weeks:
         return None
 
-    # 條件二：量能放大
-    if len(volumes) < VOL_MA_PERIOD + 1:
-        return None
-    vol_today   = volumes[-1]
-    vol_10d_avg = sum(volumes[-VOL_MA_PERIOD - 1:-1]) / VOL_MA_PERIOD
-    if vol_10d_avg == 0 or vol_today < vol_10d_avg * VOL_MULT:
+    closes  = wk["close"].tolist()
+    volumes = wk["volume_lots"].tolist()
+
+    close_latest = closes[-1]
+    high_prev10  = max(closes[-HIGH_PERIOD - 1:-1])  # 前 10 週最高收盤
+
+    # 條件一：最新週收盤突破前 10 週最高價
+    if close_latest <= high_prev10:
         return None
 
-    prev_close = closes[-2] if len(closes) >= 2 else close_today
-    change_pct = round((close_today - prev_close) / prev_close * 100, 2) if prev_close else 0
+    # 條件二：最新週量能 >= 20 週均量 * 1.5
+    vol_latest   = volumes[-1]
+    vol_20w_avg  = sum(volumes[-VOL_MA_PERIOD - 1:-1]) / VOL_MA_PERIOD
+    if vol_20w_avg == 0 or vol_latest < vol_20w_avg * VOL_MULT:
+        return None
+
+    prev_close = closes[-2] if len(closes) >= 2 else close_latest
+    change_pct = round((close_latest - prev_close) / prev_close * 100, 2) if prev_close else 0
+
+    # 最新完整週的週五日期
+    latest_week_date = wk.iloc[-1]["date"].strftime("%Y-%m-%d")
 
     return {
-        "close":       round(close_today, 2),
-        "high_90d":    round(high_prev, 2),
-        "vol_today":   int(vol_today),
-        "vol_10d_avg": round(vol_10d_avg, 1),
-        "vol_ratio":   round(vol_today / vol_10d_avg, 2),
-        "change_pct":  change_pct,
+        "close":        round(close_latest, 2),
+        "high_10w":     round(high_prev10, 2),
+        "vol_latest_w": int(vol_latest),
+        "vol_20w_avg":  round(vol_20w_avg, 1),
+        "vol_ratio":    round(vol_latest / vol_20w_avg, 2),
+        "change_pct":   change_pct,
+        "week_date":    latest_week_date,
     }
 
 
@@ -101,7 +127,7 @@ def now_tw():
 
 
 def main():
-    print("=== 右上角選股掃描器 ===")
+    print("=== 右上角選股掃描器（週K版）===")
     token = os.environ.get("FINMIND_TOKEN", "")
     if not token:
         print("⚠️  FINMIND_TOKEN 未設定")
@@ -125,7 +151,7 @@ def main():
                 **signal,
                 "signal_date": TODAY,
             })
-            print(f"  ✅ {sid} {s['name']}  量比={signal['vol_ratio']}x  漲幅={signal['change_pct']}%")
+            print(f"  ✅ {sid} {s['name']}  量比={signal['vol_ratio']}x  漲幅={signal['change_pct']}%  週={signal['week_date']}")
         if i % 100 == 0:
             print(f"  掃描進度：{i}/{len(stocks)}，已觸發 {len(results)} 支")
         time.sleep(FINMIND_SLEEP)
