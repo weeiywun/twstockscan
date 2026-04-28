@@ -3,55 +3,65 @@ update_perf_prices.py
 每個交易日收盤後（14:00 台灣時間）更新 data/performance.json 中
 持倉中（confirmed=False）股票的 price_history。
 
-價格來源：Yahoo Finance（免 API key，支援上市 .TW / 上櫃 .TWO）
+價格來源：
+  - 上市：TWSE Open API (openapi.twse.com.tw)
+  - 上櫃：TPEX Open API (tpex.org.tw)
+一次批次抓全市場，不依賴 Yahoo Finance。
 """
 
 import json
-import time
 import datetime
 from pathlib import Path
 
 import requests
 
 PERF_JSON = Path(__file__).parent.parent / "data" / "performance.json"
-HEADERS = {
-    "User-Agent": (
-        "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) "
-        "AppleWebKit/537.36 (KHTML, like Gecko) "
-        "Chrome/124.0.0.0 Safari/537.36"
-    )
-}
-YAHOO_URL = "https://query1.finance.yahoo.com/v8/finance/chart/{ticker}?interval=1d&range=5d"
+HEADERS = {"accept": "application/json"}
+
+TWSE_URL = "https://openapi.twse.com.tw/v1/exchangeReport/STOCK_DAY_ALL"
+TPEX_URL = "https://www.tpex.org.tw/openapi/v1/tpex_mainboard_quotes"
 
 
-def fetch_close(stock_id: str) -> tuple[str, float] | None:
-    """
-    嘗試 .TW（上市）再試 .TWO（上櫃），回傳 (YYYY-MM-DD, close_price) 或 None。
-    """
-    for suffix in (".TW", ".TWO"):
-        ticker = stock_id + suffix
-        try:
-            resp = requests.get(YAHOO_URL.format(ticker=ticker), headers=HEADERS, timeout=10)
-            if resp.status_code != 200:
-                continue
-            data = resp.json()
-            result = data.get("chart", {}).get("result")
-            if not result:
-                continue
-            chart = result[0]
-            timestamps = chart.get("timestamp", [])
-            closes = chart.get("indicators", {}).get("quote", [{}])[0].get("close", [])
-            if not timestamps or not closes:
-                continue
-            # 取最後一筆非 None 的收盤價
-            for ts, cl in zip(reversed(timestamps), reversed(closes)):
-                if cl is None:
-                    continue
-                date_str = datetime.datetime.utcfromtimestamp(ts).strftime("%Y-%m-%d")
-                return date_str, round(cl, 2)
-        except Exception as e:
-            print(f"  [{ticker}] 例外：{e}")
-    return None
+def fetch_all_prices() -> dict[str, float]:
+    """回傳 {stock_id: close_price}，涵蓋上市 + 上櫃。"""
+    prices: dict[str, float] = {}
+
+    # 上市（TWSE）
+    try:
+        resp = requests.get(TWSE_URL, headers=HEADERS, timeout=15)
+        resp.raise_for_status()
+        for row in resp.json():
+            sid = row.get("Code", "").strip()
+            close_str = row.get("ClosingPrice", "").replace(",", "").strip()
+            if sid and close_str and close_str not in ("--", ""):
+                try:
+                    prices[sid] = float(close_str)
+                except ValueError:
+                    pass
+        print(f"TWSE：取得 {len(prices)} 檔")
+    except Exception as e:
+        print(f"TWSE 抓取失敗：{e}")
+
+    # 上櫃（TPEX）
+    tpex_count = 0
+    try:
+        resp = requests.get(TPEX_URL, headers=HEADERS, timeout=15)
+        resp.raise_for_status()
+        for row in resp.json():
+            sid = row.get("SecuritiesCompanyCode", "").strip()
+            close_str = row.get("Close", "").replace(",", "").strip()
+            if sid and close_str and close_str not in ("--", ""):
+                try:
+                    if sid not in prices:   # 上市優先，避免重複
+                        prices[sid] = float(close_str)
+                        tpex_count += 1
+                except ValueError:
+                    pass
+        print(f"TPEX：取得 {tpex_count} 檔")
+    except Exception as e:
+        print(f"TPEX 抓取失敗：{e}")
+
+    return prices
 
 
 def main():
@@ -60,9 +70,9 @@ def main():
         return
 
     with open(PERF_JSON, encoding="utf-8") as f:
-        pd = json.load(f)
+        pd_data = json.load(f)
 
-    positions = pd.get("positions", [])
+    positions = pd_data.get("positions", [])
     active = [p for p in positions if not p.get("confirmed", False)]
 
     if not active:
@@ -71,30 +81,33 @@ def main():
 
     print(f"共 {len(active)} 檔持倉中，開始更新收盤價…")
 
-    if "price_history" not in pd:
-        pd["price_history"] = {}
+    all_prices = fetch_all_prices()
+    if not all_prices:
+        print("無法取得市場報價，中止。")
+        return
+
+    today = datetime.date.today().isoformat()
+    if "price_history" not in pd_data:
+        pd_data["price_history"] = {}
 
     updated = False
     for pos in active:
         sid = pos["stock_id"]
-        print(f"  查詢 {sid} ({pos.get('name', '')})…", end=" ", flush=True)
-        result = fetch_close(sid)
-        if result is None:
-            print("❌ 無法取得價格")
-            continue
-        date_str, price = result
-        if sid not in pd["price_history"]:
-            pd["price_history"][sid] = {}
-        pd["price_history"][sid][date_str] = price
-        print(f"✅ {date_str} = {price}")
-        updated = True
-        time.sleep(0.3)  # 避免過快觸發限速
+        name = pos.get("name", sid)
+        if sid in all_prices:
+            price = all_prices[sid]
+            if sid not in pd_data["price_history"]:
+                pd_data["price_history"][sid] = {}
+            pd_data["price_history"][sid][today] = price
+            print(f"  ✅ {sid} {name}：{price}")
+            updated = True
+        else:
+            print(f"  ❌ {sid} {name}：報價中找不到此股票")
 
     if updated:
-        today = datetime.date.today().isoformat()
-        pd["last_updated"] = today
+        pd_data["last_updated"] = today
         with open(PERF_JSON, "w", encoding="utf-8") as f:
-            json.dump(pd, f, ensure_ascii=False, indent=2)
+            json.dump(pd_data, f, ensure_ascii=False, indent=2)
         print(f"\nperformance.json 已更新（{today}）")
     else:
         print("\n無任何更新。")
