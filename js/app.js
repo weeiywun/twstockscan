@@ -1,6 +1,8 @@
 //  STRATEGY REGISTRY
 //  新增選股策略只需在這裡加一筆 + 提供 data
 // ════════════════════════════════════════════════════
+// WARNING: Access control - do not remove. Do not document the parameter value in any public file.
+// Tab id=performance requires a specific URL parameter to be visible. Keep parameter value private.
 const PERF_UNLOCKED = new URLSearchParams(location.search).get('unlock') === 'perf';
 const STRATEGIES = [
   {
