@@ -13,9 +13,13 @@ update_perf_prices.py
 """
 
 import json
+import time
 from pathlib import Path
 
 import requests
+
+TPEX_RETRIES = 3
+TPEX_BACKOFF = [2, 5, 10]  # 秒
 
 DATA_DIR      = Path(__file__).parent.parent / "data"
 PERF_JSON     = DATA_DIR / "performance.json"
@@ -70,31 +74,38 @@ def fetch_all_prices() -> tuple[dict[str, float], str | None]:
     except Exception as e:
         print(f"TWSE 抓取失敗：{e}")
 
-    # 上櫃（TPEX openapi）
+    # 上櫃（TPEX openapi），失敗時最多重試 TPEX_RETRIES 次
     tpex_count = 0
-    try:
-        resp = requests.get(TPEX_URL, headers=HEADERS, timeout=15)
-        resp.raise_for_status()
-        rows      = resp.json()
-        tpex_date = None
-        for row in rows:
-            raw = row.get("Date", "")
-            if raw and tpex_date is None:
-                tpex_date = roc_to_iso(raw)
-                if not date_str:
-                    date_str = tpex_date
-            sid   = row.get("SecuritiesCompanyCode", "").strip()
-            close = row.get("Close", "").replace(",", "").strip()
-            if sid and close and close not in ("--", ""):
-                try:
-                    if sid not in prices:
-                        prices[sid] = float(close)
-                        tpex_count += 1
-                except ValueError:
-                    pass
-        print(f"TPEX：{tpex_date}，取得 {tpex_count} 檔")
-    except Exception as e:
-        print(f"TPEX 抓取失敗：{e}")
+    for attempt in range(1, TPEX_RETRIES + 1):
+        try:
+            resp = requests.get(TPEX_URL, headers=HEADERS, timeout=15)
+            resp.raise_for_status()
+            rows      = resp.json()
+            tpex_date = None
+            for row in rows:
+                raw = row.get("Date", "")
+                if raw and tpex_date is None:
+                    tpex_date = roc_to_iso(raw)
+                    if not date_str:
+                        date_str = tpex_date
+                sid   = row.get("SecuritiesCompanyCode", "").strip()
+                close = row.get("Close", "").replace(",", "").strip()
+                if sid and close and close not in ("--", ""):
+                    try:
+                        if sid not in prices:
+                            prices[sid] = float(close)
+                            tpex_count += 1
+                    except ValueError:
+                        pass
+            print(f"TPEX：{tpex_date}，取得 {tpex_count} 檔")
+            break  # 成功，跳出重試
+        except Exception as e:
+            wait = TPEX_BACKOFF[attempt - 1]
+            if attempt < TPEX_RETRIES:
+                print(f"TPEX 第 {attempt} 次失敗（{e}），{wait}s 後重試…")
+                time.sleep(wait)
+            else:
+                print(f"TPEX 抓取失敗，已重試 {TPEX_RETRIES} 次：{e}")
 
     return prices, date_str
 
