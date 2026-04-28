@@ -103,7 +103,7 @@ let DATE_LABELS = [];
 // ════════════════════════════════════════════════════
 //  STATE
 // ════════════════════════════════════════════════════
-let activeStratId = STRATEGIES[0].id;
+let activeStratId = (PERF_UNLOCKED ? STRATEGIES[0] : (STRATEGIES.find(s => s.id !== "performance") || STRATEGIES[0])).id;
 let sortCol = "chg_2w_1000";
 let sortAsc = false;
 let chipsViewMode = "stock"; // "stock" | "industry"
@@ -361,6 +361,7 @@ function renderAICard() {
 //  INTERACTIONS
 // ════════════════════════════════════════════════════
 function setStrategy(id) {
+  if (id === "performance" && !PERF_UNLOCKED) return;
   activeStratId = id;
   expandedRow = null;
   renderNav();
