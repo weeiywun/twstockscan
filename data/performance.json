@@ -1,6 +1,6 @@
 {
   "starting_capital": 450000,
-  "last_updated": "2026-04-27",
+  "last_updated": "2026-04-28",
   "positions": [
     {
       "id": "p1776522807513",
@@ -79,6 +79,23 @@
       "buy_total": 50142,
       "tp_price": 200,
       "sl_price": 150,
+      "exit_price": null,
+      "exit_date": null,
+      "exit_net": null,
+      "confirmed": false
+    },
+    {
+      "id": "p1777347611521",
+      "stock_id": "3013",
+      "name": "晟銘電",
+      "entry_date": "2026-04-28",
+      "shares": 1000,
+      "entry_price": 113.5,
+      "cost_price": 113.597,
+      "buy_fee": 97,
+      "buy_total": 113597,
+      "tp_price": null,
+      "sl_price": null,
       "exit_price": null,
       "exit_date": null,
       "exit_net": null,
