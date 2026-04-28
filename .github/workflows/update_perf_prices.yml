@@ -35,7 +35,7 @@ jobs:
         run: |
           git config user.name  "github-actions[bot]"
           git config user.email "github-actions[bot]@users.noreply.github.com"
-          git add data/performance.json
+          git add data/performance.json data/chips_big_holder.json data/right_top.json
 
           if ! git diff --staged --quiet; then
             git commit -m "data: perf price update $(date -u +%Y-%m-%d)"

@@ -1,7 +1,10 @@
 """
 update_perf_prices.py
-每個交易日收盤後（14:00 台灣時間）更新 data/performance.json 中
-持倉中（confirmed=False）股票的 price_history。
+每個交易日收盤後（14:00 台灣時間）批次更新三個 JSON 的收盤價：
+
+  1. data/performance.json  → price_history（持倉追蹤用）
+  2. data/chips_big_holder.json → results[].close
+  3. data/right_top.json        → results[].close
 
 價格來源：
   - 上市：TWSE rwd afterTrading API（當日資料）
@@ -10,12 +13,15 @@ update_perf_prices.py
 """
 
 import json
-import datetime
 from pathlib import Path
 
 import requests
 
-PERF_JSON = Path(__file__).parent.parent / "data" / "performance.json"
+DATA_DIR      = Path(__file__).parent.parent / "data"
+PERF_JSON     = DATA_DIR / "performance.json"
+CHIPS_JSON    = DATA_DIR / "chips_big_holder.json"
+RIGHT_TOP_JSON = DATA_DIR / "right_top.json"
+
 HEADERS = {"User-Agent": "Mozilla/5.0", "accept": "application/json"}
 
 TWSE_URL = "https://www.twse.com.tw/rwd/zh/afterTrading/STOCK_DAY_ALL?response=json"
@@ -33,7 +39,7 @@ def roc_to_iso(roc_date: str) -> str:
 def fetch_all_prices() -> tuple[dict[str, float], str | None]:
     """
     回傳 ({stock_id: close_price}, date_str)。
-    date_str 為 YYYY-MM-DD，取自 API 回應；兩個 API 日期不同時以 TWSE 為準。
+    date_str 為 YYYY-MM-DD，取自 API 回應；以 TWSE 日期為準。
     """
     prices: dict[str, float] = {}
     date_str: str | None = None
@@ -44,13 +50,12 @@ def fetch_all_prices() -> tuple[dict[str, float], str | None]:
         resp.raise_for_status()
         data = resp.json()
         if data.get("stat") == "OK":
-            raw_date = data.get("date", "")          # e.g. "20260428"
+            raw_date = data.get("date", "")
             if raw_date:
                 date_str = f"{raw_date[:4]}-{raw_date[4:6]}-{raw_date[6:]}"
-            fields = data.get("fields", [])
-            # 欄位順序：證券代號, 名稱, 成交股數, 成交金額, 開盤, 最高, 最低, 收盤, ...
-            code_idx  = fields.index("證券代號")  if "證券代號"  in fields else 0
-            close_idx = fields.index("收盤價")    if "收盤價"    in fields else 7
+            fields    = data.get("fields", [])
+            code_idx  = fields.index("證券代號") if "證券代號" in fields else 0
+            close_idx = fields.index("收盤價")   if "收盤價"   in fields else 7
             for row in data.get("data", []):
                 sid   = row[code_idx].strip()
                 close = row[close_idx].replace(",", "").strip()
@@ -70,10 +75,10 @@ def fetch_all_prices() -> tuple[dict[str, float], str | None]:
     try:
         resp = requests.get(TPEX_URL, headers=HEADERS, timeout=15)
         resp.raise_for_status()
-        rows = resp.json()
+        rows      = resp.json()
         tpex_date = None
         for row in rows:
-            raw = row.get("Date", "")              # e.g. "1150428"
+            raw = row.get("Date", "")
             if raw and tpex_date is None:
                 tpex_date = roc_to_iso(raw)
                 if not date_str:
@@ -94,54 +99,95 @@ def fetch_all_prices() -> tuple[dict[str, float], str | None]:
     return prices, date_str
 
 
-def main():
+# ────────────────────────────────────────────────────
+#  更新各 JSON
+# ────────────────────────────────────────────────────
+
+def update_performance(prices: dict[str, float], date_str: str) -> bool:
     if not PERF_JSON.exists():
-        print("找不到 data/performance.json，略過。")
-        return
-
+        print("performance.json 不存在，略過。")
+        return False
     with open(PERF_JSON, encoding="utf-8") as f:
-        pd_data = json.load(f)
+        pd = json.load(f)
 
-    positions = pd_data.get("positions", [])
-    active = [p for p in positions if not p.get("confirmed", False)]
-
+    active = [p for p in pd.get("positions", []) if not p.get("confirmed", False)]
     if not active:
-        print("目前無持倉中的部位，略過。")
-        return
+        print("performance：無持倉中部位，略過。")
+        return False
 
-    print(f"共 {len(active)} 檔持倉中，開始更新收盤價…")
-
-    all_prices, date_str = fetch_all_prices()
-    if not all_prices or not date_str:
-        print("無法取得市場報價，中止。")
-        return
-
-    print(f"使用日期 key：{date_str}")
-
-    if "price_history" not in pd_data:
-        pd_data["price_history"] = {}
+    if "price_history" not in pd:
+        pd["price_history"] = {}
 
     updated = False
     for pos in active:
         sid  = pos["stock_id"]
         name = pos.get("name", sid)
-        if sid in all_prices:
-            price = all_prices[sid]
-            if sid not in pd_data["price_history"]:
-                pd_data["price_history"][sid] = {}
-            pd_data["price_history"][sid][date_str] = price
-            print(f"  ✅ {sid} {name}：{price}（{date_str}）")
+        if sid in prices:
+            pd["price_history"].setdefault(sid, {})[date_str] = prices[sid]
+            print(f"  perf ✅ {sid} {name}：{prices[sid]}")
             updated = True
         else:
-            print(f"  ❌ {sid} {name}：報價中找不到此股票")
+            print(f"  perf ❌ {sid} {name}：找不到報價")
 
     if updated:
-        pd_data["last_updated"] = date_str
+        pd["last_updated"] = date_str
         with open(PERF_JSON, "w", encoding="utf-8") as f:
-            json.dump(pd_data, f, ensure_ascii=False, indent=2)
-        print(f"\nperformance.json 已更新（{date_str}）")
+            json.dump(pd, f, ensure_ascii=False, indent=2)
+    return updated
+
+
+def update_results_close(json_path: Path, label: str, prices: dict[str, float]) -> bool:
+    """更新任意含 results[].{stock_id, close} 結構的 JSON。"""
+    if not json_path.exists():
+        print(f"{label}：檔案不存在，略過。")
+        return False
+    with open(json_path, encoding="utf-8") as f:
+        data = json.load(f)
+
+    results = data.get("results", [])
+    if not results:
+        print(f"{label}：results 為空，略過。")
+        return False
+
+    updated = False
+    for item in results:
+        sid = item.get("stock_id", "")
+        if sid in prices:
+            old = item.get("close")
+            item["close"] = prices[sid]
+            if old != prices[sid]:
+                print(f"  {label} ✅ {sid} {item.get('name', '')}：{old} → {prices[sid]}")
+                updated = True
+        else:
+            print(f"  {label} ❌ {sid} {item.get('name', '')}：找不到報價")
+
+    if updated:
+        with open(json_path, "w", encoding="utf-8") as f:
+            json.dump(data, f, ensure_ascii=False, indent=2)
+    return updated
+
+
+# ────────────────────────────────────────────────────
+
+def main():
+    print("=== 批次更新收盤價 ===")
+    prices, date_str = fetch_all_prices()
+
+    if not prices or not date_str:
+        print("無法取得市場報價，中止。")
+        return
+
+    print(f"\n使用日期 key：{date_str}\n")
+
+    any_updated = False
+    any_updated |= update_performance(prices, date_str)
+    any_updated |= update_results_close(CHIPS_JSON,     "chips",     prices)
+    any_updated |= update_results_close(RIGHT_TOP_JSON, "right_top", prices)
+
+    if any_updated:
+        print(f"\n✅ 全部更新完成（{date_str}）")
     else:
-        print("\n無任何更新。")
+        print("\n無任何變動。")
 
 
 if __name__ == "__main__":
