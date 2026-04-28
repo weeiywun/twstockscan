@@ -107,11 +107,26 @@ def check_signal(stock_id, token):
     if close_latest <= high_prev10:
         return None
 
-    # 條件一b：上週尚未突破（確保這是第一根突破週K）
-    # 需要至少 12 筆週資料（本週 + 上週 + 上週的前10週）
-    if len(closes) >= 12:
-        high_prev10_last_week = max(closes[-12:-2])
-        if closes[-2] > high_prev10_last_week:
+    # 條件一b：前 3 週皆未突破10週高（確保為第一根，非強勢延續）
+    # i=2：上週，i=3：前2週，i=4：前3週
+    if len(closes) >= 14:
+        for i in range(2, 5):
+            if closes[-i] > max(closes[-i - 10:-i]):
+                return None
+
+    # 條件一c：突破前10週價格波動幅度 < 20%（確認橫盤打底）
+    base_closes = closes[-11:-1]
+    base_low    = min(base_closes)
+    base_high   = max(base_closes)
+    if base_low == 0 or (base_high - base_low) / base_low >= 0.20:
+        return None
+
+    # 條件一d：突破前10週均線斜率 < 5%（排除均線已走揚的趨勢股）
+    # ma_now：以上週為基準的10週均線；ma_prev：4週前的10週均線
+    if len(closes) >= 15:
+        ma_now  = sum(closes[-11:-1]) / 10
+        ma_prev = sum(closes[-15:-5]) / 10
+        if ma_prev > 0 and (ma_now - ma_prev) / ma_prev * 100 >= 5.0:
             return None
 
     # 條件二：最新週量能 >= 20 週均量 * 1.5，且週均量 >= 500 張
