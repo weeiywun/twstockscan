@@ -237,7 +237,11 @@ function renderPerformance(strat, main) {
   const startCap = pd?.starting_capital || 450000;
   const today = new Date().toISOString().slice(0, 10);
   const active = positions.filter(p => !p.confirmed);
-  const closed  = positions.filter(p => p.confirmed);
+  const withAnyExits = positions.filter(p => p.exits && p.exits.length > 0);
+  const oldClosed    = positions.filter(p => p.confirmed && (!p.exits || !p.exits.length));
+  const closed       = [...withAnyExits, ...oldClosed];
+  const exitCount    = positions.reduce((n, p) =>
+    n + (p.exits?.length || (p.confirmed && p.exit_price != null ? 1 : 0)), 0);
   const { portfolioValue, returnPct, realizedPnl } = computePortfolioMetrics(pd);
 
   function getLatestPrice(stockId) {
@@ -254,26 +258,9 @@ function renderPerformance(strat, main) {
     const pnlPct = ((posVal / posCost) - 1) * 100;
     const pc = pnlPct >= 0 ? 'var(--green)' : 'var(--red)';
     const ps = pnlPct >= 0 ? '+' : '';
-    const hasExits = p.exits && p.exits.length > 0;
-    const sharesCell = hasExits
+    const sharesCell = (p.exits && p.exits.length)
       ? `${remaining.toLocaleString()}<span style="font-size:10px;color:var(--text3)"> / ${p.shares.toLocaleString()}</span>`
       : p.shares.toLocaleString();
-    const exitHistory = hasExits ? `
-      <div style="margin-top:10px;font-size:11px">
-        <div style="color:var(--text3);margin-bottom:4px;font-weight:600">已出場紀錄</div>
-        ${p.exits.map(ex => {
-          const exPnl = ex.exit_net - ex.shares * p.cost_price;
-          const exC = exPnl >= 0 ? 'var(--green)' : 'var(--red)';
-          const exS = exPnl >= 0 ? '+' : '';
-          return `<div style="display:flex;gap:16px;padding:4px 0;border-bottom:1px solid var(--border);color:var(--text2)">
-            <span style="color:var(--text3)">${ex.date}</span>
-            <span>${ex.shares.toLocaleString()} 股</span>
-            <span>@${ex.exit_price.toFixed(2)}</span>
-            <span>實收 NT$${ex.exit_net.toLocaleString()}</span>
-            <span style="color:${exC}">${exS}NT$${Math.round(exPnl).toLocaleString()}</span>
-          </div>`;
-        }).join('')}
-      </div>` : '';
     return `
       <tr class="perf-pos-row">
         <td><span class="stock-code">${p.stock_id}</span>${p.name && p.name !== p.stock_id ? `<span style="font-size:11px;color:var(--text3);margin-left:5px">${p.name}</span>` : ''}</td>
@@ -312,9 +299,8 @@ function renderPerformance(strat, main) {
             交易稅：<span style="color:var(--red)">-<span id="sp-tax-${p.id}"></span></span>
             <strong>實收：<span id="sp-net-${p.id}" style="color:var(--green)"></span></strong>
           </div>
-          ${exitHistory}
           <div style="margin-top:8px;font-size:11px;color:var(--text3)">
-            ⚠ 部分出場後持倉仍保留於「持倉中」，全數出清後才移至「已出場」，並自動寫入 Repo（需先設定 Token）
+            ⚠ 部分出場後本筆立即顯示於下方「已出場」，剩餘股數繼續留於持倉中，並自動寫入 Repo（需先設定 Token）
           </div>
         </td>
       </tr>`;
@@ -499,7 +485,7 @@ function renderPerformance(strat, main) {
 
       <div class="perf-section">
         <div class="perf-section-hd">
-          <span class="section-title">已出場　<span style="font-weight:400;color:var(--text3);font-size:12px">${closed.length} 檔</span></span>
+          <span class="section-title">已出場　<span style="font-weight:400;color:var(--text3);font-size:12px">${exitCount} 筆</span></span>
         </div>
         <div class="table-wrap">
           <div class="table-scroll">

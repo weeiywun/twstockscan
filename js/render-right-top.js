@@ -200,13 +200,19 @@ function renderRightTop(strat, main) {
       </div>`;
   }
 
+  const rtCollapsed = localStorage.getItem('strat_collapsed_right_top') === '1';
   main.innerHTML = `
     <div class="strategy-panel active">
-      <div class="strat-header">
-        <div class="strat-title">${strat.icon} ${strat.name}策略</div>
-        <div class="strat-desc">${strat.description}</div>
+      <div class="strat-header" style="cursor:pointer;user-select:none" onclick="toggleStratInfo('right_top')">
+        <div style="display:flex;justify-content:space-between;align-items:flex-start;gap:8px">
+          <div>
+            <div class="strat-title">${strat.icon} ${strat.name}策略</div>
+            <div class="strat-desc" id="strat-desc-right_top" style="${rtCollapsed ? 'display:none' : ''}">${strat.description}</div>
+          </div>
+          <span id="collapse-icon-right_top" style="font-size:12px;color:var(--text3);padding:4px 6px;flex-shrink:0;line-height:1">${rtCollapsed ? '▶' : '▼'}</span>
+        </div>
       </div>
-      <div class="conditions">
+      <div class="conditions" id="strat-conds-right_top" style="${rtCollapsed ? 'display:none' : ''}">
         ${strat.conditions.map(c => `<div class="cond"><span class="cond-dot"></span>${c}</div>`).join('')}
       </div>
 

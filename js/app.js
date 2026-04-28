@@ -267,6 +267,18 @@ function renderStrategy() {
   if (strat.id === 'performance')      { renderPerformance(strat, main);    return; }
 }
 
+function toggleStratInfo(stratId) {
+  const key = `strat_collapsed_${stratId}`;
+  const nowCollapsed = localStorage.getItem(key) !== '1';
+  localStorage.setItem(key, nowCollapsed ? '1' : '0');
+  const desc  = document.getElementById(`strat-desc-${stratId}`);
+  const conds = document.getElementById(`strat-conds-${stratId}`);
+  const icon  = document.getElementById(`collapse-icon-${stratId}`);
+  if (desc)  desc.style.display  = nowCollapsed ? 'none' : '';
+  if (conds) conds.style.display = nowCollapsed ? 'none' : '';
+  if (icon)  icon.textContent    = nowCollapsed ? '▶' : '▼';
+}
+
 function renderWatchlist() {
   if (watchlist.length === 0) {
     return `<div class="watch-empty">點擊結果列<br>加入觀察清單</div>`;
