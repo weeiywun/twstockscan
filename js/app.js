@@ -231,13 +231,22 @@ function renderNav() {
     if (i > 0) {
       html += `<div style="width:1px;background:var(--border);margin:10px 6px;align-self:stretch;flex-shrink:0"></div>`;
     }
-    if (NAV_GROUP_LABELS[g]) {
-      html += `<div style="display:flex;align-items:center;padding:0 6px 0 4px;font-size:10px;font-weight:600;
-                            color:var(--text3);letter-spacing:.06em;white-space:nowrap;user-select:none">
-                 ${NAV_GROUP_LABELS[g]}
-               </div>`;
+    const label = NAV_GROUP_LABELS[g];
+    const collapsed = localStorage.getItem(`nav_group_collapsed_${g}`) === '1';
+    if (label) {
+      const totalCount = grouped[g].reduce((n, s) => { const b = _navBadge(s); return n + (+b || 0); }, 0);
+      html += `<button onclick="toggleNavGroup('${g}')"
+        style="display:flex;align-items:center;gap:4px;padding:0 8px 0 6px;font-size:10px;font-weight:600;
+               color:var(--text3);letter-spacing:.06em;white-space:nowrap;background:none;border:none;
+               cursor:pointer;height:100%;transition:color .15s;font-family:var(--sans)"
+        onmouseover="this.style.color='var(--text1)'" onmouseout="this.style.color='var(--text3)'">
+        ${label}${collapsed ? `<span class="badge" style="margin-left:2px">${totalCount}</span>` : ''}
+        <span style="font-size:9px;opacity:.7">${collapsed ? '▶' : '▼'}</span>
+      </button>`;
     }
-    grouped[g].forEach(s => { html += _navTab(s); });
+    if (!collapsed) {
+      grouped[g].forEach(s => { html += _navTab(s); });
+    }
   });
 
   nav.innerHTML = html;
@@ -267,16 +276,10 @@ function renderStrategy() {
   if (strat.id === 'performance')      { renderPerformance(strat, main);    return; }
 }
 
-function toggleStratInfo(stratId) {
-  const key = `strat_collapsed_${stratId}`;
-  const nowCollapsed = localStorage.getItem(key) !== '1';
-  localStorage.setItem(key, nowCollapsed ? '1' : '0');
-  const desc  = document.getElementById(`strat-desc-${stratId}`);
-  const conds = document.getElementById(`strat-conds-${stratId}`);
-  const icon  = document.getElementById(`collapse-icon-${stratId}`);
-  if (desc)  desc.style.display  = nowCollapsed ? 'none' : '';
-  if (conds) conds.style.display = nowCollapsed ? 'none' : '';
-  if (icon)  icon.textContent    = nowCollapsed ? '▶' : '▼';
+function toggleNavGroup(g) {
+  const key = `nav_group_collapsed_${g}`;
+  localStorage.setItem(key, localStorage.getItem(key) === '1' ? '0' : '1');
+  renderNav();
 }
 
 function renderWatchlist() {
