@@ -24,6 +24,10 @@ function calcSellNet(price, shares) {
   const net = Math.round(price * shares) - fee - tax;
   return { fee, tax, net };
 }
+function posRemainingShares(p) {
+  if (!p.exits || !p.exits.length) return p.shares;
+  return p.shares - p.exits.reduce((s, e) => s + e.shares, 0);
+}
 
 async function ghWritePerf(data) {
   const token = ghToken();
@@ -77,7 +81,19 @@ function computePortfolioMetrics(pd) {
   positions.forEach(p => {
     const cost = p.shares * p.cost_price;
     totalCost += cost;
-    if (p.confirmed && p.exit_price != null) {
+    if (p.exits && p.exits.length > 0) {
+      p.exits.forEach(ex => {
+        mktValue += ex.exit_net;
+        realizedPnl += ex.exit_net - ex.shares * p.cost_price;
+      });
+      const remaining = posRemainingShares(p);
+      if (remaining > 0) {
+        const hist = priceHistory[p.stock_id] || {};
+        const dates = Object.keys(hist).filter(d => d <= today).sort();
+        const price = dates.length ? hist[dates[dates.length - 1]] : p.cost_price;
+        mktValue += remaining * price;
+      }
+    } else if (p.confirmed && p.exit_price != null) {
       const val = p.exit_net != null ? p.exit_net : p.shares * p.exit_price;
       mktValue += val; realizedPnl += val - cost;
     } else {
@@ -114,7 +130,21 @@ function buildPerfChartData(pd) {
     positions.forEach(p => {
       const cost = p.shares * p.cost_price;
       if (date < p.entry_date) { mktVal += cost; realVal += cost; return; }
-      if (p.confirmed && p.exit_date && date >= p.exit_date) {
+      if (p.exits && p.exits.length > 0) {
+        let exitedShares = 0, exitedNet = 0;
+        p.exits.forEach(ex => {
+          if (date >= ex.date) { exitedShares += ex.shares; exitedNet += ex.exit_net; }
+        });
+        const remaining = p.shares - exitedShares;
+        mktVal += exitedNet; realVal += exitedNet;
+        if (remaining > 0) {
+          const hist = priceHistory[p.stock_id] || {};
+          const ks = Object.keys(hist).filter(d => d <= date).sort();
+          const price = ks.length ? hist[ks[ks.length - 1]] : p.cost_price;
+          mktVal += remaining * price;
+          realVal += remaining * p.cost_price;
+        }
+      } else if (p.confirmed && p.exit_date && date >= p.exit_date) {
         const ev = p.exit_net != null ? p.exit_net : p.shares * p.exit_price;
         mktVal += ev; realVal += ev;
       } else {
@@ -217,17 +247,38 @@ function renderPerformance(strat, main) {
   }
 
   function activeRow(p) {
+    const remaining = posRemainingShares(p);
     const cp = getLatestPrice(p.stock_id);
-    const posVal = (cp ?? p.cost_price) * p.shares;
-    const posCost = p.cost_price * p.shares;
+    const posVal = (cp ?? p.cost_price) * remaining;
+    const posCost = p.cost_price * remaining;
     const pnlPct = ((posVal / posCost) - 1) * 100;
     const pc = pnlPct >= 0 ? 'var(--green)' : 'var(--red)';
     const ps = pnlPct >= 0 ? '+' : '';
+    const hasExits = p.exits && p.exits.length > 0;
+    const sharesCell = hasExits
+      ? `${remaining.toLocaleString()}<span style="font-size:10px;color:var(--text3)"> / ${p.shares.toLocaleString()}</span>`
+      : p.shares.toLocaleString();
+    const exitHistory = hasExits ? `
+      <div style="margin-top:10px;font-size:11px">
+        <div style="color:var(--text3);margin-bottom:4px;font-weight:600">已出場紀錄</div>
+        ${p.exits.map(ex => {
+          const exPnl = ex.exit_net - ex.shares * p.cost_price;
+          const exC = exPnl >= 0 ? 'var(--green)' : 'var(--red)';
+          const exS = exPnl >= 0 ? '+' : '';
+          return `<div style="display:flex;gap:16px;padding:4px 0;border-bottom:1px solid var(--border);color:var(--text2)">
+            <span style="color:var(--text3)">${ex.date}</span>
+            <span>${ex.shares.toLocaleString()} 股</span>
+            <span>@${ex.exit_price.toFixed(2)}</span>
+            <span>實收 NT$${ex.exit_net.toLocaleString()}</span>
+            <span style="color:${exC}">${exS}NT$${Math.round(exPnl).toLocaleString()}</span>
+          </div>`;
+        }).join('')}
+      </div>` : '';
     return `
       <tr class="perf-pos-row">
         <td><span class="stock-code">${p.stock_id}</span>${p.name && p.name !== p.stock_id ? `<span style="font-size:11px;color:var(--text3);margin-left:5px">${p.name}</span>` : ''}</td>
         <td style="font-family:var(--mono);font-size:12px">${p.entry_date}</td>
-        <td style="font-family:var(--mono)">${p.shares.toLocaleString()}</td>
+        <td style="font-family:var(--mono)">${sharesCell}</td>
         <td style="font-family:var(--mono)">${p.cost_price.toFixed(2)}</td>
         <td style="font-family:var(--mono)">${cp != null ? cp.toFixed(2) : '<span style="color:var(--text3)">—</span>'}</td>
         <td><span style="font-family:var(--mono);color:${pc};font-weight:600">${ps}${pnlPct.toFixed(2)}%</span><br><span style="font-family:var(--mono);font-size:11px;color:${pc}">${ps}${Math.round(posVal - posCost).toLocaleString()}</span></td>
@@ -242,9 +293,12 @@ function renderPerformance(strat, main) {
         <td colspan="9" style="padding:12px 16px;background:var(--bg3);border-bottom:1px solid var(--border)">
           <div style="display:flex;align-items:flex-end;gap:12px;flex-wrap:wrap">
             <span style="font-size:12px;color:var(--text2);font-weight:600;padding-bottom:2px">出場資訊</span>
+            <div><div class="perf-input-label">賣出股數 *</div>
+              <input id="es-${p.id}" type="number" class="perf-input" placeholder="${remaining}" value="${remaining}"
+                min="1" max="${remaining}" style="width:100px" oninput="perfUpdateSellNetPreview('${p.id}')"></div>
             <div><div class="perf-input-label">賣出價格 *</div>
               <input id="ep-${p.id}" type="number" step="0.01" class="perf-input" placeholder="0.00" style="width:110px"
-                data-shares="${p.shares}" oninput="perfUpdateSellNetPreview('${p.id}')"></div>
+                oninput="perfUpdateSellNetPreview('${p.id}')"></div>
             <div><div class="perf-input-label">賣出日期 *</div>
               <input id="ed-${p.id}" type="date" class="perf-input" value="${today}" style="width:140px"></div>
             <div style="display:flex;gap:6px">
@@ -258,14 +312,40 @@ function renderPerformance(strat, main) {
             交易稅：<span style="color:var(--red)">-<span id="sp-tax-${p.id}"></span></span>
             <strong>實收：<span id="sp-net-${p.id}" style="color:var(--green)"></span></strong>
           </div>
+          ${exitHistory}
           <div style="margin-top:8px;font-size:11px;color:var(--text3)">
-            ⚠ 確認後損益將鎖定，此筆移至「已出場」，並自動寫入 Repo（需先設定 Token）
+            ⚠ 部分出場後持倉仍保留於「持倉中」，全數出清後才移至「已出場」，並自動寫入 Repo（需先設定 Token）
           </div>
         </td>
       </tr>`;
   }
 
   function closedRow(p) {
+    if (p.exits && p.exits.length > 0) {
+      return p.exits.map((ex, i) => {
+        const exitVal = ex.exit_net;
+        const costVal = ex.shares * p.cost_price;
+        const pnl = exitVal - costVal;
+        const pnlPct = ((exitVal / costVal) - 1) * 100;
+        const c = pnl >= 0 ? 'var(--green)' : 'var(--red)';
+        const s = pnl >= 0 ? '+' : '';
+        const stockCell = i === 0
+          ? `<span class="stock-code">${p.stock_id}</span>${p.name && p.name !== p.stock_id ? `<span style="font-size:11px;color:var(--text3);margin-left:5px">${p.name}</span>` : ''}`
+          : `<span style="color:var(--text3);font-size:11px;padding-left:10px">↳ 同上</span>`;
+        return `
+        <tr>
+          <td>${stockCell}</td>
+          <td style="font-family:var(--mono);font-size:12px">${i === 0 ? p.entry_date : '—'}</td>
+          <td style="font-family:var(--mono);font-size:12px">${ex.date}</td>
+          <td style="font-family:var(--mono)">${ex.shares.toLocaleString()}<span style="font-size:10px;color:var(--text3)"> / ${p.shares.toLocaleString()}</span></td>
+          <td style="font-family:var(--mono)">${p.cost_price.toFixed(2)}</td>
+          <td style="font-family:var(--mono)">${ex.exit_price.toFixed(2)}</td>
+          <td><span style="font-family:var(--mono);color:${c};font-weight:700">${s}${Math.round(pnl).toLocaleString()}</span></td>
+          <td><span style="font-family:var(--mono);color:${c}">${s}${pnlPct.toFixed(2)}%</span></td>
+          <td style="color:var(--text3)">—</td>
+        </tr>`;
+      }).join('');
+    }
     const exitVal = p.exit_net != null ? p.exit_net : p.shares * p.exit_price;
     const costVal = p.shares * p.cost_price;
     const pnl = exitVal - costVal;
@@ -490,20 +570,25 @@ async function perfSaveAdd() {
 }
 
 async function perfConfirmExit(id) {
-  const exitPrice = parseFloat(document.getElementById(`ep-${id}`)?.value);
-  const exitDate  = document.getElementById(`ed-${id}`)?.value;
+  const exitPrice  = parseFloat(document.getElementById(`ep-${id}`)?.value);
+  const exitDate   = document.getElementById(`ed-${id}`)?.value;
+  const sellShares = parseFloat(document.getElementById(`es-${id}`)?.value);
   if (!exitPrice || exitPrice <= 0 || !exitDate) { alert('請填寫賣出價格與日期'); return; }
+  if (!sellShares || sellShares <= 0) { alert('請填寫賣出股數'); return; }
   const pd  = DATA.performance_data;
   const pos = pd.positions.find(p => p.id === id);
   if (!pos) return;
-  const { fee, tax, net } = calcSellNet(exitPrice, pos.shares);
-  const prev = { exit_price: pos.exit_price, exit_date: pos.exit_date, exit_net: pos.exit_net, sell_fee: pos.sell_fee, sell_tax: pos.sell_tax, confirmed: pos.confirmed };
-  pos.exit_price = exitPrice; pos.exit_date = exitDate;
-  pos.exit_net = net; pos.sell_fee = fee; pos.sell_tax = tax;
-  pos.confirmed = true;
+  const remaining = posRemainingShares(pos);
+  if (sellShares > remaining) { alert(`賣出股數不可超過剩餘股數 ${remaining}`); return; }
+  const { fee, tax, net } = calcSellNet(exitPrice, sellShares);
+  if (!pos.exits) pos.exits = [];
+  const prevExits    = pos.exits.map(e => ({ ...e }));
+  const prevConfirmed = pos.confirmed;
+  pos.exits.push({ id: 'e' + Date.now(), date: exitDate, shares: sellShares, exit_price: exitPrice, exit_net: net, sell_fee: fee, sell_tax: tax });
+  if (sellShares >= remaining) pos.confirmed = true;
   pd.last_updated = new Date().toISOString().slice(0, 10);
   const ok = await ghWritePerf(pd);
-  if (ok) renderStrategy(); else Object.assign(pos, prev);
+  if (ok) renderStrategy(); else { pos.exits = prevExits; pos.confirmed = prevConfirmed; }
 }
 
 async function perfDeletePos(id) {
@@ -573,9 +658,8 @@ function perfUpdateBuyCostPreview() {
 }
 
 function perfUpdateSellNetPreview(id) {
-  const inp    = document.getElementById(`ep-${id}`);
-  const price  = parseFloat(inp?.value);
-  const shares = parseFloat(inp?.dataset.shares);
+  const price  = parseFloat(document.getElementById(`ep-${id}`)?.value);
+  const shares = parseFloat(document.getElementById(`es-${id}`)?.value);
   const box    = document.getElementById(`sell-preview-${id}`);
   if (!box) return;
   if (!price || !shares || price <= 0) { box.style.display = 'none'; return; }
