@@ -1,24 +1,41 @@
 {
   "strategy_id": "volume_signal",
-  "updated": "2026-05-01T14:31:42+08:00",
+  "updated": "2026-05-02T14:31:32+08:00",
   "results": [
     {
       "stock_id": "2328",
       "name": "廣宇",
       "industry": "電零",
       "tags": [
-        "持續成長",
-        "外資連買"
+        "持續成長"
       ],
       "tag_score": 1,
-      "cumulative_3w": 0.91,
-      "big_pct_1000": 36.63,
+      "cumulative_3w": 0.33,
+      "big_pct_1000": 36.88,
       "close": 49.55,
       "vol_today": 24100,
       "vol_10d_avg": 4941.0,
       "vol_ratio": 4.88,
       "ema5": 45.95,
-      "signal_date": "2026-05-01"
+      "signal_date": "2026-05-02"
+    },
+    {
+      "stock_id": "1760",
+      "name": "寶齡富錦",
+      "industry": "生技",
+      "tags": [
+        "持續成長",
+        "單周增幅"
+      ],
+      "tag_score": 6,
+      "cumulative_3w": 3.64,
+      "big_pct_1000": 33.58,
+      "close": 68.2,
+      "vol_today": 972,
+      "vol_10d_avg": 578.0,
+      "vol_ratio": 1.68,
+      "ema5": 66.72,
+      "signal_date": "2026-05-02"
     }
   ]
 }
