@@ -7,6 +7,11 @@
 觸發條件：
   當日成交量 >= 10日均量 * 1.5
   收盤價 > EMA5
+
+額外工作：
+  每日掃描結束後，將各標的最新收盤價與周漲跌
+  回寫至 chips_big_holder.json（price_updated 欄位），
+  讓籌碼選股頁面的現價維持每日更新。
 """
 
 import json, os, time
@@ -39,9 +44,13 @@ def _calc_ema(closes, span):
 
 
 def check_signal(stock_id, token):
+    """
+    回傳 (signal_dict | None, price_info | None)。
+    price_info 無論是否觸發訊號都會回傳，供每日現價更新使用。
+    """
     df = fetch_stock_price(stock_id, START_DATE, TODAY, token)
     if df is None or len(df) < 11:
-        return None
+        return None, None
 
     closes  = df["close"].tolist()
     volumes = df["volume_lots"].tolist()
@@ -52,17 +61,28 @@ def check_signal(stock_id, token):
 
     ema5 = _calc_ema(closes[:-1], EMA5_PERIOD)  # EMA5 from previous closes
     if ema5 is None:
-        return None
+        return None, None
 
+    # 周漲跌：與 fetch_holdings_twsthr.py 相同邏輯（前5個交易日）
+    wago = closes[-6] if len(closes) >= 6 else closes[0]
+    week_chg_pct = round((close_today - wago) / wago * 100.0, 2) if wago else None
+
+    price_info = {
+        "close":        round(close_today, 2),
+        "week_chg_pct": week_chg_pct,
+    }
+
+    signal = None
     if vol_today >= vol_10d_avg * VOL_MULT and close_today > ema5:
-        return {
+        signal = {
             "close":       round(close_today, 2),
             "vol_today":   int(vol_today),
             "vol_10d_avg": round(vol_10d_avg, 0),
             "vol_ratio":   round(vol_today / vol_10d_avg, 2) if vol_10d_avg else None,
             "ema5":        round(ema5, 2),
         }
-    return None
+
+    return signal, price_info
 
 
 def now_tw():
@@ -89,11 +109,15 @@ def main():
         _write_output([])
         return
 
-    results = []
+    results  = []
+    price_map: dict[str, dict] = {}  # {stock_id: {close, week_chg_pct}}
+
     for i, item in enumerate(pool, 1):
-        sid   = item["stock_id"]
-        price = check_signal(sid, finmind_token)
-        if price:
+        sid            = item["stock_id"]
+        signal, price_info = check_signal(sid, finmind_token)
+        if price_info:
+            price_map[sid] = price_info
+        if signal:
             results.append({
                 "stock_id":    sid,
                 "name":        item["name"],
@@ -102,10 +126,10 @@ def main():
                 "tag_score":   item.get("tag_score", 0),
                 "cumulative_3w": item.get("cumulative_3w"),
                 "big_pct_1000":  item.get("big_pct_1000"),
-                **price,
+                **signal,
                 "signal_date": TODAY,
             })
-            print(f"  ✅ {sid} {item['name']}  量比={price['vol_ratio']}x  收盤={price['close']}")
+            print(f"  ✅ {sid} {item['name']}  量比={signal['vol_ratio']}x  收盤={signal['close']}")
         if i % 20 == 0:
             print(f"  掃描進度：{i}/{len(pool)}")
         time.sleep(FINMIND_SLEEP)
@@ -114,8 +138,34 @@ def main():
     print(f"\n觸發訊號：{len(results)} 支")
     _write_output(results)
 
+    # 將每日最新收盤價回寫 chips_big_holder.json
+    _update_chips_prices(pool_data, price_map)
+
     # 更新績效持倉的收盤價
     _update_performance_prices(finmind_token)
+
+
+def _update_chips_prices(pool_data: dict, price_map: dict) -> None:
+    """將每日最新收盤價與周漲跌寫入 chips_big_holder.json。"""
+    if not price_map:
+        print("⚠️  無價格資料，略過 chips_big_holder.json 現價更新")
+        return
+
+    updated = 0
+    for item in pool_data.get("results", []):
+        sid = item["stock_id"]
+        if sid in price_map:
+            item["close"] = price_map[sid]["close"]
+            if price_map[sid].get("week_chg_pct") is not None:
+                item["week_chg_pct"] = price_map[sid]["week_chg_pct"]
+            updated += 1
+
+    pool_data["price_updated"] = TODAY
+
+    with open(POOL_PATH, "w", encoding="utf-8") as f:
+        json.dump(pool_data, f, ensure_ascii=False, indent=2)
+
+    print(f"✅ chips_big_holder.json 現價已更新：{updated}/{len(pool_data.get('results', []))} 支")
 
 
 def _update_performance_prices(token):

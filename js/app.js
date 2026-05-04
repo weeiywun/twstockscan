@@ -487,7 +487,10 @@ async function loadData() {
         };
       });
       const strat = STRATEGIES.find(s => s.id === 'chips_big_holder');
-      if (strat) strat.dataUpdated = (chipsRes.updated || '').slice(0, 10) || strat.dataUpdated;
+      if (strat) {
+        strat.dataUpdated  = (chipsRes.updated      || '').slice(0, 10) || strat.dataUpdated;
+        strat.priceUpdated = (chipsRes.price_updated || '').slice(0, 10) || '';
+      }
     }
 
     if (vsRes && vsRes.results) {
