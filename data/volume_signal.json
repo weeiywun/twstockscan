@@ -1,6 +1,6 @@
 {
   "strategy_id": "volume_signal",
-  "updated": "2026-05-03T14:31:30+08:00",
+  "updated": "2026-05-04T14:31:44+08:00",
   "results": [
     {
       "stock_id": "2328",
@@ -12,30 +12,64 @@
       "tag_score": 1,
       "cumulative_3w": 0.33,
       "big_pct_1000": 36.88,
-      "close": 49.55,
-      "vol_today": 24100,
-      "vol_10d_avg": 4941.0,
-      "vol_ratio": 4.88,
-      "ema5": 45.95,
-      "signal_date": "2026-05-03"
+      "close": 54.4,
+      "vol_today": 35244,
+      "vol_10d_avg": 7075.0,
+      "vol_ratio": 4.98,
+      "ema5": 47.15,
+      "signal_date": "2026-05-04"
     },
     {
-      "stock_id": "1760",
-      "name": "寶齡富錦",
-      "industry": "生技",
+      "stock_id": "8926",
+      "name": "台汽電",
+      "industry": "油電",
+      "tags": [
+        "持續成長"
+      ],
+      "tag_score": 1,
+      "cumulative_3w": 0.13,
+      "big_pct_1000": 54.7,
+      "close": 45.9,
+      "vol_today": 4241,
+      "vol_10d_avg": 1446.0,
+      "vol_ratio": 2.93,
+      "ema5": 45.12,
+      "signal_date": "2026-05-04"
+    },
+    {
+      "stock_id": "8131",
+      "name": "福懋科",
+      "industry": "半導",
+      "tags": [
+        "持續成長"
+      ],
+      "tag_score": 1,
+      "cumulative_3w": -0.23,
+      "big_pct_1000": 69.48,
+      "close": 66.8,
+      "vol_today": 13757,
+      "vol_10d_avg": 5482.0,
+      "vol_ratio": 2.51,
+      "ema5": 61.66,
+      "signal_date": "2026-05-04"
+    },
+    {
+      "stock_id": "8249",
+      "name": "菱光",
+      "industry": "電零",
       "tags": [
         "持續成長",
-        "單周增幅"
+        "外資連買"
       ],
-      "tag_score": 6,
-      "cumulative_3w": 3.64,
-      "big_pct_1000": 33.58,
-      "close": 68.2,
-      "vol_today": 972,
-      "vol_10d_avg": 578.0,
-      "vol_ratio": 1.68,
-      "ema5": 66.72,
-      "signal_date": "2026-05-03"
+      "tag_score": 1,
+      "cumulative_3w": 1.36,
+      "big_pct_1000": 54.29,
+      "close": 50.5,
+      "vol_today": 1004,
+      "vol_10d_avg": 553.0,
+      "vol_ratio": 1.81,
+      "ema5": 48.92,
+      "signal_date": "2026-05-04"
     }
   ]
 }
