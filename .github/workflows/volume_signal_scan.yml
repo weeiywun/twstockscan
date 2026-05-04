@@ -39,10 +39,10 @@ jobs:
 
           git fetch origin main
           git reset --soft origin/main
-          git add data/volume_signal.json data/performance.json
+          git add data/volume_signal.json data/performance.json data/chips_big_holder.json
 
           if ! git diff --staged --quiet; then
-            git commit -m "data: volume_signal & performance update $(date -u +%Y-%m-%d)"
+            git commit -m "data: volume_signal & chips price update $(date -u +%Y-%m-%d)"
             git push origin HEAD:main
           else
             echo "資料無變動，略過提交"
