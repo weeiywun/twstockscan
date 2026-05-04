@@ -2,11 +2,15 @@
 """
 全市場價格快取更新器
 
+初始化模式（一次性，用 yfinance，不消耗 FinMind 額度）：
+  python update_price_cache.py --init
+  → 用 yfinance 批次下載全市場 210 天歷史，建立 price_cache.parquet
+
 每日模式（正常執行）：
   python update_price_cache.py
   → 拉取今日全市場收盤，append 到 price_cache.parquet
 
-回填模式（初始化，每次執行一個月）：
+回填模式（補漏用，每次執行一個月）：
   python update_price_cache.py --backfill 2025-10
   → 拉取 2025-10 整月資料，合併到 price_cache.parquet
 
@@ -186,12 +190,123 @@ def update_price_cache(start_date: str, end_date: str, token: str):
     _save_cache(combined)
 
 
+# ── yfinance 初始化 ───────────────────────────────────────────
+
+def _fetch_init_yfinance(stock_list: list[dict]) -> pd.DataFrame:
+    """用 yfinance 批次下載全市場 KEEP_DAYS 天歷史資料（不消耗 FinMind 額度）。"""
+    try:
+        import yfinance as yf
+    except ImportError:
+        print("  ❌ yfinance 未安裝"); sys.exit(1)
+
+    # stock_id → yfinance ticker（TWSE: .TW, TPEX: .TWO）
+    ticker_map: dict[str, str] = {}
+    for s in stock_list:
+        suffix = ".TW" if s["market"] == "TWSE" else ".TWO"
+        ticker_map[f"{s['stock_id']}{suffix}"] = s["stock_id"]
+
+    symbols = list(ticker_map.keys())
+    BATCH   = 100
+    total_batches = (len(symbols) + BATCH - 1) // BATCH
+    all_frames: list[pd.DataFrame] = []
+
+    for batch_idx, start in enumerate(range(0, len(symbols), BATCH), 1):
+        batch = symbols[start:start + BATCH]
+        print(f"  批次 {batch_idx}/{total_batches}：下載 {len(batch)} 支...")
+        try:
+            raw = yf.download(
+                batch,
+                period=f"{KEEP_DAYS}d",
+                auto_adjust=True,
+                progress=False,
+            )
+            if raw.empty:
+                print("    ⚠️ 空回應，略過")
+                continue
+
+            # 欄位結構：MultiIndex (metric, ticker) 或單層 (單支時)
+            if isinstance(raw.columns, pd.MultiIndex):
+                for sym in batch:
+                    sid = ticker_map[sym]
+                    try:
+                        close = raw["Close"][sym].dropna()
+                        if close.empty:
+                            continue
+                        idx = close.index
+                        frame = pd.DataFrame({
+                            "stock_id":    sid,
+                            "date":        pd.to_datetime(idx),
+                            "open":        raw["Open"][sym].reindex(idx).values,
+                            "max":         raw["High"][sym].reindex(idx).values,
+                            "min":         raw["Low"][sym].reindex(idx).values,
+                            "close":       close.values,
+                            "volume_lots": (
+                                raw["Volume"][sym].reindex(idx).fillna(0) / 1000
+                            ).round(0).astype(int).values,
+                        })
+                        all_frames.append(frame)
+                    except Exception:
+                        pass
+            else:
+                # 單支股票（batch size == 1）
+                sym = batch[0]
+                sid = ticker_map[sym]
+                df  = raw.dropna(subset=["Close"]).reset_index()
+                if not df.empty:
+                    all_frames.append(pd.DataFrame({
+                        "stock_id":    sid,
+                        "date":        pd.to_datetime(df["Date"]),
+                        "open":        df["Open"].values,
+                        "max":         df["High"].values,
+                        "min":         df["Low"].values,
+                        "close":       df["Close"].values,
+                        "volume_lots": (df["Volume"].fillna(0) / 1000).round(0).astype(int).values,
+                    }))
+        except Exception as e:
+            print(f"    ⚠️ 批次失敗：{e}")
+
+    if not all_frames:
+        print("  ❌ 未取得任何資料")
+        return pd.DataFrame(columns=["stock_id", "date", "open", "max", "min", "close", "volume_lots"])
+
+    result = pd.concat(all_frames, ignore_index=True)
+    print(f"  ✅ yfinance 完成：{result['stock_id'].nunique()} 支，{len(result):,} 筆")
+    return result
+
+
+def init_price_cache(token: str):
+    """一次性初始化：用 yfinance 建立 210 天全市場快取。"""
+    print("=== 初始化模式（yfinance）===\n")
+    print("[1] 更新股票清單快取...")
+    update_stock_list_cache(token)
+
+    with open(STOCK_LIST_PATH, encoding="utf-8") as f:
+        stock_list = json.load(f)
+    print(f"  📋 共 {len(stock_list)} 支股票\n")
+
+    print(f"[2] yfinance 批次下載（{KEEP_DAYS} 天）...")
+    new_df = _fetch_init_yfinance(stock_list)
+    if new_df.empty:
+        print("❌ 無資料，中止"); sys.exit(1)
+
+    print("\n[3] 合併並儲存快取...")
+    cache   = _load_cache()
+    combined = pd.concat([cache, new_df], ignore_index=True)
+    _save_cache(combined)
+
+
 # ── 主程式 ────────────────────────────────────────────────────
 
 def main():
     token = os.environ.get("FINMIND_TOKEN", "")
     if not token:
         print("❌ FINMIND_TOKEN 未設定"); sys.exit(1)
+
+    # --init：yfinance 一次性初始化
+    if "--init" in sys.argv:
+        init_price_cache(token)
+        print("\n✅ 完成")
+        return
 
     # 解析 --backfill YYYY-MM
     backfill_month: str | None = None

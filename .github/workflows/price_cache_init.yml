@@ -25,33 +25,10 @@ jobs:
       - name: Install dependencies
         run: pip install -r scripts/requirements.txt
 
-      - name: 計算需回填的月份清單
-        run: |
-          python3 -c "
-          from datetime import datetime, timedelta
-          today = datetime.today()
-          months = sorted(set(
-              (today - timedelta(days=i)).strftime('%Y-%m')
-              for i in range(210)
-          ))
-          print('需回填月份：', months)
-          with open('/tmp/backfill_months.txt', 'w') as f:
-              f.write('\n'.join(months))
-          "
-          echo "月份清單："
-          cat /tmp/backfill_months.txt
-
-      - name: 逐月回填價格快取
+      - name: 初始化價格快取（yfinance）
         env:
           FINMIND_TOKEN: ${{ secrets.FINMIND_API_TOKEN }}
-        run: |
-          while IFS= read -r month; do
-            echo ""
-            echo "==============================="
-            echo "  回填：$month"
-            echo "==============================="
-            python scripts/update_price_cache.py --backfill "$month"
-          done < /tmp/backfill_months.txt
+        run: python scripts/update_price_cache.py --init
 
       - name: Commit 快取與股票清單
         run: |
