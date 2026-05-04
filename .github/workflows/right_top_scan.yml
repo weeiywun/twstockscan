@@ -1,9 +1,8 @@
 name: 右上角選股掃描
 
 on:
-  schedule:
-    # 每週一至週五 台灣時間 17:30（UTC 09:30）執行（備用，主要由 GAS 觸發）
-    - cron: '30 9 * * 1-5'
+  # 排程已移至 daily_scan.yml（與快取更新合併）
+  # 保留手動觸發供緊急補跑使用
   workflow_dispatch:
   repository_dispatch:
     types: [right-top-trigger]

@@ -10,7 +10,7 @@
 import json, os, time, requests
 import pandas as pd
 from datetime import datetime, timedelta, timezone
-from finmind_client import fetch_stock_price
+from finmind_client import fetch_stock_price, load_price_cache, get_stock_price_from_cache
 
 SCRIPT_DIR  = os.path.dirname(os.path.abspath(__file__))
 DATA_DIR    = os.path.join(SCRIPT_DIR, "..", "data")
@@ -29,7 +29,15 @@ FINMIND_API   = "https://api.finmindtrade.com/api/v4/data"
 
 
 def get_all_stocks(token):
-    """取得全市場上市/上櫃一般股清單（排除 ETF、特別股）"""
+    """取得全市場上市/上櫃一般股清單（優先讀快取，fallback 打 FinMind API）"""
+    stock_list_path = os.path.join(DATA_DIR, "stock_list_cache.json")
+    if os.path.exists(stock_list_path):
+        with open(stock_list_path, encoding="utf-8") as f:
+            stocks = json.load(f)
+        print(f"  📋 從快取讀取股票清單：{len(stocks)} 支")
+        return stocks
+
+    print("  🔄 stock_list_cache.json 不存在，改呼叫 FinMind API...")
     try:
         r = requests.get(FINMIND_API, params={
             "dataset": "TaiwanStockInfo",
@@ -42,13 +50,10 @@ def get_all_stocks(token):
         stocks = []
         for s in data["data"]:
             sid = s.get("stock_id", "")
-            # 只保留 4 位純數字代號
             if not sid.isdigit() or len(sid) != 4:
                 continue
-            # 排除 ETF（4 位代號以 00 開頭，如 0050、0056、0062）
             if sid.startswith("00"):
                 continue
-            # 排除產業分類標記為 ETF 的標的（安全網）
             industry = s.get("industry_category", "")
             if "ETF" in industry:
                 continue
@@ -86,8 +91,7 @@ def to_weekly(df):
     return weekly.reset_index(drop=True)
 
 
-def check_signal(stock_id, token):
-    df = fetch_stock_price(stock_id, START_DATE, TODAY, token)
+def check_signal(df):
     if df is None or df.empty:
         return None
 
@@ -170,10 +174,23 @@ def main():
         _write_output([], [])
         return
 
+    # 載入價格快取（優先），fallback 逐支打 API
+    price_cache = load_price_cache()
+    if price_cache is not None:
+        print(f"  📦 使用 price_cache.parquet（{len(price_cache):,} 筆）")
+    else:
+        print("  ⚠️  price_cache.parquet 不存在，改用 FinMind API（較慢）")
+
     results = []
     for i, s in enumerate(stocks, 1):
-        sid    = s["stock_id"]
-        signal = check_signal(sid, token)
+        sid = s["stock_id"]
+        if price_cache is not None:
+            df = get_stock_price_from_cache(price_cache, sid, START_DATE, TODAY)
+        else:
+            df = fetch_stock_price(sid, START_DATE, TODAY, token)
+            time.sleep(FINMIND_SLEEP)
+
+        signal = check_signal(df)
         if signal:
             results.append({
                 "stock_id":    sid,
@@ -186,7 +203,6 @@ def main():
             print(f"  ✅ {sid} {s['name']}  量比={signal['vol_ratio']}x  漲幅={signal['change_pct']}%  週={signal['week_date']}")
         if i % 100 == 0:
             print(f"  掃描進度：{i}/{len(stocks)}，已觸發 {len(results)} 支")
-        time.sleep(FINMIND_SLEEP)
 
     results.sort(key=lambda r: r.get("vol_ratio") or 0, reverse=True)
     print(f"\n觸發訊號：{len(results)} 支")

@@ -11,7 +11,7 @@
 
 import json, os, time
 from datetime import datetime, timedelta, timezone
-from finmind_client import fetch_stock_price
+from finmind_client import fetch_stock_price, load_price_cache, get_stock_price_from_cache
 
 SCRIPT_DIR  = os.path.dirname(os.path.abspath(__file__))
 DATA_DIR    = os.path.join(SCRIPT_DIR, "..", "data")
@@ -38,8 +38,11 @@ def _calc_ema(closes, span):
     return ema
 
 
-def check_signal(stock_id, token):
-    df = fetch_stock_price(stock_id, START_DATE, TODAY, token)
+def check_signal(stock_id, token, cache=None):
+    if cache is not None:
+        df = get_stock_price_from_cache(cache, stock_id, START_DATE, TODAY)
+    else:
+        df = fetch_stock_price(stock_id, START_DATE, TODAY, token)
     if df is None or len(df) < 11:
         return None
 
@@ -89,10 +92,17 @@ def main():
         _write_output([])
         return
 
+    # 載入價格快取（優先），fallback 逐支打 API
+    price_cache = load_price_cache()
+    if price_cache is not None:
+        print(f"  📦 使用 price_cache.parquet")
+    else:
+        print("  ⚠️  price_cache.parquet 不存在，改用 FinMind API")
+
     results = []
     for i, item in enumerate(pool, 1):
         sid   = item["stock_id"]
-        price = check_signal(sid, finmind_token)
+        price = check_signal(sid, finmind_token, cache=price_cache)
         if price:
             results.append({
                 "stock_id":    sid,
@@ -108,17 +118,18 @@ def main():
             print(f"  ✅ {sid} {item['name']}  量比={price['vol_ratio']}x  收盤={price['close']}")
         if i % 20 == 0:
             print(f"  掃描進度：{i}/{len(pool)}")
-        time.sleep(FINMIND_SLEEP)
+        if price_cache is None:
+            time.sleep(FINMIND_SLEEP)
 
     results.sort(key=lambda r: r.get("vol_ratio") or 0, reverse=True)
     print(f"\n觸發訊號：{len(results)} 支")
     _write_output(results)
 
     # 更新績效持倉的收盤價
-    _update_performance_prices(finmind_token)
+    _update_performance_prices(finmind_token, cache=price_cache)
 
 
-def _update_performance_prices(token):
+def _update_performance_prices(token, cache=None):
     if not os.path.exists(PERF_PATH):
         return
     with open(PERF_PATH, encoding="utf-8") as f:
@@ -130,7 +141,11 @@ def _update_performance_prices(token):
     print(f"\n📊 更新績效持倉收盤價：{len(open_ids)} 支")
     price_history = perf.get("price_history", {})
     for sid in open_ids:
-        df = fetch_stock_price(sid, START_DATE, TODAY, token)
+        if cache is not None:
+            df = get_stock_price_from_cache(cache, sid, START_DATE, TODAY)
+        else:
+            df = fetch_stock_price(sid, START_DATE, TODAY, token)
+            time.sleep(FINMIND_SLEEP)
         if df is None or len(df) == 0:
             continue
         if sid not in price_history:
@@ -139,7 +154,6 @@ def _update_performance_prices(token):
             d = str(row["date"])[:10]
             price_history[sid][d] = round(float(row["close"]), 2)
         print(f"  ✅ {sid} 收盤價已更新")
-        time.sleep(FINMIND_SLEEP)
     perf["price_history"] = price_history
     perf["last_updated"] = TODAY
     with open(PERF_PATH, "w", encoding="utf-8") as f:

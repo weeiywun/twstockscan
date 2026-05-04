@@ -1,0 +1,102 @@
+name: 每日選股掃描
+
+on:
+  # 週一到週五 台灣時間 18:00（UTC 10:00）執行，確保盤後資料已就緒
+  schedule:
+    - cron: '0 10 * * 1-5'
+  workflow_dispatch:
+    inputs:
+      backfill_month:
+        description: '回填月份（格式：2025-10），留空為每日更新模式'
+        required: false
+        default: ''
+
+jobs:
+  scan:
+    runs-on: ubuntu-latest
+    timeout-minutes: 30
+
+    permissions:
+      contents: write
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Set up Python 3.11
+        uses: actions/setup-python@v5
+        with:
+          python-version: '3.11'
+          cache: 'pip'
+          cache-dependency-path: scripts/requirements.txt
+
+      - name: Install dependencies
+        run: pip install -r scripts/requirements.txt
+
+      - name: 更新價格快取（price_cache.parquet + stock_list_cache.json）
+        env:
+          FINMIND_TOKEN: ${{ secrets.FINMIND_API_TOKEN }}
+        run: |
+          if [ -n "${{ github.event.inputs.backfill_month }}" ]; then
+            echo "回填模式：${{ github.event.inputs.backfill_month }}"
+            python scripts/update_price_cache.py --backfill ${{ github.event.inputs.backfill_month }}
+          else
+            echo "每日更新模式"
+            python scripts/update_price_cache.py
+          fi
+
+      - name: Commit 價格快取
+        run: |
+          git config user.name  "github-actions[bot]"
+          git config user.email "github-actions[bot]@users.noreply.github.com"
+          git add data/price_cache.parquet data/stock_list_cache.json
+          if ! git diff --staged --quiet; then
+            git commit -m "data: price cache update $(date -u +%Y-%m-%d)"
+            for i in {1..4}; do
+              git pull --rebase --autostash origin main && git push && break || sleep $((2 ** i))
+            done
+          else
+            echo "快取無變動，略過提交"
+          fi
+
+      - name: 右上角選股掃描
+        env:
+          FINMIND_TOKEN: ${{ secrets.FINMIND_API_TOKEN }}
+        run: python scripts/scan_right_top.py
+
+      - name: 量增訊號掃描
+        env:
+          FINMIND_TOKEN: ${{ secrets.FINMIND_API_TOKEN }}
+          LINE_CHANNEL_ACCESS_TOKEN: ${{ secrets.LINE_CHANNEL_ACCESS_TOKEN }}
+          LINE_USER_IDS: ${{ secrets.LINE_USER_IDS }}
+        run: python scripts/scan_volume_signal.py
+
+      - name: Commit 掃描結果
+        run: |
+          git config user.name  "github-actions[bot]"
+          git config user.email "github-actions[bot]@users.noreply.github.com"
+          git fetch origin main
+          git reset --soft origin/main
+          git add data/right_top.json data/volume_signal.json data/performance.json
+          if ! git diff --staged --quiet; then
+            git commit -m "data: daily scan update $(date -u +%Y-%m-%d)"
+            git push origin HEAD:main
+          else
+            echo "掃描結果無變動，略過提交"
+          fi
+
+      - name: Notify LINE on failure
+        if: failure()
+        env:
+          LINE_CHANNEL_ACCESS_TOKEN: ${{ secrets.LINE_CHANNEL_ACCESS_TOKEN }}
+          LINE_USER_IDS: ${{ secrets.LINE_USER_IDS }}
+          RUN_URL: ${{ github.server_url }}/${{ github.repository }}/actions/runs/${{ github.run_id }}
+        run: |
+          USER_IDS_JSON=$(echo "$LINE_USER_IDS" | tr ',' '\n' | jq -R . | jq -s .)
+          curl -s -X POST https://api.line.me/v2/bot/message/multicast \
+            -H "Content-Type: application/json" \
+            -H "Authorization: Bearer $LINE_CHANNEL_ACCESS_TOKEN" \
+            -d "{
+              \"userIds\": $USER_IDS_JSON,
+              \"messages\": [{\"type\": \"text\", \"text\": \"⚠️ 每日選股掃描 workflow 執行失敗\\n\\n日期：$(date -u +%Y-%m-%d)\\n\\n請至 GitHub Actions 查看錯誤日誌：\\n$RUN_URL\"}]
+            }"

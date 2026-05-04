@@ -98,6 +98,39 @@ def fetch_institutional(stock_id: str, start_date: str, token: str) -> dict | No
         return None
 
 
+def load_price_cache() -> "pd.DataFrame | None":
+    """
+    載入 price_cache.parquet。
+    回傳 DataFrame（欄位：stock_id, date, open, max, min, close, volume_lots）或 None。
+    """
+    cache_path = os.path.join(
+        os.path.dirname(os.path.abspath(__file__)), "..", "data", "price_cache.parquet"
+    )
+    if not os.path.exists(cache_path):
+        return None
+    return pd.read_parquet(cache_path)
+
+
+def get_stock_price_from_cache(
+    cache: "pd.DataFrame",
+    stock_id: str,
+    start_date: str,
+    end_date: str | None = None,
+) -> "pd.DataFrame | None":
+    """
+    從快取切出單支股票資料，格式與 fetch_stock_price 完全相同。
+    回傳 DataFrame 或 None（快取內無該股）。
+    """
+    df = cache[cache["stock_id"] == stock_id]
+    df = df[df["date"] >= pd.Timestamp(start_date)]
+    if end_date:
+        df = df[df["date"] <= pd.Timestamp(end_date)]
+    df = df.sort_values("date").reset_index(drop=True)
+    if df.empty:
+        return None
+    return df[["date", "open", "max", "min", "close", "volume_lots"]].copy()
+
+
 def fetch_month_revenue(stock_id: str, token: str, months: int = 15) -> list[dict] | None:
     """
     取得個股月營收（近 months 個月）。
