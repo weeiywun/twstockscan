@@ -216,6 +216,9 @@ function renderChipsHolder(strat, main) {
           <div class="summary-label">資料日期</div>
           <div class="summary-value" style="font-size:16px;font-family:var(--mono)">${strat.dataUpdated}</div>
           <div class="summary-sub">${strat.dataSource}</div>
+          ${strat.priceUpdated && strat.priceUpdated !== strat.dataUpdated
+            ? `<div class="summary-sub" style="margin-top:3px;color:var(--green)">現價 ${strat.priceUpdated} 更新</div>`
+            : ''}
         </div>
         <div class="summary-card">
           <div class="summary-label">排列方式</div>
@@ -230,7 +233,7 @@ function renderChipsHolder(strat, main) {
         <div class="table-toolbar">
           <span class="table-title">篩選結果</span>
           <div class="toolbar-right">
-            <span class="updated-tag">更新：${strat.dataUpdated}</span>
+            <span class="updated-tag">籌碼：${strat.dataUpdated}${strat.priceUpdated && strat.priceUpdated !== strat.dataUpdated ? `　現價：${strat.priceUpdated}` : ''}</span>
             <button class="btn-csv" onclick="exportCSVChips()" title="匯出 CSV">↓ 匯出 CSV</button>
           </div>
         </div>

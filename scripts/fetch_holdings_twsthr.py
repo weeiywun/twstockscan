@@ -18,7 +18,7 @@
 
 import csv, json, os, re, time
 from datetime import datetime, timedelta, timezone
-from finmind_client import fetch_stock_price
+from finmind_client import fetch_stock_price, load_price_cache, get_stock_price_from_cache
 
 SCRIPT_DIR  = os.path.dirname(os.path.abspath(__file__))
 DATA_DIR    = os.path.join(SCRIPT_DIR, "..", "data")
@@ -144,8 +144,11 @@ def _calc_bbw(closes, period=20, num_std=2):
     return round((num_std * 2 * std) / sma * 100.0, 2)
 
 
-def enrich_with_price(stock_id, token):
-    df = fetch_stock_price(stock_id, START_DATE, TODAY, token)
+def enrich_with_price(stock_id, token, cache=None):
+    if cache is not None:
+        df = get_stock_price_from_cache(cache, stock_id, START_DATE, TODAY)
+    else:
+        df = fetch_stock_price(stock_id, START_DATE, TODAY, token)
     if df is None or len(df) < 10:
         return None
     closes  = df["close"].tolist()
@@ -339,10 +342,16 @@ def main():
         print("⚠️  無符合條件股票")
         _write_output([]); return
 
-    print(f"\nStep 3：FinMind 取得股價（{len(candidates)} 支，間隔 {FINMIND_SLEEP}s）...")
+    # 載入價格快取（優先），fallback 逐支打 API
+    price_cache = load_price_cache()
+    if price_cache is not None:
+        print(f"\nStep 3：從 price_cache.parquet 取得股價（{len(candidates)} 支）...")
+    else:
+        print(f"\nStep 3：FinMind 取得股價（{len(candidates)} 支，間隔 {FINMIND_SLEEP}s）...")
+
     results, ok, fail = [], 0, 0
     for i, c in enumerate(candidates, 1):
-        price = enrich_with_price(c["stock_id"], finmind_token)
+        price = enrich_with_price(c["stock_id"], finmind_token, cache=price_cache)
         if price is None:
             fail += 1
         elif (price["vol_5d_avg"] < VOL_MIN_LOTS
@@ -354,7 +363,8 @@ def main():
             results.append({**c, **price})
         if i % 50 == 0:
             print(f"  進度：{i}/{len(candidates)}，通過 {len(results)} / 失敗 {fail}")
-        time.sleep(FINMIND_SLEEP)
+        if price_cache is None:
+            time.sleep(FINMIND_SLEEP)
 
     results.sort(key=lambda r: (r.get("cumulative_3w") or 0) + (r.get("cumulative_3w_400") or 0), reverse=True)
 

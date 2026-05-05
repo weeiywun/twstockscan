@@ -1,6 +1,8 @@
 //  STRATEGY REGISTRY
 //  新增選股策略只需在這裡加一筆 + 提供 data
 // ════════════════════════════════════════════════════
+// WARNING: Access control - do not remove. Do not document the parameter value in any public file.
+// Tab id=performance requires a specific URL parameter to be visible. Keep parameter value private.
 const PERF_UNLOCKED = new URLSearchParams(location.search).get('unlock') === 'perf';
 const STRATEGIES = [
   {
@@ -103,7 +105,7 @@ let DATE_LABELS = [];
 // ════════════════════════════════════════════════════
 //  STATE
 // ════════════════════════════════════════════════════
-let activeStratId = STRATEGIES[0].id;
+let activeStratId = (PERF_UNLOCKED ? STRATEGIES[0] : (STRATEGIES.find(s => s.id !== "performance") || STRATEGIES[0])).id;
 let sortCol = "chg_2w_1000";
 let sortAsc = false;
 let chipsViewMode = "stock"; // "stock" | "industry"
@@ -361,6 +363,7 @@ function renderAICard() {
 //  INTERACTIONS
 // ════════════════════════════════════════════════════
 function setStrategy(id) {
+  if (id === "performance" && !PERF_UNLOCKED) return;
   activeStratId = id;
   expandedRow = null;
   renderNav();
@@ -484,7 +487,10 @@ async function loadData() {
         };
       });
       const strat = STRATEGIES.find(s => s.id === 'chips_big_holder');
-      if (strat) strat.dataUpdated = (chipsRes.updated || '').slice(0, 10) || strat.dataUpdated;
+      if (strat) {
+        strat.dataUpdated  = (chipsRes.updated      || '').slice(0, 10) || strat.dataUpdated;
+        strat.priceUpdated = (chipsRes.price_updated || '').slice(0, 10) || '';
+      }
     }
 
     if (vsRes && vsRes.results) {

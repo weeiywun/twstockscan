@@ -1,14 +1,12 @@
-name: 量增訊號掃描 (Layer 2)
+name: 價格快取初始化（一次性）
 
 on:
   workflow_dispatch:
-  repository_dispatch:
-    types: [volume-signal-trigger]
 
 jobs:
-  scan:
+  init:
     runs-on: ubuntu-latest
-    timeout-minutes: 30
+    timeout-minutes: 60
 
     permissions:
       contents: write
@@ -27,25 +25,26 @@ jobs:
       - name: Install dependencies
         run: pip install -r scripts/requirements.txt
 
-      - name: Run volume signal scan
+      - name: 初始化價格快取（yfinance）
         env:
           FINMIND_TOKEN: ${{ secrets.FINMIND_API_TOKEN }}
-        run: python scripts/scan_volume_signal.py
+        run: python scripts/update_price_cache.py --init
 
-      - name: Commit and push results
+      - name: Commit 快取與股票清單
         run: |
           git config user.name  "github-actions[bot]"
           git config user.email "github-actions[bot]@users.noreply.github.com"
-
-          git fetch origin main
-          git reset --soft origin/main
-          git add data/volume_signal.json data/performance.json data/chips_big_holder.json
-
+          git add data/price_cache.parquet data/stock_list_cache.json
           if ! git diff --staged --quiet; then
-            git commit -m "data: volume_signal & chips price update $(date -u +%Y-%m-%d)"
-            git push origin HEAD:main
+            git commit -m "data: price cache init $(date -u +%Y-%m-%d)"
+            for i in {1..4}; do
+              git pull --rebase --autostash origin main && git push && {
+                echo "✅ Push 成功"
+                break
+              } || sleep $((2 ** i))
+            done
           else
-            echo "資料無變動，略過提交"
+            echo "無變動，略過提交"
           fi
 
       - name: Notify LINE on failure
@@ -61,5 +60,5 @@ jobs:
             -H "Authorization: Bearer $LINE_CHANNEL_ACCESS_TOKEN" \
             -d "{
               \"userIds\": $USER_IDS_JSON,
-              \"messages\": [{\"type\": \"text\", \"text\": \"⚠️ 量增訊號掃描 workflow 執行失敗\n\n日期：$(date -u +%Y-%m-%d)\n\n請至 GitHub Actions 查看錯誤日誌：\n$RUN_URL\"}]
+              \"messages\": [{\"type\": \"text\", \"text\": \"⚠️ 價格快取初始化失敗\\n\\n請至 GitHub Actions 查看錯誤日誌：\\n$RUN_URL\"}]
             }"
