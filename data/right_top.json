@@ -1,6 +1,56 @@
 {
   "strategy_id": "right_top",
-  "updated": "2026-05-05T11:03:15+08:00",
-  "results": [],
-  "industry_stats": []
+  "updated": "2026-05-05T18:48:29+08:00",
+  "results": [
+    {
+      "stock_id": "6203",
+      "name": "海韻電",
+      "industry": "電子零組件業",
+      "market": "TPEX",
+      "close": 76.2,
+      "high_10w": 68.7,
+      "vol_latest_w": 2609,
+      "vol_20w_avg": 1107.0,
+      "vol_ratio": 2.36,
+      "change_pct": 18.14,
+      "week_date": "2026-05-08",
+      "signal_date": "2026-05-05"
+    },
+    {
+      "stock_id": "8234",
+      "name": "新漢",
+      "industry": "電腦及週邊設備業",
+      "market": "TPEX",
+      "close": 75.4,
+      "high_10w": 70.5,
+      "vol_latest_w": 7268,
+      "vol_20w_avg": 4356.8,
+      "vol_ratio": 1.67,
+      "change_pct": 12.71,
+      "week_date": "2026-05-08",
+      "signal_date": "2026-05-05"
+    }
+  ],
+  "industry_stats": [
+    {
+      "industry": "電子零組件業",
+      "count": 1,
+      "stocks": [
+        {
+          "stock_id": "6203",
+          "name": "海韻電"
+        }
+      ]
+    },
+    {
+      "industry": "電腦及週邊設備業",
+      "count": 1,
+      "stocks": [
+        {
+          "stock_id": "8234",
+          "name": "新漢"
+        }
+      ]
+    }
+  ]
 }
