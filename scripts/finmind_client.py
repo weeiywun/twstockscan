@@ -119,3 +119,44 @@ def fetch_month_revenue(stock_id: str, token: str, months: int = 15) -> list[dic
         return [{"date": row["date"], "revenue": float(row["revenue"])} for row in rows]
     except Exception:
         return None
+
+
+def fetch_price_bydate(start_date: str, end_date: str, token: str) -> pd.DataFrame | None:
+    """
+    全市場股價（bydate 模式，不指定 data_id）。
+    建議每次日期範圍不超過 1 週（~8,500 筆），避免超出免費方案每日 row 配額。
+    回傳 DataFrame(stock_id, date, open, max, min, close, volume_lots) 或 None。
+    None 代表致命錯誤（401/402/網路失敗），空 DataFrame 代表該區間無資料。
+    """
+    for attempt in range(3):
+        try:
+            r = requests.get(FINMIND_API, params={
+                "dataset":    "TaiwanStockPrice",
+                "start_date": start_date,
+                "end_date":   end_date,
+                "token":      token,
+            }, timeout=120)
+            data = r.json()
+            status = data.get("status", 0)
+            if status == 401:
+                print("[FinMind] Token 無效（401），請確認 FINMIND_TOKEN")
+                return None
+            if status == 402:
+                print("[FinMind] 超出每日 API 配額（402）")
+                return None
+            if status != 200 or not data.get("data"):
+                return pd.DataFrame()
+            df = pd.DataFrame(data["data"])
+            df["date"] = pd.to_datetime(df["date"])
+            for col in ["open", "max", "min", "close"]:
+                df[col] = pd.to_numeric(df[col], errors="coerce")
+            df["volume_lots"] = (
+                pd.to_numeric(df["Trading_Volume"], errors="coerce") / 1000
+            ).round(0).fillna(0).astype(int)
+            return df[["stock_id", "date", "open", "max", "min", "close", "volume_lots"]]
+        except Exception as e:
+            if attempt < 2:
+                wait = 10 * (attempt + 1)
+                print(f" 重試({attempt + 1}/2，等 {wait}s)...", end="", flush=True)
+                time.sleep(wait)
+    return None
