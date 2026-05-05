@@ -169,6 +169,9 @@ def main():
         print("⚠️  FINMIND_TOKEN 未設定")
 
     stocks = get_all_stocks(token)
+    # 去重：stock_list_cache 可能有同一 stock_id 多筆（industry 不同），保留第一筆
+    seen = set()
+    stocks = [s for s in stocks if not (s["stock_id"] in seen or seen.add(s["stock_id"]))]
     print(f"全市場股票：{len(stocks)} 支")
     if not stocks:
         _write_output([], [])

@@ -77,6 +77,9 @@ def _fetch_stock_list(token: str) -> list[dict]:
                 "industry": industry,
                 "market":   "TWSE" if market in ("twse", "上市", "TWSE") else "TPEX",
             })
+        # FinMind 同一 stock_id 可能回傳多筆（industry 不同），保留第一筆
+        seen: set[str] = set()
+        stocks = [s for s in stocks if not (s["stock_id"] in seen or seen.add(s["stock_id"]))]
         return stocks
     except Exception as e:
         print(f"  ⚠️  取得股票清單失敗：{e}")
