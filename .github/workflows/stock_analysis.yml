@@ -1,11 +1,10 @@
 name: 標的分析 (AI 評分)
 
 on:
-  # 量增訊號掃完後自動觸發
+  # 每日選股掃描完成後自動觸發（維持 P&L 追蹤，Claude AI 分析已移除）
   workflow_run:
     workflows: ["每日選股掃描"]
     types: [completed]
-  # 手動觸發
   workflow_dispatch:
 
 jobs:
@@ -35,8 +34,7 @@ jobs:
 
       - name: Run stock analysis
         env:
-          ANTHROPIC_API_KEY: ${{ secrets.ANTHROPIC_API_KEY }}
-          FINMIND_TOKEN:     ${{ secrets.FINMIND_API_TOKEN }}
+          FINMIND_TOKEN: ${{ secrets.FINMIND_API_TOKEN }}
         run: python scripts/stock_analysis.py
 
       - name: Commit and push results

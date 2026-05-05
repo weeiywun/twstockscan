@@ -11,10 +11,7 @@ import os
 import time
 from datetime import date, datetime, timedelta, timezone
 
-import anthropic
-
 from finmind_client import fetch_stock_price, fetch_month_revenue, load_price_cache, get_stock_price_from_cache
-from news_crawler import fetch_news, format_news_for_prompt
 
 # ── 路徑 ──────────────────────────────────────────────
 SCRIPT_DIR       = os.path.dirname(os.path.abspath(__file__))
@@ -152,70 +149,6 @@ def trading_days_remaining(expire: date, today: date) -> int:
     return count
 
 
-# ════════════════════════════════════════════════════
-#  Claude API 分析
-# ════════════════════════════════════════════════════
-
-CLAUDE_MODEL = "claude-haiku-4-5-20251001"
-
-PROMPT_TEMPLATE = """你是台股分析師，請根據以下資料對股票進行客觀評分分析。
-
-=== 股票資訊 ===
-代號：{ticker}　名稱：{name}　產業：{industry}
-
-=== 量化數據 ===
-現價：{close}　月營收 YoY：{yoy_curr}%　MoM：{mom_curr}%
-
-=== 近期新聞（近 5 天）===
-{news_text}
-
-=== 評分規則 ===
-請對以下兩個維度各給 1~10 分（整數）：
-1. ai_news_score：綜合新聞事件對股價的正負面影響強度（法說會/財報/利多利空/特殊因素）
-2. ai_industry_score：所屬產業趨勢與市場展望（正面=高分，負面=低分）
-
-若新聞不足，請依產業背景合理推估，不可都給 5。
-
-請只回覆以下 JSON，不加任何其他文字：
-{{
-  "ai_news_score": <int>,
-  "ai_industry_score": <int>,
-  "summary": "<一句話總結，30 字以內>",
-  "risk": "<主要風險一句話，30 字以內>"
-}}"""
-
-
-def call_claude(stock: dict, news_text: str, api_key: str,
-                yoy_curr: float = 0.0, mom_curr: float = 0.0) -> dict | None:
-    """呼叫 Claude API，回傳解析後的 dict 或 None"""
-    prompt = PROMPT_TEMPLATE.format(
-        ticker    = stock["stock_id"],
-        name      = stock["name"],
-        industry  = stock.get("industry", "未知"),
-        close     = stock.get("close", "—"),
-        yoy_curr  = f"{yoy_curr:+.1f}" if yoy_curr else "—",
-        mom_curr  = f"{mom_curr:+.1f}" if mom_curr else "—",
-        news_text = news_text,
-    )
-    try:
-        client = anthropic.Anthropic(api_key=api_key)
-        message = client.messages.create(
-            model      = CLAUDE_MODEL,
-            max_tokens = 512,
-            messages   = [{"role": "user", "content": prompt}],
-        )
-        raw = message.content[0].text.strip()
-        # 擷取 JSON 區塊
-        start = raw.find("{")
-        end   = raw.rfind("}") + 1
-        if start == -1 or end == 0:
-            print(f"  ⚠️  Claude 回覆無法解析 JSON：{raw[:80]}")
-            return None
-        return json.loads(raw[start:end])
-    except Exception as e:
-        print(f"  ⚠️  Claude API 錯誤：{e}")
-        return None
-
 
 # ════════════════════════════════════════════════════
 #  現價更新
@@ -250,11 +183,8 @@ def save_json(path: str, data: dict):
 
 def main():
     print("=== 標的分析腳本 ===")
-    anthropic_key = os.environ.get("ANTHROPIC_API_KEY", "")
     finmind_token = os.environ.get("FINMIND_TOKEN", "")
 
-    if not anthropic_key:
-        print("⚠️  ANTHROPIC_API_KEY 未設定，跳過 AI 分析")
     if not finmind_token:
         print("⚠️  FINMIND_TOKEN 未設定，無法更新現價")
 
@@ -276,18 +206,15 @@ def main():
 
     print(f"今日量增訊號：{len(vs_results)} 支　現有追蹤：{len(active_list)} 支")
 
-    # expired 中有記錄代表曾被分析過（重複訊號）
-    expired_map = {e["ticker"]: e for e in expired_list}
-
     # ── 判斷新進標的 ──────────────────────────────────
     new_stocks = [s for s in vs_results if s["stock_id"] not in active_tickers]
-    print(f"新進標的：{len(new_stocks)} 支 → 觸發 AI 分析")
+    print(f"新進標的：{len(new_stocks)} 支")
 
-    # ── AI 分析新標的 ─────────────────────────────────
+    # ── 新標的入池 ────────────────────────────────────
     for stock in new_stocks:
         sid  = stock["stock_id"]
         name = stock["name"]
-        print(f"\n  分析 {sid} {name}...")
+        print(f"\n  入池 {sid} {name}...")
 
         # 月營收
         yoy_curr = mom_curr = yoy_last = 0.0
@@ -301,77 +228,35 @@ def main():
                 print(f"    月營收資料不足，使用中立值")
             time.sleep(0.35)
 
-        # 新聞爬蟲
-        news = fetch_news(sid, limit=10)
-        print(f"    新聞：{len(news)} 篇")
-        news_text = format_news_for_prompt(news)
-
-        # Claude 評分
-        ai_result = None
-        if anthropic_key:
-            ai_result = call_claude(stock, news_text, anthropic_key, yoy_curr, mom_curr)
-
-        if ai_result:
-            ai_news_score     = float(ai_result.get("ai_news_score", 5))
-            ai_industry_score = float(ai_result.get("ai_industry_score", 5))
-            summary           = ai_result.get("summary", "")
-            risk              = ai_result.get("risk", "")
-            print(f"    AI新聞={ai_news_score} 產業={ai_industry_score}　{summary[:20]}...")
-        else:
-            ai_news_score = ai_industry_score = 5.0
-            summary = "AI 分析未能取得，以量化數據為主"
-            risk    = "新聞資料不足，請手動確認基本面"
-
-        # v1.6 評分
+        # 量化評分（ai_news / ai_industry 固定中立 5.0，不呼叫外部 AI）
         result = calculate_v1_6_score(
-            ai_news_score     = ai_news_score,
-            ai_industry_score = ai_industry_score,
+            ai_news_score     = 5.0,
+            ai_industry_score = 5.0,
             chip_3w_pct       = stock.get("cumulative_3w") or 0.0,
             chip_big_pct      = stock.get("big_pct_1000") or 40.0,
             rev_yoy_curr      = yoy_curr,
             rev_mom_curr      = mom_curr,
             rev_yoy_last      = yoy_last,
         )
-        composite = result["final_score"]
-        rec       = result["recommendation"]
 
         expire_obj  = add_trading_days(today_obj, OBSERVE_TRADING_DAYS)
         days_remain = trading_days_remaining(expire_obj, today_obj)
 
-        # 判斷是否為重複訊號（曾在 expired 清單中）
-        prev_expired = expired_map.get(sid)
-        is_repeat    = prev_expired is not None
-        repeat_count = (prev_expired.get("repeat_count", 1) + 1) if is_repeat else 1
-
         entry = {
-            "ticker":           sid,
-            "name":             name,
-            "industry":         stock.get("industry", ""),
-            "trigger_date":     TODAY,
-            "expire_date":      expire_obj.isoformat(),
-            "days_remaining":   days_remain,
-            "entry_price":      stock.get("close", 0),
-            "current_price":    stock.get("close", 0),
-            "pnl_pct":          0.0,
-            "repeat":           is_repeat,
-            "repeat_count":     repeat_count,
-            "ai_analysis_date": TODAY,
-            "composite_score":  composite,
-            "recommendation":   rec,
-            "base_score":       result["base_score"],
-            "multiplier":       result["multiplier"],
-            "action_log":       result["action_log"],
-            "rev_grade":        result["rev_grade"],
-            "quant_scores":     result["quant_scores"],
-            "ai_scores": {
-                "ai_news_score":     ai_news_score,
-                "ai_industry_score": ai_industry_score,
-            },
-            "summary":          summary,
-            "risk":             risk,
+            "ticker":         sid,
+            "name":           name,
+            "industry":       stock.get("industry", ""),
+            "trigger_date":   TODAY,
+            "expire_date":    expire_obj.isoformat(),
+            "days_remaining": days_remain,
+            "entry_price":    stock.get("close", 0),
+            "current_price":  stock.get("close", 0),
+            "pnl_pct":        0.0,
+            "rev_grade":      result["rev_grade"],
+            "quant_scores":   result["quant_scores"],
         }
         active_list.append(entry)
-        print(f"    ✅ {sid} 綜合評分 {composite}（{rec}）{result['action_log']}，到期 {expire_obj}")
+        print(f"    ✅ {sid} 入池，到期 {expire_obj}，營收等級 {result['rev_grade']}")
 
     # ── 每日更新：active 現價 & 損益 & 剩餘天數 ─────────
     print(f"\n更新 active 標的現價（{len(active_list)} 支）...")
@@ -401,15 +286,14 @@ def main():
             expired_entry = {
                 "ticker":        item["ticker"],
                 "name":          item["name"],
-                "entry_date":    item["trigger_date"],
+                "industry":      item.get("industry", ""),
+                "entry_date":    item.get("trigger_date", item.get("entry_date", "")),
                 "entry_price":   item["entry_price"],
                 "current_price": item["current_price"],
                 "pnl_pct":       item["pnl_pct"],
-                "composite_score": item["composite_score"],
-                "recommendation":  item["recommendation"],
-                "repeat":          item.get("repeat", False),
-                "repeat_count":    item.get("repeat_count", 1),
-                "remove_date":     remove_date,
+                "rev_grade":     item.get("rev_grade", ""),
+                "quant_scores":  item.get("quant_scores", {}),
+                "remove_date":   remove_date,
             }
             newly_expired.append(expired_entry)
             print(f"  📦 {sid} 到期 → 移入歷史")

@@ -1,9 +1,11 @@
 name: AI Stock Ranking
 
 on:
-  push:
-    paths:
-      - 'data/chips_big_holder.json'
+  # 暫停自動執行（AI 排名功能暫時停用）
+  # push:
+  #   paths:
+  #     - 'data/chips_big_holder.json'
+  workflow_dispatch:
 
 jobs:
   rank:
