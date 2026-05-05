@@ -64,6 +64,11 @@ jobs:
           FINMIND_TOKEN: ${{ secrets.FINMIND_API_TOKEN }}
         run: python scripts/scan_right_top.py
 
+      - name: 右上角標的追蹤
+        env:
+          FINMIND_TOKEN: ${{ secrets.FINMIND_API_TOKEN }}
+        run: python scripts/track_right_top.py
+
       - name: 量增訊號掃描
         env:
           FINMIND_TOKEN: ${{ secrets.FINMIND_API_TOKEN }}
@@ -77,7 +82,7 @@ jobs:
           git config user.email "github-actions[bot]@users.noreply.github.com"
           git fetch origin main
           git reset --soft origin/main
-          git add data/right_top.json data/volume_signal.json data/performance.json data/chips_big_holder.json
+          git add data/right_top.json data/right_top_track.json data/volume_signal.json data/performance.json data/chips_big_holder.json
           if ! git diff --staged --quiet; then
             git commit -m "data: daily scan update $(date -u +%Y-%m-%d)"
             git push origin HEAD:main

@@ -86,6 +86,16 @@ const STRATEGIES = [
     dataSource: "FinMind（每日盤後）",
     dataKey: "right_top_data",
   },
+  {
+    id: "right_top_track",
+    name: "標的追蹤",
+    shortName: "標的追蹤",
+    icon: "◉",
+    group: "right_top",
+    available: true,
+    description: "右上角策略觸發標的的後續追蹤，記錄入選收盤、現價、損益，觀察期 10 個交易日。",
+    conditions: [],
+  },
 ];
 
 
@@ -99,6 +109,7 @@ const DATA = {
   performance_data:       null,
   right_top_data:         [],
   right_top_industry:     [],
+  right_top_track_data:   null,
 };
 let DATE_LABELS = [];
 
@@ -197,6 +208,7 @@ function _navBadge(s) {
   if (!s.available) return '—';
   if (s.id === 'performance') return (DATA.performance_data?.positions || []).filter(p => !p.confirmed).length;
   if (s.id === 'stock_analysis') return DATA.stock_analysis_data?.active?.length ?? '—';
+  if (s.id === 'right_top_track') return DATA.right_top_track_data?.active?.length ?? '—';
   return (DATA[s.dataKey] || []).length;
 }
 
@@ -274,7 +286,8 @@ function renderStrategy() {
   if (strat.id === 'chips_big_holder') { renderChipsHolder(strat, main);    return; }
   if (strat.id === 'volume_signal')    { renderVolumeSignal(strat, main);   return; }
   if (strat.id === 'stock_analysis')   { renderStockAnalysis(strat, main);  return; }
-  if (strat.id === 'right_top')        { renderRightTop(strat, main);       return; }
+  if (strat.id === 'right_top')        { renderRightTop(strat, main);          return; }
+  if (strat.id === 'right_top_track') { renderRightTopTrack(strat, main);     return; }
   if (strat.id === 'performance')      { renderPerformance(strat, main);    return; }
 }
 
@@ -467,13 +480,14 @@ async function loadData() {
   const timestamp = new Date().getTime();
 
   try {
-    const [chipsRes, vsRes, aiRes, saRes, perfRes, rtRes] = await Promise.all([
+    const [chipsRes, vsRes, aiRes, saRes, perfRes, rtRes, rttRes] = await Promise.all([
       fetch(`data/chips_big_holder.json?t=${timestamp}`,   { cache: 'no-store' }).then(r => r.ok ? r.json() : null).catch(() => null),
       fetch(`data/volume_signal.json?t=${timestamp}`,      { cache: 'no-store' }).then(r => r.ok ? r.json() : null).catch(() => null),
       fetch(`data/ai_recommendations.json?t=${timestamp}`, { cache: 'no-store' }).then(r => r.ok ? r.json() : null).catch(() => null),
       fetch(`data/ai_analysis.json?t=${timestamp}`,        { cache: 'no-store' }).then(r => r.ok ? r.json() : null).catch(() => null),
       fetch(`data/performance.json?t=${timestamp}`,        { cache: 'no-store' }).then(r => r.ok ? r.json() : null).catch(() => null),
       fetch(`data/right_top.json?t=${timestamp}`,          { cache: 'no-store' }).then(r => r.ok ? r.json() : null).catch(() => null),
+      fetch(`data/right_top_track.json?t=${timestamp}`,    { cache: 'no-store' }).then(r => r.ok ? r.json() : null).catch(() => null),
     ]);
 
     if (chipsRes && chipsRes.results) {
@@ -516,6 +530,10 @@ async function loadData() {
       DATA.right_top_industry = rtRes.industry_stats || [];
       const strat = STRATEGIES.find(s => s.id === 'right_top');
       if (strat) strat.dataUpdated = (rtRes.updated || '').slice(0, 10) || strat.dataUpdated;
+    }
+
+    if (rttRes && (rttRes.active || rttRes.expired)) {
+      DATA.right_top_track_data = rttRes;
     }
   } catch (e) {
     console.error('資料載入失敗:', e);
