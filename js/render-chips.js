@@ -286,21 +286,22 @@ function exportCSVChips() {
   const data = DATA.chips_big_holder_data || [];
   if (!data.length) return;
   const strat = STRATEGIES.find(s => s.id === 'chips_big_holder');
-  const headers = ['代號','名稱','族群','現價','周漲跌(%)','乖離EMA120(%)','大戶比例(%)','三周累積增幅(%)','標籤','分數'];
+  const headers = ['代號(名稱)','現價','周漲跌(%)','乖離EMA120(%)','大戶比例(%)','千張大戶四周增幅(%)','400張大戶四周增幅(%)'];
   const rows = data.map(d => [
-    d.stock_id, d.name, d.industry || '',
+    `${d.stock_id}(${d.name})`,
     d.close?.toFixed(1) || '',
     d.week_chg_pct != null ? d.week_chg_pct.toFixed(2) : '',
     d.deviation != null ? d.deviation.toFixed(2) : '',
     d.big_pct_1000?.toFixed(2) || '',
-    combined3w(d).toFixed(2),
-    (d.tags || []).join(' '),
-    d.tag_score || 0,
+    d.chg_4w_1000 != null ? d.chg_4w_1000.toFixed(2) : '',
+    d.chg_4w_400 != null ? d.chg_4w_400.toFixed(2) : '',
   ]);
   const csv = [headers, ...rows].map(r => r.map(v => `"${String(v).replace(/"/g,'""')}"`).join(',')).join('\r\n');
   const blob = new Blob(['\uFEFF' + csv], { type: 'text/csv;charset=utf-8' });
-  const a = Object.assign(document.createElement('a'), { href: URL.createObjectURL(blob), download: `chips_${strat.dataUpdated}.csv` });
+  const a = Object.assign(document.createElement('a'), { href: URL.createObjectURL(blob), download: `chips_${strat?.dataUpdated || 'export'}.csv` });
+  document.body.appendChild(a);
   a.click();
+  document.body.removeChild(a);
 }
 
 // ════════════════════════════════════════════════════
