@@ -1,9 +1,9 @@
 name: 每日選股掃描
 
 on:
-  # 週一到週五 台灣時間 18:00（UTC 10:00）執行，確保盤後資料已就緒
+  # 週一到週五 台灣時間 17:00（UTC 09:00）執行，確保盤後資料已就緒
   schedule:
-    - cron: '0 10 * * 1-5'
+    - cron: '0 9 * * 1-5'
   workflow_dispatch:
     inputs:
       backfill_month:
