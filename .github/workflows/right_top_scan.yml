@@ -41,7 +41,7 @@ jobs:
 
           git fetch origin main
           git reset --soft origin/main
-          git add data/right_top.json data/price_weekly_cache.json
+          git add data/right_top.json
 
           if ! git diff --staged --quiet; then
             git commit -m "data: right_top update $(date -u +%Y-%m-%d)"

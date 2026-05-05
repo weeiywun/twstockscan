@@ -13,7 +13,7 @@ from datetime import date, datetime, timedelta, timezone
 
 import anthropic
 
-from finmind_client import fetch_stock_price, fetch_month_revenue
+from finmind_client import fetch_stock_price, fetch_month_revenue, load_price_cache, get_stock_price_from_cache
 from news_crawler import fetch_news, format_news_for_prompt
 
 # ── 路徑 ──────────────────────────────────────────────
@@ -221,8 +221,12 @@ def call_claude(stock: dict, news_text: str, api_key: str,
 #  現價更新
 # ════════════════════════════════════════════════════
 
-def fetch_close(stock_id: str, finmind_token: str) -> float | None:
+def fetch_close(stock_id: str, finmind_token: str, price_cache=None) -> float | None:
     start = (datetime.now(TW_TZ) - timedelta(days=5)).strftime("%Y-%m-%d")
+    if price_cache is not None:
+        df = get_stock_price_from_cache(price_cache, stock_id, start)
+        if df is not None and len(df) > 0:
+            return round(float(df.iloc[-1]["close"]), 2)
     df = fetch_stock_price(stock_id, start, TODAY, finmind_token)
     if df is None or len(df) == 0:
         return None
@@ -253,6 +257,11 @@ def main():
         print("⚠️  ANTHROPIC_API_KEY 未設定，跳過 AI 分析")
     if not finmind_token:
         print("⚠️  FINMIND_TOKEN 未設定，無法更新現價")
+
+    # ── 載入價格快取（用於現價更新，避免逐支 API 請求）──
+    price_cache = load_price_cache()
+    if price_cache is not None:
+        print(f"  price_cache.parquet 已載入：{price_cache['stock_id'].nunique()} 支")
 
     # ── 讀入資料 ─────────────────────────────────────
     vs_data   = load_json(VS_PATH)
@@ -378,12 +387,13 @@ def main():
 
         # 更新現價
         if finmind_token:
-            price = fetch_close(sid, finmind_token)
+            price = fetch_close(sid, finmind_token, price_cache)
             if price:
                 item["current_price"] = price
                 entry_price = item.get("entry_price") or price
                 item["pnl_pct"] = round((price - entry_price) / entry_price * 100, 2) if entry_price else 0.0
-            time.sleep(0.35)
+            if price_cache is None:
+                time.sleep(0.35)
 
         if days_remain <= 0:
             # 移入歷史
@@ -417,12 +427,13 @@ def main():
     if finmind_token:
         print(f"更新 expired 現價（{len(expired_list)} 支）...")
         for item in expired_list:
-            price = fetch_close(item["ticker"], finmind_token)
+            price = fetch_close(item["ticker"], finmind_token, price_cache)
             if price:
                 item["current_price"] = price
                 ep = item.get("entry_price") or price
                 item["pnl_pct"] = round((price - ep) / ep * 100, 2) if ep else 0.0
-            time.sleep(0.35)
+            if price_cache is None:
+                time.sleep(0.35)
 
     # ── 寫出 ──────────────────────────────────────────
     sa_out = {

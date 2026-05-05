@@ -77,7 +77,7 @@ jobs:
           git config user.email "github-actions[bot]@users.noreply.github.com"
           git fetch origin main
           git reset --soft origin/main
-          git add data/right_top.json data/volume_signal.json data/performance.json
+          git add data/right_top.json data/volume_signal.json data/performance.json data/chips_big_holder.json
           if ! git diff --staged --quiet; then
             git commit -m "data: daily scan update $(date -u +%Y-%m-%d)"
             git push origin HEAD:main

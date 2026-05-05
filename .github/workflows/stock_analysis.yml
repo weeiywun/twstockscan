@@ -3,7 +3,7 @@ name: 標的分析 (AI 評分)
 on:
   # 量增訊號掃完後自動觸發
   workflow_run:
-    workflows: ["量增訊號掃描 (Layer 2)"]
+    workflows: ["每日選股掃描"]
     types: [completed]
   # 手動觸發
   workflow_dispatch:
