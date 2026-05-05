@@ -32,8 +32,12 @@ function renderStockAnalysis(strat, main) {
   function sortRows(arr, col, asc) {
     return arr.slice().sort((a, b) => {
       const va = getValue(a, col), vb = getValue(b, col);
+      const isDate = /^\d{4}-\d{2}-\d{2}/.test(String(va)) || /^\d{4}-\d{2}-\d{2}/.test(String(vb));
       const na = parseFloat(va), nb = parseFloat(vb);
-      const cmp = (!isNaN(na) && !isNaN(nb)) ? na - nb : String(va).localeCompare(String(vb));
+      const cmp = isDate
+        ? String(va).localeCompare(String(vb))
+        : (!isNaN(na) && !isNaN(nb)) ? na - nb
+        : String(va).localeCompare(String(vb));
       return asc ? cmp : -cmp;
     });
   }
