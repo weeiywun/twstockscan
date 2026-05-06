@@ -1,9 +1,11 @@
 name: 每日選股掃描
 
 on:
-  # 週一到週五 台灣時間 18:44（UTC 10:44）執行，暫時測試自動排程觸發
+  # 週一到週五 台灣時間 17:00（UTC 09:00）執行
   schedule:
-    - cron: '44 10 * * 1-5'
+    - cron: '0 9 * * 1-5'
+  repository_dispatch:
+    types: [daily_scan_1700]
   workflow_dispatch:
     inputs:
       backfill_month:
