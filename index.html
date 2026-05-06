@@ -19,7 +19,10 @@
       SR_PC
       <span class="version-badge">v0.4.0</span>
     </div>
-    <div class="header-meta" id="headerMeta">載入中...</div>
+    <div class="header-meta">
+      <span id="headerMeta">載入中...</span>
+      <button id="headerUpdateBtn" class="header-update-btn" onclick="triggerPriceUpdate(this)" title="觸發 GitHub Actions 重新抓取所有標的現價（需 GitHub Token）">↑ 更新現價</button>
+    </div>
   </div>
 </header>
 

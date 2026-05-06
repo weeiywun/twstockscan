@@ -407,7 +407,6 @@ function renderPerformance(strat, main) {
             ${token ? '● Token 已設定' : '○ 未設定 Token（僅可瀏覽，無法儲存）'}
           </span>
           <button class="perf-btn" onclick="openTokenModal()">⚙ 設定 Token</button>
-          <button class="perf-btn" onclick="triggerPriceUpdate(this)" title="觸發 GitHub Actions 重新抓取所有標的現價（需 workflow 權限）">↑ 更新現價</button>
           <button class="perf-btn" onclick="perfSyncData()">↻ 同步資料</button>
         </div>
       </div>
