@@ -29,6 +29,47 @@ function posRemainingShares(p) {
   return p.shares - p.exits.reduce((s, e) => s + e.shares, 0);
 }
 
+let closedSort = { key: 'exit_date', dir: -1 };
+
+function perfSortClosed(key) {
+  if (closedSort.key === key) closedSort.dir *= -1;
+  else { closedSort.key = key; closedSort.dir = -1; }
+  renderStrategy();
+}
+
+function _closedSortVal(p, key) {
+  if (key === 'stock_id')   return p.stock_id;
+  if (key === 'entry_date') return p.entry_date;
+  if (key === 'exit_date') {
+    if (p.exits && p.exits.length) return p.exits[p.exits.length - 1].date;
+    return p.exit_date || '';
+  }
+  if (key === 'pnl') {
+    if (p.exits && p.exits.length)
+      return p.exits.reduce((s, ex) => s + ex.exit_net - ex.shares * p.cost_price, 0);
+    const ev = p.exit_net != null ? p.exit_net : p.shares * p.exit_price;
+    return ev - p.shares * p.cost_price;
+  }
+  if (key === 'pnl_pct') {
+    if (p.exits && p.exits.length) {
+      const net  = p.exits.reduce((s, ex) => s + ex.exit_net, 0);
+      const cost = p.exits.reduce((s, ex) => s + ex.shares * p.cost_price, 0);
+      return (net / cost - 1) * 100;
+    }
+    const ev   = p.exit_net != null ? p.exit_net : p.shares * p.exit_price;
+    const cost = p.shares * p.cost_price;
+    return (ev / cost - 1) * 100;
+  }
+  return '';
+}
+
+function _sortTh(label, key) {
+  const arrow = closedSort.key === key
+    ? ` <span style="font-size:10px">${closedSort.dir > 0 ? '↑' : '↓'}</span>`
+    : ' <span style="font-size:10px;color:var(--text3)">↕</span>';
+  return `<th style="cursor:pointer;white-space:nowrap;user-select:none" onclick="perfSortClosed('${key}')">${label}${arrow}</th>`;
+}
+
 async function ghWritePerf(data) {
   const token = ghToken();
   if (!token) { alert('請先設定 GitHub Token'); return false; }
@@ -253,8 +294,10 @@ function renderPerformance(strat, main) {
   function activeRow(p) {
     const remaining = posRemainingShares(p);
     const cp = getLatestPrice(p.stock_id);
-    const posVal = (cp ?? p.cost_price) * remaining;
     const posCost = p.cost_price * remaining;
+    // 扣除賣出手續費+交易稅，顯示與券商 app 一致的真實損益
+    const posVal = cp != null ? calcSellNet(cp, remaining).net : posCost;
+    const pnlAmt = posVal - posCost;
     const pnlPct = ((posVal / posCost) - 1) * 100;
     const pc = pnlPct >= 0 ? 'var(--green)' : 'var(--red)';
     const ps = pnlPct >= 0 ? '+' : '';
@@ -268,7 +311,7 @@ function renderPerformance(strat, main) {
         <td style="font-family:var(--mono)">${sharesCell}</td>
         <td style="font-family:var(--mono)">${p.cost_price.toFixed(2)}</td>
         <td style="font-family:var(--mono)">${cp != null ? cp.toFixed(2) : '<span style="color:var(--text3)">—</span>'}</td>
-        <td><span style="font-family:var(--mono);color:${pc};font-weight:600">${ps}${pnlPct.toFixed(2)}%</span><br><span style="font-family:var(--mono);font-size:11px;color:${pc}">${ps}${Math.round(posVal - posCost).toLocaleString()}</span></td>
+        <td><span style="font-family:var(--mono);color:${pc};font-weight:600">${ps}${pnlPct.toFixed(2)}%</span><br><span style="font-family:var(--mono);font-size:11px;color:${pc}">${ps}${Math.round(pnlAmt).toLocaleString()}</span></td>
         <td style="font-family:var(--mono);font-size:12px;color:var(--green)">${p.tp_price != null ? p.tp_price.toFixed(2) : '<span style="color:var(--text3)">—</span>'}</td>
         <td style="font-family:var(--mono);font-size:12px;color:var(--red)">${p.sl_price != null ? p.sl_price.toFixed(2) : '<span style="color:var(--text3)">—</span>'}</td>
         <td style="white-space:nowrap">
@@ -491,11 +534,13 @@ function renderPerformance(strat, main) {
           <div class="table-scroll">
             <table>
               <thead><tr>
-                <th>股票</th><th>建倉日</th><th>出場日</th><th>股數</th>
-                <th>成本</th><th>賣出價</th><th>損益（NT$）</th><th>損益率</th><th>操作</th>
+                ${_sortTh('股票', 'stock_id')}${_sortTh('建倉日', 'entry_date')}${_sortTh('出場日', 'exit_date')}<th>股數</th><th>成本</th><th>賣出價</th>${_sortTh('損益（NT$）', 'pnl')}${_sortTh('損益率', 'pnl_pct')}<th>操作</th>
               </tr></thead>
               <tbody>
-                ${closed.length ? closed.map(closedRow).join('') : `<tr><td colspan="9" style="text-align:center;color:var(--text3);padding:24px 16px;font-size:13px">尚無出場記錄</td></tr>`}
+                ${closed.length ? [...closed].sort((a, b) => {
+                  const av = _closedSortVal(a, closedSort.key), bv = _closedSortVal(b, closedSort.key);
+                  return av < bv ? -closedSort.dir : av > bv ? closedSort.dir : 0;
+                }).map(closedRow).join('') : `<tr><td colspan="9" style="text-align:center;color:var(--text3);padding:24px 16px;font-size:13px">尚無出場記錄</td></tr>`}
               </tbody>
             </table>
           </div>
