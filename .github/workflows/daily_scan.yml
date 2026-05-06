@@ -1,9 +1,9 @@
 name: 每日選股掃描
 
 on:
-  # 週一到週五 台灣時間 18:44（UTC 10:44）執行，暫時測試自動排程觸發
-  schedule:
-    - cron: '44 10 * * 1-5'
+  # 由 Google Apps Script 於台灣時間 17:00 觸發，避免 GitHub schedule 延遲或漏跑。
+  repository_dispatch:
+    types: [daily_scan_1700]
   workflow_dispatch:
     inputs:
       confirm:
