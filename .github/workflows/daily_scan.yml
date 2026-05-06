@@ -110,6 +110,12 @@ jobs:
             echo "掃描結果無變動，略過提交"
           fi
 
+      - name: Notify LINE on success
+        env:
+          LINE_CHANNEL_ACCESS_TOKEN: ${{ secrets.LINE_CHANNEL_ACCESS_TOKEN }}
+          LINE_USER_IDS: ${{ secrets.LINE_USER_IDS }}
+        run: python scripts/send_daily_scan_summary.py
+
       - name: Notify LINE on failure
         if: failure()
         env:
