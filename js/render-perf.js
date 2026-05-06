@@ -407,6 +407,7 @@ function renderPerformance(strat, main) {
             ${token ? '● Token 已設定' : '○ 未設定 Token（僅可瀏覽，無法儲存）'}
           </span>
           <button class="perf-btn" onclick="openTokenModal()">⚙ 設定 Token</button>
+          <button class="perf-btn" onclick="triggerPriceUpdate(this)" title="觸發 GitHub Actions 重新抓取所有標的現價（需 workflow 權限）">↑ 更新現價</button>
           <button class="perf-btn" onclick="perfSyncData()">↻ 同步資料</button>
         </div>
       </div>
@@ -664,6 +665,42 @@ async function perfSyncData() {
     if (res.ok) { DATA.performance_data = await res.json(); renderStrategy(); }
     else alert('同步失敗，請確認 performance.json 已建立於 data/ 目錄');
   } catch(e) { alert('同步失敗：' + e.message); }
+}
+
+async function triggerPriceUpdate(btn) {
+  const token = ghToken();
+  if (!token) {
+    alert('請先設定 GitHub Token\n\n需要勾選 workflow 讀寫權限（或 repo 完整權限）');
+    return;
+  }
+  const orig = btn.textContent;
+  btn.disabled = true;
+  btn.textContent = '⏳ 觸發中...';
+  try {
+    const res = await fetch(
+      `https://api.github.com/repos/${GH_OWNER}/${GH_REPO}/actions/workflows/daily_scan.yml/dispatches`,
+      {
+        method: 'POST',
+        headers: {
+          Authorization: `token ${token}`,
+          'Content-Type': 'application/json',
+          Accept: 'application/vnd.github.v3+json',
+        },
+        body: JSON.stringify({ ref: 'main' }),
+      }
+    );
+    if (res.status === 204) {
+      alert('✅ 已觸發現價更新！\n\nGitHub Actions 工作流程已啟動，約 10–15 分鐘後完成。\n完成後請點「↻ 同步資料」取得最新數據。');
+    } else {
+      const e = await res.json().catch(() => ({}));
+      throw new Error(e.message || `HTTP ${res.status}`);
+    }
+  } catch(e) {
+    alert('觸發失敗：' + e.message + '\n\n請確認 Token 已勾選 workflow 讀寫權限');
+  } finally {
+    btn.disabled = false;
+    btn.textContent = orig;
+  }
 }
 
 // ════════════════════════════════════════════════════

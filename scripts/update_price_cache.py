@@ -107,24 +107,42 @@ def update_stock_list_cache(token: str):
 def _fetch_bydate(start_date: str, end_date: str, token: str) -> pd.DataFrame | None:
     """一次取得全市場指定日期範圍的調整後股價（不帶 data_id）"""
     print(f"  → GET TaiwanStockPriceAdj  {start_date} ～ {end_date}")
-    try:
-        r = requests.get(FINMIND_API, params={
-            "dataset":    "TaiwanStockPriceAdj",
-            "start_date": start_date,
-            "end_date":   end_date,
-            "token":      token,
-        }, timeout=120)
-        data = r.json()
-        if data.get("status") != 200:
-            print(f"  ⚠️  API 回應異常：{data.get('msg', 'unknown')}")
-            return None
-        if not data.get("data"):
-            print("  ⚠️  API 回傳空資料")
-            return None
-        return pd.DataFrame(data["data"])
-    except Exception as e:
-        print(f"  ⚠️  fetch_bydate 失敗：{e}")
-        return None
+    for attempt in range(3):
+        try:
+            r = requests.get(FINMIND_API, params={
+                "dataset":    "TaiwanStockPriceAdj",
+                "start_date": start_date,
+                "end_date":   end_date,
+                "token":      token,
+            }, timeout=120)
+            data = r.json()
+            status = data.get("status", 0)
+            if status == 401:
+                print("  ❌ Token 無效（401），請確認 FINMIND_TOKEN")
+                return None
+            if status == 402:
+                print("  ❌ 超出每日 API 配額（402）")
+                return None
+            if status != 200:
+                print(f"  ⚠️  API 回應異常（{status}）：{data.get('msg', 'unknown')}")
+                if attempt < 2:
+                    wait = 15 * (attempt + 1)
+                    print(f"  重試({attempt + 1}/2，等 {wait}s)...")
+                    time.sleep(wait)
+                    continue
+                return None
+            if not data.get("data"):
+                print("  ⚠️  API 回傳空資料（可能為非交易日）")
+                return pd.DataFrame()
+            return pd.DataFrame(data["data"])
+        except Exception as e:
+            if attempt < 2:
+                wait = 15 * (attempt + 1)
+                print(f"  ⚠️  fetch_bydate 失敗：{e}，重試({attempt + 1}/2，等 {wait}s)...")
+                time.sleep(wait)
+            else:
+                print(f"  ❌ fetch_bydate 三次皆失敗：{e}")
+    return None
 
 
 def _normalize(df: pd.DataFrame) -> pd.DataFrame:
