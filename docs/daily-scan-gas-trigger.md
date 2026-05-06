@@ -1,6 +1,6 @@
 # GAS 觸發每日選股掃描
 
-每日選股掃描 workflow 支援 `repository_dispatch` 的 `daily_scan_1700` 事件。若 GitHub Actions 內建排程不穩定，可以用 Google Apps Script 在台灣時間下午 5 點觸發。
+每日選股掃描 workflow 不使用 GitHub Actions 內建 `schedule`，改由 Google Apps Script 在台灣時間下午 5 點觸發 `repository_dispatch` 的 `daily_scan_1700` 事件。
 
 ## Apps Script
 
@@ -41,4 +41,4 @@ function triggerDailyScan1700() {
 1. 建立 GitHub fine-grained token，授權此 repo 的 `Contents: Read and write`。
 2. 在 Apps Script 的 Script properties 新增 `GITHUB_TOKEN`。
 3. 新增 time-driven trigger，執行 `triggerDailyScan1700`，時區選 `Asia/Taipei`，時間選下午 5 點附近。
-4. 若確認 GAS 穩定，可考慮把 GitHub Actions 內建 `schedule` 移除，避免同一天重複消耗資料請求。
+4. workflow 仍保留 `workflow_dispatch`，需要回填月份或臨時重跑時可手動執行。
