@@ -2,6 +2,15 @@ name: 更新現價（手動觸發）
 
 on:
   workflow_dispatch:
+    inputs:
+      request_id:
+        description: 'Client request id for run polling'
+        required: false
+        type: string
+
+concurrency:
+  group: data-writes-main
+  cancel-in-progress: false
 
 jobs:
   update:

@@ -87,7 +87,7 @@ async function ghWritePerf(data) {
         method: 'PUT',
         headers: { Authorization: `token ${token}`, 'Content-Type': 'application/json', Accept: 'application/vnd.github.v3+json' },
         body: JSON.stringify({
-          message: `perf: update ${new Date().toISOString().slice(0, 10)}`,
+          message: `perf: update ${dateTW()}`,
           content, sha
         })
       }
@@ -117,7 +117,7 @@ function computePortfolioMetrics(pd) {
   const startCap = pd?.starting_capital || 450000;
   const positions = pd?.positions || [];
   const priceHistory = pd?.price_history || {};
-  const today = new Date().toISOString().slice(0, 10);
+  const today = dateTW();
   let totalCost = 0, mktValue = 0, realizedPnl = 0;
   positions.forEach(p => {
     const cost = p.shares * p.cost_price;
@@ -276,7 +276,7 @@ function renderPerformance(strat, main) {
   const positions = pd?.positions || [];
   const priceHistory = pd?.price_history || {};
   const startCap = pd?.starting_capital || 450000;
-  const today = new Date().toISOString().slice(0, 10);
+  const today = dateTW();
   const active = positions.filter(p => !p.confirmed);
   const withAnyExits = positions.filter(p => p.exits && p.exits.length > 0);
   const oldClosed    = positions.filter(p => p.confirmed && (!p.exits || !p.exits.length));
@@ -595,7 +595,7 @@ async function perfSaveAdd() {
     exit_price: null, exit_date: null, exit_net: null, confirmed: false
   };
   DATA.performance_data.positions.push(newPos);
-  DATA.performance_data.last_updated = new Date().toISOString().slice(0, 10);
+  DATA.performance_data.last_updated = dateTW();
   const ok = await ghWritePerf(DATA.performance_data);
   if (ok) renderStrategy(); else DATA.performance_data.positions.pop();
 }
@@ -617,7 +617,7 @@ async function perfConfirmExit(id) {
   const prevConfirmed = pos.confirmed;
   pos.exits.push({ id: 'e' + Date.now(), date: exitDate, shares: sellShares, exit_price: exitPrice, exit_net: net, sell_fee: fee, sell_tax: tax });
   if (sellShares >= remaining) pos.confirmed = true;
-  pd.last_updated = new Date().toISOString().slice(0, 10);
+  pd.last_updated = dateTW();
   const ok = await ghWritePerf(pd);
   if (ok) renderStrategy(); else { pos.exits = prevExits; pos.confirmed = prevConfirmed; }
 }
@@ -628,7 +628,7 @@ async function perfDeletePos(id) {
   const idx = pd.positions.findIndex(p => p.id === id);
   if (idx === -1) return;
   const [removed] = pd.positions.splice(idx, 1);
-  pd.last_updated = new Date().toISOString().slice(0, 10);
+  pd.last_updated = dateTW();
   const ok = await ghWritePerf(pd);
   if (ok) renderStrategy(); else pd.positions.splice(idx, 0, removed);
 }
@@ -668,7 +668,7 @@ async function perfSaveClosedEdit(id) {
   const prev = { exit_price: pos.exit_price, exit_date: pos.exit_date, exit_net: pos.exit_net, sell_fee: pos.sell_fee, sell_tax: pos.sell_tax };
   pos.exit_price = exitPrice; pos.exit_date = exitDate;
   pos.exit_net = net; pos.sell_fee = fee; pos.sell_tax = tax;
-  pd.last_updated = new Date().toISOString().slice(0, 10);
+  pd.last_updated = dateTW();
   const ok = await ghWritePerf(pd);
   if (ok) renderStrategy(); else Object.assign(pos, prev);
 }
@@ -723,6 +723,8 @@ async function triggerPriceUpdate(btn) {
     return;
   }
   const orig = btn.textContent;
+  const requestId = `price-${Date.now()}-${Math.random().toString(36).slice(2, 8)}`;
+  const triggeredAt = new Date().toISOString();
   btn.disabled = true;
   try {
     // 1. 觸發 workflow
@@ -732,7 +734,7 @@ async function triggerPriceUpdate(btn) {
       {
         method: 'POST',
         headers: { Authorization: `token ${token}`, 'Content-Type': 'application/json', Accept: 'application/vnd.github.v3+json' },
-        body: JSON.stringify({ ref: 'main' }),
+        body: JSON.stringify({ ref: 'main', inputs: { request_id: requestId } }),
       }
     );
     if (dispatchRes.status !== 204) {
@@ -741,7 +743,7 @@ async function triggerPriceUpdate(btn) {
     }
 
     // 2. 輪詢直到完成（最多 3 分鐘）
-    const conclusion = await _pollPriceWorkflow(btn, token);
+    const conclusion = await _pollPriceWorkflow(btn, token, triggeredAt, requestId);
     if (conclusion !== 'success') throw new Error(`Workflow 結果：${conclusion}，請至 GitHub Actions 查看日誌`);
 
     // 3. 讀取並套用 current_prices.json
@@ -750,7 +752,7 @@ async function triggerPriceUpdate(btn) {
     if (!pRes.ok) throw new Error('無法讀取 current_prices.json');
     const pData = await pRes.json();
     const priceMap = pData.prices || {};
-    const dateUsed = pData.date || new Date().toISOString().slice(0, 10);
+    const dateUsed = pData.date || dateTW();
 
     _applyPriceToChips(priceMap);
     _applyPriceToRttTrack(priceMap);
@@ -758,7 +760,8 @@ async function triggerPriceUpdate(btn) {
     await _applyPriceToPerf(priceMap, dateUsed);
     renderStrategy();
     btn.textContent = `✓ 已更新 (${dateUsed})`;
-    setTimeout(() => { if (!btn.disabled) btn.textContent = orig; }, 4000);
+    btn.disabled = false;
+    setTimeout(() => { btn.textContent = orig; }, 4000);
     return;
   } catch(e) {
     alert('更新現價失敗：' + e.message);
@@ -767,22 +770,30 @@ async function triggerPriceUpdate(btn) {
   btn.textContent = orig;
 }
 
-async function _pollPriceWorkflow(btn, token) {
+async function _pollPriceWorkflow(btn, token, triggeredAt, requestId) {
   const headers = { Authorization: `token ${token}`, Accept: 'application/vnd.github.v3+json' };
   // 等 Actions 排程（通常 3-5 秒）
   await new Promise(r => setTimeout(r, 4000));
 
-  // 找到剛觸發的 run id（最新一筆）
+  // 找到剛觸發的 run id，避免追到其他同時啟動的 workflow。
   let runId = null;
   for (let i = 0; i < 8 && !runId; i++) {
     await new Promise(r => setTimeout(r, 2000));
     const res = await fetch(
-      `https://api.github.com/repos/${GH_OWNER}/${GH_REPO}/actions/workflows/update_current_prices.yml/runs?per_page=1`,
+      `https://api.github.com/repos/${GH_OWNER}/${GH_REPO}/actions/workflows/update_current_prices.yml/runs?event=workflow_dispatch&branch=main&per_page=10`,
       { headers }
     );
     if (res.ok) {
       const data = await res.json();
-      if (data.workflow_runs?.[0]) runId = data.workflow_runs[0].id;
+      const run = (data.workflow_runs || []).find(r =>
+        r.event === 'workflow_dispatch' &&
+        r.head_branch === 'main' &&
+        r.created_at >= triggeredAt
+      );
+      if (run) {
+        runId = run.id;
+        console.info(`Price workflow request ${requestId} matched run ${runId}`);
+      }
     }
   }
   if (!runId) throw new Error('找不到 Workflow Run，請確認 Token 有 repo 權限');
@@ -939,7 +950,7 @@ async function journalSaveAdd() {
   if (!DATA.performance_data.journal) DATA.performance_data.journal = [];
   const entry = { id: 'j' + Date.now(), date, title, tags, content };
   DATA.performance_data.journal.push(entry);
-  DATA.performance_data.last_updated = new Date().toISOString().slice(0, 10);
+  DATA.performance_data.last_updated = dateTW();
   const ok = await ghWritePerf(DATA.performance_data);
   if (ok) renderStrategy(); else DATA.performance_data.journal.pop();
 }
@@ -972,7 +983,7 @@ async function journalSaveEdit(id) {
   entry.title   = title;
   entry.tags    = tagsRaw ? tagsRaw.split(',').map(t => t.trim()).filter(Boolean) : [];
   entry.content = content;
-  pd.last_updated = new Date().toISOString().slice(0, 10);
+  pd.last_updated = dateTW();
   const ok = await ghWritePerf(pd);
   if (ok) renderStrategy(); else Object.assign(entry, prev);
 }
@@ -983,7 +994,7 @@ async function journalDelete(id) {
   const idx = pd.journal.findIndex(e => e.id === id);
   if (idx === -1) return;
   const [removed] = pd.journal.splice(idx, 1);
-  pd.last_updated = new Date().toISOString().slice(0, 10);
+  pd.last_updated = dateTW();
   const ok = await ghWritePerf(pd);
   if (ok) renderStrategy(); else pd.journal.splice(idx, 0, removed);
 }

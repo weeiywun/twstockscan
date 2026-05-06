@@ -124,6 +124,18 @@ let expandedRow = null;
 let watchlist = JSON.parse(localStorage.getItem("watchlist") || "[]");
 let aiData = null;
 
+function dateTW(offsetDays = 0) {
+  const date = new Date(Date.now() + offsetDays * 86400000);
+  const parts = new Intl.DateTimeFormat('en-CA', {
+    timeZone: 'Asia/Taipei',
+    year: 'numeric',
+    month: '2-digit',
+    day: '2-digit',
+  }).formatToParts(date);
+  const values = Object.fromEntries(parts.map(p => [p.type, p.value]));
+  return `${values.year}-${values.month}-${values.day}`;
+}
+
 // ════════════════════════════════════════════════════
 //  TRADINGVIEW APP DEEP LINK
 //  手機上優先呼出 TradingView App（需已安裝），
@@ -545,8 +557,8 @@ async function loadData() {
     if (cpRes && cpRes.ok) {
       const cpData = await cpRes.json();
       if (cpData && cpData.prices) {
-        const today = new Date().toISOString().slice(0, 10);
-        const yesterday = new Date(Date.now() - 86400000).toISOString().slice(0, 10);
+        const today = dateTW();
+        const yesterday = dateTW(-1);
         if (cpData.date === today || cpData.date === yesterday) {
           if (typeof _applyPriceToChips    === 'function') _applyPriceToChips(cpData.prices);
           if (typeof _applyPriceToRttTrack === 'function') _applyPriceToRttTrack(cpData.prices);
