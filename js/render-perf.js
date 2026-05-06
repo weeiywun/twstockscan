@@ -699,6 +699,7 @@ async function triggerPriceUpdate(btn) {
     rows.forEach(r => { priceMap[r.stock_id] = parseFloat(r.close); });
     _applyPriceToChips(priceMap);
     _applyPriceToRttTrack(priceMap);
+    _applyPriceToAnalysis(priceMap);
     await _applyPriceToPerf(priceMap, dateUsed);
     renderStrategy();
   } catch(e) {
@@ -751,6 +752,21 @@ function _applyPriceToRttTrack(priceMap) {
     if (item.entry_price) {
       item.pnl_pct = parseFloat(
         ((item.current_price - item.entry_price) / item.entry_price * 100).toFixed(2)
+      );
+    }
+  });
+}
+
+function _applyPriceToAnalysis(priceMap) {
+  const sa = DATA.stock_analysis_data;
+  if (!sa) return;
+  [...(sa.active || []), ...(sa.history || [])].forEach(item => {
+    const price = priceMap[item.ticker];
+    if (price === undefined) return;
+    item.current_price = price;
+    if (item.entry_price) {
+      item.pnl_pct = parseFloat(
+        ((price - item.entry_price) / item.entry_price * 100).toFixed(2)
       );
     }
   });
