@@ -539,6 +539,25 @@ async function loadData() {
     console.error('資料載入失敗:', e);
   }
 
+  // 套用最新現價（若 current_prices.json 存在且日期在今日或昨日）
+  try {
+    const cpRes = await fetch(`data/current_prices.json?t=${timestamp}`, { cache: 'no-store' }).catch(() => null);
+    if (cpRes && cpRes.ok) {
+      const cpData = await cpRes.json();
+      if (cpData && cpData.prices) {
+        const today = new Date().toISOString().slice(0, 10);
+        const yesterday = new Date(Date.now() - 86400000).toISOString().slice(0, 10);
+        if (cpData.date === today || cpData.date === yesterday) {
+          if (typeof _applyPriceToChips    === 'function') _applyPriceToChips(cpData.prices);
+          if (typeof _applyPriceToRttTrack === 'function') _applyPriceToRttTrack(cpData.prices);
+          if (typeof _applyPriceToAnalysis === 'function') _applyPriceToAnalysis(cpData.prices);
+        }
+      }
+    }
+  } catch (e) {
+    console.warn('current_prices.json 套用失敗:', e);
+  }
+
   // 資料載入完成後渲染
   renderNav();
   renderStrategy();
