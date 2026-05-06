@@ -3,8 +3,34 @@
 const GH_OWNER = 'weeiywun';
 const GH_REPO  = 'twstockscan';
 const GH_PERF  = 'data/performance.json';
+const GH_RTT_TRACK = 'data/right_top_track.json';
+const GH_AI_ANALYSIS = 'data/ai_analysis.json';
 
 function ghToken() { return localStorage.getItem('gh_token') || ''; }
+
+async function ghWriteJson(path, data, message) {
+  const token = ghToken();
+  if (!token) { openTokenModal(); alert('請先設定 GitHub Token'); return false; }
+  try {
+    const infoRes = await fetch(
+      `https://api.github.com/repos/${GH_OWNER}/${GH_REPO}/contents/${path}`,
+      { headers: { Authorization: `token ${token}`, Accept: 'application/vnd.github.v3+json' } }
+    );
+    if (!infoRes.ok) throw new Error('讀取 SHA 失敗，請確認 Token 權限');
+    const { sha } = await infoRes.json();
+    const content = btoa(unescape(encodeURIComponent(JSON.stringify(data, null, 2))));
+    const writeRes = await fetch(
+      `https://api.github.com/repos/${GH_OWNER}/${GH_REPO}/contents/${path}`,
+      {
+        method: 'PUT',
+        headers: { Authorization: `token ${token}`, 'Content-Type': 'application/json', Accept: 'application/vnd.github.v3+json' },
+        body: JSON.stringify({ message, content, sha }),
+      }
+    );
+    if (!writeRes.ok) { const e = await writeRes.json().catch(() => ({})); throw new Error(e.message || '寫入失敗'); }
+    return true;
+  } catch(e) { alert('儲存失敗：' + e.message); return false; }
+}
 
 // ════════════════════════════════════════════════════
 //  交易成本計算（手續費 0.1425%、交易稅 0.3%）
@@ -71,30 +97,7 @@ function _sortTh(label, key) {
 }
 
 async function ghWritePerf(data) {
-  const token = ghToken();
-  if (!token) { alert('請先設定 GitHub Token'); return false; }
-  try {
-    const infoRes = await fetch(
-      `https://api.github.com/repos/${GH_OWNER}/${GH_REPO}/contents/${GH_PERF}`,
-      { headers: { Authorization: `token ${token}`, Accept: 'application/vnd.github.v3+json' } }
-    );
-    if (!infoRes.ok) throw new Error('讀取 SHA 失敗，請確認 Token 權限');
-    const { sha } = await infoRes.json();
-    const content = btoa(unescape(encodeURIComponent(JSON.stringify(data, null, 2))));
-    const writeRes = await fetch(
-      `https://api.github.com/repos/${GH_OWNER}/${GH_REPO}/contents/${GH_PERF}`,
-      {
-        method: 'PUT',
-        headers: { Authorization: `token ${token}`, 'Content-Type': 'application/json', Accept: 'application/vnd.github.v3+json' },
-        body: JSON.stringify({
-          message: `perf: update ${dateTW()}`,
-          content, sha
-        })
-      }
-    );
-    if (!writeRes.ok) { const e = await writeRes.json(); throw new Error(e.message || '寫入失敗'); }
-    return true;
-  } catch(e) { alert('儲存失敗：' + e.message); return false; }
+  return ghWriteJson(GH_PERF, data, `perf: update ${dateTW()}`);
 }
 
 function openTokenModal() {

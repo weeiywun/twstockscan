@@ -136,6 +136,25 @@ function dateTW(offsetDays = 0) {
   return `${values.year}-${values.month}-${values.day}`;
 }
 
+function formatLocalDate(date) {
+  const y = date.getFullYear();
+  const m = String(date.getMonth() + 1).padStart(2, '0');
+  const d = String(date.getDate()).padStart(2, '0');
+  return `${y}-${m}-${d}`;
+}
+
+function addTradingDaysTW(days) {
+  const [year, month, day] = dateTW().split('-').map(Number);
+  const date = new Date(year, month - 1, day);
+  let added = 0;
+  while (added < days) {
+    date.setDate(date.getDate() + 1);
+    const day = date.getDay();
+    if (day !== 0 && day !== 6) added++;
+  }
+  return formatLocalDate(date);
+}
+
 // ════════════════════════════════════════════════════
 //  TRADINGVIEW APP DEEP LINK
 //  手機上優先呼出 TradingView App（需已安裝），
