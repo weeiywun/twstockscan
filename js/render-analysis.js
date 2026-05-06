@@ -67,9 +67,19 @@ function renderStockAnalysis(strat, main) {
   const active  = sortRows(saData.active  || [], aC, aA);
   const expired = sortRows(saData.expired || [], hC, hA);
 
+  window.saTogglePin = async (ticker) => {
+    const lists = [saData.active || [], saData.expired || []];
+    const item = lists.flat().find(s => s.ticker === ticker);
+    if (!item) return;
+    item.pinned = !item.pinned;
+    if (!item.pinned && item.remove_date) item.remove_date = addTradingDaysTW(5);
+    const ok = await ghWriteJson(GH_AI_ANALYSIS, saData, `data: pin stock analysis ${ticker}`);
+    if (ok) renderStrategy();
+  };
+
   // ── CSV 匯出 ──
   window.exportHistoryCSV = () => {
-    const headers = ['代號', '名稱', '產業', '入選日', '入選收盤', '現價', '損益%', '籌碼集中', '營收等級'];
+    const headers = ['代號', '名稱', '產業', '入選日', '入選收盤', '現價', '損益%', '籌碼集中', '營收等級', '釘選'];
     const rows = (saData.expired || []).map(s => [
       s.ticker,
       s.name,
@@ -80,6 +90,7 @@ function renderStockAnalysis(strat, main) {
       s.pnl_pct       != null ? s.pnl_pct.toFixed(2)       : '',
       s.quant_scores?.chip_score ?? '',
       s.rev_grade || '',
+      s.pinned ? 'Y' : '',
     ]);
     const csv = [headers, ...rows]
       .map(r => r.map(v => `"${String(v).replace(/"/g, '""')}"`).join(','))
@@ -109,6 +120,14 @@ function renderStockAnalysis(strat, main) {
     };
     const c = cfg[grade] || { bg: 'var(--bg3)', color: 'var(--text3)' };
     return `<span style="font-size:10px;padding:2px 6px;border-radius:4px;background:${c.bg};color:${c.color};font-weight:600">${grade || '—'}</span>`;
+  }
+  function pinBtn(s) {
+    const pinned = !!s.pinned;
+    return `<button onclick="saTogglePin('${s.ticker}')"
+      title="${pinned ? '取消釘選' : '釘選觀察'}"
+      style="font-size:14px;width:28px;height:26px;border-radius:4px;border:1px solid ${pinned ? 'var(--amber)' : 'var(--border)'};background:${pinned ? 'rgba(240,136,62,0.12)' : 'var(--bg3)'};color:${pinned ? 'var(--amber)' : 'var(--text3)'};cursor:pointer">
+      ${pinned ? '★' : '☆'}
+    </button>`;
   }
 
   // ── 主動標的表格 ──
@@ -142,6 +161,7 @@ function renderStockAnalysis(strat, main) {
         <td><span class="${pnlCls(s.pnl_pct)}" style="font-family:var(--mono);font-size:12px">${pnlStr(s.pnl_pct)}</span></td>
         <td style="font-family:var(--mono);font-size:12px;color:var(--text2);text-align:center">${chip ?? '—'}</td>
         <td style="text-align:center">${revGradeBadge(s.rev_grade)}</td>
+        <td style="text-align:center">${pinBtn(s)}</td>
       </tr>`;
     }).join('');
 
@@ -157,6 +177,7 @@ function renderStockAnalysis(strat, main) {
             <th onclick="actSort('pnl_pct')" style="cursor:pointer">損益${sortIcon(aC, aA, 'pnl_pct')}</th>
             <th onclick="actSort('chip_score')" style="cursor:pointer">籌碼集中${sortIcon(aC, aA, 'chip_score')}</th>
             <th onclick="actSort('rev_grade')" style="cursor:pointer">營收等級${sortIcon(aC, aA, 'rev_grade')}</th>
+            <th>釘選</th>
           </tr></thead>
           <tbody>${rows}</tbody>
         </table>
@@ -182,12 +203,13 @@ function renderStockAnalysis(strat, main) {
         <td><span class="${pnlCls(s.pnl_pct)}" style="font-family:var(--mono);font-size:12px">${pnlStr(s.pnl_pct)}</span></td>
         <td style="font-family:var(--mono);font-size:12px;color:var(--text2);text-align:center">${chip ?? '—'}</td>
         <td style="text-align:center">${revGradeBadge(s.rev_grade)}</td>
+        <td style="text-align:center">${pinBtn(s)}</td>
       </tr>`;
     }).join('');
 
     historyHTML = `<div class="sa-history-wrap">
       <div class="sa-history-header">
-        <span class="sa-history-title">歷史紀錄（保留一個月）</span>
+        <span class="sa-history-title">歷史紀錄（未釘選保留 5 個交易日）</span>
         <div style="display:flex;align-items:center;gap:8px">
           <span class="sa-history-count">${expired.length} 筆</span>
           <button onclick="exportHistoryCSV()"
@@ -206,6 +228,7 @@ function renderStockAnalysis(strat, main) {
             <th onclick="histSort('pnl_pct')" style="cursor:pointer">損益${sortIcon(hC, hA, 'pnl_pct')}</th>
             <th onclick="histSort('chip_score')" style="cursor:pointer">籌碼集中${sortIcon(hC, hA, 'chip_score')}</th>
             <th onclick="histSort('rev_grade')" style="cursor:pointer">營收等級${sortIcon(hC, hA, 'rev_grade')}</th>
+            <th>釘選</th>
           </tr></thead>
           <tbody>${histRows}</tbody>
         </table>

@@ -4,6 +4,7 @@
 觸發條件：量增訊號掃出新標的（首次進入）
 流程：新聞爬蟲 → Claude API 評分 → 寫入 ai_analysis.json
 每日也更新 active 標的現價、損益、剩餘天數，並處理到期移轉。
+未釘選歷史保留 5 個交易日；釘選標的持續保留。
 """
 
 import json
@@ -25,6 +26,7 @@ TODAY = datetime.now(TW_TZ).strftime("%Y-%m-%d")
 
 # ── 觀察天數 ──────────────────────────────────────────
 OBSERVE_TRADING_DAYS = 10   # 入選後觀察 10 個交易日
+HISTORY_KEEP_TRADING_DAYS = 5
 
 # ════════════════════════════════════════════════════
 #  v1.6 評分引擎
@@ -149,6 +151,23 @@ def trading_days_remaining(expire: date, today: date) -> int:
     return count
 
 
+def keep_history_item(item: dict, today: date) -> bool:
+    if item.get("pinned"):
+        return True
+    remove_date = item.get("remove_date")
+    return bool(remove_date) and date.fromisoformat(remove_date) >= today
+
+
+def normalize_history_retention(items: list[dict], today: date) -> None:
+    keep_until = add_trading_days(today, HISTORY_KEEP_TRADING_DAYS).isoformat()
+    for item in items:
+        if item.get("pinned"):
+            continue
+        remove_date = item.get("remove_date")
+        if not remove_date or date.fromisoformat(remove_date) > date.fromisoformat(keep_until):
+            item["remove_date"] = keep_until
+
+
 
 # ════════════════════════════════════════════════════
 #  現價更新
@@ -254,6 +273,7 @@ def main():
             "pnl_pct":        0.0,
             "rev_grade":      result["rev_grade"],
             "quant_scores":   result["quant_scores"],
+            "pinned":         False,
         }
         active_list.append(entry)
         print(f"    ✅ {sid} 入池，到期 {expire_obj}，營收等級 {result['rev_grade']}")
@@ -282,29 +302,24 @@ def main():
 
         if days_remain <= 0:
             # 移入歷史
-            remove_date = (today_obj + timedelta(days=30)).isoformat()
+            remove_date = add_trading_days(today_obj, HISTORY_KEEP_TRADING_DAYS).isoformat()
             expired_entry = {
-                "ticker":        item["ticker"],
-                "name":          item["name"],
-                "industry":      item.get("industry", ""),
-                "entry_date":    item.get("trigger_date", item.get("entry_date", "")),
-                "entry_price":   item["entry_price"],
-                "current_price": item["current_price"],
-                "pnl_pct":       item["pnl_pct"],
-                "rev_grade":     item.get("rev_grade", ""),
-                "quant_scores":  item.get("quant_scores", {}),
-                "remove_date":   remove_date,
+                **item,
+                "entry_date":  item.get("trigger_date", item.get("entry_date", "")),
+                "remove_date": remove_date,
+                "pinned":      bool(item.get("pinned", False)),
             }
             newly_expired.append(expired_entry)
             print(f"  📦 {sid} 到期 → 移入歷史")
         else:
             still_active.append(item)
 
-    # ── 合併歷史、移除超過一個月的紀錄 ──────────────────
+    # ── 合併歷史、移除未釘選且超過保留期限的紀錄 ─────────
     expired_list.extend(newly_expired)
+    normalize_history_retention(expired_list, today_obj)
     expired_list = [
         e for e in expired_list
-        if date.fromisoformat(e["remove_date"]) >= today_obj
+        if keep_history_item(e, today_obj)
     ]
 
     # 歷史區也每日更新現價

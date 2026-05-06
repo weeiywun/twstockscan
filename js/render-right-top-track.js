@@ -66,9 +66,19 @@ function renderRightTopTrack(strat, main) {
   const active  = sortRows(trackData.active  || [], aC, aA);
   const expired = sortRows(trackData.expired || [], hC, hA);
 
+  window.rttTogglePin = async (stockId) => {
+    const lists = [trackData.active || [], trackData.expired || []];
+    const item = lists.flat().find(s => s.stock_id === stockId);
+    if (!item) return;
+    item.pinned = !item.pinned;
+    if (!item.pinned && item.remove_date) item.remove_date = addTradingDaysTW(5);
+    const ok = await ghWriteJson(GH_RTT_TRACK, trackData, `data: pin right top ${stockId}`);
+    if (ok) renderStrategy();
+  };
+
   // ── CSV 匯出 ──
   window.exportRttCSV = () => {
-    const headers = ['代號', '名稱', '產業', '市場', '觸發日', '訊號週', '入選收盤', '現價', '損益%', '量比'];
+    const headers = ['代號', '名稱', '產業', '市場', '觸發日', '訊號週', '入選收盤', '現價', '損益%', '量比', '釘選'];
     const rows = (trackData.expired || []).map(s => [
       s.stock_id, s.name, s.industry || '', s.market || '',
       s.trigger_date || '',
@@ -77,6 +87,7 @@ function renderRightTopTrack(strat, main) {
       s.current_price != null ? s.current_price.toFixed(2) : '',
       s.pnl_pct       != null ? s.pnl_pct.toFixed(2)       : '',
       s.vol_ratio     != null ? s.vol_ratio.toFixed(2)      : '',
+      s.pinned ? 'Y' : '',
     ]);
     const csv = [headers, ...rows]
       .map(r => r.map(v => `"${String(v).replace(/"/g, '""')}"`).join(','))
@@ -95,6 +106,14 @@ function renderRightTopTrack(strat, main) {
   function pnlStr(pct) {
     if (pct == null) return '—';
     return `${pct >= 0 ? '+' : ''}${pct.toFixed(2)}%`;
+  }
+  function pinBtn(s) {
+    const pinned = !!s.pinned;
+    return `<button onclick="rttTogglePin('${s.stock_id}')"
+      title="${pinned ? '取消釘選' : '釘選觀察'}"
+      style="font-size:14px;width:28px;height:26px;border-radius:4px;border:1px solid ${pinned ? 'var(--amber)' : 'var(--border)'};background:${pinned ? 'rgba(240,136,62,0.12)' : 'var(--bg3)'};color:${pinned ? 'var(--amber)' : 'var(--text3)'};cursor:pointer">
+      ${pinned ? '★' : '☆'}
+    </button>`;
   }
 
   // ── 統計 ──
@@ -157,6 +176,7 @@ function renderRightTopTrack(strat, main) {
         <td><span class="${pnlCls(s.pnl_pct)}" style="font-family:var(--mono);font-size:12px">${pnlStr(s.pnl_pct)}</span></td>
         <td style="font-family:var(--mono);font-size:12px;color:var(--red);font-weight:600">${s.vol_ratio?.toFixed(2) ?? '—'}x</td>
         <td style="font-family:var(--mono);font-size:11px;color:var(--text3);text-align:center">${s.days_remaining ?? '—'}</td>
+        <td style="text-align:center">${pinBtn(s)}</td>
       </tr>`;
     }).join('');
 
@@ -173,6 +193,7 @@ function renderRightTopTrack(strat, main) {
             <th onclick="rttActSort('pnl_pct')" style="cursor:pointer">損益${sortIcon(aC, aA, 'pnl_pct')}</th>
             <th onclick="rttActSort('vol_ratio')" style="cursor:pointer">量比${sortIcon(aC, aA, 'vol_ratio')}</th>
             <th onclick="rttActSort('days_remaining')" style="cursor:pointer">剩餘天${sortIcon(aC, aA, 'days_remaining')}</th>
+            <th>釘選</th>
           </tr></thead>
           <tbody>${rows}</tbody>
         </table>
@@ -202,12 +223,13 @@ function renderRightTopTrack(strat, main) {
         <td style="font-family:var(--mono);font-size:12px">${s.current_price?.toFixed(2) ?? '—'}</td>
         <td><span class="${pnlCls(s.pnl_pct)}" style="font-family:var(--mono);font-size:12px">${pnlStr(s.pnl_pct)}</span></td>
         <td style="font-family:var(--mono);font-size:12px;color:var(--red);font-weight:600">${s.vol_ratio?.toFixed(2) ?? '—'}x</td>
+        <td style="text-align:center">${pinBtn(s)}</td>
       </tr>`;
     }).join('');
 
     historyHTML = `<div class="sa-history-wrap">
       <div class="sa-history-header">
-        <span class="sa-history-title">歷史紀錄（保留一個月）</span>
+        <span class="sa-history-title">歷史紀錄（未釘選保留 5 個交易日）</span>
         <div style="display:flex;align-items:center;gap:8px">
           <span class="sa-history-count">${expired.length} 筆</span>
           <button onclick="exportRttCSV()"
@@ -226,6 +248,7 @@ function renderRightTopTrack(strat, main) {
             <th onclick="rttHistSort('current_price')" style="cursor:pointer">現價${sortIcon(hC, hA, 'current_price')}</th>
             <th onclick="rttHistSort('pnl_pct')" style="cursor:pointer">損益${sortIcon(hC, hA, 'pnl_pct')}</th>
             <th onclick="rttHistSort('vol_ratio')" style="cursor:pointer">量比${sortIcon(hC, hA, 'vol_ratio')}</th>
+            <th>釘選</th>
           </tr></thead>
           <tbody>${histRows}</tbody>
         </table>

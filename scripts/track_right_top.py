@@ -3,7 +3,7 @@
 右上角策略標的追蹤
 - 讀取 right_top.json 新訊號 → 加入追蹤池（entry_price = 訊號當週收盤）
 - 每日更新現價 / P&L / 剩餘天數
-- 到期（10 個交易日）移入歷史，保留 30 天
+- 到期（10 個交易日）移入歷史，未釘選保留 5 個交易日
 """
 
 import json
@@ -22,6 +22,7 @@ TW_TZ = timezone(timedelta(hours=8))
 TODAY = datetime.now(TW_TZ).strftime("%Y-%m-%d")
 
 OBSERVE_TRADING_DAYS = 10
+HISTORY_KEEP_TRADING_DAYS = 5
 
 
 def add_trading_days(start: date, n: int) -> date:
@@ -42,6 +43,23 @@ def trading_days_remaining(expire: date, today: date) -> int:
             count += 1
         d += timedelta(days=1)
     return count
+
+
+def keep_history_item(item: dict, today: date) -> bool:
+    if item.get("pinned"):
+        return True
+    remove_date = item.get("remove_date")
+    return bool(remove_date) and date.fromisoformat(remove_date) >= today
+
+
+def normalize_history_retention(items: list[dict], today: date) -> None:
+    keep_until = add_trading_days(today, HISTORY_KEEP_TRADING_DAYS).isoformat()
+    for item in items:
+        if item.get("pinned"):
+            continue
+        remove_date = item.get("remove_date")
+        if not remove_date or date.fromisoformat(remove_date) > date.fromisoformat(keep_until):
+            item["remove_date"] = keep_until
 
 
 def fetch_close(stock_id: str, token: str, price_cache=None) -> float | None:
@@ -111,6 +129,7 @@ def main():
             "pnl_pct":        0.0,
             "vol_ratio":      s.get("vol_ratio", 0),
             "high_10w":       s.get("high_10w", 0),
+            "pinned":         False,
         }
         active_list.append(entry)
         print(f"  ✅ {sid} {s.get('name','')} 入池，到期 {expire_obj}")
@@ -136,7 +155,7 @@ def main():
                 time.sleep(0.35)
 
         if days_remain <= 0:
-            remove_date = (today_obj + timedelta(days=30)).isoformat()
+            remove_date = add_trading_days(today_obj, HISTORY_KEEP_TRADING_DAYS).isoformat()
             expired_list.append({
                 "stock_id":       item["stock_id"],
                 "name":           item["name"],
@@ -150,15 +169,18 @@ def main():
                 "vol_ratio":      item.get("vol_ratio", 0),
                 "high_10w":       item.get("high_10w", 0),
                 "remove_date":    remove_date,
+                "pinned":         bool(item.get("pinned", False)),
             })
             print(f"  📦 {sid} 到期 → 移入歷史")
         else:
             still_active.append(item)
 
-    # ── 清除超過 30 天的歷史 ─────────────────────────
+    normalize_history_retention(expired_list, today_obj)
+
+    # ── 清除未釘選且超過保留期限的歷史 ─────────────────
     expired_list = [
         e for e in expired_list
-        if date.fromisoformat(e["remove_date"]) >= today_obj
+        if keep_history_item(e, today_obj)
     ]
 
     # ── 歷史現價也更新 ────────────────────────────────
