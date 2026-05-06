@@ -2,21 +2,24 @@
 """
 手動觸發現價更新（供前端「↑ 更新現價」按鈕使用）
 
-1. 從各 JSON 收集前端顯示的標的
-2. 優先從 price_cache.parquet 讀取最新收盤（不消耗 API 配額）
-3. 快取無資料時，呼叫 FINMIND BYDATE（約 1,800 筆，免費額度內）
-4. 輸出 data/current_prices.json → 前端讀取後套用至各頁面
+資料來源優先順序：
+  1. TWSE MIS 即時 API（免費、無需 Token）
+       盤中 09:00-15:30 → 即時成交價
+       盤後 / 次日開盤前 → 最後成交收盤價
+  2. price_cache.parquet（FINMIND 每日掃描快取）
+  3. FINMIND BYDATE（僅在前兩者皆失敗時使用）
 
-注意：15:35 前台股尚未收盤，FINMIND 無今日資料，
-     此時自動改取最近一個交易日的收盤價。
+輸出：data/current_prices.json
 """
 
 import json
 import os
 import sys
+import time
 from datetime import datetime, timedelta, timezone
 
 import pandas as pd
+import requests
 
 SCRIPT_DIR = os.path.dirname(os.path.abspath(__file__))
 DATA_DIR   = os.path.join(SCRIPT_DIR, "..", "data")
@@ -25,9 +28,9 @@ TW_TZ = timezone(timedelta(hours=8))
 NOW   = datetime.now(TW_TZ)
 TODAY = NOW.strftime("%Y-%m-%d")
 
-# 15:35 前（尚未收盤 + 資料發布緩衝），從昨日開始找
-MARKET_CLOSE = NOW.replace(hour=15, minute=35, second=0, microsecond=0)
-START_OFFSET = 0 if NOW >= MARKET_CLOSE else 1
+MIS_URL     = "https://mis.twse.com.tw/stock/api/getStockInfo.jsp"
+MIS_BATCH   = 80   # 每次查詢筆數上限（保守值）
+MIS_HEADERS = {"User-Agent": "Mozilla/5.0"}
 
 
 def collect_stock_ids() -> set:
@@ -51,8 +54,78 @@ def collect_stock_ids() -> set:
     return ids
 
 
+def _load_market_map() -> dict:
+    """從 stock_list_cache.json 取得 stock_id → 'tse' / 'otc' 對照表。"""
+    path = os.path.join(DATA_DIR, "stock_list_cache.json")
+    if not os.path.exists(path):
+        return {}
+    with open(path, encoding="utf-8") as f:
+        stocks = json.load(f)
+    return {
+        s["stock_id"]: "tse" if s.get("market") == "TWSE" else "otc"
+        for s in stocks
+    }
+
+
+def fetch_from_mis(ids: set) -> tuple[dict, str]:
+    """
+    TWSE MIS 即時 API。
+    回傳 (prices_dict, data_date)。
+    盤中取 z（成交價），無成交時取 y（昨收）。
+    """
+    market_map = _load_market_map()
+    parts = [f"{market_map.get(sid, 'tse')}_{sid}.tw" for sid in sorted(ids)]
+
+    prices: dict[str, float] = {}
+    got_z = False  # 是否有取到今日成交價
+
+    for i in range(0, len(parts), MIS_BATCH):
+        batch = parts[i:i + MIS_BATCH]
+        ex_ch = "|".join(batch)
+        try:
+            r = requests.get(
+                MIS_URL,
+                params={"ex_ch": ex_ch, "json": "1", "delay": "0"},
+                headers=MIS_HEADERS,
+                timeout=15,
+            )
+            r.raise_for_status()
+            data = r.json()
+        except Exception as e:
+            print(f"  ⚠️  MIS 批次失敗（{i//MIS_BATCH + 1}）：{e}")
+            continue
+
+        for item in data.get("msgArray", []):
+            sid = item.get("c", "")
+            if sid not in ids:
+                continue
+            z = item.get("z", "-")
+            if z and z != "-":
+                prices[sid] = round(float(z), 2)
+                got_z = True
+            else:
+                # 尚未開盤或無成交，改用昨收
+                y = item.get("y", "-")
+                if y and y != "-":
+                    prices[sid] = round(float(y), 2)
+
+        if i + MIS_BATCH < len(parts):
+            time.sleep(0.3)
+
+    if not prices:
+        return {}, ""
+
+    # 有今日成交 → 日期為今日；全為昨收 → 日期為昨日
+    if got_z:
+        data_date = TODAY
+    else:
+        data_date = (NOW - timedelta(days=1)).strftime("%Y-%m-%d")
+
+    return prices, data_date
+
+
 def fetch_from_cache(ids: set) -> tuple[dict, str]:
-    """從 price_cache.parquet 取最新一日的收盤價，回傳 (prices, date)。"""
+    """從 price_cache.parquet 取最新可用收盤，回傳 (prices, date)。"""
     cache_path = os.path.join(DATA_DIR, "price_cache.parquet")
     if not os.path.exists(cache_path):
         return {}, ""
@@ -60,39 +133,25 @@ def fetch_from_cache(ids: set) -> tuple[dict, str]:
     if df.empty:
         return {}, ""
 
-    # 取快取中最新的交易日
     latest_date = df["date"].max()
     latest_str  = str(latest_date)[:10]
-
-    # 若 15:35 前，最新日必須是昨日以前；若已收盤，最新日可以是今日
-    if NOW < MARKET_CLOSE and latest_str >= TODAY:
-        print(f"  ℹ️  price_cache 最新為 {latest_str}，但尚未收盤，略過今日資料")
-        cutoff = pd.Timestamp(TODAY)
-        df = df[df["date"] < cutoff]
-        if df.empty:
-            return {}, ""
-        latest_date = df["date"].max()
-        latest_str  = str(latest_date)[:10]
-
     day_df = df[df["date"] == latest_date]
-    prices = {}
-    for _, row in day_df.iterrows():
-        if row["stock_id"] in ids:
-            prices[row["stock_id"]] = round(float(row["close"]), 2)
-
+    prices = {
+        row["stock_id"]: round(float(row["close"]), 2)
+        for _, row in day_df.iterrows()
+        if row["stock_id"] in ids
+    }
     if prices:
         print(f"  📦 price_cache 取得 {latest_str} 收盤（{len(prices)} 支）")
-    else:
-        print(f"  ℹ️  price_cache 無符合標的")
     return prices, latest_str
 
 
 def fetch_from_finmind(ids: set, token: str) -> tuple[dict, str]:
-    """呼叫 FINMIND BYDATE，回傳 (prices, actual_date)。"""
+    """FINMIND BYDATE fallback，回傳 (prices, actual_date)。"""
     sys.path.insert(0, SCRIPT_DIR)
     from finmind_client import fetch_price_bydate
 
-    for i in range(START_OFFSET, START_OFFSET + 6):
+    for i in range(6):
         date = (NOW - timedelta(days=i)).strftime("%Y-%m-%d")
         print(f"  → FINMIND BYDATE {date}")
         df = fetch_price_bydate(date, date, token)
@@ -100,15 +159,13 @@ def fetch_from_finmind(ids: set, token: str) -> tuple[dict, str]:
             print("  ❌ FINMIND API 致命錯誤（401/402/網路）")
             return {}, ""
         if df.empty:
-            print(f"     {date} 無資料（可能為假日），往前一天")
             continue
-
-        # 取回傳資料的實際日期（FINMIND 可能調整）
         actual_date = str(df["date"].max())[:10]
-        prices = {}
-        for _, row in df.iterrows():
-            if row["stock_id"] in ids:
-                prices[row["stock_id"]] = round(float(row["close"]), 2)
+        prices = {
+            row["stock_id"]: round(float(row["close"]), 2)
+            for _, row in df.iterrows()
+            if row["stock_id"] in ids
+        }
         if prices:
             print(f"     實際資料日期：{actual_date}，符合標的 {len(prices)}/{len(ids)} 支")
             return prices, actual_date
@@ -116,31 +173,40 @@ def fetch_from_finmind(ids: set, token: str) -> tuple[dict, str]:
 
 
 def main():
-    if NOW < MARKET_CLOSE:
-        print(f"=== 現價快速更新 ({TODAY} {NOW.strftime('%H:%M')}，盤中→取前一交易日收盤) ===")
-    else:
-        print(f"=== 現價快速更新 ({TODAY} {NOW.strftime('%H:%M')}，已收盤) ===")
+    print(f"=== 現價快速更新 {TODAY} {NOW.strftime('%H:%M')} ===")
 
     ids = collect_stock_ids()
     print(f"  需更新標的：{len(ids)} 支")
+    if not ids:
+        print("  ℹ️  無標的，結束"); return
 
-    # 1. 優先讀快取
-    prices, data_date = fetch_from_cache(ids)
-    source = "price_cache"
+    # ── 1. TWSE MIS 即時 API（優先）──
+    print("  [1] TWSE MIS 即時 API...")
+    prices, data_date = fetch_from_mis(ids)
+    source = "twse_mis"
+    if prices:
+        print(f"  ✅ MIS 取得 {len(prices)}/{len(ids)} 支（資料日期：{data_date}）")
 
-    # 2. 快取無資料 → FINMIND API
+    # ── 2. price_cache fallback ──
+    if not prices:
+        print("  [2] MIS 失敗，改用 price_cache...")
+        prices, data_date = fetch_from_cache(ids)
+        source = "price_cache"
+
+    # ── 3. FINMIND BYDATE fallback ──
     if not prices:
         token = os.environ.get("FINMIND_TOKEN", "")
         if not token:
-            print("  ❌ FINMIND_TOKEN 未設定，且快取無可用資料"); sys.exit(1)
+            print("  ❌ FINMIND_TOKEN 未設定，且前兩項皆失敗"); sys.exit(1)
+        print("  [3] price_cache 無資料，改用 FINMIND BYDATE...")
         prices, data_date = fetch_from_finmind(ids, token)
         source = "finmind_bydate"
 
     if not prices:
-        print("  ❌ 無法取得任何現價"); sys.exit(1)
+        print("  ❌ 三種來源皆失敗，無法取得現價"); sys.exit(1)
 
     out = {
-        "date":    data_date,          # 資料實際日期（非執行日）
+        "date":    data_date,
         "source":  source,
         "updated": NOW.isoformat(),
         "prices":  prices,
@@ -149,7 +215,7 @@ def main():
     with open(out_path, "w", encoding="utf-8") as f:
         json.dump(out, f, ensure_ascii=False, indent=2)
 
-    print(f"  ✅ 已輸出 {len(prices)} 支收盤價（{data_date}）→ current_prices.json（來源：{source}）")
+    print(f"  ✅ 已輸出 {len(prices)} 支現價（{data_date}）→ current_prices.json（來源：{source}）")
 
 
 if __name__ == "__main__":
