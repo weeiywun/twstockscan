@@ -23,7 +23,7 @@ jobs:
   scan:
     runs-on: ubuntu-latest
     timeout-minutes: 30
-    if: ${{ github.event_name == 'schedule' || github.event.inputs.confirm == 'RUN_DAILY_SCAN' }}
+    if: ${{ github.event_name == 'repository_dispatch' || github.event.inputs.confirm == 'RUN_DAILY_SCAN' }}
 
     permissions:
       contents: write
