@@ -234,6 +234,7 @@ function renderChipsHolder(strat, main) {
           <span class="table-title">篩選結果</span>
           <div class="toolbar-right">
             <span class="updated-tag">籌碼：${strat.dataUpdated}${strat.priceUpdated && strat.priceUpdated !== strat.dataUpdated ? `　現價：${strat.priceUpdated}` : ''}</span>
+            <button class="btn-csv" onclick="triggerPriceUpdate(this)" title="直接呼叫 FINMIND API 更新現價">↑ 更新現價</button>
             <button class="btn-csv" onclick="exportCSVChips()" title="匯出 CSV">↓ 匯出 CSV</button>
           </div>
         </div>
