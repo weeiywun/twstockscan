@@ -6,6 +6,10 @@ on:
     - cron: '44 10 * * 1-5'
   workflow_dispatch:
     inputs:
+      confirm:
+        description: '手動執行請輸入 RUN_DAILY_SCAN，避免誤觸消耗資料請求'
+        required: false
+        default: ''
       backfill_month:
         description: '回填月份（格式：2025-10），留空為每日更新模式'
         required: false
@@ -19,6 +23,7 @@ jobs:
   scan:
     runs-on: ubuntu-latest
     timeout-minutes: 30
+    if: ${{ github.event_name == 'schedule' || github.event.inputs.confirm == 'RUN_DAILY_SCAN' }}
 
     permissions:
       contents: write

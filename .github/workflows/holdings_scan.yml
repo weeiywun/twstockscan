@@ -6,6 +6,11 @@ on:
   schedule:
     - cron: '0 1 * * 6'
   workflow_dispatch:
+    inputs:
+      confirm:
+        description: '手動執行請輸入 RUN_HOLDINGS_SCAN，避免誤觸消耗資料請求'
+        required: false
+        default: ''
 
 concurrency:
   group: data-writes-main
@@ -15,6 +20,7 @@ jobs:
   analyze:
     runs-on: ubuntu-latest
     timeout-minutes: 60
+    if: ${{ github.event_name == 'schedule' || github.event.inputs.confirm == 'RUN_HOLDINGS_SCAN' }}
 
     permissions:
       contents: write

@@ -6,16 +6,22 @@
 index.html          ← 主應用程式（單一檔案，可獨立運作）
 data/
   chips_big_holder.json   ← 千張大戶策略結果
-  volume_breakout.json    ← 爆量追蹤策略結果
-  ema_tangling.json       ← 均線糾結策略結果（PHASE3）
+  volume_breakout.json    ← 停用策略的歷史結果
+  ema_tangling.json       ← 停用策略的歷史結果
   history/                ← 歷史紀錄（每日保存）
 scripts/
-  scan_volume_breakout.py ← 爆量追蹤選股腳本
-  scan_ema_tangling.py    ← 均線糾結選股腳本（PHASE3）
-  requirements.txt        ← Python 依賴套件
+  update_price_cache.py   ← 維護全市場價格快取（主要 FinMind 請求入口）
+  scan_right_top.py       ← 從 price_cache 掃描右上角策略（不直接打 API）
+  scan_volume_signal.py   ← 從 price_cache 掃描量增訊號並更新追蹤價格
+  fetch_tdcc_holdings.py  ← 從 TDCC 更新股權分散 CSV
 .github/workflows/
-  volume_breakout_scan.yml    ← 爆量追蹤自動執行（台灣時間 15:30）
-  ema_tangling_scan.yml       ← 均線糾結自動執行（台灣時間 15:40）
+  daily_scan.yml              ← 每日主流程：價格快取、右上角、追蹤、量增訊號
+  holdings_scan.yml           ← 每週主流程：TDCC 大戶持股與籌碼集中
+  stock_analysis.yml          ← 每日主流程成功後自動維護標的分析
+  institutional_tags.yml      ← 大戶持股分析成功後自動補法人標籤
+  update_current_prices.yml   ← 前端按鈕觸發的現價更新
+
+停用或一次性 workflow 放在 `.github/workflows-disabled/`，避免在 GitHub Actions 介面誤觸。
 ```
 
 ## 選股策略
@@ -23,29 +29,25 @@ scripts/
 ### PHASE1 — 千張大戶籌碼
 追蹤全市場個股的千張大戶持股比例，篩選大戶連續增持、散戶持續出場的標的。
 
-### PHASE2 — 爆量追蹤
-找出近期異常爆量突破、進入縮量洗盤的個股，捕捉主力蓄勢後二次啟動的進場機會。
-- **自動執行時間**：台灣時間 15:30（每個交易日）
+### 右上角 / 量增訊號
+每日主流程更新 `price_cache.parquet` 後，所有日線、週線與現價計算優先從快取讀取，避免重複打 FinMind。
 
-### PHASE3 — 均線糾結
-篩選 EMA20/60/120 三條均線互相糾結（乖離 ≤ 5%）且股價站上所有均線的標的，捕捉蓄勢待發的突破機會。
-- **自動執行時間**：台灣時間 15:40（每個交易日）
-- **篩選條件**：
-  - EMA20、EMA60、EMA120 三線最大最小差距 / 最小值 ≤ 5%
-  - 收盤價站上 EMA20、EMA60、EMA120
-  - 20 日均量 ≥ 500 張
+### 停用策略
+爆量追蹤與均線糾結策略仍保留腳本與歷史資料，但 workflow 已移至 `.github/workflows-disabled/`，避免誤觸全市場逐股請求。
 
 ## 手動觸發掃描
 
-1. 前往 GitHub repo 的 **Actions** 頁面
-2. 選擇對應 workflow（例如 **PHASE3 均線糾結選股**）
-3. 點擊 **Run workflow** 手動觸發
+- `daily_scan.yml`：手動執行需輸入 `RUN_DAILY_SCAN`。
+- `holdings_scan.yml`：手動執行需輸入 `RUN_HOLDINGS_SCAN`。
+- `update_current_prices.yml`：由前端「更新現價」按鈕觸發。
+- 其他補跑或停用策略 workflow 不放在 `.github/workflows/`。
 
 ## 自動更新
 
-- 每個交易日盤後自動執行，更新 `data/` 資料夾中的 JSON 檔
-- 休市日（國定假日）自動跳過（需每年更新 `TW_MARKET_HOLIDAYS`）
-- 執行成功/失敗均可透過 LINE Messaging API 推播通知
+- 每個交易日盤後執行 `daily_scan.yml`，更新 `price_cache.parquet` 與每日策略資料。
+- 每週六執行 `holdings_scan.yml`，更新 TDCC 股權分散資料與籌碼集中結果。
+- 接續 workflow 只由主流程成功後觸發，不提供手動入口，降低 FinMind 請求誤用風險。
+- 失敗時透過 LINE Messaging API 推播通知。
 
 ## 新增選股策略步驟
 

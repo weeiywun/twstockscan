@@ -5,8 +5,6 @@ on:
   workflow_run:
     workflows: ["大戶持股分析"]
     types: [completed]
-  # 也可手動觸發
-  workflow_dispatch:
 
 concurrency:
   group: data-writes-main
@@ -17,8 +15,8 @@ jobs:
     runs-on: ubuntu-latest
     timeout-minutes: 30
 
-    # workflow_run 時只在大戶持股分析成功後才執行
-    if: ${{ github.event_name == 'workflow_dispatch' || github.event.workflow_run.conclusion == 'success' }}
+    # 只在大戶持股分析成功後執行，避免手動重跑逐股查詢法人資料。
+    if: ${{ github.event.workflow_run.conclusion == 'success' }}
 
     permissions:
       contents: write
