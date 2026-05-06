@@ -235,12 +235,9 @@ function renderRightTopTrack(strat, main) {
 
   main.innerHTML = `
     <div class="strategy-panel active">
-      <div class="strat-header" style="display:flex;align-items:flex-start;justify-content:space-between;flex-wrap:wrap;gap:8px">
-        <div>
-          <div class="strat-title">${strat.icon} ${strat.name}</div>
-          <div class="strat-desc">${strat.description}</div>
-        </div>
-        <button class="btn-csv" onclick="triggerPriceUpdate(this)" title="直接呼叫 FINMIND API 更新現價與損益" style="white-space:nowrap;align-self:center">↑ 更新現價</button>
+      <div class="strat-header">
+        <div class="strat-title">${strat.icon} ${strat.name}</div>
+        <div class="strat-desc">${strat.description}</div>
       </div>
       ${summaryHTML}
       ${activeHTML}
