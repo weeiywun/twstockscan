@@ -103,6 +103,33 @@ def now_tw():
     return datetime.now(TW_TZ).strftime("%Y-%m-%dT%H:%M:%S+08:00")
 
 
+def _merge_industries(value: str, industry: str) -> str:
+    parts = [p.strip() for p in (value or "").split(" / ") if p.strip()]
+    if industry and industry not in parts:
+        parts.append(industry)
+    return " / ".join(parts)
+
+
+def _industry_list(value: str) -> list[str]:
+    return [p.strip() for p in (value or "").split(" / ") if p.strip()]
+
+
+def dedupe_stocks(stocks: list[dict]) -> list[dict]:
+    stock_map = {}
+    for stock in stocks:
+        sid = stock["stock_id"]
+        if sid not in stock_map:
+            stock_map[sid] = {**stock}
+            continue
+        existing = stock_map[sid]
+        existing["industry"] = _merge_industries(existing.get("industry", ""), stock.get("industry", ""))
+        if not existing.get("market") and stock.get("market"):
+            existing["market"] = stock["market"]
+        if not existing.get("name") and stock.get("name"):
+            existing["name"] = stock["name"]
+    return list(stock_map.values())
+
+
 def _write_output(results, industry_stats):
     output = {
         "strategy_id":    "right_top",
@@ -126,7 +153,9 @@ def main():
         return
     with open(STOCK_LIST_PATH, encoding="utf-8") as f:
         stocks = json.load(f)
-    print(f"  共 {len(stocks)} 支")
+    raw_count = len(stocks)
+    stocks = dedupe_stocks(stocks)
+    print(f"  共 {raw_count} 筆 / 去重後 {len(stocks)} 支")
 
     # ── 步驟 2：載入價格快取 ──
     print("\n[2] 載入 price_cache.parquet...")
@@ -174,11 +203,11 @@ def main():
     # ── 產業統計 ──
     industry_map = {}
     for r in results:
-        ind = r["industry"] or "其他"
-        if ind not in industry_map:
-            industry_map[ind] = {"industry": ind, "count": 0, "stocks": []}
-        industry_map[ind]["count"] += 1
-        industry_map[ind]["stocks"].append({"stock_id": r["stock_id"], "name": r["name"]})
+        for ind in _industry_list(r["industry"]) or ["其他"]:
+            if ind not in industry_map:
+                industry_map[ind] = {"industry": ind, "count": 0, "stocks": []}
+            industry_map[ind]["count"] += 1
+            industry_map[ind]["stocks"].append({"stock_id": r["stock_id"], "name": r["name"]})
     industry_stats = sorted(industry_map.values(), key=lambda x: x["count"], reverse=True)
 
     _write_output(results, industry_stats)

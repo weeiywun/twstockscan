@@ -86,6 +86,46 @@ def save_json(path: str, data: dict):
         json.dump(data, f, ensure_ascii=False, indent=2)
 
 
+def merge_industries(value: str, industry: str) -> str:
+    parts = [p.strip() for p in (value or "").split(" / ") if p.strip()]
+    if industry and industry not in parts:
+        parts.append(industry)
+    return " / ".join(parts)
+
+
+def merge_tracking_items(items: list[dict]) -> list[dict]:
+    merged = {}
+    for item in items:
+        sid = item["stock_id"]
+        if sid not in merged:
+            merged[sid] = {**item}
+            continue
+        existing = merged[sid]
+        existing["industry"] = merge_industries(existing.get("industry", ""), item.get("industry", ""))
+        existing["pinned"] = bool(existing.get("pinned")) or bool(item.get("pinned"))
+        if not existing.get("market") and item.get("market"):
+            existing["market"] = item["market"]
+        if not existing.get("name") and item.get("name"):
+            existing["name"] = item["name"]
+    return list(merged.values())
+
+
+def merge_signal_items(items: list[dict]) -> list[dict]:
+    merged = {}
+    for item in items:
+        sid = item["stock_id"]
+        if sid not in merged:
+            merged[sid] = {**item}
+            continue
+        existing = merged[sid]
+        existing["industry"] = merge_industries(existing.get("industry", ""), item.get("industry", ""))
+        if not existing.get("market") and item.get("market"):
+            existing["market"] = item["market"]
+        if not existing.get("name") and item.get("name"):
+            existing["name"] = item["name"]
+    return list(merged.values())
+
+
 def main():
     print("=== 右上角標的追蹤 ===")
     finmind_token = os.environ.get("FINMIND_TOKEN", "")
@@ -99,9 +139,9 @@ def main():
     rt_data    = load_json(RT_PATH)
     track_data = load_json(TRACK_PATH)
 
-    rt_results   = rt_data.get("results", [])
-    active_list  = track_data.get("active", [])
-    expired_list = track_data.get("expired", [])
+    rt_results   = merge_signal_items(rt_data.get("results", []))
+    active_list  = merge_tracking_items(track_data.get("active", []))
+    expired_list = merge_tracking_items(track_data.get("expired", []))
     today_obj    = date.fromisoformat(TODAY)
 
     active_ids = {s["stock_id"] for s in active_list}
