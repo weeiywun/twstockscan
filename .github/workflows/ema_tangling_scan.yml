@@ -4,6 +4,10 @@ on:
   # 暫停：策略保留，待後續重新上線時啟用
   workflow_dispatch:
 
+concurrency:
+  group: data-writes-main
+  cancel-in-progress: false
+
 jobs:
   scan:
     runs-on: ubuntu-latest

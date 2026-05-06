@@ -3,6 +3,10 @@ name: 價格快取初始化（一次性）
 on:
   workflow_dispatch:
 
+concurrency:
+  group: data-writes-main
+  cancel-in-progress: false
+
 jobs:
   init:
     runs-on: ubuntu-latest

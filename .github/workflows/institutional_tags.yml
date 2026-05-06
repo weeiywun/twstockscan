@@ -8,6 +8,10 @@ on:
   # 也可手動觸發
   workflow_dispatch:
 
+concurrency:
+  group: data-writes-main
+  cancel-in-progress: false
+
 jobs:
   update-tags:
     runs-on: ubuntu-latest

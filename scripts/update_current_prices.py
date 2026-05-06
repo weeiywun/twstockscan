@@ -183,31 +183,47 @@ def main():
     # ── 1. TWSE MIS 即時 API（優先）──
     print("  [1] TWSE MIS 即時 API...")
     prices, data_date = fetch_from_mis(ids)
-    source = "twse_mis"
+    sources = []
     if prices:
         print(f"  ✅ MIS 取得 {len(prices)}/{len(ids)} 支（資料日期：{data_date}）")
+        sources.append("twse_mis")
 
-    # ── 2. price_cache fallback ──
-    if not prices:
-        print("  [2] MIS 失敗，改用 price_cache...")
-        prices, data_date = fetch_from_cache(ids)
-        source = "price_cache"
+    # ── 2. price_cache fallback（補 MIS 缺漏）──
+    missing = ids - set(prices)
+    if missing:
+        print(f"  [2] 使用 price_cache 補缺漏（{len(missing)} 支）...")
+        cache_prices, cache_date = fetch_from_cache(missing)
+        if cache_prices:
+            prices.update(cache_prices)
+            data_date = data_date or cache_date
+            sources.append("price_cache")
+            print(f"  ✅ price_cache 補到 {len(cache_prices)}/{len(missing)} 支")
 
-    # ── 3. FINMIND BYDATE fallback ──
-    if not prices:
+    # ── 3. FINMIND BYDATE fallback（補剩餘缺漏）──
+    missing = ids - set(prices)
+    if missing:
         token = os.environ.get("FINMIND_TOKEN", "")
         if not token:
-            print("  ❌ FINMIND_TOKEN 未設定，且前兩項皆失敗"); sys.exit(1)
-        print("  [3] price_cache 無資料，改用 FINMIND BYDATE...")
-        prices, data_date = fetch_from_finmind(ids, token)
-        source = "finmind_bydate"
+            print(f"  ⚠️  FINMIND_TOKEN 未設定，仍缺 {len(missing)} 支")
+        else:
+            print(f"  [3] 使用 FINMIND BYDATE 補剩餘缺漏（{len(missing)} 支）...")
+            finmind_prices, finmind_date = fetch_from_finmind(missing, token)
+            if finmind_prices:
+                prices.update(finmind_prices)
+                data_date = data_date or finmind_date
+                sources.append("finmind_bydate")
+                print(f"  ✅ FINMIND 補到 {len(finmind_prices)}/{len(missing)} 支")
 
     if not prices:
         print("  ❌ 三種來源皆失敗，無法取得現價"); sys.exit(1)
 
+    missing = ids - set(prices)
+    if missing:
+        print(f"  ⚠️  仍有 {len(missing)} 支無現價：{', '.join(sorted(missing))}")
+
     out = {
         "date":    data_date,
-        "source":  source,
+        "source":  "+".join(sources) if sources else "unknown",
         "updated": NOW.isoformat(),
         "prices":  prices,
     }
@@ -215,7 +231,7 @@ def main():
     with open(out_path, "w", encoding="utf-8") as f:
         json.dump(out, f, ensure_ascii=False, indent=2)
 
-    print(f"  ✅ 已輸出 {len(prices)} 支現價（{data_date}）→ current_prices.json（來源：{source}）")
+    print(f"  ✅ 已輸出 {len(prices)}/{len(ids)} 支現價（{data_date}）→ current_prices.json（來源：{out['source']}）")
 
 
 if __name__ == "__main__":
