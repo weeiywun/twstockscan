@@ -668,24 +668,53 @@ async function perfSyncData() {
 }
 
 // ════════════════════════════════════════════════════
-//  更新現價：直接呼叫 FINMIND BYDATE，不須跑 Workflow
+//  更新現價：觸發 GitHub Actions → 輪詢完成 → 套用
 // ════════════════════════════════════════════════════
 
 async function triggerPriceUpdate(btn) {
+  const token = ghToken();
+  if (!token) {
+    openTokenModal();
+    alert('請先設定 GitHub Token（需要 repo 權限）');
+    return;
+  }
   const orig = btn.textContent;
   btn.disabled = true;
-  btn.textContent = '⏳ 抓取中...';
   try {
-    const { priceMap, dateUsed } = await _fetchLatestPrices();
-    const count = Object.keys(priceMap).length;
-    if (count === 0) throw new Error('無法取得股價資料（可能為休市日，或 TWSE/TPEX API 暫時無法存取）');
+    // 1. 觸發 workflow
+    btn.textContent = '⏳ 觸發中...';
+    const dispatchRes = await fetch(
+      `https://api.github.com/repos/${GH_OWNER}/${GH_REPO}/actions/workflows/update_current_prices.yml/dispatches`,
+      {
+        method: 'POST',
+        headers: { Authorization: `token ${token}`, 'Content-Type': 'application/json', Accept: 'application/vnd.github.v3+json' },
+        body: JSON.stringify({ ref: 'main' }),
+      }
+    );
+    if (dispatchRes.status !== 204) {
+      const e = await dispatchRes.json().catch(() => ({}));
+      throw new Error(e.message || `HTTP ${dispatchRes.status}`);
+    }
+
+    // 2. 輪詢直到完成（最多 3 分鐘）
+    const conclusion = await _pollPriceWorkflow(btn, token);
+    if (conclusion !== 'success') throw new Error(`Workflow 結果：${conclusion}，請至 GitHub Actions 查看日誌`);
+
+    // 3. 讀取並套用 current_prices.json
+    btn.textContent = '⏳ 載入現價...';
+    const pRes = await fetch(`data/current_prices.json?t=${Date.now()}`, { cache: 'no-store' });
+    if (!pRes.ok) throw new Error('無法讀取 current_prices.json');
+    const pData = await pRes.json();
+    const priceMap = pData.prices || {};
+    const dateUsed = pData.date || new Date().toISOString().slice(0, 10);
+
     _applyPriceToChips(priceMap);
     _applyPriceToRttTrack(priceMap);
     _applyPriceToAnalysis(priceMap);
     await _applyPriceToPerf(priceMap, dateUsed);
     renderStrategy();
     btn.textContent = `✓ 已更新 (${dateUsed})`;
-    setTimeout(() => { if (!btn.disabled) btn.textContent = orig; }, 3000);
+    setTimeout(() => { if (!btn.disabled) btn.textContent = orig; }, 4000);
     return;
   } catch(e) {
     alert('更新現價失敗：' + e.message);
@@ -694,53 +723,36 @@ async function triggerPriceUpdate(btn) {
   btn.textContent = orig;
 }
 
-async function _fetchLatestPrices() {
-  const priceMap = {};
-  let dateUsed = '';
-  const errors = [];
+async function _pollPriceWorkflow(btn, token) {
+  const headers = { Authorization: `token ${token}`, Accept: 'application/vnd.github.v3+json' };
+  // 等 Actions 排程（通常 3-5 秒）
+  await new Promise(r => setTimeout(r, 4000));
 
-  // ── TWSE 上市：openapi.twse.com.tw（官方 Open Data）──
-  try {
-    const r = await fetch('https://openapi.twse.com.tw/v1/exchangeReport/STOCK_DAY_ALL');
-    if (!r.ok) throw new Error(`HTTP ${r.status}`);
-    const rows = await r.json();
-    if (!Array.isArray(rows) || rows.length === 0) throw new Error('回傳空陣列');
-    for (const row of rows) {
-      if (!row.Code || !/^\d{4}$/.test(row.Code)) continue;
-      const price = parseFloat((row.ClosingPrice || '').replace(/,/g, ''));
-      if (!isNaN(price) && price > 0) {
-        priceMap[row.Code] = price;
-        if (!dateUsed && row.Date) {
-          const d = String(row.Date);
-          dateUsed = `${d.slice(0,4)}-${d.slice(4,6)}-${d.slice(6,8)}`;
-        }
-      }
+  // 找到剛觸發的 run id（最新一筆）
+  let runId = null;
+  for (let i = 0; i < 8 && !runId; i++) {
+    await new Promise(r => setTimeout(r, 2000));
+    const res = await fetch(
+      `https://api.github.com/repos/${GH_OWNER}/${GH_REPO}/actions/workflows/update_current_prices.yml/runs?per_page=1`,
+      { headers }
+    );
+    if (res.ok) {
+      const data = await res.json();
+      if (data.workflow_runs?.[0]) runId = data.workflow_runs[0].id;
     }
-  } catch(e) { errors.push(`TWSE: ${e.message}`); }
-
-  // ── TPEX 上櫃：openapi.tpex.org.tw ──
-  try {
-    const r = await fetch('https://www.tpex.org.tw/openapi/v1/tpex_mainboard_daily_close_quotes');
-    if (!r.ok) throw new Error(`HTTP ${r.status}`);
-    const rows = await r.json();
-    if (!Array.isArray(rows) || rows.length === 0) throw new Error('回傳空陣列');
-    for (const row of rows) {
-      const code = row.SecuritiesCompanyCode || row.Code || row.code;
-      if (!code || !/^\d{4}$/.test(code)) continue;
-      const raw = row.Close || row.ClosingPrice || row.close || row.收盤 || '';
-      const price = parseFloat(String(raw).replace(/,/g, ''));
-      if (!isNaN(price) && price > 0) priceMap[code] = price;
-    }
-  } catch(e) { errors.push(`TPEX: ${e.message}`); }
-
-  const count = Object.keys(priceMap).length;
-  if (count === 0) {
-    const detail = errors.length ? '\n\n詳細：' + errors.join('；') : '';
-    throw new Error(`無法取得股價資料。可能原因：\n• 收盤後資料尚未發布（通常 16:30 後才有）\n• 今日為休市日\n• TWSE/TPEX API 暫時無法存取${detail}`);
   }
+  if (!runId) throw new Error('找不到 Workflow Run，請確認 Token 有 repo 權限');
 
-  if (!dateUsed) dateUsed = new Date().toISOString().slice(0, 10);
-  return { priceMap, dateUsed };
+  // 輪詢 run 狀態
+  for (let elapsed = 0; elapsed < 180; elapsed += 5) {
+    await new Promise(r => setTimeout(r, 5000));
+    btn.textContent = `⏳ 更新中... ${elapsed + 5}s`;
+    const res = await fetch(`https://api.github.com/repos/${GH_OWNER}/${GH_REPO}/actions/runs/${runId}`, { headers });
+    if (!res.ok) continue;
+    const run = await res.json();
+    if (run.status === 'completed') return run.conclusion;
+  }
+  throw new Error('等待逾時（3 分鐘），workflow 可能仍在執行，稍後請點「↻ 同步資料」');
 }
 
 function _applyPriceToChips(priceMap) {
