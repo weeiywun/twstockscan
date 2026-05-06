@@ -5,7 +5,6 @@ const GH_REPO  = 'twstockscan';
 const GH_PERF  = 'data/performance.json';
 
 function ghToken() { return localStorage.getItem('gh_token') || ''; }
-function fmToken() { return localStorage.getItem('finmind_token') || ''; }
 
 // ════════════════════════════════════════════════════
 //  交易成本計算（手續費 0.1425%、交易稅 0.3%）
@@ -59,13 +58,7 @@ async function ghWritePerf(data) {
 
 function openTokenModal() {
   const m = document.getElementById('tokenModal');
-  if (m) {
-    m.style.display = 'flex';
-    const inp = document.getElementById('tokenInput');
-    if (inp) inp.value = ghToken();
-    const fmInp = document.getElementById('fmTokenInput');
-    if (fmInp) fmInp.value = fmToken();
-  }
+  if (m) { m.style.display = 'flex'; const inp = document.getElementById('tokenInput'); if(inp) inp.value = ghToken(); }
 }
 function closeTokenModal() {
   const m = document.getElementById('tokenModal'); if (m) m.style.display = 'none';
@@ -73,8 +66,6 @@ function closeTokenModal() {
 function saveToken() {
   const val = document.getElementById('tokenInput')?.value?.trim();
   if (val) localStorage.setItem('gh_token', val); else localStorage.removeItem('gh_token');
-  const fmVal = document.getElementById('fmTokenInput')?.value?.trim();
-  if (fmVal) localStorage.setItem('finmind_token', fmVal); else localStorage.removeItem('finmind_token');
   closeTokenModal(); renderStrategy();
 }
 
@@ -393,16 +384,14 @@ function renderPerformance(strat, main) {
   main.innerHTML = `
     <div id="tokenModal" class="perf-modal" style="display:none" onclick="if(event.target===this)closeTokenModal()">
       <div class="perf-modal-box">
-        <div class="perf-modal-title">⚙ 設定 Token</div>
-        <p class="perf-modal-desc">Token 僅存於本裝置 <code>localStorage</code>，不傳送至任何第三方伺服器。</p>
-        <div class="perf-input-label">GitHub Token（儲存績效資料用，需 <code>repo</code> 權限）</div>
-        <input id="tokenInput" type="password" class="perf-input" placeholder="ghp_xxxxxxxxxxxxxxxxxxxx" style="width:100%;margin-bottom:6px">
+        <div class="perf-modal-title">⚙ 設定 GitHub Token</div>
+        <p class="perf-modal-desc">
+          貼上你的 <code>Personal Access Token (PAT)</code>，需要 <code>Contents: Read &amp; Write</code> 權限。<br>
+          Token 僅存於本裝置 <code>localStorage</code>，不傳送至任何第三方伺服器。
+        </p>
         <a href="https://github.com/settings/tokens/new?scopes=repo&description=twstockscan-perf" target="_blank"
-          style="font-size:11px;color:var(--blue);display:block;margin-bottom:14px">→ 前往 GitHub 產生 Token</a>
-        <div class="perf-input-label">FINMIND API Token（更新現價用，免費帳號即可）</div>
-        <input id="fmTokenInput" type="password" class="perf-input" placeholder="FINMIND token..." style="width:100%;margin-bottom:6px">
-        <a href="https://finmindtrade.com/" target="_blank"
-          style="font-size:11px;color:var(--blue);display:block;margin-bottom:16px">→ 前往 FinMind 申請免費 Token</a>
+          style="font-size:12px;color:var(--blue);display:block;margin-bottom:14px">→ 點此前往 GitHub 產生 Token（勾選 repo 權限）</a>
+        <input id="tokenInput" type="password" class="perf-input" placeholder="ghp_xxxxxxxxxxxxxxxxxxxx" style="width:100%;margin-bottom:16px">
         <div style="display:flex;gap:8px;justify-content:flex-end">
           <button class="perf-btn" onclick="closeTokenModal()">取消</button>
           <button class="perf-btn perf-btn-confirm" onclick="saveToken()">儲存</button>
@@ -683,56 +672,68 @@ async function perfSyncData() {
 // ════════════════════════════════════════════════════
 
 async function triggerPriceUpdate(btn) {
-  let tok = fmToken();
-  if (!tok) {
-    openTokenModal();
-    alert('請先在設定視窗填入 FINMIND API Token，再點「↑ 更新現價」');
-    return;
-  }
   const orig = btn.textContent;
   btn.disabled = true;
   btn.textContent = '⏳ 抓取中...';
   try {
-    const { rows, dateUsed } = await _fmFetchLatest(tok);
-    if (!rows.length) throw new Error('近 5 日無交易資料（可能為連續假期）');
-    const priceMap = {};
-    rows.forEach(r => { priceMap[r.stock_id] = parseFloat(r.close); });
+    const { priceMap, dateUsed } = await _fetchLatestPrices();
+    const count = Object.keys(priceMap).length;
+    if (count === 0) throw new Error('無法取得股價資料（可能為休市日，或 TWSE/TPEX API 暫時無法存取）');
     _applyPriceToChips(priceMap);
     _applyPriceToRttTrack(priceMap);
     _applyPriceToAnalysis(priceMap);
     await _applyPriceToPerf(priceMap, dateUsed);
     renderStrategy();
+    btn.textContent = `✓ 已更新 (${dateUsed})`;
+    setTimeout(() => { if (!btn.disabled) btn.textContent = orig; }, 3000);
+    return;
   } catch(e) {
-    if (e.message.includes('401')) {
-      localStorage.removeItem('finmind_token');
-      alert('FINMIND Token 無效（401）\n\n已清除舊 Token，請至「⚙ 設定 Token」重新填入。');
-    } else {
-      alert('更新現價失敗：' + e.message);
-    }
-  } finally {
-    btn.disabled = false;
-    btn.textContent = orig;
+    alert('更新現價失敗：' + e.message);
   }
+  btn.disabled = false;
+  btn.textContent = orig;
 }
 
-async function _fmFetchLatest(tok) {
-  for (let i = 0; i < 5; i++) {
-    const d = new Date();
-    d.setDate(d.getDate() - i);
-    const dateStr = d.toISOString().slice(0, 10);
-    const res = await fetch(
-      `https://api.finmindtrade.com/api/v4/data?dataset=TaiwanStockPrice&start_date=${dateStr}&end_date=${dateStr}&token=${encodeURIComponent(tok)}`,
-      { headers: { Accept: 'application/json' } }
-    );
-    if (!res.ok) throw new Error(`HTTP ${res.status}`);
-    const data = await res.json();
-    if (data.status === 401) throw new Error('FINMIND Token 無效（401）');
-    if (data.status === 402) throw new Error('超出 FINMIND API 每日配額（402）');
-    if (data.status !== 200) throw new Error(`FINMIND API 錯誤：${data.msg || data.status}`);
-    const rows = data.data || [];
-    if (rows.length > 0) return { rows, dateUsed: dateStr };
-  }
-  return { rows: [], dateUsed: '' };
+async function _fetchLatestPrices() {
+  const priceMap = {};
+  let dateUsed = '';
+
+  // TWSE 上市（官方 Open Data，免 token，支援 CORS）
+  try {
+    const r = await fetch('https://openapi.twse.com.tw/v1/exchangeReport/STOCK_DAY_ALL');
+    if (r.ok) {
+      const rows = await r.json();
+      for (const row of rows) {
+        if (!row.Code || !/^\d{4}$/.test(row.Code)) continue;
+        const price = parseFloat((row.ClosingPrice || '').replace(/,/g, ''));
+        if (!isNaN(price) && price > 0) {
+          priceMap[row.Code] = price;
+          if (!dateUsed && row.Date) {
+            const d = String(row.Date);
+            dateUsed = `${d.slice(0,4)}-${d.slice(4,6)}-${d.slice(6,8)}`;
+          }
+        }
+      }
+    }
+  } catch(e) { console.warn('TWSE Open API 失敗：', e.message); }
+
+  // TPEX 上櫃（官方 Open Data）
+  try {
+    const r = await fetch('https://www.tpex.org.tw/openapi/v1/tpex_mainboard_daily_close_quotes');
+    if (r.ok) {
+      const rows = await r.json();
+      for (const row of rows) {
+        const code = row.SecuritiesCompanyCode || row.Code || row.code;
+        if (!code || !/^\d{4}$/.test(code)) continue;
+        const raw = row.Close || row.ClosingPrice || row.close || row.收盤 || '';
+        const price = parseFloat(String(raw).replace(/,/g, ''));
+        if (!isNaN(price) && price > 0) priceMap[code] = price;
+      }
+    }
+  } catch(e) { console.warn('TPEX Open API 失敗：', e.message); }
+
+  if (!dateUsed) dateUsed = new Date().toISOString().slice(0, 10);
+  return { priceMap, dateUsed };
 }
 
 function _applyPriceToChips(priceMap) {
