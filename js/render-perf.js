@@ -697,40 +697,47 @@ async function triggerPriceUpdate(btn) {
 async function _fetchLatestPrices() {
   const priceMap = {};
   let dateUsed = '';
+  const errors = [];
 
-  // TWSE 上市（官方 Open Data，免 token，支援 CORS）
+  // ── TWSE 上市：openapi.twse.com.tw（官方 Open Data）──
   try {
     const r = await fetch('https://openapi.twse.com.tw/v1/exchangeReport/STOCK_DAY_ALL');
-    if (r.ok) {
-      const rows = await r.json();
-      for (const row of rows) {
-        if (!row.Code || !/^\d{4}$/.test(row.Code)) continue;
-        const price = parseFloat((row.ClosingPrice || '').replace(/,/g, ''));
-        if (!isNaN(price) && price > 0) {
-          priceMap[row.Code] = price;
-          if (!dateUsed && row.Date) {
-            const d = String(row.Date);
-            dateUsed = `${d.slice(0,4)}-${d.slice(4,6)}-${d.slice(6,8)}`;
-          }
+    if (!r.ok) throw new Error(`HTTP ${r.status}`);
+    const rows = await r.json();
+    if (!Array.isArray(rows) || rows.length === 0) throw new Error('回傳空陣列');
+    for (const row of rows) {
+      if (!row.Code || !/^\d{4}$/.test(row.Code)) continue;
+      const price = parseFloat((row.ClosingPrice || '').replace(/,/g, ''));
+      if (!isNaN(price) && price > 0) {
+        priceMap[row.Code] = price;
+        if (!dateUsed && row.Date) {
+          const d = String(row.Date);
+          dateUsed = `${d.slice(0,4)}-${d.slice(4,6)}-${d.slice(6,8)}`;
         }
       }
     }
-  } catch(e) { console.warn('TWSE Open API 失敗：', e.message); }
+  } catch(e) { errors.push(`TWSE: ${e.message}`); }
 
-  // TPEX 上櫃（官方 Open Data）
+  // ── TPEX 上櫃：openapi.tpex.org.tw ──
   try {
     const r = await fetch('https://www.tpex.org.tw/openapi/v1/tpex_mainboard_daily_close_quotes');
-    if (r.ok) {
-      const rows = await r.json();
-      for (const row of rows) {
-        const code = row.SecuritiesCompanyCode || row.Code || row.code;
-        if (!code || !/^\d{4}$/.test(code)) continue;
-        const raw = row.Close || row.ClosingPrice || row.close || row.收盤 || '';
-        const price = parseFloat(String(raw).replace(/,/g, ''));
-        if (!isNaN(price) && price > 0) priceMap[code] = price;
-      }
+    if (!r.ok) throw new Error(`HTTP ${r.status}`);
+    const rows = await r.json();
+    if (!Array.isArray(rows) || rows.length === 0) throw new Error('回傳空陣列');
+    for (const row of rows) {
+      const code = row.SecuritiesCompanyCode || row.Code || row.code;
+      if (!code || !/^\d{4}$/.test(code)) continue;
+      const raw = row.Close || row.ClosingPrice || row.close || row.收盤 || '';
+      const price = parseFloat(String(raw).replace(/,/g, ''));
+      if (!isNaN(price) && price > 0) priceMap[code] = price;
     }
-  } catch(e) { console.warn('TPEX Open API 失敗：', e.message); }
+  } catch(e) { errors.push(`TPEX: ${e.message}`); }
+
+  const count = Object.keys(priceMap).length;
+  if (count === 0) {
+    const detail = errors.length ? '\n\n詳細：' + errors.join('；') : '';
+    throw new Error(`無法取得股價資料。可能原因：\n• 收盤後資料尚未發布（通常 16:30 後才有）\n• 今日為休市日\n• TWSE/TPEX API 暫時無法存取${detail}`);
+  }
 
   if (!dateUsed) dateUsed = new Date().toISOString().slice(0, 10);
   return { priceMap, dateUsed };
