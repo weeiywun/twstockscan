@@ -14,7 +14,7 @@
   讓籌碼選股頁面的現價維持每日更新。
 """
 
-import json, os, time
+import json, os, sys, time
 from datetime import datetime, timedelta, timezone
 from finmind_client import fetch_stock_price, load_price_cache, get_stock_price_from_cache
 
@@ -31,6 +31,15 @@ START_DATE = (datetime.now(TW_TZ) - timedelta(days=40)).strftime("%Y-%m-%d")
 VOL_MULT      = 1.5
 EMA5_PERIOD   = 5
 FINMIND_SLEEP = 0.35
+
+
+def _require_fresh_cache(cache) -> None:
+    if cache is None or cache.empty:
+        return
+    latest = cache["date"].max().strftime("%Y-%m-%d")
+    if latest != TODAY:
+        print(f"❌ price_cache.parquet 最新資料為 {latest}，不是 {TODAY}；停止量增訊號掃描，避免用舊價量產生今日訊號")
+        sys.exit(1)
 
 
 def _calc_ema(closes, span):
@@ -114,6 +123,7 @@ def main():
     price_cache = load_price_cache()
     if price_cache is not None:
         print(f"  📦 使用 price_cache.parquet")
+        _require_fresh_cache(price_cache)
     else:
         print("  ⚠️  price_cache.parquet 不存在，改用 FinMind API")
 

@@ -11,7 +11,7 @@
 日K → 週K：df.resample("W-FRI") 動態聚合，含當週未完整週
 """
 
-import json, os
+import json, os, sys
 import pandas as pd
 from datetime import datetime, timedelta, timezone
 from finmind_client import load_price_cache, get_stock_price_from_cache
@@ -41,6 +41,13 @@ def _to_weekly(df: pd.DataFrame) -> pd.DataFrame:
         volume_lots=("volume_lots", "sum"),
     ).dropna(subset=["close"])
     return weekly.reset_index()
+
+
+def _require_fresh_cache(price_cache: pd.DataFrame) -> None:
+    latest = price_cache["date"].max().strftime("%Y-%m-%d")
+    if latest != TODAY:
+        print(f"❌ price_cache.parquet 最新資料為 {latest}，不是 {TODAY}；停止右上角掃描，避免用舊價量產生今日訊號")
+        sys.exit(1)
 
 
 def check_signal(wk: pd.DataFrame) -> dict | None:
@@ -166,6 +173,7 @@ def main():
         return
     latest_date = price_cache["date"].max().date()
     print(f"  {len(price_cache):,} 筆 | {price_cache['stock_id'].nunique()} 支 | 最新 {latest_date}")
+    _require_fresh_cache(price_cache)
 
     start_date = (datetime.now(TW_TZ) - timedelta(days=LOOKBACK_DAYS)).strftime("%Y-%m-%d")
 

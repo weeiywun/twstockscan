@@ -145,6 +145,93 @@ def _fetch_bydate(start_date: str, end_date: str, token: str) -> pd.DataFrame | 
     return None
 
 
+def _num(value):
+    if value is None:
+        return None
+    text = str(value).strip().replace(",", "")
+    if not text or text in {"--", "-", "NaN"}:
+        return None
+    try:
+        return float(text)
+    except ValueError:
+        return None
+
+
+def _official_roc_date(date: str) -> str:
+    year, month, day = map(int, date.split("-"))
+    return f"{year - 1911:03d}{month:02d}{day:02d}"
+
+
+def _fetch_official_daily_close(date: str) -> pd.DataFrame:
+    """FinMind 延遲時，改用 TWSE/TPEx 官方盤後價量補今日資料。"""
+    rows: list[dict] = []
+    target = datetime.strptime(date, "%Y-%m-%d")
+
+    print(f"  → 官方盤後資料 fallback {date}")
+    try:
+        r = requests.get(
+            "https://www.twse.com.tw/rwd/zh/afterTrading/MI_INDEX",
+            params={"date": target.strftime("%Y%m%d"), "type": "ALLBUT0999", "response": "json"},
+            headers={"User-Agent": "Mozilla/5.0"},
+            timeout=30,
+        )
+        r.raise_for_status()
+        payload = r.json()
+        for table in payload.get("tables", []):
+            for row in table.get("data", []) or []:
+                if not row or len(row) < 9 or not str(row[0]).isdigit() or len(str(row[0])) != 4:
+                    continue
+                open_, high, low, close = (_num(row[5]), _num(row[6]), _num(row[7]), _num(row[8]))
+                volume = _num(row[2])
+                if close is None or volume is None:
+                    continue
+                rows.append({
+                    "stock_id": str(row[0]),
+                    "date": pd.Timestamp(date),
+                    "open": open_,
+                    "max": high,
+                    "min": low,
+                    "close": close,
+                    "volume_lots": int(round(volume / 1000)),
+                })
+    except Exception as exc:
+        print(f"  ⚠️  TWSE 官方盤後資料失敗：{exc}")
+
+    try:
+        r = requests.get(
+            "https://www.tpex.org.tw/openapi/v1/tpex_mainboard_daily_close_quotes",
+            headers={"User-Agent": "Mozilla/5.0"},
+            timeout=30,
+        )
+        r.raise_for_status()
+        roc_date = _official_roc_date(date)
+        for row in r.json():
+            sid = str(row.get("SecuritiesCompanyCode", ""))
+            if not sid.isdigit() or len(sid) != 4 or str(row.get("Date", "")) != roc_date:
+                continue
+            open_, high, low, close = (_num(row.get("Open")), _num(row.get("High")), _num(row.get("Low")), _num(row.get("Close")))
+            volume = _num(row.get("TradingShares"))
+            if close is None or volume is None:
+                continue
+            rows.append({
+                "stock_id": sid,
+                "date": pd.Timestamp(date),
+                "open": open_,
+                "max": high,
+                "min": low,
+                "close": close,
+                "volume_lots": int(round(volume / 1000)),
+            })
+    except Exception as exc:
+        print(f"  ⚠️  TPEx 官方盤後資料失敗：{exc}")
+
+    df = pd.DataFrame(rows)
+    if not df.empty:
+        df = df.drop_duplicates(subset=["stock_id", "date"])
+        print(f"  ✅ 官方盤後資料取得 {len(df):,} 筆")
+    return df
+
+
 def _normalize(df: pd.DataFrame) -> pd.DataFrame:
     """統一欄位名稱、型別，過濾非普通股"""
     df = df.copy()
@@ -193,14 +280,22 @@ def _save_cache(df: pd.DataFrame):
     print(f"     {len(df):,} 筆 | {stocks} 支 | 最新 {latest} | {size_mb:.1f} MB")
 
 
-def update_price_cache(start_date: str, end_date: str, token: str):
+def update_price_cache(start_date: str, end_date: str, token: str) -> bool:
     print(f"\n[2] 拉取全市場股價（{start_date} ～ {end_date}）...")
     raw = _fetch_bydate(start_date, end_date, token)
     if raw is None or raw.empty:
-        print("  ⚠️  無資料，略過"); return
+        if start_date == end_date:
+            new_df = _fetch_official_daily_close(start_date)
+        else:
+            print("  ⚠️  無資料，略過")
+            return False
+    else:
+        print(f"  回傳 {len(raw):,} 筆原始資料")
+        new_df = _normalize(raw)
 
-    print(f"  回傳 {len(raw):,} 筆原始資料")
-    new_df = _normalize(raw)
+    if new_df.empty:
+        print("  ⚠️  無有效資料，略過")
+        return False
     print(f"  正規化後 {len(new_df):,} 筆")
 
     print("[3] 合併快取...")
@@ -209,6 +304,7 @@ def update_price_cache(start_date: str, end_date: str, token: str):
 
     print("[4] 儲存快取...")
     _save_cache(combined)
+    return True
 
 
 # ── yfinance 初始化 ───────────────────────────────────────────
@@ -353,7 +449,10 @@ def main():
     print("\n[1] 更新股票清單快取...")
     update_stock_list_cache(token)
 
-    update_price_cache(start, end, token)
+    updated = update_price_cache(start, end, token)
+    if not updated and not backfill_month:
+        print(f"❌ {TODAY} 尚未取得有效日線資料，停止後續掃描以避免使用舊價量")
+        sys.exit(1)
     print("\n✅ 完成")
 
 
