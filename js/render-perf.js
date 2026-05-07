@@ -314,8 +314,8 @@ function renderPerformance(strat, main) {
         <td style="font-family:var(--mono)">${p.cost_price.toFixed(2)}</td>
         <td style="font-family:var(--mono)">${cp != null ? cp.toFixed(2) : '<span style="color:var(--text3)">—</span>'}</td>
         <td><span style="font-family:var(--mono);color:${pc};font-weight:600">${ps}${pnlPct.toFixed(2)}%</span><br><span style="font-family:var(--mono);font-size:11px;color:${pc}">${ps}${Math.round(pnlAmt).toLocaleString()}</span></td>
-        <td style="font-family:var(--mono);font-size:12px;color:var(--green)">${p.tp_price != null ? p.tp_price.toFixed(2) : '<span style="color:var(--text3)">—</span>'}</td>
-        <td style="font-family:var(--mono);font-size:12px;color:var(--red)">${p.sl_price != null ? p.sl_price.toFixed(2) : '<span style="color:var(--text3)">—</span>'}</td>
+        <td style="font-family:var(--mono);font-size:12px;color:var(--market-up)">${p.tp_price != null ? p.tp_price.toFixed(2) : '<span style="color:var(--text3)">—</span>'}</td>
+        <td style="font-family:var(--mono);font-size:12px;color:var(--market-down)">${p.sl_price != null ? p.sl_price.toFixed(2) : '<span style="color:var(--text3)">—</span>'}</td>
         <td style="white-space:nowrap">
           <button class="perf-btn perf-btn-exit" onclick="perfShowExitForm('${p.id}')">出場</button>
           <button class="perf-btn perf-btn-del" style="margin-left:4px" onclick="perfDeletePos('${p.id}')">刪除</button>
