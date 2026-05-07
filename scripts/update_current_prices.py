@@ -48,6 +48,8 @@ def collect_stock_ids() -> set:
                     ids.add(sid)
 
     _load(os.path.join(DATA_DIR, "chips_big_holder.json"), "results")
+    _load(os.path.join(DATA_DIR, "volume_signal.json"),     "results")
+    _load(os.path.join(DATA_DIR, "right_top.json"),         "results")
     _load(os.path.join(DATA_DIR, "right_top_track.json"),  "active", "history")
     _load(os.path.join(DATA_DIR, "performance.json"),      "positions")
     _load(os.path.join(DATA_DIR, "ai_analysis.json"),      "active", "history")

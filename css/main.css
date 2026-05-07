@@ -8,16 +8,16 @@
   --text:      #151922;
   --text2:     #4f5b6b;
   --text3:     #8a94a3;
-  --green:     #0ea5e9;
-  --green-dim: rgba(14,165,233,0.09);
-  --green-glow:rgba(14,165,233,0.22);
+  --green:     #0284c7;
+  --green-dim: rgba(2,132,199,0.09);
+  --green-glow:rgba(2,132,199,0.22);
   --amber:     #b7791f;
   --red:       #c92a2a;
   --market-up: #c92a2a;
   --market-down:#087f5b;
   --market-up-dim:rgba(201,42,42,0.08);
   --market-down-dim:rgba(8,127,91,0.08);
-  --blue:      #0ea5e9;
+  --blue:      #0284c7;
   --mono:      'IBM Plex Mono', monospace;
   --sans:      'Noto Sans TC', sans-serif;
   --shadow-sm: 0 1px 2px rgba(15,23,42,0.05);
@@ -59,7 +59,7 @@ header .page-inner{
 }
 .logo-mark{
   display:inline-block;width:9px;height:9px;
-  background:linear-gradient(135deg,#0ea5e9,#38bdf8);border-radius:2px;
+  background:linear-gradient(135deg,#0284c7,#38bdf8);border-radius:2px;
   flex-shrink:0;
 }
 .logo span{color:var(--green)}

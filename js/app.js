@@ -536,6 +536,8 @@ async function loadData() {
         const yesterday = dateTW(-1);
         if (cpData.date === today || cpData.date === yesterday) {
           if (typeof _applyPriceToChips    === 'function') _applyPriceToChips(cpData.prices);
+          if (typeof _applyPriceToVolumeSignal === 'function') _applyPriceToVolumeSignal(cpData.prices);
+          if (typeof _applyPriceToRightTop === 'function') _applyPriceToRightTop(cpData.prices);
           if (typeof _applyPriceToRttTrack === 'function') _applyPriceToRttTrack(cpData.prices);
           if (typeof _applyPriceToAnalysis === 'function') _applyPriceToAnalysis(cpData.prices);
         }
