@@ -266,11 +266,26 @@ function _formatIndexClose(value) {
   });
 }
 
+function _formatSignedNumber(value, digits = 2) {
+  if (value == null || Number.isNaN(Number(value))) return '';
+  const n = Number(value);
+  return `${n > 0 ? '+' : ''}${n.toLocaleString('zh-TW', {
+    minimumFractionDigits: digits,
+    maximumFractionDigits: digits,
+  })}`;
+}
+
 function _marketIndexRow(key, fallbackName) {
   const item = DATA.market_index_data?.indices?.[key] || {};
   const close = item.close;
+  const change = item.change;
+  const changePct = item.change_pct;
   const date = item.date || DATA.market_index_data?.date || '';
   const source = item.source && item.source !== 'pending' ? item.source.toUpperCase() : '';
+  const moveClass = Number(change) > 0 ? 'up' : Number(change) < 0 ? 'down' : 'flat';
+  const moveText = change == null || changePct == null
+    ? ''
+    : `${_formatSignedNumber(change)} / ${_formatSignedNumber(changePct)}%`;
   return `
     <div class="market-index-row">
       <div class="market-index-main">
@@ -279,6 +294,7 @@ function _marketIndexRow(key, fallbackName) {
       </div>
       <div class="market-index-value-wrap">
         <div class="market-index-value">${_formatIndexClose(close)}</div>
+        ${moveText ? `<div class="market-index-change ${moveClass}">${moveText}</div>` : ''}
         ${source ? `<div class="market-index-source">${source}</div>` : ''}
       </div>
     </div>`;

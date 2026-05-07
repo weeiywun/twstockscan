@@ -44,6 +44,17 @@ def _num(value: Any) -> float | None:
         return None
 
 
+def _with_change(item: dict[str, Any], previous_close: float | None) -> dict[str, Any]:
+    close = _num(item.get("close"))
+    if close is None or previous_close is None or previous_close == 0:
+        return item
+    change = round(close - previous_close, 2)
+    item["change"] = change
+    item["change_pct"] = round(change / previous_close * 100, 2)
+    item["previous_close"] = round(previous_close, 2)
+    return item
+
+
 def _twse_date(date: datetime.date) -> str:
     return date.strftime("%Y%m%d")
 
@@ -99,17 +110,18 @@ def fetch_from_mis_indices() -> dict[str, dict[str, Any]]:
         key = "TAIEX" if code == "t00" else "TPEX" if code == "o00" else ""
         if not key:
             continue
+        previous_close = _num(item.get("y"))
         value = _num(item.get("z") if use_latest else item.get("y"))
         if value is None:
             value = _num(item.get("y") or item.get("z"))
         if value is None:
             continue
-        result[key] = {
+        result[key] = _with_change({
             "name": "台灣加權指數" if key == "TAIEX" else "櫃買加權指數",
             "close": value,
             "date": fallback_date,
             "source": "twse_mis",
-        }
+        }, previous_close if use_latest else None)
     return result
 
 
@@ -128,18 +140,22 @@ def fetch_taiex_from_twse() -> dict[str, Any] | None:
             rows = data.get("data") if data else None
             if not rows:
                 continue
-            for row in reversed(rows):
-                if len(row) < 5:
-                    continue
+            valid_rows = [
+                row for row in rows
+                if isinstance(row, list) and len(row) >= 5 and _num(row[4]) is not None
+            ]
+            for i in range(len(valid_rows) - 1, -1, -1):
+                row = valid_rows[i]
                 close = _num(row[4])
                 if close is None:
                     continue
-                return {
+                previous_close = _num(valid_rows[i - 1][4]) if i > 0 else None
+                return _with_change({
                     "name": "台灣加權指數",
                     "close": close,
                     "date": _roc_date(str(row[0])),
                     "source": "twse",
-                }
+                }, previous_close)
         time.sleep(0.15)
     return None
 
@@ -186,28 +202,40 @@ def fetch_tpex_from_official() -> dict[str, Any] | None:
                 continue
             rows = _rows_from_payload(data)
             if rows and isinstance(rows[0], dict):
-                for row in reversed(rows):
+                valid_rows = [
+                    row for row in rows
+                    if isinstance(row, dict) and _num(row.get("收市") or row.get("收盤") or row.get("close")) is not None
+                ]
+                for i in range(len(valid_rows) - 1, -1, -1):
+                    row = valid_rows[i]
                     close = _num(row.get("收市") or row.get("收盤") or row.get("close"))
                     raw_date = row.get("資料日期") or row.get("date") or target.isoformat()
                     if close is not None:
-                        return {
+                        prev_row = valid_rows[i - 1] if i > 0 else {}
+                        previous_close = _num(prev_row.get("收市") or prev_row.get("收盤") or prev_row.get("close"))
+                        return _with_change({
                             "name": "櫃買加權指數",
                             "close": close,
                             "date": _roc_date(str(raw_date)),
                             "source": "tpex",
-                        }
+                        }, previous_close)
             elif rows:
-                for row in reversed(rows):
-                    if not isinstance(row, list) or len(row) < 5:
-                        continue
+                valid_rows = [
+                    row for row in rows
+                    if isinstance(row, list) and len(row) >= 5 and _num(row[4]) is not None
+                ]
+                for i in range(len(valid_rows) - 1, -1, -1):
+                    row = valid_rows[i]
                     close = _num(row[4])
-                    if close is not None:
-                        return {
-                            "name": "櫃買加權指數",
-                            "close": close,
-                            "date": _roc_date(str(row[0])),
-                            "source": "tpex",
-                        }
+                    if close is None:
+                        continue
+                    previous_close = _num(valid_rows[i - 1][4]) if i > 0 else None
+                    return _with_change({
+                        "name": "櫃買加權指數",
+                        "close": close,
+                        "date": _roc_date(str(row[0])),
+                        "source": "tpex",
+                    }, previous_close)
         time.sleep(0.15)
     return None
 
@@ -219,14 +247,16 @@ def fetch_from_yfinance(symbol: str, name: str) -> dict[str, Any] | None:
         hist = yf.Ticker(symbol).history(period="2mo", interval="1d", auto_adjust=False)
         if hist.empty:
             return None
-        last = hist.dropna(subset=["Close"]).iloc[-1]
-        idx = hist.dropna(subset=["Close"]).index[-1]
-        return {
+        valid = hist.dropna(subset=["Close"])
+        last = valid.iloc[-1]
+        idx = valid.index[-1]
+        previous_close = round(float(valid.iloc[-2]["Close"]), 2) if len(valid) >= 2 else None
+        return _with_change({
             "name": name,
             "close": round(float(last["Close"]), 2),
             "date": idx.strftime("%Y-%m-%d"),
             "source": "yfinance",
-        }
+        }, previous_close)
     except Exception as exc:
         print(f"  ⚠️  yfinance {symbol} 讀取失敗：{exc}")
         return None

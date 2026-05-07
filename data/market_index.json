@@ -1,19 +1,25 @@
 {
   "date": "2026-05-07",
-  "updated": "2026-05-07T18:54:30.799016+08:00",
+  "updated": "2026-05-07T19:15:24.205361+08:00",
   "source": "twse+twse_mis",
   "indices": {
     "TAIEX": {
       "name": "台灣加權指數",
       "close": 41933.78,
       "date": "2026-05-07",
-      "source": "twse"
+      "source": "twse",
+      "change": 794.93,
+      "change_pct": 1.93,
+      "previous_close": 41138.85
     },
     "TPEX": {
       "name": "櫃買加權指數",
       "close": 416.41,
       "date": "2026-05-07",
-      "source": "twse_mis"
+      "source": "twse_mis",
+      "change": 6.12,
+      "change_pct": 1.49,
+      "previous_close": 410.29
     }
   }
 }
