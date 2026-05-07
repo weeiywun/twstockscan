@@ -107,6 +107,7 @@ const DATA = {
   volume_signal_data:     [],
   stock_analysis_data:    null,
   performance_data:       null,
+  market_index_data:      null,
   right_top_data:         [],
   right_top_industry:     [],
   right_top_track_data:   null,
@@ -461,12 +462,13 @@ async function loadData() {
   const timestamp = new Date().getTime();
 
   try {
-    const [chipsRes, vsRes, aiRes, saRes, perfRes, rtRes, rttRes] = await Promise.all([
+    const [chipsRes, vsRes, aiRes, saRes, perfRes, miRes, rtRes, rttRes] = await Promise.all([
       fetch(`data/chips_big_holder.json?t=${timestamp}`,   { cache: 'no-store' }).then(r => r.ok ? r.json() : null).catch(() => null),
       fetch(`data/volume_signal.json?t=${timestamp}`,      { cache: 'no-store' }).then(r => r.ok ? r.json() : null).catch(() => null),
       fetch(`data/ai_recommendations.json?t=${timestamp}`, { cache: 'no-store' }).then(r => r.ok ? r.json() : null).catch(() => null),
       fetch(`data/ai_analysis.json?t=${timestamp}`,        { cache: 'no-store' }).then(r => r.ok ? r.json() : null).catch(() => null),
       fetch(`data/performance.json?t=${timestamp}`,        { cache: 'no-store' }).then(r => r.ok ? r.json() : null).catch(() => null),
+      fetch(`data/market_index.json?t=${timestamp}`,        { cache: 'no-store' }).then(r => r.ok ? r.json() : null).catch(() => null),
       fetch(`data/right_top.json?t=${timestamp}`,          { cache: 'no-store' }).then(r => r.ok ? r.json() : null).catch(() => null),
       fetch(`data/right_top_track.json?t=${timestamp}`,    { cache: 'no-store' }).then(r => r.ok ? r.json() : null).catch(() => null),
     ]);
@@ -504,6 +506,10 @@ async function loadData() {
 
     if (perfRes) {
       DATA.performance_data = perfRes;
+    }
+
+    if (miRes && miRes.indices) {
+      DATA.market_index_data = miRes;
     }
 
     if (rtRes && rtRes.results) {

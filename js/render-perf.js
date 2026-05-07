@@ -221,14 +221,14 @@ function initPerfChart(pd) {
         {
           label: '總報酬（含持倉）',
           data: cd ? cd.totalLine : [],
-          borderColor: '#f0883e', backgroundColor: 'transparent',
+          borderColor: '#1d4ed8', backgroundColor: 'transparent',
           borderWidth: 2, borderDash: [5, 4],
           pointRadius: cd && cd.labels.length < 30 ? 3 : 1, tension: 0.3,
         },
         {
           label: '已實現損益',
           data: cd ? cd.realizedLine : [],
-          borderColor: '#e8a838', backgroundColor: 'rgba(232,168,56,0.1)',
+          borderColor: '#087f5b', backgroundColor: 'rgba(8,127,91,0.08)',
           borderWidth: 2, fill: true,
           pointRadius: cd && cd.labels.length < 30 ? 3 : 1, tension: 0.3,
         }
@@ -237,18 +237,18 @@ function initPerfChart(pd) {
     options: {
       responsive: true, maintainAspectRatio: false,
       plugins: {
-        legend: { labels: { color: '#8b949e', font: { size: 11 } } },
+        legend: { labels: { color: '#4f5b6b', font: { size: 11 } } },
         tooltip: {
-          backgroundColor: '#1c2128', titleColor: '#e6edf3',
-          bodyColor: '#8b949e', borderColor: 'rgba(255,255,255,0.1)', borderWidth: 1,
+          backgroundColor: '#ffffff', titleColor: '#151922',
+          bodyColor: '#4f5b6b', borderColor: '#d1d5db', borderWidth: 1,
           callbacks: { label: ctx => ` ${ctx.dataset.label}：${ctx.parsed.y >= 0 ? '+' : ''}${ctx.parsed.y.toFixed(2)}%` }
         }
       },
       scales: {
-        x: { ticks: { color: '#6e7681', font: { size: 10 } }, grid: { color: 'rgba(255,255,255,0.04)' } },
+        x: { ticks: { color: '#8a94a3', font: { size: 10 } }, grid: { color: '#eef1f4' } },
         y: {
-          ticks: { color: '#6e7681', font: { size: 10 }, callback: v => (v >= 0 ? '+' : '') + v.toFixed(1) + '%' },
-          grid: { color: 'rgba(255,255,255,0.04)' }
+          ticks: { color: '#8a94a3', font: { size: 10 }, callback: v => (v >= 0 ? '+' : '') + v.toFixed(1) + '%' },
+          grid: { color: '#eef1f4' }
         }
       }
     }
@@ -258,17 +258,75 @@ function initPerfChart(pd) {
 // ════════════════════════════════════════════════════
 //  PERFORMANCE — 渲染主頁
 // ════════════════════════════════════════════════════
+function _formatIndexClose(value) {
+  if (value == null || Number.isNaN(Number(value))) return '—';
+  return Number(value).toLocaleString('zh-TW', {
+    minimumFractionDigits: 2,
+    maximumFractionDigits: 2,
+  });
+}
+
+function _marketIndexRow(key, fallbackName) {
+  const item = DATA.market_index_data?.indices?.[key] || {};
+  const close = item.close;
+  const date = item.date || DATA.market_index_data?.date || '';
+  const source = item.source && item.source !== 'pending' ? item.source.toUpperCase() : '';
+  return `
+    <div class="market-index-row">
+      <div class="market-index-main">
+        <div class="market-index-name">${item.name || fallbackName}</div>
+        <div class="market-index-date">${date ? `資料日 ${date}` : '等待盤後更新'}</div>
+      </div>
+      <div class="market-index-value-wrap">
+        <div class="market-index-value">${_formatIndexClose(close)}</div>
+        ${source ? `<div class="market-index-source">${source}</div>` : ''}
+      </div>
+    </div>`;
+}
+
+function renderMarketDashboard() {
+  const updated = DATA.market_index_data?.updated
+    ? DATA.market_index_data.updated.slice(0, 16).replace('T', ' ')
+    : '';
+  return `
+    <div class="sidebar-header market-panel-header">
+      <span class="section-title">大盤儀表板</span>
+      <span class="market-updated">${updated || '尚未更新'}</span>
+    </div>
+    <div class="market-index-list">
+      ${_marketIndexRow('TAIEX', '台灣加權指數')}
+      ${_marketIndexRow('TPEX', '櫃買加權指數')}
+    </div>
+    <div class="market-note">盤中顯示最近一個已收盤交易日。</div>`;
+}
+
+function updatePerfSidebar() {
+  const marketPanel = document.getElementById('marketPanel');
+  const journalList = document.getElementById('journalList');
+  if (marketPanel) marketPanel.innerHTML = renderMarketDashboard();
+  if (journalPanelVisible && journalList) {
+    journalList.innerHTML = renderJournalList(DATA.performance_data?.journal || []);
+  }
+}
+
 function setPerfSidebarMode(on) {
   const layout = document.querySelector('.page-layout');
   const sidebar = document.getElementById('rightSidebar');
-  const journalPanel   = document.getElementById('journalPanel');
+  const marketPanel = document.getElementById('marketPanel');
+  const journalPanel = document.getElementById('journalPanel');
   if (on) {
+    layout?.classList.add('perf-mode');
+    layout?.classList.remove('sidebar-hidden');
+    if (sidebar) sidebar.style.display = '';
+    if (marketPanel) marketPanel.style.display = 'block';
+    updatePerfSidebar();
     journalApplySecretState();
   } else {
     layout?.classList.remove('perf-mode');
     layout?.classList.remove('sidebar-hidden');
     if (sidebar) sidebar.style.display = 'none';
-    if (journalPanel)   journalPanel.style.display   = 'none';
+    if (marketPanel) marketPanel.style.display = 'none';
+    if (journalPanel) journalPanel.style.display = 'none';
   }
 }
 
@@ -553,12 +611,11 @@ function renderPerformance(strat, main) {
 
   setTimeout(() => initPerfChart(pd), 60);
 
-  // 切換側欄為周記模式，並渲染列表
+  // 切換績效頁側欄，固定顯示大盤儀表板，周記依暗門狀態展開。
   setPerfSidebarMode(true);
   const jfDate = document.getElementById('jf-date');
   if (jfDate && !jfDate.value) jfDate.value = today;
-  const journalList = document.getElementById('journalList');
-  if (journalList) journalList.innerHTML = journalPanelVisible ? renderJournalList(pd?.journal || []) : '';
+  updatePerfSidebar();
   journalApplySecretState();
 }
 
@@ -881,17 +938,21 @@ let journalPanelVisible = false;
 function journalApplySecretState() {
   const layout = document.querySelector('.page-layout');
   const sidebar = document.getElementById('rightSidebar');
+  const marketPanel = document.getElementById('marketPanel');
   const journalPanel = document.getElementById('journalPanel');
   const journalList = document.getElementById('journalList');
 
-  layout?.classList.toggle('perf-mode', journalPanelVisible);
-  layout?.classList.toggle('sidebar-hidden', !journalPanelVisible);
-  if (sidebar) sidebar.style.display = journalPanelVisible ? '' : 'none';
+  layout?.classList.add('perf-mode');
+  layout?.classList.remove('sidebar-hidden');
+  if (sidebar) sidebar.style.display = '';
+  if (marketPanel) marketPanel.style.display = 'block';
   if (journalPanel) journalPanel.style.display = journalPanelVisible ? 'block' : 'none';
 
   if (!journalPanelVisible) {
     journalShowAdd(false);
     if (journalList) journalList.innerHTML = '';
+  } else if (journalList) {
+    journalList.innerHTML = renderJournalList(DATA.performance_data?.journal || []);
   }
 }
 
