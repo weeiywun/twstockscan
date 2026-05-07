@@ -260,15 +260,16 @@ function initPerfChart(pd) {
 // ════════════════════════════════════════════════════
 function setPerfSidebarMode(on) {
   const layout = document.querySelector('.page-layout');
+  const sidebar = document.getElementById('rightSidebar');
   const watchlistPanel = document.getElementById('watchlistPanel');
   const journalPanel   = document.getElementById('journalPanel');
   if (on) {
-    layout?.classList.add('perf-mode');
     if (watchlistPanel) watchlistPanel.style.display = 'none';
-    if (journalPanel)   journalPanel.style.display   = 'block';
-    journalApplyPrivacyState();
+    journalApplySecretState();
   } else {
     layout?.classList.remove('perf-mode');
+    layout?.classList.remove('sidebar-hidden');
+    if (sidebar) sidebar.style.display = '';
     if (watchlistPanel) watchlistPanel.style.display = 'block';
     if (journalPanel)   journalPanel.style.display   = 'none';
   }
@@ -448,7 +449,7 @@ function renderPerformance(strat, main) {
 
     <div class="strategy-panel active">
       <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:20px;flex-wrap:wrap;gap:10px">
-        <div class="strat-title">◐ 績效追蹤</div>
+        <div class="strat-title" onclick="journalToggleSecret()">◐ 績效追蹤</div>
         <div style="display:flex;align-items:center;gap:8px;flex-wrap:wrap">
           <span style="font-size:11px;color:${token ? 'var(--green)' : 'var(--text3)'}">
             ${token ? '● Token 已設定' : '○ 未設定 Token（僅可瀏覽，無法儲存）'}
@@ -560,8 +561,8 @@ function renderPerformance(strat, main) {
   const jfDate = document.getElementById('jf-date');
   if (jfDate && !jfDate.value) jfDate.value = today;
   const journalList = document.getElementById('journalList');
-  if (journalList) journalList.innerHTML = renderJournalList(pd?.journal || []);
-  journalApplyPrivacyState();
+  if (journalList) journalList.innerHTML = journalPanelVisible ? renderJournalList(pd?.journal || []) : '';
+  journalApplySecretState();
 }
 
 // ════════════════════════════════════════════════════
@@ -878,22 +879,32 @@ async function _applyPriceToPerf(priceMap, date) {
 //  交易日誌
 // ════════════════════════════════════════════════════
 
-let journalPrivacyOpen = sessionStorage.getItem('twstockscan_journal_open') === '1';
+let journalPanelVisible = false;
 
-function journalApplyPrivacyState() {
-  const gate = document.getElementById('journalPrivacyGate');
-  const content = document.getElementById('journalContentWrap');
-  const btn = document.getElementById('journalToggleBtn');
-  if (gate) gate.style.display = journalPrivacyOpen ? 'none' : 'block';
-  if (content) content.style.display = journalPrivacyOpen ? 'block' : 'none';
-  if (btn) btn.textContent = journalPrivacyOpen ? '收起' : '展開';
-  if (!journalPrivacyOpen) journalShowAdd(false);
+function journalApplySecretState() {
+  const layout = document.querySelector('.page-layout');
+  const sidebar = document.getElementById('rightSidebar');
+  const journalPanel = document.getElementById('journalPanel');
+  const journalList = document.getElementById('journalList');
+
+  layout?.classList.toggle('perf-mode', journalPanelVisible);
+  layout?.classList.toggle('sidebar-hidden', !journalPanelVisible);
+  if (sidebar) sidebar.style.display = journalPanelVisible ? '' : 'none';
+  if (journalPanel) journalPanel.style.display = journalPanelVisible ? 'block' : 'none';
+
+  if (!journalPanelVisible) {
+    journalShowAdd(false);
+    if (journalList) journalList.innerHTML = '';
+  }
 }
 
-function journalTogglePrivacy() {
-  journalPrivacyOpen = !journalPrivacyOpen;
-  sessionStorage.setItem('twstockscan_journal_open', journalPrivacyOpen ? '1' : '0');
-  journalApplyPrivacyState();
+function journalToggleSecret() {
+  journalPanelVisible = !journalPanelVisible;
+  const journalList = document.getElementById('journalList');
+  if (journalPanelVisible && journalList) {
+    journalList.innerHTML = renderJournalList(DATA.performance_data?.journal || []);
+  }
+  journalApplySecretState();
 }
 
 function renderJournalList(entries) {
