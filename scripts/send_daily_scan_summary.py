@@ -19,7 +19,7 @@ RIGHT_TOP_PATH = os.path.join(DATA_DIR, "right_top.json")
 
 TW_TZ = timezone(timedelta(hours=8))
 TODAY = datetime.now(TW_TZ).strftime("%Y-%m-%d")
-SITE_URL = "https://weeiywun.github.io/twstockscan/"
+SITE_URL = "https://weeiywun.github.io/twstockscan/?unlock=perf"
 
 FLEX_PRIMARY = "#0c6b3e"
 FLEX_ACCENT = "#f0883e"
@@ -138,7 +138,7 @@ def build_flex_message(volume_items: list[dict], right_top_items: list[dict]) ->
                     "style": "primary",
                     "height": "sm",
                     "color": FLEX_PRIMARY,
-                    "action": {"type": "uri", "label": "查看完整報告", "uri": SITE_URL},
+                    "action": {"type": "uri", "label": "查看績效追蹤", "uri": SITE_URL},
                 }
             ],
         },
