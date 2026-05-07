@@ -13,6 +13,10 @@
   --green-glow:rgba(5,150,105,0.22);
   --amber:     #d97706;
   --red:       #dc2626;
+  --market-up: #dc2626;
+  --market-down:#059669;
+  --market-up-dim:rgba(220,38,38,0.09);
+  --market-down-dim:rgba(5,150,105,0.09);
   --blue:      #2563eb;
   --mono:      'IBM Plex Mono', monospace;
   --sans:      'Noto Sans TC', sans-serif;
@@ -140,6 +144,7 @@ tr.industry-header-row td{
 
 /* ── Amber text ──────────────────────────────── */
 .amber-text{color:var(--amber);font-weight:600;}
+.market-alert{color:var(--market-up);font-weight:600;}
 
 /* ── Main layout ─────────────────────────────── */
 main{padding:24px 0 0;min-width:0}
@@ -242,10 +247,12 @@ td{padding:12px 14px;vertical-align:middle}
   font-family:var(--mono);font-size:11px;font-weight:600;
   padding:2px 7px;border-radius:4px;
 }
-.deviation.neg{color:var(--blue);background:rgba(26,95,168,0.08)}
-.deviation.pos{color:var(--amber);background:rgba(168,98,0,0.08)}
+.deviation.neg{color:var(--market-down);background:var(--market-down-dim)}
+.deviation.pos{color:var(--market-up);background:var(--market-up-dim)}
 
 .big-pct{font-family:var(--mono);font-size:14px;font-weight:600;color:var(--text)}
+.big-pct.pos{color:var(--market-up)}
+.big-pct.neg{color:var(--market-down)}
 .big-chg{
   font-family:var(--mono);font-size:11px;color:var(--green);
   background:var(--green-dim);padding:2px 5px;border-radius:3px;margin-left:5px;
@@ -291,8 +298,8 @@ tbody tr:hover .spark-bar{opacity:.9}
 }
 .expand-table td:first-child{color:var(--text);font-weight:600;text-align:left;font-family:var(--sans)}
 .expand-table td.expand-cum{font-weight:700}
-.expand-table td.expand-cum.pos{color:var(--green)}
-.expand-table td.expand-cum.neg{color:var(--red)}
+.expand-table td.expand-cum.pos{color:var(--market-up)}
+.expand-table td.expand-cum.neg{color:var(--market-down)}
 .expand-table tbody tr:last-child td{border-bottom:none}
 .expand-actions{flex:0 0 auto;display:flex;flex-direction:column;gap:6px;min-width:120px}
 
@@ -487,8 +494,8 @@ tbody tr:hover .spark-bar{opacity:.9}
   padding-top:8px;border-top:1px solid var(--border);flex-wrap:wrap;
 }
 .sa-price-val{font-size:12px;color:var(--text2);font-weight:500}
-.sa-pnl-pos{color:var(--green);font-weight:700}
-.sa-pnl-neg{color:var(--red);font-weight:700}
+.sa-pnl-pos{color:var(--market-up);font-weight:700}
+.sa-pnl-neg{color:var(--market-down);font-weight:700}
 /* History */
 .sa-history-wrap{
   background:var(--bg2);border:1px solid var(--border);

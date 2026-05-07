@@ -301,7 +301,7 @@ function renderPerformance(strat, main) {
     const posVal = cp != null ? calcSellNet(cp, remaining).net : posCost;
     const pnlAmt = posVal - posCost;
     const pnlPct = ((posVal / posCost) - 1) * 100;
-    const pc = pnlPct >= 0 ? 'var(--green)' : 'var(--red)';
+    const pc = pnlPct >= 0 ? 'var(--market-up)' : 'var(--market-down)';
     const ps = pnlPct >= 0 ? '+' : '';
     const sharesCell = (p.exits && p.exits.length)
       ? `${remaining.toLocaleString()}<span style="font-size:10px;color:var(--text3)"> / ${p.shares.toLocaleString()}</span>`
@@ -358,7 +358,7 @@ function renderPerformance(strat, main) {
         const costVal = ex.shares * p.cost_price;
         const pnl = exitVal - costVal;
         const pnlPct = ((exitVal / costVal) - 1) * 100;
-        const c = pnl >= 0 ? 'var(--green)' : 'var(--red)';
+        const c = pnl >= 0 ? 'var(--market-up)' : 'var(--market-down)';
         const s = pnl >= 0 ? '+' : '';
         const stockCell = i === 0
           ? `<span class="stock-code">${p.stock_id}</span>${p.name && p.name !== p.stock_id ? `<span style="font-size:11px;color:var(--text3);margin-left:5px">${p.name}</span>` : ''}`
@@ -381,7 +381,7 @@ function renderPerformance(strat, main) {
     const costVal = p.shares * p.cost_price;
     const pnl = exitVal - costVal;
     const pnlPct = ((exitVal / costVal) - 1) * 100;
-    const c = pnl >= 0 ? 'var(--green)' : 'var(--red)';
+    const c = pnl >= 0 ? 'var(--market-up)' : 'var(--market-down)';
     const s = pnl >= 0 ? '+' : '';
     const hasNet = p.exit_net != null;
     return `
@@ -421,9 +421,9 @@ function renderPerformance(strat, main) {
     </tr>`;
   }
 
-  const pnlColor = returnPct >= 0 ? 'var(--green)' : 'var(--red)';
+  const pnlColor = returnPct >= 0 ? 'var(--market-up)' : 'var(--market-down)';
   const pnlSign  = returnPct >= 0 ? '+' : '';
-  const rColor = realizedPnl >= 0 ? 'var(--green)' : 'var(--red)';
+  const rColor = realizedPnl >= 0 ? 'var(--market-up)' : 'var(--market-down)';
   const rSign  = realizedPnl >= 0 ? '+' : '';
 
   main.innerHTML = `

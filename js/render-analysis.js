@@ -247,7 +247,7 @@ function renderStockAnalysis(strat, main) {
     </div>
     <div class="summary-card">
       <div class="summary-label">平均損益</div>
-      <div class="summary-value" style="color:${avgPnl == null ? 'var(--text2)' : avgPnl >= 0 ? 'var(--green)' : 'var(--red)'}">
+      <div class="summary-value" style="color:${avgPnl == null ? 'var(--text2)' : avgPnl >= 0 ? 'var(--market-up)' : 'var(--market-down)'}">
         ${avgPnl != null ? `${avgPnl >= 0 ? '+' : ''}${avgPnl.toFixed(2)}%` : '—'}
       </div>
       <div class="summary-sub">本批平均</div>

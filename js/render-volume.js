@@ -26,7 +26,7 @@ function renderVolumeSignal(strat, main) {
   });
 
   const rows = sortedData.map(d => {
-    const ratioClass = d.vol_ratio >= 2.5 ? 'neg' : 'amber-text';
+    const ratioClass = d.vol_ratio >= 2.5 ? 'market-alert' : 'amber-text';
     return `<tr onclick="toggleExpand('vs-${d.stock_id}')" id="row-vs-${d.stock_id}">
       <td>
         <a href="https://www.tradingview.com/chart/?symbol=${getTVSymbol(d)}"
@@ -66,7 +66,7 @@ function renderVolumeSignal(strat, main) {
             <h4>籌碼</h4>
             <div style="font-size:12px;color:var(--text2);line-height:1.9">
               <div>千張大戶比：<b>${d.big_pct_1000 != null ? d.big_pct_1000.toFixed(2) + '%' : '—'}</b></div>
-              <div>3週累積增幅：<b class="${(d.cumulative_3w||0)>=0?'pos':'neg'}">${d.cumulative_3w != null ? (d.cumulative_3w>=0?'+':'') + d.cumulative_3w.toFixed(2) + '%' : '—'}</b></div>
+              <div>3週累積增幅：<b class="big-pct ${(d.cumulative_3w||0)>=0?'pos':'neg'}">${d.cumulative_3w != null ? (d.cumulative_3w>=0?'+':'') + d.cumulative_3w.toFixed(2) + '%' : '—'}</b></div>
               <div style="margin-top:4px">${(d.tags||[]).map(t=>`<span class="tag-badge" style="background:${{'持續成長':'#3a86ff','雙軌觸發':'#e66e29','單周增幅':'#e63946'}[t]||'#888'}">${t}</span>`).join(' ')}</div>
             </div>
           </div>
