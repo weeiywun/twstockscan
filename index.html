@@ -46,6 +46,13 @@
     <div id="journalPanel" style="display:none">
       <div class="sidebar-header" style="justify-content:space-between">
         <span class="section-title">交易周記</span>
+        <button id="journalToggleBtn" class="perf-btn" style="padding:3px 9px;font-size:11px" onclick="journalTogglePrivacy()">展開</button>
+      </div>
+      <div id="journalPrivacyGate" class="journal-privacy-gate">
+        <button class="journal-privacy-button" onclick="journalTogglePrivacy()">查看交易周記</button>
+      </div>
+      <div id="journalContentWrap" style="display:none">
+      <div class="sidebar-header" style="justify-content:flex-end;padding-top:0">
         <button class="perf-btn perf-btn-add" style="padding:3px 9px;font-size:11px" onclick="journalShowAdd()">＋ 新增</button>
       </div>
       <div id="journalAddForm" style="display:none;padding:12px;border-bottom:1px solid var(--border);background:var(--bg3)">
@@ -73,6 +80,7 @@
         </div>
       </div>
       <div id="journalList" style="overflow-y:auto;max-height:calc(100vh - 220px)"></div>
+      </div>
     </div>
   </aside>
 </div>

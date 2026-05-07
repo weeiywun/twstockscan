@@ -266,6 +266,7 @@ function setPerfSidebarMode(on) {
     layout?.classList.add('perf-mode');
     if (watchlistPanel) watchlistPanel.style.display = 'none';
     if (journalPanel)   journalPanel.style.display   = 'block';
+    journalApplyPrivacyState();
   } else {
     layout?.classList.remove('perf-mode');
     if (watchlistPanel) watchlistPanel.style.display = 'block';
@@ -560,6 +561,7 @@ function renderPerformance(strat, main) {
   if (jfDate && !jfDate.value) jfDate.value = today;
   const journalList = document.getElementById('journalList');
   if (journalList) journalList.innerHTML = renderJournalList(pd?.journal || []);
+  journalApplyPrivacyState();
 }
 
 // ════════════════════════════════════════════════════
@@ -875,6 +877,24 @@ async function _applyPriceToPerf(priceMap, date) {
 // ════════════════════════════════════════════════════
 //  交易日誌
 // ════════════════════════════════════════════════════
+
+let journalPrivacyOpen = sessionStorage.getItem('twstockscan_journal_open') === '1';
+
+function journalApplyPrivacyState() {
+  const gate = document.getElementById('journalPrivacyGate');
+  const content = document.getElementById('journalContentWrap');
+  const btn = document.getElementById('journalToggleBtn');
+  if (gate) gate.style.display = journalPrivacyOpen ? 'none' : 'block';
+  if (content) content.style.display = journalPrivacyOpen ? 'block' : 'none';
+  if (btn) btn.textContent = journalPrivacyOpen ? '收起' : '展開';
+  if (!journalPrivacyOpen) journalShowAdd(false);
+}
+
+function journalTogglePrivacy() {
+  journalPrivacyOpen = !journalPrivacyOpen;
+  sessionStorage.setItem('twstockscan_journal_open', journalPrivacyOpen ? '1' : '0');
+  journalApplyPrivacyState();
+}
 
 function renderJournalList(entries) {
   if (!entries.length) return `

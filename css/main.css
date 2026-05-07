@@ -649,3 +649,16 @@ tbody tr:hover .spark-bar{opacity:.9}
 .journal-body{padding:10px 12px;border-top:1px solid var(--border);background:var(--bg3)}
 .journal-content{font-size:12px;color:var(--text2);line-height:1.75;white-space:pre-wrap;word-break:break-word;margin-bottom:10px}
 .journal-actions{display:flex;gap:6px;flex-wrap:wrap}
+.journal-privacy-gate{padding:14px 12px 18px;border-top:1px solid var(--border)}
+.journal-privacy-button{
+  width:100%;
+  min-height:44px;
+  border:1px dashed var(--border);
+  border-radius:6px;
+  background:var(--bg3);
+  color:var(--text3);
+  font-size:12px;
+  cursor:pointer;
+  transition:border-color .15s,color .15s,background .15s;
+}
+.journal-privacy-button:hover{border-color:var(--green);color:var(--green);background:var(--green-dim)}
