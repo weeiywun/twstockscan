@@ -86,12 +86,16 @@ header .page-inner{
 
 /* ── Strategy Nav ───────────────────────────── */
 .strategy-nav{
+  position:sticky;top:54px;z-index:90;
   background:var(--bg2);border-bottom:1px solid var(--border);
   box-shadow:0 1px 0 rgba(0,0,0,0.04);
 }
 .strategy-nav .page-inner{
   display:flex;gap:0;
-  overflow-x:auto;scrollbar-width:none;
+  overflow-x:auto;overflow-y:hidden;scrollbar-width:none;
+  -webkit-overflow-scrolling:touch;
+  overscroll-behavior-x:contain;
+  touch-action:pan-x;
 }
 .strategy-nav .page-inner::-webkit-scrollbar{display:none}
 
@@ -567,6 +571,7 @@ tbody tr:hover .spark-bar{opacity:.9}
   .page-inner{padding:0 16px}
 
   header{height:50px}
+  .strategy-nav{top:50px}
   .logo{font-size:15px}
   .header-meta{display:none}
 
