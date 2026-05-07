@@ -416,11 +416,11 @@ def init_price_cache(token: str):
 
 def main():
     token = os.environ.get("FINMIND_TOKEN", "")
-    if not token:
-        print("❌ FINMIND_TOKEN 未設定"); sys.exit(1)
 
     # --init：yfinance 一次性初始化
     if "--init" in sys.argv:
+        if not token:
+            print("❌ FINMIND_TOKEN 未設定"); sys.exit(1)
         init_price_cache(token)
         print("\n✅ 完成")
         return
@@ -447,6 +447,10 @@ def main():
         end   = TODAY
 
     print("\n[1] 更新股票清單快取...")
+    if backfill_month and not token:
+        print("❌ FINMIND_TOKEN 未設定，無法回填歷史資料"); sys.exit(1)
+    if not token:
+        print("  ⚠️  FINMIND_TOKEN 未設定，沿用既有股票清單並使用官方盤後資料")
     update_stock_list_cache(token)
 
     updated = update_price_cache(start, end, token)
