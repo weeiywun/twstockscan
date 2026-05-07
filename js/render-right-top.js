@@ -24,8 +24,6 @@ function renderRightTop(strat, main) {
           </div>
         </div>
       </div>`;
-    const grid = document.getElementById('watchlistGrid');
-    if (grid) grid.innerHTML = renderWatchlist();
     return;
   }
 
@@ -248,6 +246,4 @@ function renderRightTop(strat, main) {
       ${rtView === 'stock' ? stockTable() : industryView()}
     </div>`;
 
-  const grid = document.getElementById('watchlistGrid');
-  if (grid) grid.innerHTML = renderWatchlist();
 }

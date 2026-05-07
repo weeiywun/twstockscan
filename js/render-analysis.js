@@ -17,8 +17,6 @@ function renderStockAnalysis(strat, main) {
           <div class="coming-desc">籌碼集中入池標的首次觸發量增訊號後加入追蹤。</div>
         </div>
       </div>`;
-    const grid = document.getElementById('watchlistGrid');
-    if (grid) grid.innerHTML = renderWatchlist();
     return;
   }
 
@@ -277,8 +275,6 @@ function renderStockAnalysis(strat, main) {
       ${historyHTML}
     </div>`;
 
-  const grid = document.getElementById('watchlistGrid');
-  if (grid) grid.innerHTML = renderWatchlist();
 }
 
 // ════════════════════════════════════════════════════

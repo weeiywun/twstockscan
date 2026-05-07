@@ -121,7 +121,6 @@ let sortCol = "chg_2w_1000";
 let sortAsc = false;
 let chipsViewMode = "stock"; // "stock" | "industry"
 let expandedRow = null;
-let watchlist = JSON.parse(localStorage.getItem("watchlist") || "[]");
 let aiData = null;
 
 function dateTW(offsetDays = 0) {
@@ -328,29 +327,6 @@ function toggleNavGroup(g) {
   renderNav();
 }
 
-function renderWatchlist() {
-  if (watchlist.length === 0) {
-    return `<div class="watch-empty">點擊結果列<br>加入觀察清單</div>`;
-  }
-  // 跨策略查找名稱：遍歷所有有資料的策略
-  function findName(sid) {
-    for (const s of STRATEGIES) {
-      if (!s.available || !s.dataKey) continue;
-      const item = (DATA[s.dataKey] || []).find(d => d.stock_id === sid);
-      if (item) return item.name;
-    }
-    return '—';
-  }
-  return watchlist.map(sid => {
-    const name = findName(sid);
-    return `<div class="watch-card">
-      <span class="watch-card-code">${sid}</span>
-      <span class="watch-card-name">${name}</span>
-      <span class="watch-card-remove" onclick="event.stopPropagation();removeWatch('${sid}')">×</span>
-    </div>`;
-  }).join('');
-}
-
 // ════════════════════════════════════════════════════
 //  AI 推薦卡片
 // ════════════════════════════════════════════════════
@@ -435,32 +411,6 @@ function toggleExpand(sid) {
   }
 }
 
-
-function toggleWatch(sid, name) {
-  if (watchlist.includes(sid)) {
-    watchlist = watchlist.filter(s => s !== sid);
-  } else {
-    watchlist.push(sid);
-  }
-  localStorage.setItem("watchlist", JSON.stringify(watchlist));
-  const btn = document.getElementById(`watchBtn-${sid}`);
-  if (btn) {
-    const inWatch = watchlist.includes(sid);
-    btn.textContent = inWatch ? '✓ 已加入觀察清單' : '+ 加入觀察清單';
-    btn.style.background = inWatch ? 'var(--green-dim)' : 'var(--bg3)';
-    btn.style.borderColor = inWatch ? 'var(--green)' : 'var(--border)';
-    btn.style.color = inWatch ? 'var(--green)' : 'var(--text2)';
-  }
-  const grid = document.getElementById('watchlistGrid');
-  if (grid) grid.innerHTML = renderWatchlist();
-}
-
-function removeWatch(sid) {
-  watchlist = watchlist.filter(s => s !== sid);
-  localStorage.setItem("watchlist", JSON.stringify(watchlist));
-  const grid = document.getElementById('watchlistGrid');
-  if (grid) grid.innerHTML = renderWatchlist();
-}
 
 function exportCSV() {
   const strat = STRATEGIES.find(s => s.id === activeStratId);
@@ -592,8 +542,6 @@ async function loadData() {
   // 資料載入完成後渲染
   renderNav();
   renderStrategy();
-  document.getElementById('headerMeta').textContent =
-    `策略數 ${STRATEGIES.filter(s=>s.available).length} / 觀察 ${watchlist.length}`;
 }
 
 loadData();

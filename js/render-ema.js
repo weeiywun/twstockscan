@@ -129,7 +129,6 @@ function renderEmaTangling(strat, main) {
               ${data.map(d => {
                 const mkt = d.market === 'TWSE' ? 'TWSE' : 'TPEX';
                 const tvSymbol = `${mkt}:${d.stock_id}`;
-                const inWatch = watchlist.includes(d.stock_id);
                 const tangleColor = d.tangle_pct <= 2 ? 'var(--green)' : d.tangle_pct <= 4 ? 'var(--amber)' : 'var(--text2)';
                 return `<tr onclick="etToggleExpand('${d.stock_id}')" id="et-row-${d.stock_id}">
                   <td>
@@ -173,11 +172,6 @@ function renderEmaTangling(strat, main) {
                       </div>
                       <div class="expand-section">
                         <h4>操作</h4>
-                        <button onclick="event.stopPropagation();toggleWatch('${d.stock_id}','${d.name}')"
-                          style="background:${inWatch?'var(--green-dim)':'var(--bg3)'};border:1px solid ${inWatch?'var(--green)':'var(--border)'};color:${inWatch?'var(--green)':'var(--text2)'};padding:8px 14px;border-radius:6px;cursor:pointer;font-size:12px;font-family:var(--sans);width:100%;margin-bottom:8px"
-                          id="watchBtn-${d.stock_id}">
-                          ${inWatch ? '✓ 已加入觀察清單' : '+ 加入觀察清單'}
-                        </button>
                         <a href="https://tw.stock.yahoo.com/quote/${d.stock_id}" target="_blank"
                           onclick="event.stopPropagation()"
                           style="display:block;text-align:center;background:var(--bg3);border:1px solid var(--border);color:var(--text2);padding:8px 14px;border-radius:6px;font-size:12px;text-decoration:none">
@@ -194,8 +188,6 @@ function renderEmaTangling(strat, main) {
       </div>
     </div>`;
 
-  const grid = document.getElementById('watchlistGrid');
-  if (grid) grid.innerHTML = renderWatchlist();
 }
 
 let etExpandedRow = null;

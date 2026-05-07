@@ -17,8 +17,6 @@ function renderRightTopTrack(strat, main) {
           <div class="coming-desc">右上角策略觸發後盤後自動加入追蹤。</div>
         </div>
       </div>`;
-    const grid = document.getElementById('watchlistGrid');
-    if (grid) grid.innerHTML = renderWatchlist();
     return;
   }
 
@@ -267,8 +265,6 @@ function renderRightTopTrack(strat, main) {
       ${historyHTML}
     </div>`;
 
-  const grid = document.getElementById('watchlistGrid');
-  if (grid) grid.innerHTML = renderWatchlist();
 }
 
 // ════════════════════════════════════════════════════

@@ -95,7 +95,6 @@ function renderChipsHolder(strat, main) {
     const weekSign = (d.week_chg_pct >= 0) ? '+' : '';
     const weekClass = d.week_chg_pct >= 0 ? 'pos' : 'neg';
     const devClass  = d.deviation  >= 0 ? 'pos' : 'neg';
-    const inWatch   = watchlist.includes(d.stock_id);
     return `
       <tr onclick="toggleExpand('${d.stock_id}')" id="row-${d.stock_id}">
         <td>
@@ -155,13 +154,6 @@ function renderChipsHolder(strat, main) {
                   </tbody>
                 </table>`;
               })()}
-            </div>
-            <div class="expand-actions">
-              <button onclick="event.stopPropagation();toggleWatch('${d.stock_id}','${d.name}')"
-                style="background:${inWatch?'var(--green-dim)':'var(--bg3)'};border:1px solid ${inWatch?'var(--green)':'var(--border)'};color:${inWatch?'var(--green)':'var(--text2)'};padding:8px 14px;border-radius:6px;cursor:pointer;font-size:12px;font-family:var(--sans);white-space:nowrap"
-                id="watchBtn-${d.stock_id}">
-                ${inWatch ? '✓ 已加入' : '+ 加入觀察清單'}
-              </button>
             </div>
           </div>
         </td>
@@ -258,8 +250,6 @@ function renderChipsHolder(strat, main) {
       </div>
     </div>`;
 
-  const grid = document.getElementById('watchlistGrid');
-  if (grid) grid.innerHTML = renderWatchlist();
 }
 
 function setChipsView(mode) {

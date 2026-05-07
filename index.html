@@ -20,7 +20,6 @@
       <span class="version-badge">v0.4.0</span>
     </div>
     <div class="header-meta">
-      <span id="headerMeta">載入中...</span>
       <button id="headerUpdateBtn" class="header-update-btn" onclick="triggerPriceUpdate(this)" title="觸發 GitHub Actions 重新抓取所有標的現價（需 GitHub Token）">↑ 更新現價</button>
     </div>
   </div>
@@ -34,14 +33,7 @@
 <!-- Two-column layout -->
 <div class="page-layout">
   <main id="mainContent"></main>
-  <aside class="watchlist-sidebar" id="rightSidebar">
-    <!-- 觀察清單（非績效頁顯示） -->
-    <div id="watchlistPanel">
-      <div class="sidebar-header">
-        <span class="section-title">觀察清單</span>
-      </div>
-      <div class="watch-list" id="watchlistGrid"></div>
-    </div>
+  <aside class="watchlist-sidebar" id="rightSidebar" style="display:none">
     <!-- 交易周記（績效頁顯示） -->
     <div id="journalPanel" style="display:none">
       <div class="sidebar-header" style="justify-content:space-between">

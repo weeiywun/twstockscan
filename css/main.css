@@ -296,7 +296,7 @@ tbody tr:hover .spark-bar{opacity:.9}
 /* ── Page layout (content + sidebar) ────────── */
 .page-layout{
   max-width:1400px;margin:0 auto;padding:0 24px 64px;
-  display:grid;grid-template-columns:1fr 220px;gap:20px;
+  display:grid;grid-template-columns:1fr;gap:20px;
   align-items:start;
 }
 .page-layout.perf-mode{grid-template-columns:1fr 300px}
@@ -548,7 +548,8 @@ tbody tr:hover .spark-bar{opacity:.9}
 
 /* ── ≤1024px: tighten sidebar ─────────────────── */
 @media(max-width:1024px){
-  .page-layout{grid-template-columns:1fr 200px}
+  .page-layout{grid-template-columns:1fr}
+  .page-layout.perf-mode{grid-template-columns:1fr 300px}
 }
 
 /* ── ≤768px: single column ───────────────────── */

@@ -261,16 +261,13 @@ function initPerfChart(pd) {
 function setPerfSidebarMode(on) {
   const layout = document.querySelector('.page-layout');
   const sidebar = document.getElementById('rightSidebar');
-  const watchlistPanel = document.getElementById('watchlistPanel');
   const journalPanel   = document.getElementById('journalPanel');
   if (on) {
-    if (watchlistPanel) watchlistPanel.style.display = 'none';
     journalApplySecretState();
   } else {
     layout?.classList.remove('perf-mode');
     layout?.classList.remove('sidebar-hidden');
-    if (sidebar) sidebar.style.display = '';
-    if (watchlistPanel) watchlistPanel.style.display = 'block';
+    if (sidebar) sidebar.style.display = 'none';
     if (journalPanel)   journalPanel.style.display   = 'none';
   }
 }

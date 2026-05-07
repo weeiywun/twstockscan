@@ -138,7 +138,5 @@ function renderVolumeSignal(strat, main) {
       </div>
     </div>`;
 
-  const grid = document.getElementById('watchlistGrid');
-  if (grid) grid.innerHTML = renderWatchlist();
 }
 
