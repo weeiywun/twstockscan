@@ -8,9 +8,9 @@
   --text:      #151922;
   --text2:     #4f5b6b;
   --text3:     #8a94a3;
-  --green:     #087f5b;
-  --green-dim: rgba(8,127,91,0.08);
-  --green-glow:rgba(8,127,91,0.18);
+  --green:     #1d4ed8;
+  --green-dim: rgba(29,78,216,0.08);
+  --green-glow:rgba(29,78,216,0.18);
   --amber:     #b7791f;
   --red:       #c92a2a;
   --market-up: #c92a2a;
@@ -59,7 +59,7 @@ header .page-inner{
 }
 .logo-mark{
   display:inline-block;width:9px;height:9px;
-  background:linear-gradient(135deg,var(--green),var(--blue));border-radius:2px;
+  background:linear-gradient(135deg,#1d4ed8,#38bdf8);border-radius:2px;
   flex-shrink:0;
 }
 .logo span{color:var(--green)}
