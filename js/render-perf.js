@@ -494,7 +494,7 @@ function renderPerformance(strat, main) {
         </div>
         <div class="table-wrap">
           <div class="table-scroll">
-            <table>
+            <table class="perf-table">
               <thead><tr>
                 <th>股票</th><th>建倉日</th><th>股數</th><th>成本</th>
                 <th>現價</th><th>損益%</th><th>停利</th><th>停損</th><th>操作</th>
@@ -537,7 +537,7 @@ function renderPerformance(strat, main) {
         </div>
         <div class="table-wrap">
           <div class="table-scroll">
-            <table>
+            <table class="perf-table">
               <thead><tr>
                 ${_sortTh('股票', 'stock_id')}${_sortTh('建倉日', 'entry_date')}${_sortTh('出場日', 'exit_date')}<th>股數</th><th>成本</th><th>賣出價</th>${_sortTh('損益（NT$）', 'pnl')}${_sortTh('損益率', 'pnl_pct')}<th>操作</th>
               </tr></thead>
