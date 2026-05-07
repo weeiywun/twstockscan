@@ -218,15 +218,7 @@ def fetch_from_yfinance(symbol: str, name: str) -> dict[str, Any] | None:
 
         hist = yf.Ticker(symbol).history(period="2mo", interval="1d", auto_adjust=False)
         if hist.empty:
-    return None
-
-
-def fetch_first_yfinance(symbols: list[str], name: str) -> dict[str, Any] | None:
-    for symbol in symbols:
-        result = fetch_from_yfinance(symbol, name)
-        if result:
-            return result
-    return None
+            return None
         last = hist.dropna(subset=["Close"]).iloc[-1]
         idx = hist.dropna(subset=["Close"]).index[-1]
         return {
@@ -238,6 +230,14 @@ def fetch_first_yfinance(symbols: list[str], name: str) -> dict[str, Any] | None
     except Exception as exc:
         print(f"  ⚠️  yfinance {symbol} 讀取失敗：{exc}")
         return None
+
+
+def fetch_first_yfinance(symbols: list[str], name: str) -> dict[str, Any] | None:
+    for symbol in symbols:
+        result = fetch_from_yfinance(symbol, name)
+        if result:
+            return result
+    return None
 
 
 def main() -> None:
