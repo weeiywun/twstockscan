@@ -456,7 +456,7 @@ function renderPerformance(strat, main) {
         </div>
       </div>
 
-      <div class="summary-row" style="grid-template-columns:repeat(4,minmax(140px,1fr))">
+      <div class="summary-row perf-summary-row">
         <div class="summary-card">
           <div class="summary-label">起始資金</div>
           <div class="summary-value" style="font-size:16px">$${startCap.toLocaleString()}</div>

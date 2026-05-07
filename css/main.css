@@ -29,6 +29,7 @@ body{
   font-family:var(--sans);font-size:14px;line-height:1.6;
   min-height:100vh;overflow-x:hidden;
 }
+html,body{max-width:100%}
 
 /* ── Shared inner constraint (aligns with .page-layout) ── */
 .page-inner{
@@ -169,6 +170,7 @@ main{padding:24px 0 0;min-width:0}
   display:grid;grid-template-columns:repeat(auto-fit,minmax(160px,1fr));gap:10px;
   margin-bottom:24px;
 }
+.perf-summary-row{grid-template-columns:repeat(4,minmax(140px,1fr))}
 .summary-card{
   background:var(--bg2);border:1px solid var(--border);
   border-radius:var(--radius);padding:14px 16px;
@@ -184,6 +186,7 @@ main{padding:24px 0 0;min-width:0}
 .table-wrap{
   background:var(--bg2);border:1px solid var(--border);
   border-radius:var(--radius);overflow:hidden;margin-bottom:24px;
+  max-width:100%;
   box-shadow:var(--shadow-sm);
 }
 .table-toolbar{
@@ -567,17 +570,23 @@ tbody tr:hover .spark-bar{opacity:.9}
     grid-template-columns:1fr;
     padding:0 16px 48px;gap:16px;
   }
+  .page-layout.perf-mode,
+  .page-layout.sidebar-hidden{grid-template-columns:1fr}
   main{padding:16px 0 0}
 
   .watchlist-sidebar{
     position:static;
     order:2;
   }
+  .page-layout.perf-mode .watchlist-sidebar{width:100%;max-width:100%}
 
-  .summary-row{grid-template-columns:1fr 1fr}
+  .summary-row,
+  .perf-summary-row{grid-template-columns:1fr 1fr}
 
   .table-wrap{border-radius:8px}
   .table-scroll{overflow-x:auto;-webkit-overflow-scrolling:touch}
+  .perf-table{min-width:760px}
+  .perf-chart-wrap{height:240px;padding:12px}
 
   /* 隱藏次要欄位：僅隱藏大戶掃描的趨勢圖欄（第6欄），保留乖離率（第3欄） */
   .bigscan-table thead th:nth-child(6),
@@ -586,8 +595,11 @@ tbody tr:hover .spark-bar{opacity:.9}
 
 /* ── ≤480px: compact ─────────────────────────── */
 @media(max-width:480px){
-  .summary-row{grid-template-columns:1fr 1fr}
+  .summary-row,
+  .perf-summary-row{grid-template-columns:1fr 1fr}
   .summary-value{font-size:17px}
+  .summary-card{padding:12px}
+  .perf-table{min-width:720px}
 
   .strat-tab{padding:10px 12px 11px;font-size:12px}
 
