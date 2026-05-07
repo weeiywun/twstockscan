@@ -806,25 +806,31 @@ async function triggerPriceUpdate(btn) {
     const conclusion = await _pollPriceWorkflow(btn, token, triggeredAt, requestId);
     if (conclusion !== 'success') throw new Error(`Workflow 結果：${conclusion}，請至 GitHub Actions 查看日誌`);
 
-    // 3. 讀取並套用 current_prices.json
-    btn.textContent = '⏳ 載入現價...';
+    // 3. 讀取並套用 current_prices.json / market_index.json
+    btn.textContent = '⏳ 載入市場資料...';
     const pRes = await fetch(`data/current_prices.json?t=${Date.now()}`, { cache: 'no-store' });
     if (!pRes.ok) throw new Error('無法讀取 current_prices.json');
     const pData = await pRes.json();
     const priceMap = pData.prices || {};
     const dateUsed = pData.date || dateTW();
 
+    const miRes = await fetch(`data/market_index.json?t=${Date.now()}`, { cache: 'no-store' }).catch(() => null);
+    if (miRes && miRes.ok) {
+      const miData = await miRes.json();
+      if (miData && miData.indices) DATA.market_index_data = miData;
+    }
+
     _applyPriceToChips(priceMap);
     _applyPriceToRttTrack(priceMap);
     _applyPriceToAnalysis(priceMap);
     await _applyPriceToPerf(priceMap, dateUsed);
     renderStrategy();
-    btn.textContent = `✓ 已更新 (${dateUsed})`;
+    btn.textContent = `✓ 已更新市場資料 (${dateUsed})`;
     btn.disabled = false;
     setTimeout(() => { btn.textContent = orig; }, 4000);
     return;
   } catch(e) {
-    alert('更新現價失敗：' + e.message);
+    alert('更新市場資料失敗：' + e.message);
   }
   btn.disabled = false;
   btn.textContent = orig;

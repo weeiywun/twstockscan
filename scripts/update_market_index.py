@@ -29,6 +29,7 @@ HEADERS = {
     "User-Agent": "Mozilla/5.0",
     "Accept": "application/json,text/html,*/*",
 }
+MIS_URL = "https://mis.twse.com.tw/stock/api/getStockInfo.jsp"
 
 
 def _num(value: Any) -> float | None:
@@ -65,6 +66,51 @@ def _fetch_json(url: str, params: dict[str, str]) -> dict[str, Any] | None:
     except Exception as exc:
         print(f"  ⚠️  {url} 讀取失敗：{exc}")
         return None
+
+
+def _previous_weekday(date: datetime.date) -> datetime.date:
+    d = date - timedelta(days=1)
+    while d.weekday() >= 5:
+        d -= timedelta(days=1)
+    return d
+
+
+def _after_market_close() -> bool:
+    return NOW.hour > 14 or (NOW.hour == 14 and NOW.minute >= 30)
+
+
+def fetch_from_mis_indices() -> dict[str, dict[str, Any]]:
+    """
+    TWSE MIS 大盤代碼備援。
+
+    盤中使用 y（昨收），避免顯示即時價；盤後使用 z（最後成交，等同收盤）。
+    """
+    data = _fetch_json(
+        MIS_URL,
+        {"ex_ch": "tse_t00.tw|otc_o00.tw", "json": "1", "delay": "0"},
+    )
+    if not data:
+        return {}
+    result: dict[str, dict[str, Any]] = {}
+    use_latest = _after_market_close()
+    fallback_date = TODAY.isoformat() if use_latest else _previous_weekday(TODAY).isoformat()
+    for item in data.get("msgArray", []):
+        code = item.get("c")
+        key = "TAIEX" if code == "t00" else "TPEX" if code == "o00" else ""
+        if not key:
+            continue
+        value = _num(item.get("z") if use_latest else item.get("y"))
+        if value is None:
+            value = _num(item.get("y") or item.get("z"))
+        if value is None:
+            continue
+        result[key] = {
+            "name": "台灣加權指數" if key == "TAIEX" else "櫃買加權指數",
+            "close": value,
+            "date": fallback_date,
+            "source": "twse_mis",
+        }
+    return result
 
 
 def fetch_taiex_from_twse() -> dict[str, Any] | None:
@@ -198,8 +244,17 @@ def main() -> None:
     os.makedirs(DATA_DIR, exist_ok=True)
     print(f"=== 更新大盤指數 {NOW.strftime('%Y-%m-%d %H:%M')} ===")
 
-    taiex = fetch_taiex_from_twse() or fetch_from_yfinance("^TWII", "台灣加權指數")
-    tpex = fetch_tpex_from_official() or fetch_first_yfinance(["^TWOII", "TWOII.TW"], "櫃買加權指數")
+    mis_indices = fetch_from_mis_indices()
+    taiex = (
+        fetch_taiex_from_twse()
+        or mis_indices.get("TAIEX")
+        or fetch_from_yfinance("^TWII", "台灣加權指數")
+    )
+    tpex = (
+        fetch_tpex_from_official()
+        or mis_indices.get("TPEX")
+        or fetch_first_yfinance(["^TWOII", "TWOII.TW"], "櫃買加權指數")
+    )
 
     if not taiex and not tpex:
         raise SystemExit("❌ 無法取得任何大盤指數資料")
