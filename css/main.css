@@ -8,16 +8,16 @@
   --text:      #151922;
   --text2:     #4f5b6b;
   --text3:     #8a94a3;
-  --green:     #1d4ed8;
-  --green-dim: rgba(29,78,216,0.08);
-  --green-glow:rgba(29,78,216,0.18);
+  --green:     #0ea5e9;
+  --green-dim: rgba(14,165,233,0.09);
+  --green-glow:rgba(14,165,233,0.22);
   --amber:     #b7791f;
   --red:       #c92a2a;
   --market-up: #c92a2a;
   --market-down:#087f5b;
   --market-up-dim:rgba(201,42,42,0.08);
   --market-down-dim:rgba(8,127,91,0.08);
-  --blue:      #1d4ed8;
+  --blue:      #0ea5e9;
   --mono:      'IBM Plex Mono', monospace;
   --sans:      'Noto Sans TC', sans-serif;
   --shadow-sm: 0 1px 2px rgba(15,23,42,0.05);
@@ -59,7 +59,7 @@ header .page-inner{
 }
 .logo-mark{
   display:inline-block;width:9px;height:9px;
-  background:linear-gradient(135deg,#1d4ed8,#38bdf8);border-radius:2px;
+  background:linear-gradient(135deg,#0ea5e9,#38bdf8);border-radius:2px;
   flex-shrink:0;
 }
 .logo span{color:var(--green)}
@@ -345,6 +345,13 @@ tbody tr:hover .spark-bar{opacity:.9}
 .market-index-date{font-family:var(--mono);font-size:10px;color:var(--text3);margin-top:2px}
 .market-index-value-wrap{text-align:right;flex:0 0 auto}
 .market-index-value{font-family:var(--mono);font-size:20px;font-weight:600;color:var(--text);line-height:1.2}
+.market-index-change{
+  font-family:var(--mono);font-size:11px;font-weight:600;
+  margin-top:3px;line-height:1.25;
+}
+.market-index-change.up{color:var(--market-up)}
+.market-index-change.down{color:var(--market-down)}
+.market-index-change.flat{color:var(--text3)}
 .market-index-source{
   display:inline-block;margin-top:3px;padding:1px 5px;border-radius:4px;
   border:1px solid var(--border);background:var(--bg3);
