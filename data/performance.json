@@ -214,7 +214,7 @@
       "exit_price": null,
       "exit_date": null,
       "exit_net": null,
-      "confirmed": false,
+      "confirmed": true,
       "exits": [
         {
           "id": "e1778118795875",
@@ -224,6 +224,15 @@
           "exit_net": 242562,
           "sell_fee": 208,
           "sell_tax": 730
+        },
+        {
+          "id": "e1778123236496",
+          "date": "2026-05-07",
+          "shares": 1000,
+          "exit_price": 249.5,
+          "exit_net": 248539,
+          "sell_fee": 213,
+          "sell_tax": 748
         }
       ]
     }
