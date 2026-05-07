@@ -837,6 +837,8 @@ async function triggerPriceUpdate(btn) {
     }
 
     _applyPriceToChips(priceMap);
+    _applyPriceToVolumeSignal(priceMap);
+    _applyPriceToRightTop(priceMap);
     _applyPriceToRttTrack(priceMap);
     _applyPriceToAnalysis(priceMap);
     await _applyPriceToPerf(priceMap, dateUsed);
@@ -896,6 +898,22 @@ function _applyPriceToChips(priceMap) {
   const chips = DATA.chips_big_holder_data;
   if (!chips || !chips.length) return;
   chips.forEach(item => {
+    if (priceMap[item.stock_id] !== undefined) item.close = priceMap[item.stock_id];
+  });
+}
+
+function _applyPriceToVolumeSignal(priceMap) {
+  const volume = DATA.volume_signal_data;
+  if (!volume || !volume.length) return;
+  volume.forEach(item => {
+    if (priceMap[item.stock_id] !== undefined) item.close = priceMap[item.stock_id];
+  });
+}
+
+function _applyPriceToRightTop(priceMap) {
+  const rightTop = DATA.right_top_data;
+  if (!rightTop || !rightTop.length) return;
+  rightTop.forEach(item => {
     if (priceMap[item.stock_id] !== undefined) item.close = priceMap[item.stock_id];
   });
 }

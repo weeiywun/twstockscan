@@ -104,7 +104,7 @@ function renderRightTop(strat, main) {
               <tr>
                 <th onclick="rtSort('stock_id')" style="cursor:pointer">代號 / 名稱${sortIcon('stock_id')}</th>
                 <th onclick="rtSort('industry')" style="cursor:pointer">產業${sortIcon('industry')}</th>
-                <th onclick="rtSort('close')" style="cursor:pointer" data-tip="今日收盤價">收盤${sortIcon('close')}</th>
+                <th onclick="rtSort('close')" style="cursor:pointer" data-tip="current_prices.json 套用後的最新現價">現價${sortIcon('close')}</th>
                 <th onclick="rtSort('high_10w')" style="cursor:pointer" data-tip="前 10 週最高收盤（已被最新週突破）">10週前高${sortIcon('high_10w')}</th>
                 <th onclick="rtSort('vol_ratio')" style="cursor:pointer" data-tip="最新週量 ÷ 20週均量">量比${sortIcon('vol_ratio')}</th>
                 <th onclick="rtSort('change_pct')" style="cursor:pointer" data-tip="最新週漲幅">週漲幅${sortIcon('change_pct')}</th>
