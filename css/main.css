@@ -563,6 +563,12 @@ tbody tr:hover .spark-bar{opacity:.9}
 .fd-change-chip.neg{color:var(--market-down)}
 .fd-change-chip.flat{color:var(--text3)}
 .fd-inline-value{display:inline-flex;align-items:baseline;justify-content:flex-end;gap:6px;white-space:nowrap}
+.fd-oi-cell{
+  display:grid;grid-template-columns:minmax(64px,1fr) 58px;
+  align-items:baseline;column-gap:6px;white-space:nowrap;
+}
+.fd-oi-main{text-align:right}
+.fd-oi-cell .fd-change-chip{text-align:right}
 .fd-metric-sub{font-size:11px;color:var(--text3);margin-top:3px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
 .fd-panel{overflow:hidden;min-width:0}
 .fd-panel-hd{display:flex;align-items:center;justify-content:space-between;padding:12px 14px;border-bottom:1px solid var(--border);background:var(--bg3)}

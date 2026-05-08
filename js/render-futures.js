@@ -116,7 +116,10 @@ function fdTraderRows(contract) {
         <td class="mono">${fdNum(item.oi_long_lots)}</td>
         <td class="mono">${fdNum(item.oi_short_lots)}</td>
         <td class="mono ${fdTone(item.oi_net_lots)}">
-          <span class="fd-inline-value">${fdSigned(item.oi_net_lots)}${fdChangeChip(oiChange, '口')}</span>
+          <span class="fd-oi-cell">
+            <span class="fd-oi-main">${fdSigned(item.oi_net_lots)}</span>
+            ${fdChangeChip(oiChange, '口')}
+          </span>
         </td>
       </tr>`;
   }).join('');
