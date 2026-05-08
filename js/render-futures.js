@@ -198,6 +198,34 @@ function fdSentimentRows(retailDash) {
     </tr>`).join('');
 }
 
+function fdRetailSummary(retailDash, retail) {
+  const rows = (retailDash?.rows || []).filter(row => ['mtx', 'tmf'].includes(row.key));
+  const summaryRows = rows.length ? rows : [{
+    key: 'mtx',
+    label: '小台散戶多空比',
+    today: retail?.ratio,
+    change: null,
+  }];
+  return `
+    <div class="fd-metric fd-retail-summary">
+      <div class="fd-metric-label">散戶多空比</div>
+      <div class="fd-retail-rows">
+        ${summaryRows.map(row => {
+          const label = row.key === 'tmf' ? '微台' : '小台';
+          return `
+            <div class="fd-retail-row">
+              <span class="fd-retail-name">${label}</span>
+              <span class="fd-retail-value">
+                <span class="fd-metric-value ${fdTone(row.today)}">${fdSentimentValue(row, 'today')}</span>
+                ${fdChangeChip(row.change, '%', false, 2)}
+              </span>
+            </div>`;
+        }).join('')}
+      </div>
+      <div class="fd-metric-sub">${retailDash?.date || retail?.date || ''}</div>
+    </div>`;
+}
+
 function renderFutureDashboard(strat, main) {
   const fd = DATA.futures_dashboard_data || {};
   const dayTx = fd.futures?.day_session?.tx;
@@ -286,7 +314,7 @@ function renderFutureDashboard(strat, main) {
           fdTone(txTotal.oi_net_lots)
         )}
         ${fdMetric('夜盤三大法人買賣超(口)', fdSigned(nightTotal.net_lots), `${nightTx?.date || ''} · 期交所公告值`, fdTone(nightTotal.net_lots))}
-        ${fdMetric('散戶多空比', retail?.ratio == null ? '—' : `${fdNum(retail.ratio, 2)}%`, retail?.date || '', fdTone(retail?.ratio, true))}
+        ${fdRetailSummary(retailDash, retail)}
       </div>
 
       <div class="fd-grid fd-market-flow">
