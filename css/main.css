@@ -638,7 +638,7 @@ tbody tr:hover .spark-bar{opacity:.9}
   .page-layout.perf-mode .watchlist-sidebar{width:100%;max-width:100%}
   .journal-list{max-height:none}
   .market-index-list{display:grid;grid-template-columns:1fr 1fr}
-  .market-index-row:first-child{border-right:1px solid var(--border)}
+  .market-index-row:nth-child(odd){border-right:1px solid var(--border)}
   .market-index-value{font-size:18px}
 
   .summary-row,
@@ -662,7 +662,7 @@ tbody tr:hover .spark-bar{opacity:.9}
   .summary-card{padding:12px}
   .perf-table{min-width:720px}
   .market-index-list{grid-template-columns:1fr}
-  .market-index-row:first-child{border-right:none}
+  .market-index-row:nth-child(odd){border-right:none}
 
   .strat-tab{padding:10px 12px 11px;font-size:12px}
 

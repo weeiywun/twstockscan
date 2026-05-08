@@ -304,16 +304,23 @@ function renderMarketDashboard() {
   const updated = DATA.market_index_data?.updated
     ? DATA.market_index_data.updated.slice(0, 16).replace('T', ' ')
     : '';
+  const rows = [
+    ['TAIEX', '台灣加權指數'],
+    ['TPEX', '櫃買加權指數'],
+    ['TXF_NEAR', '台指近全'],
+    ['NASDAQ', '那斯達克'],
+    ['DOW', '道瓊'],
+    ['SOX', '費半'],
+  ];
   return `
     <div class="sidebar-header market-panel-header">
-      <span class="section-title">大盤儀表板</span>
+      <span class="section-title">行情儀錶板</span>
       <span class="market-updated">${updated || '尚未更新'}</span>
     </div>
     <div class="market-index-list">
-      ${_marketIndexRow('TAIEX', '台灣加權指數')}
-      ${_marketIndexRow('TPEX', '櫃買加權指數')}
+      ${rows.map(([key, name]) => _marketIndexRow(key, name)).join('')}
     </div>
-    <div class="market-note">盤中顯示最近一個已收盤交易日。</div>`;
+    <div class="market-note">台指近全顯示近月台指期夜盤結果；美股指數顯示最近一個已收盤交易日。</div>`;
 }
 
 function updatePerfSidebar() {
@@ -627,7 +634,7 @@ function renderPerformance(strat, main) {
 
   setTimeout(() => initPerfChart(pd), 60);
 
-  // 切換績效頁側欄，固定顯示大盤儀表板，周記依暗門狀態展開。
+  // 切換績效頁側欄，固定顯示行情儀錶板，周記依暗門狀態展開。
   setPerfSidebarMode(true);
   const jfDate = document.getElementById('jf-date');
   if (jfDate && !jfDate.value) jfDate.value = today;

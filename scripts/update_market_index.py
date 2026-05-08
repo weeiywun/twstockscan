@@ -10,6 +10,7 @@ from __future__ import annotations
 
 import json
 import os
+import re
 import time
 from datetime import datetime, timedelta, timezone
 from typing import Any
@@ -262,6 +263,54 @@ def fetch_from_yfinance(symbol: str, name: str) -> dict[str, Any] | None:
         return None
 
 
+def fetch_txf_near_from_yahoo() -> dict[str, Any] | None:
+    """
+    Yahoo 台指期近一報價。
+
+    這個頁面在夜盤收盤後會保留 05:00 左右的近月台指期成交價，
+    適合放在行情儀錶板補足台股開盤前的夜盤結果。
+    """
+    url = "https://tw.stock.yahoo.com/future/futures.html?fumr=futurefull"
+    try:
+        from bs4 import BeautifulSoup
+
+        res = requests.get(url, headers=HEADERS, timeout=20)
+        res.raise_for_status()
+        soup = BeautifulSoup(res.text, "html.parser")
+        text = soup.get_text("\n")
+        tokens = [line.strip() for line in text.splitlines() if line.strip()]
+        date_match = re.search(r"資料時間[:：]\s*(\d{4}/\d{1,2}/\d{1,2})", text)
+        quote_date = _roc_date(date_match.group(1)) if date_match else TODAY.isoformat()
+
+        for idx, token in enumerate(tokens):
+            if token != "台指期近一":
+                continue
+            row = tokens[idx + 1:idx + 16]
+            if not row or row[0] != "WTX&":
+                continue
+            close = _num(row[3] if len(row) > 3 else None)
+            change = _num(row[4] if len(row) > 4 else None)
+            change_pct = _num(str(row[5]).replace("%", "") if len(row) > 5 else None)
+            if close is None:
+                continue
+            item: dict[str, Any] = {
+                "name": "台指近全",
+                "close": close,
+                "date": quote_date,
+                "source": "yahoo_futures",
+            }
+            if change is not None:
+                item["change"] = change
+            if change_pct is not None:
+                item["change_pct"] = change_pct
+            if len(row) > 13:
+                item["time"] = row[13]
+            return item
+    except Exception as exc:
+        print(f"  ⚠️  Yahoo 台指期近一讀取失敗：{exc}")
+    return None
+
+
 def fetch_first_yfinance(symbols: list[str], name: str) -> dict[str, Any] | None:
     for symbol in symbols:
         result = fetch_from_yfinance(symbol, name)
@@ -285,19 +334,30 @@ def main() -> None:
         or mis_indices.get("TPEX")
         or fetch_first_yfinance(["^TWOII", "TWOII.TW"], "櫃買加權指數")
     )
+    txf_near = fetch_txf_near_from_yahoo()
+    nasdaq = fetch_from_yfinance("^IXIC", "那斯達克")
+    dow = fetch_from_yfinance("^DJI", "道瓊")
+    sox = fetch_from_yfinance("^SOX", "費半")
 
-    if not taiex and not tpex:
+    market_items = {
+        "TAIEX": taiex,
+        "TPEX": tpex,
+        "TXF_NEAR": txf_near,
+        "NASDAQ": nasdaq,
+        "DOW": dow,
+        "SOX": sox,
+    }
+    indices = {key: value for key, value in market_items.items() if value}
+
+    if not indices:
         raise SystemExit("❌ 無法取得任何大盤指數資料")
 
-    dates = [x["date"] for x in (taiex, tpex) if x and x.get("date")]
+    dates = [x["date"] for x in indices.values() if x.get("date")]
     out = {
         "date": max(dates) if dates else TODAY.isoformat(),
         "updated": NOW.isoformat(),
-        "source": "+".join(sorted({x["source"] for x in (taiex, tpex) if x})),
-        "indices": {
-            "TAIEX": taiex,
-            "TPEX": tpex,
-        },
+        "source": "+".join(sorted({x["source"] for x in indices.values()})),
+        "indices": indices,
     }
     with open(OUTPUT_PATH, "w", encoding="utf-8") as f:
         json.dump(out, f, ensure_ascii=False, indent=2)
