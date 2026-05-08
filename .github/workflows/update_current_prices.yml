@@ -1,6 +1,9 @@
 name: 更新現價（手動觸發）
 
 on:
+  # 台灣時間週二至週六 06:00 自動更新，對接美股收盤與台指夜盤結果。
+  schedule:
+    - cron: '0 22 * * 1-5'
   workflow_dispatch:
     inputs:
       request_id:
