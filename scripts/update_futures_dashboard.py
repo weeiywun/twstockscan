@@ -2,10 +2,10 @@
 """
 更新 FUTURE DASHBOARD 快取。
 
-資料來源以官方期交所與 FinMind 為主：
+資料來源以官方期交所與證交所為主：
 - 期交所 bq888：三大法人期貨日盤 / 夜盤
 - 期交所 open data：期貨每日行情、臺指選擇權 Put/Call Ratio
-- FinMind：三大法人現貨買賣超彙總（若 FINMIND_TOKEN 可用）
+- 證交所 BFI82U：三大法人現貨買賣金額
 """
 
 from __future__ import annotations
@@ -99,6 +99,10 @@ def _latest_trading_dates(max_days: int = 10) -> list[datetime.date]:
         if d.weekday() < 5:
             dates.append(d)
     return dates
+
+
+def _twse_date(date: datetime.date) -> str:
+    return date.strftime("%Y%m%d")
 
 
 def _parse_taifex_institutional_table(html: str) -> dict[str, Any] | None:
@@ -225,63 +229,73 @@ def fetch_pc_ratio() -> dict[str, Any] | None:
         return None
 
 
-def _finmind_request(params: dict[str, str]) -> dict[str, Any] | None:
-    token = os.getenv("FINMIND_TOKEN", "").strip()
-    if token:
-        params["token"] = token
+def fetch_twse_institutional_amount(date: datetime.date) -> dict[str, Any] | None:
+    url = "https://www.twse.com.tw/rwd/zh/fund/BFI82U"
     try:
-        res = requests.get("https://api.finmindtrade.com/api/v4/data", params=params, timeout=25)
+        res = requests.get(url, params={
+            "dayDate": _twse_date(date),
+            "response": "json",
+            "type": "day",
+        }, headers=HEADERS, timeout=25)
         res.raise_for_status()
         data = res.json()
-        if data.get("status") not in (200, "200"):
-            print(f"  ⚠️  FinMind 回應：{data.get('msg') or data.get('status')}")
+        if data.get("stat") != "OK" or not data.get("data"):
             return None
-        return data
+        totals = {
+            "foreign": {"label": "外資", "buy_amount": 0, "sell_amount": 0, "net_amount": 0},
+            "investment_trust": {"label": "投信", "buy_amount": 0, "sell_amount": 0, "net_amount": 0},
+            "dealer": {"label": "自營商", "buy_amount": 0, "sell_amount": 0, "net_amount": 0},
+        }
+        for row in data.get("data", []):
+            name = row[0]
+            key = None
+            if "外資及陸資" in name:
+                key = "foreign"
+            elif name == "投信":
+                key = "investment_trust"
+            elif name.startswith("自營商"):
+                key = "dealer"
+            if not key:
+                continue
+            buy = _int(row[1]) or 0
+            sell = _int(row[2]) or 0
+            net = _int(row[3]) if len(row) > 3 else buy - sell
+            totals[key]["buy_amount"] += buy
+            totals[key]["sell_amount"] += sell
+            totals[key]["net_amount"] += net if net is not None else buy - sell
+        total = {"label": "三大法人合計", "buy_amount": 0, "sell_amount": 0, "net_amount": 0}
+        for item in totals.values():
+            total["buy_amount"] += item["buy_amount"]
+            total["sell_amount"] += item["sell_amount"]
+            total["net_amount"] += item["net_amount"]
+        totals["total"] = total
+        return {
+            "date": _date_dash(data.get("date")) or date.isoformat(),
+            "traders": totals,
+            "source": "twse_bfi82u",
+            "unit": "TWD",
+        }
     except Exception as exc:
-        print(f"  ⚠️  FinMind 讀取失敗：{exc}")
+        print(f"  ⚠️  TWSE BFI82U {date.isoformat()} 讀取失敗：{exc}")
         return None
 
 
-def fetch_stock_institutional() -> dict[str, Any] | None:
-    finmind_name_map = {
-        "Foreign_Investor": "foreign",
-        "Foreign_Dealer_Self": "foreign",
-        "Investment_Trust": "investment_trust",
-        "Dealer_self": "dealer",
-        "Dealer_Hedging": "dealer",
-        "Dealer": "dealer",
+def fetch_stock_institutional_amounts(days: int = 5) -> dict[str, Any] | None:
+    history: list[dict[str, Any]] = []
+    for d in _latest_trading_dates(14):
+        item = fetch_twse_institutional_amount(d)
+        if item:
+            history.append(item)
+        if len(history) >= days:
+            break
+    if not history:
+        return None
+    return {
+        "date": history[0]["date"],
+        "history": history,
+        "source": "twse_bfi82u",
+        "unit": "TWD",
     }
-    for d in _latest_trading_dates():
-        date_text = d.isoformat()
-        data = _finmind_request({
-            "dataset": "TaiwanStockInstitutionalInvestorsBuySell",
-            "start_date": date_text,
-            "end_date": date_text,
-        })
-        rows = data.get("data") if data else []
-        if not rows:
-            continue
-        totals = {
-            "foreign": {"label": "外資", "buy": 0, "sell": 0, "net": 0},
-            "investment_trust": {"label": "投信", "buy": 0, "sell": 0, "net": 0},
-            "dealer": {"label": "自營商", "buy": 0, "sell": 0, "net": 0},
-        }
-        for row in rows:
-            key = finmind_name_map.get(row.get("name"))
-            if not key:
-                continue
-            buy = _int(row.get("buy")) or 0
-            sell = _int(row.get("sell")) or 0
-            totals[key]["buy"] += buy
-            totals[key]["sell"] += sell
-            totals[key]["net"] += buy - sell
-        total = {"label": "三大法人合計", "buy": 0, "sell": 0, "net": 0}
-        for item in totals.values():
-            total["buy"] += item["buy"]
-            total["sell"] += item["sell"]
-            total["net"] += item["net"]
-        totals["total"] = total
-        return {"date": date_text, "traders": totals, "source": "finmind"}
     return None
 
 
@@ -352,7 +366,7 @@ def main() -> None:
     night_institutional = fetch_taifex_institutional("futContractsDateAhExcel")
     market = fetch_futures_daily_market()
     pc_ratio = fetch_pc_ratio()
-    stock_inst = fetch_stock_institutional()
+    stock_inst = fetch_stock_institutional_amounts()
 
     tx_day = _contract_view(day_institutional, "臺股期貨")
     mtx_day = _contract_view(day_institutional, "小型臺指期貨")
@@ -368,7 +382,7 @@ def main() -> None:
     out = {
         "date": max(dates) if dates else TODAY.isoformat(),
         "updated": NOW.isoformat(),
-        "source": "taifex_bq888+taifex_open_data" + ("+finmind" if stock_inst else ""),
+        "source": "taifex_bq888+taifex_open_data" + ("+twse_bfi82u" if stock_inst else ""),
         "market": market or {},
         "stock_institutional": stock_inst,
         "futures": {
@@ -390,7 +404,7 @@ def main() -> None:
     out["summary"] = {
         "bias": _bias(out),
         "notes": [
-            "夜盤法人為期交所三大法人夜盤資料；日盤未平倉以最近公告交易日為準。",
+            "夜盤法人為期交所三大法人夜盤資料；若期交所公告值為 0，畫面會如實顯示。",
             "散戶多空比以小台三大法人淨未平倉反推，正值代表散戶偏多。",
         ],
     }
