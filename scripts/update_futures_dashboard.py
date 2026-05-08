@@ -36,6 +36,7 @@ HEADERS = {
 }
 
 TAIFEX_BQ = "https://www.bq888.taifex.com.tw"
+TAIFEX_WEB = "https://www.taifex.com.tw"
 TAIFEX_DATA = "https://www.taifex.com.tw/data_gov/taifex_open_data.asp"
 INVESTOR_KEYS = {
     "自營商": "dealer",
@@ -105,12 +106,12 @@ def _twse_date(date: datetime.date) -> str:
     return date.strftime("%Y%m%d")
 
 
-def _parse_taifex_institutional_table(html: str) -> dict[str, Any] | None:
+def _parse_taifex_institutional_table(html: str, source: str = "taifex_bq888") -> dict[str, Any] | None:
     soup = BeautifulSoup(html, "html.parser")
     text = soup.get_text(" ", strip=True)
     m = re.search(r"日期\s*:?\s*(\d{4}/\d{2}/\d{2})", text)
     data_date = _date_dash(m.group(1)) if m else None
-    result: dict[str, Any] = {"date": data_date, "contracts": {}, "source": "taifex_bq888"}
+    result: dict[str, Any] = {"date": data_date, "contracts": {}, "source": source}
     current_product = ""
 
     for tr in soup.find_all("tr"):
@@ -161,6 +162,15 @@ def fetch_taifex_institutional(path: str) -> dict[str, Any] | None:
         return _parse_taifex_institutional_table(html)
     except Exception as exc:
         print(f"  ⚠️  期交所 {path} 讀取失敗：{exc}")
+        return None
+
+
+def fetch_taifex_night_institutional() -> dict[str, Any] | None:
+    try:
+        html = _request_text(f"{TAIFEX_WEB}/cht/3/futContractsDateAh", encoding="utf-8")
+        return _parse_taifex_institutional_table(html, source="taifex_futContractsDateAh")
+    except Exception as exc:
+        print(f"  ⚠️  期交所 futContractsDateAh 夜盤讀取失敗：{exc}")
         return None
 
 
@@ -363,7 +373,7 @@ def main() -> None:
     print(f"=== 更新 FUTURE DASHBOARD {NOW.strftime('%Y-%m-%d %H:%M')} ===")
 
     day_institutional = fetch_taifex_institutional("futContractsDateExcel")
-    night_institutional = fetch_taifex_institutional("futContractsDateAhExcel")
+    night_institutional = fetch_taifex_night_institutional()
     market = fetch_futures_daily_market()
     pc_ratio = fetch_pc_ratio()
     stock_inst = fetch_stock_institutional_amounts()
@@ -382,7 +392,7 @@ def main() -> None:
     out = {
         "date": max(dates) if dates else TODAY.isoformat(),
         "updated": NOW.isoformat(),
-        "source": "taifex_bq888+taifex_open_data" + ("+twse_bfi82u" if stock_inst else ""),
+        "source": "taifex_bq888+taifex_futContractsDateAh+taifex_open_data" + ("+twse_bfi82u" if stock_inst else ""),
         "market": market or {},
         "stock_institutional": stock_inst,
         "futures": {
@@ -404,7 +414,7 @@ def main() -> None:
     out["summary"] = {
         "bias": _bias(out),
         "notes": [
-            "夜盤法人為期交所三大法人夜盤資料；若期交所公告值為 0，畫面會如實顯示。",
+            "夜盤法人為期交所三大法人夜盤頁面資料，日期以盤後交易量歸屬日為準。",
             "散戶多空比以小台三大法人淨未平倉反推，正值代表散戶偏多。",
         ],
     }
