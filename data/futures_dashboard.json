@@ -1,7 +1,7 @@
 {
   "date": "2026-05-08",
-  "updated": "2026-05-08T10:55:37.357486+08:00",
-  "source": "taifex_bq888+taifex_open_data+twse_bfi82u",
+  "updated": "2026-05-08T11:04:17.565935+08:00",
+  "source": "taifex_bq888+taifex_futContractsDateAh+taifex_open_data+twse_bfi82u",
   "market": {
     "TX": {
       "symbol": "TX",
@@ -282,9 +282,9 @@
         "traders": {
           "dealer": {
             "label": "自營商",
-            "buy_lots": 0,
-            "sell_lots": 0,
-            "net_lots": 0
+            "buy_lots": 2127,
+            "sell_lots": 1295,
+            "net_lots": 832
           },
           "investment_trust": {
             "label": "投信",
@@ -294,21 +294,21 @@
           },
           "foreign": {
             "label": "外資",
-            "buy_lots": 0,
-            "sell_lots": 0,
-            "net_lots": 0
+            "buy_lots": 29390,
+            "sell_lots": 31529,
+            "net_lots": -2139
           },
           "total": {
             "label": "三大法人合計",
-            "buy_lots": 0,
-            "sell_lots": 0,
-            "net_lots": 0,
+            "buy_lots": 31517,
+            "sell_lots": 32824,
+            "net_lots": -1307,
             "oi_long_lots": null,
             "oi_short_lots": null,
             "oi_net_lots": null
           }
         },
-        "source": "taifex_bq888"
+        "source": "taifex_futContractsDateAh"
       },
       "mtx": {
         "date": "2026-05-08",
@@ -316,9 +316,9 @@
         "traders": {
           "dealer": {
             "label": "自營商",
-            "buy_lots": 0,
-            "sell_lots": 0,
-            "net_lots": 0
+            "buy_lots": 6405,
+            "sell_lots": 6375,
+            "net_lots": 30
           },
           "investment_trust": {
             "label": "投信",
@@ -328,21 +328,21 @@
           },
           "foreign": {
             "label": "外資",
-            "buy_lots": 0,
-            "sell_lots": 0,
-            "net_lots": 0
+            "buy_lots": 74863,
+            "sell_lots": 78734,
+            "net_lots": -3871
           },
           "total": {
             "label": "三大法人合計",
-            "buy_lots": 0,
-            "sell_lots": 0,
-            "net_lots": 0,
+            "buy_lots": 81268,
+            "sell_lots": 85109,
+            "net_lots": -3841,
             "oi_long_lots": null,
             "oi_short_lots": null,
             "oi_net_lots": null
           }
         },
-        "source": "taifex_bq888"
+        "source": "taifex_futContractsDateAh"
       }
     }
   },
@@ -369,7 +369,7 @@
   "summary": {
     "bias": "中性",
     "notes": [
-      "夜盤法人為期交所三大法人夜盤資料；若期交所公告值為 0，畫面會如實顯示。",
+      "夜盤法人為期交所三大法人夜盤頁面資料，日期以盤後交易量歸屬日為準。",
       "散戶多空比以小台三大法人淨未平倉反推，正值代表散戶偏多。"
     ]
   }
