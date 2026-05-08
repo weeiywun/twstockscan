@@ -3,7 +3,7 @@
 更新 FUTURE DASHBOARD 快取。
 
 資料來源以官方期交所與證交所為主：
-- 期交所 bq888：三大法人期貨日盤 / 夜盤
+- 期交所：三大法人期貨日盤 / 夜盤、期貨每日行情下載
 - 期交所 open data：期貨每日行情、臺指選擇權 Put/Call Ratio
 - 證交所 BFI82U：三大法人現貨買賣金額
 """
@@ -93,6 +93,12 @@ def _request_text(url: str, params: dict[str, str] | None = None, encoding: str 
     return str(res.text)
 
 
+def _post_text(url: str, data: dict[str, str], encoding: str = "utf-8") -> str:
+    res = requests.post(url, data=data, headers=HEADERS, timeout=25)
+    res.raise_for_status()
+    return res.content.decode(encoding, errors="replace")
+
+
 def _latest_trading_dates(max_days: int = 10) -> list[datetime.date]:
     dates: list[datetime.date] = []
     for offset in range(0, max_days):
@@ -104,6 +110,16 @@ def _latest_trading_dates(max_days: int = 10) -> list[datetime.date]:
 
 def _twse_date(date: datetime.date) -> str:
     return date.strftime("%Y%m%d")
+
+
+def _trend(current: float | int | None, previous: float | int | None) -> str | None:
+    if current is None or previous is None:
+        return None
+    if current > previous:
+        return "上升"
+    if current < previous:
+        return "下降"
+    return "持平"
 
 
 def _parse_taifex_institutional_table(html: str, source: str = "taifex_bq888") -> dict[str, Any] | None:
@@ -165,6 +181,30 @@ def fetch_taifex_institutional(path: str) -> dict[str, Any] | None:
         return None
 
 
+def fetch_taifex_day_institutional(date_text: str | None = None) -> dict[str, Any] | None:
+    try:
+        if date_text:
+            html = _post_text(
+                f"{TAIFEX_WEB}/cht/3/futContractsDate",
+                {
+                    "queryDate": date_text.replace("-", "/"),
+                    "commodityId": "",
+                    "queryType": "",
+                    "goDay": "",
+                    "doQuery": "1",
+                    "dateaddcnt": "",
+                },
+                encoding="utf-8",
+            )
+        else:
+            html = _request_text(f"{TAIFEX_WEB}/cht/3/futContractsDate", encoding="utf-8")
+        return _parse_taifex_institutional_table(html, source="taifex_futContractsDate")
+    except Exception as exc:
+        label = date_text or "latest"
+        print(f"  ⚠️  期交所 futContractsDate {label} 讀取失敗：{exc}")
+        return None
+
+
 def fetch_taifex_night_institutional() -> dict[str, Any] | None:
     try:
         html = _request_text(f"{TAIFEX_WEB}/cht/3/futContractsDateAh", encoding="utf-8")
@@ -185,6 +225,7 @@ def fetch_futures_daily_market() -> dict[str, Any] | None:
         if len(rows) < 2:
             return None
         by_symbol: dict[str, dict[str, Any]] = {}
+        totals: dict[str, dict[str, Any]] = {}
         for row in rows[1:]:
             if len(row) < 12:
                 continue
@@ -196,10 +237,10 @@ def fetch_futures_daily_market() -> dict[str, Any] | None:
             settlement = _num(row[10])
             open_interest = _int(row[11])
             session = row[-1].strip() if row else ""
-            if symbol not in {"TX", "MTX"} or open_interest is None:
+            if symbol not in {"TX", "MTX", "TMF"} or open_interest is None:
                 continue
-            if symbol == "MTX" and "W" in month:
-                continue
+            total = totals.setdefault(symbol, {"symbol": symbol, "date": trade_date, "open_interest_total": 0})
+            total["open_interest_total"] += open_interest
             if symbol not in by_symbol:
                 by_symbol[symbol] = {
                     "symbol": symbol,
@@ -211,32 +252,108 @@ def fetch_futures_daily_market() -> dict[str, Any] | None:
                     "open_interest": open_interest,
                     "source": "taifex_open_data",
                 }
+        for symbol, item in totals.items():
+            if symbol in by_symbol:
+                by_symbol[symbol]["open_interest_total"] = item["open_interest_total"]
+            else:
+                by_symbol[symbol] = {
+                    **item,
+                    "source": "taifex_open_data",
+                }
         return by_symbol if by_symbol else None
     except Exception as exc:
         print(f"  ⚠️  期貨每日行情讀取失敗：{exc}")
         return None
 
 
-def fetch_pc_ratio() -> dict[str, Any] | None:
+def fetch_futures_market_history(symbols: tuple[str, ...] = ("MTX", "TMF"), days: int = 5) -> dict[str, list[dict[str, Any]]]:
+    start = _latest_trading_dates(14)[-1]
+    end = _latest_trading_dates(14)[0]
+    history: dict[str, list[dict[str, Any]]] = {symbol: [] for symbol in symbols}
+    for symbol in symbols:
+        try:
+            text = _post_text(
+                f"{TAIFEX_WEB}/cht/3/futDataDown",
+                {
+                    "down_type": "1",
+                    "queryStartDate": _date_slash(start),
+                    "queryEndDate": _date_slash(end),
+                    "commodity_id": symbol,
+                    "commodity_id2": "",
+                },
+                encoding="big5",
+            )
+            rows = list(csv.reader(io.StringIO(text)))
+            by_date: dict[str, dict[str, Any]] = {}
+            for row in rows[1:]:
+                if len(row) < 12:
+                    continue
+                date = _date_dash(row[0])
+                open_interest = _int(row[11])
+                if not date or open_interest is None:
+                    continue
+                item = by_date.setdefault(date, {
+                    "symbol": symbol,
+                    "date": date,
+                    "open_interest_total": 0,
+                    "source": "taifex_futDataDown",
+                })
+                item["open_interest_total"] += open_interest
+            history[symbol] = sorted(by_date.values(), key=lambda x: x["date"], reverse=True)[:days]
+        except Exception as exc:
+            print(f"  ⚠️  期貨每日行情歷史 {symbol} 讀取失敗：{exc}")
+    return history
+
+
+def fetch_pc_ratio(days: int = 5) -> dict[str, Any] | None:
     try:
         text = _request_text(TAIFEX_DATA, {"data_name": "PutCallRatio"}, encoding="big5")
         rows = list(csv.reader(io.StringIO(text)))
         if len(rows) < 2:
             return None
-        row = rows[1]
+        history = []
+        for row in rows[1:days + 1]:
+            history.append({
+                "date": _date_dash(row[0]),
+                "put_volume": _int(row[1]),
+                "call_volume": _int(row[2]),
+                "volume_ratio": _num(row[3]),
+                "put_open_interest": _int(row[4]),
+                "call_open_interest": _int(row[5]),
+                "open_interest_ratio": _num(row[6]),
+                "ratio": round((_num(row[6]) or 0) / 100, 2) if _num(row[6]) is not None else None,
+                "source": "taifex_open_data",
+            })
+        latest = history[0]
         return {
-            "date": _date_dash(row[0]),
-            "put_volume": _int(row[1]),
-            "call_volume": _int(row[2]),
-            "volume_ratio": _num(row[3]),
-            "put_open_interest": _int(row[4]),
-            "call_open_interest": _int(row[5]),
-            "open_interest_ratio": _num(row[6]),
-            "source": "taifex_open_data",
+            **latest,
+            "history": history,
+            "previous_ratio": history[1]["ratio"] if len(history) > 1 else None,
+            "change": round(latest["ratio"] - history[1]["ratio"], 2) if len(history) > 1 and latest["ratio"] is not None and history[1]["ratio"] is not None else None,
+            "trend": _trend(latest["ratio"], history[1]["ratio"]) if len(history) > 1 else None,
         }
     except Exception as exc:
         print(f"  ⚠️  Put/Call Ratio 讀取失敗：{exc}")
         return None
+
+
+def _legacy_pc_ratio(pc_ratio: dict[str, Any] | None) -> dict[str, Any] | None:
+    if not pc_ratio:
+        return None
+    return {
+        key: pc_ratio.get(key)
+        for key in (
+            "date",
+            "put_volume",
+            "call_volume",
+            "volume_ratio",
+            "put_open_interest",
+            "call_open_interest",
+            "open_interest_ratio",
+            "source",
+        )
+        if key in pc_ratio
+    }
 
 
 def fetch_twse_institutional_amount(date: datetime.date) -> dict[str, Any] | None:
@@ -323,23 +440,94 @@ def _contract_view(data: dict[str, Any] | None, product: str) -> dict[str, Any] 
     }
 
 
-def _retail_ratio(mtx_institutional: dict[str, Any] | None, market: dict[str, Any] | None) -> dict[str, Any] | None:
-    if not mtx_institutional or not market:
+def _retail_ratio(contract: dict[str, Any] | None, market_item: dict[str, Any] | None, symbol: str | None = None) -> dict[str, Any] | None:
+    if not contract or not market_item:
         return None
-    total = (mtx_institutional.get("traders") or {}).get("total", {})
-    mtx_market = market.get("MTX") if market else None
-    oi = mtx_market.get("open_interest") if mtx_market else None
+    total = (contract.get("traders") or {}).get("total", {})
+    oi = market_item.get("open_interest_total") or market_item.get("open_interest")
     inst_net = total.get("oi_net_lots")
     if not oi or inst_net is None:
         return None
     ratio = round(-inst_net / oi * 100, 2)
     return {
-        "date": mtx_institutional.get("date") or mtx_market.get("date"),
-        "contract": "小型臺指期貨",
+        "date": contract.get("date") or market_item.get("date"),
+        "symbol": symbol or market_item.get("symbol"),
+        "contract": contract.get("product"),
         "institutional_net_open_interest": inst_net,
+        "estimated_retail_net_open_interest": -inst_net,
         "market_open_interest": oi,
         "ratio": ratio,
+        "definition": "三大法人淨未平倉反向值 / 全市場全月份未沖銷契約數；正值代表散戶相對偏多。",
         "source": "taifex_derived",
+    }
+
+
+def _retail_rows(
+    institutional_history: dict[str, dict[str, Any]],
+    market_history: dict[str, list[dict[str, Any]]],
+    pc_ratio: dict[str, Any] | None,
+) -> dict[str, Any] | None:
+    products = {
+        "MTX": {"label": "小台散戶多空比", "product": "小型臺指期貨"},
+        "TMF": {"label": "微台散戶多空比", "product": "微型臺指期貨"},
+    }
+    rows: list[dict[str, Any]] = []
+    dates: list[str] = []
+    for symbol, meta in products.items():
+        history: list[dict[str, Any]] = []
+        for market_item in market_history.get(symbol, []):
+            inst = institutional_history.get(market_item["date"])
+            contract = _contract_view(inst, meta["product"])
+            ratio = _retail_ratio(contract, market_item, symbol)
+            if ratio:
+                history.append(ratio)
+        if not history:
+            continue
+        current = history[0]
+        previous = history[1] if len(history) > 1 else {}
+        rows.append({
+            "key": symbol.lower(),
+            "label": meta["label"],
+            "format": "percent",
+            "today": current.get("ratio"),
+            "previous": previous.get("ratio"),
+            "change": round(current["ratio"] - previous["ratio"], 2) if previous.get("ratio") is not None else None,
+            "trend": _trend(current.get("ratio"), previous.get("ratio")),
+            "date": current.get("date"),
+            "previous_date": previous.get("date"),
+            "detail": current,
+            "history": history,
+        })
+        if current.get("date"):
+            dates.append(current["date"])
+
+    pc_history = pc_ratio.get("history") if pc_ratio else []
+    if pc_history:
+        current_pc = pc_history[0]
+        previous_pc = pc_history[1] if len(pc_history) > 1 else {}
+        rows.append({
+            "key": "pc_ratio",
+            "label": "Put/Call Ratio",
+            "format": "decimal",
+            "today": current_pc.get("ratio"),
+            "previous": previous_pc.get("ratio"),
+            "change": round(current_pc["ratio"] - previous_pc["ratio"], 2) if previous_pc.get("ratio") is not None else None,
+            "trend": _trend(current_pc.get("ratio"), previous_pc.get("ratio")),
+            "date": current_pc.get("date"),
+            "previous_date": previous_pc.get("date"),
+            "detail": current_pc,
+            "history": pc_history,
+        })
+        if current_pc.get("date"):
+            dates.append(current_pc["date"])
+
+    if not rows:
+        return None
+    return {
+        "date": max(dates) if dates else None,
+        "rows": rows,
+        "source": "taifex_futContractsDate+taifex_futDataDown+taifex_open_data",
+        "definition": "散戶多空比採國泰報告呈現邏輯：三大法人未平倉淨額反向值除以同商品全市場未沖銷契約數，並列今日、前一日與增減方向。",
     }
 
 
@@ -372,41 +560,60 @@ def main() -> None:
     os.makedirs(DATA_DIR, exist_ok=True)
     print(f"=== 更新 FUTURE DASHBOARD {NOW.strftime('%Y-%m-%d %H:%M')} ===")
 
-    day_institutional = fetch_taifex_institutional("futContractsDateExcel")
+    day_institutional = fetch_taifex_day_institutional()
     night_institutional = fetch_taifex_night_institutional()
     market = fetch_futures_daily_market()
     pc_ratio = fetch_pc_ratio()
+    market_history = fetch_futures_market_history()
     stock_inst = fetch_stock_institutional_amounts()
+
+    institutional_history: dict[str, dict[str, Any]] = {}
+    for row in (pc_ratio.get("history", [])[:5] if pc_ratio else []):
+        date = row.get("date")
+        if not date:
+            continue
+        if day_institutional and day_institutional.get("date") == date:
+            institutional_history[date] = day_institutional
+        else:
+            inst = fetch_taifex_day_institutional(date)
+            if inst:
+                institutional_history[date] = inst
 
     tx_day = _contract_view(day_institutional, "臺股期貨")
     mtx_day = _contract_view(day_institutional, "小型臺指期貨")
+    tmf_day = _contract_view(day_institutional, "微型臺指期貨")
     tx_night = _contract_view(night_institutional, "臺股期貨")
     mtx_night = _contract_view(night_institutional, "小型臺指期貨")
-    retail = _retail_ratio(mtx_day, market)
+    tmf_night = _contract_view(night_institutional, "微型臺指期貨")
+    retail_dashboard = _retail_rows(institutional_history, market_history, pc_ratio)
+    retail = (retail_dashboard.get("rows", [{}])[0].get("detail") if retail_dashboard else None) or _retail_ratio(mtx_day, (market or {}).get("MTX"), "MTX")
 
     dates = [
         x.get("date") for x in
-        (tx_day, mtx_day, tx_night, mtx_night, retail, pc_ratio, stock_inst)
+        (tx_day, mtx_day, tmf_day, tx_night, mtx_night, tmf_night, retail, pc_ratio, stock_inst)
         if x and x.get("date")
     ]
     out = {
         "date": max(dates) if dates else TODAY.isoformat(),
         "updated": NOW.isoformat(),
-        "source": "taifex_bq888+taifex_futContractsDateAh+taifex_open_data" + ("+twse_bfi82u" if stock_inst else ""),
+        "source": "taifex_futContractsDate+taifex_futContractsDateAh+taifex_futDataDown+taifex_open_data" + ("+twse_bfi82u" if stock_inst else ""),
         "market": market or {},
         "stock_institutional": stock_inst,
         "futures": {
             "day_session": {
                 "tx": tx_day,
                 "mtx": mtx_day,
+                "tmf": tmf_day,
             },
             "night_session": {
                 "tx": tx_night,
                 "mtx": mtx_night,
+                "tmf": tmf_night,
             },
         },
         "sentiment": {
             "retail_long_short": retail,
+            "retail_dashboard": retail_dashboard,
             "pc_ratio": pc_ratio,
         },
         "summary": {},
@@ -415,7 +622,7 @@ def main() -> None:
         "bias": _bias(out),
         "notes": [
             "夜盤法人為期交所三大法人夜盤頁面資料，日期以盤後交易量歸屬日為準。",
-            "散戶多空比以小台三大法人淨未平倉反推，正值代表散戶偏多。",
+            "散戶多空比以三大法人淨未平倉反向值 / 全市場全月份未沖銷契約數估算；正值代表散戶相對偏多。",
         ],
     }
     with open(OUTPUT_PATH, "w", encoding="utf-8") as f:

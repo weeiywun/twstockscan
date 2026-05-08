@@ -104,11 +104,38 @@ function fdTable(title, meta, headers, body) {
     </section>`;
 }
 
+function fdSentimentValue(row, field) {
+  const value = row?.[field];
+  if (value == null || Number.isNaN(Number(value))) return '—';
+  return row.format === 'percent' ? `${fdNum(value, 2)}%` : fdNum(value, 2);
+}
+
+function fdTrendTone(trend) {
+  if (trend === '上升') return 'pos';
+  if (trend === '下降') return 'neg';
+  return 'flat';
+}
+
+function fdSentimentRows(retailDash) {
+  const rows = retailDash?.rows || [];
+  if (!rows.length) {
+    return '<tr><td colspan="4" style="text-align:center;color:var(--text3)">尚無散戶多空比資料</td></tr>';
+  }
+  return rows.map(row => `
+    <tr>
+      <td>${row.label || '—'}</td>
+      <td class="mono ${fdTone(row.today)}">${fdSentimentValue(row, 'today')}</td>
+      <td class="mono ${fdTone(row.previous)}">${fdSentimentValue(row, 'previous')}</td>
+      <td class="mono ${fdTrendTone(row.trend)}">${row.trend || '—'}</td>
+    </tr>`).join('');
+}
+
 function renderFutureDashboard(strat, main) {
   const fd = DATA.futures_dashboard_data || {};
   const dayTx = fd.futures?.day_session?.tx;
   const nightTx = fd.futures?.night_session?.tx;
   const retail = fd.sentiment?.retail_long_short;
+  const retailDash = fd.sentiment?.retail_dashboard;
   const pc = fd.sentiment?.pc_ratio;
   const stock = fd.stock_institutional;
   const bias = fd.summary?.bias || '等待更新';
@@ -146,7 +173,7 @@ function renderFutureDashboard(strat, main) {
         ${fdMetric('外資台指期未平倉淨額(口)', fdSigned(dayTx?.traders?.foreign?.oi_net_lots), dayTx?.date || '', fdTone(dayTx?.traders?.foreign?.oi_net_lots))}
         ${fdMetric('三大法人台指期未平倉淨額(口)', fdSigned(txTotal.oi_net_lots), dayTx?.date || '', fdTone(txTotal.oi_net_lots))}
         ${fdMetric('夜盤三大法人買賣超(口)', fdSigned(nightTotal.net_lots), `${nightTx?.date || ''} · 期交所公告值`, fdTone(nightTotal.net_lots))}
-        ${fdMetric('散戶多空比', retail?.ratio == null ? '—' : `${fdSigned(retail.ratio, 2)}%`, retail?.date || '', fdTone(retail?.ratio, true))}
+        ${fdMetric('散戶多空比', retail?.ratio == null ? '—' : `${fdNum(retail.ratio, 2)}%`, retail?.date || '', fdTone(retail?.ratio, true))}
       </div>
 
       <div class="fd-grid fd-grid-2">
@@ -167,10 +194,12 @@ function renderFutureDashboard(strat, main) {
       <div class="fd-grid fd-grid-3">
         <section class="fd-panel">
           <div class="fd-panel-title">散戶多空比</div>
-          <div class="fd-sentiment">
-            ${fdMetric('小台法人淨未平倉(口)', fdSigned(retail?.institutional_net_open_interest), retail?.contract || '')}
-            ${fdMetric('小台全市場未平倉(口)', fdNum(retail?.market_open_interest), retail?.source || '')}
-            ${fdMetric('反推散戶多空比', retail?.ratio == null ? '—' : `${fdSigned(retail.ratio, 2)}%`, '正值代表散戶偏多', fdTone(retail?.ratio, true))}
+          <div class="fd-panel-meta">${retailDash?.date || retail?.date || '等待更新'} · ${retailDash?.source || retail?.source || 'TAIFEX'}</div>
+          <div class="table-scroll">
+            <table class="fd-table">
+              <thead><tr><th></th><th>今日</th><th>前一日</th><th>增減</th></tr></thead>
+              <tbody>${fdSentimentRows(retailDash)}</tbody>
+            </table>
           </div>
         </section>
         <section class="fd-panel">
