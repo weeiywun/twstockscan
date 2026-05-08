@@ -27,6 +27,24 @@ function fdMetric(label, value, sub = '', tone = 'flat') {
     </div>`;
 }
 
+function fdChangeChip(value, suffix = '', invert = false, digits = 0) {
+  if (value == null || Number.isNaN(Number(value)) || Number(value) === 0) return '';
+  const tone = fdTone(value, invert);
+  return `<span class="fd-change-chip ${tone}">${fdSigned(value, digits)}${suffix}</span>`;
+}
+
+function fdMetricLine(label, value, aux = '', sub = '', tone = 'flat') {
+  return `
+    <div class="fd-metric">
+      <div class="fd-metric-label">${label}</div>
+      <div class="fd-metric-line">
+        <span class="fd-metric-value ${tone}">${value}</span>
+        ${aux || ''}
+      </div>
+      ${sub ? `<div class="fd-metric-sub">${sub}</div>` : ''}
+    </div>`;
+}
+
 function fdGaugeAngle(gaugeValue) {
   const value = Math.max(0, Math.min(100, Number(gaugeValue ?? 50)));
   return -72 + value * 1.44;
@@ -74,19 +92,22 @@ function fdBiasComponentRows(marketBias) {
 function fdIndexMetric(key, fallbackName) {
   const item = DATA.market_index_data?.indices?.[key] || {};
   const change = item.change_pct;
-  return fdMetric(
+  return fdMetricLine(
     item.name || fallbackName,
     fdNum(item.close, 2),
-    `${item.date || DATA.market_index_data?.date || '等待更新'} ${change == null ? '' : fdSigned(change, 2) + '%'}`,
+    change == null ? '' : fdChangeChip(change, '%', false, 2),
+    item.date || DATA.market_index_data?.date || '等待更新',
     fdTone(change)
   );
 }
 
 function fdTraderRows(contract) {
   const traders = contract?.traders || {};
+  const changes = contract?.trader_changes || {};
   const order = ['foreign', 'investment_trust', 'dealer', 'total'];
   return order.map(key => {
     const item = traders[key] || {};
+    const oiChange = changes[key]?.oi_net_lots;
     return `
       <tr>
         <td>${item.label || key}</td>
@@ -95,7 +116,9 @@ function fdTraderRows(contract) {
         <td class="mono ${fdTone(item.net_lots)}">${fdSigned(item.net_lots)}</td>
         <td class="mono">${fdNum(item.oi_long_lots)}</td>
         <td class="mono">${fdNum(item.oi_short_lots)}</td>
-        <td class="mono ${fdTone(item.oi_net_lots)}">${fdSigned(item.oi_net_lots)}</td>
+        <td class="mono ${fdTone(item.oi_net_lots)}">
+          <span class="fd-inline-value">${fdSigned(item.oi_net_lots)}${fdChangeChip(oiChange, '口')}</span>
+        </td>
       </tr>`;
   }).join('');
 }
@@ -108,15 +131,13 @@ function fdNightRows(contract) {
     return `
       <tr>
         <td>${item.label || key}</td>
-        <td class="mono">${fdNum(item.buy_lots)}</td>
-        <td class="mono">${fdNum(item.sell_lots)}</td>
         <td class="mono ${fdTone(item.net_lots)}">${fdSigned(item.net_lots)}</td>
       </tr>`;
   }).join('');
 }
 
 function fdStockRows(stock) {
-  const rows = stock?.history || [];
+  const rows = (stock?.history || []).slice(0, 4);
   return rows.map(row => {
     const t = row.traders || {};
     return `
@@ -190,7 +211,7 @@ function renderFutureDashboard(strat, main) {
   const nightTotal = nightTx?.traders?.total || {};
 
   const dayHeaders = ['法人', '買方(口)', '賣方(口)', '買賣超(口)', '未平倉多(口)', '未平倉空(口)', '未平倉淨(口)'];
-  const nightHeaders = ['法人', '買方(口)', '賣方(口)', '夜盤買賣超(口)'];
+  const nightHeaders = ['法人', '夜盤買賣超(口)'];
   const stockHeaders = ['日期', '外資(億)', '投信(億)', '自營商(億)', '合計(億)'];
 
   main.innerHTML = `
@@ -218,7 +239,7 @@ function renderFutureDashboard(strat, main) {
           eyebrow: 'CNN FEAR & GREED',
           title: '美股風險情緒',
           value: fearGreed.score == null ? '—' : fdNum(fearGreed.score, 0),
-          sub: `${fearGreed.rating_zh || fearGreed.rating || '等待更新'}${fearGreed.timestamp ? ' · ' + String(fearGreed.timestamp).slice(0, 16).replace('T', ' ') : ''}`,
+          sub: `${fearGreed.rating_zh || fearGreed.rating || '等待更新'} · 極度恐懼 <25 · 極度貪婪 >75${fearGreed.timestamp ? ' · ' + String(fearGreed.timestamp).slice(0, 16).replace('T', ' ') : ''}`,
           gauge: fearGreed.score,
           tone: fdTone((fearGreed.score ?? 50) - 50),
           left: 'FEAR',
@@ -247,18 +268,36 @@ function renderFutureDashboard(strat, main) {
       </div>
 
       <div class="fd-grid fd-grid-4">
-        ${fdMetric('外資台指期未平倉淨額(口)', fdSigned(dayTx?.traders?.foreign?.oi_net_lots), dayTx?.date || '', fdTone(dayTx?.traders?.foreign?.oi_net_lots))}
-        ${fdMetric('三大法人台指期未平倉淨額(口)', fdSigned(txTotal.oi_net_lots), dayTx?.date || '', fdTone(txTotal.oi_net_lots))}
+        ${fdMetricLine(
+          '外資台指期未平倉淨額(口)',
+          fdSigned(dayTx?.traders?.foreign?.oi_net_lots),
+          fdChangeChip(dayTx?.trader_changes?.foreign?.oi_net_lots, '口'),
+          dayTx?.date || '',
+          fdTone(dayTx?.traders?.foreign?.oi_net_lots)
+        )}
+        ${fdMetricLine(
+          '三大法人台指期未平倉淨額(口)',
+          fdSigned(txTotal.oi_net_lots),
+          fdChangeChip(dayTx?.trader_changes?.total?.oi_net_lots, '口'),
+          dayTx?.date || '',
+          fdTone(txTotal.oi_net_lots)
+        )}
         ${fdMetric('夜盤三大法人買賣超(口)', fdSigned(nightTotal.net_lots), `${nightTx?.date || ''} · 期交所公告值`, fdTone(nightTotal.net_lots))}
         ${fdMetric('散戶多空比', retail?.ratio == null ? '—' : `${fdNum(retail.ratio, 2)}%`, retail?.date || '', fdTone(retail?.ratio, true))}
       </div>
 
-      <div class="fd-grid fd-grid-2">
+      <div class="fd-grid fd-market-flow">
         ${fdTable(
           '台指期法人多空（日盤）',
           `${dayTx?.date || '等待更新'} · ${dayTx?.source || 'TAIFEX'}`,
           dayHeaders,
           fdTraderRows(dayTx)
+        )}
+        ${fdTable(
+          '三大法人現貨買賣超金額',
+          `${stock?.date || '等待 TWSE 更新'} · ${stock?.source || 'TWSE'} · 單位：億元`,
+          stockHeaders,
+          stock ? fdStockRows(stock) : '<tr><td colspan="5" style="text-align:center;color:var(--text3)">尚無 TWSE 現貨法人金額資料</td></tr>'
         )}
         ${fdTable(
           '台指期法人多空（夜盤）',
@@ -269,7 +308,7 @@ function renderFutureDashboard(strat, main) {
       </div>
 
       <div class="fd-grid fd-grid-3">
-        <section class="fd-panel">
+        <section class="fd-panel fd-compact-panel">
           <div class="fd-panel-title">散戶多空比</div>
           <div class="fd-panel-meta">${retailDash?.date || retail?.date || '等待更新'} · ${retailDash?.source || retail?.source || 'TAIFEX'}</div>
           <div class="table-scroll">
@@ -296,11 +335,5 @@ function renderFutureDashboard(strat, main) {
         </section>
       </div>
 
-      ${fdTable(
-        '三大法人現貨買賣超金額',
-        `${stock?.date || '等待 TWSE 更新'} · ${stock?.source || 'TWSE'} · 單位：億元`,
-        stockHeaders,
-        stock ? fdStockRows(stock) : '<tr><td colspan="5" style="text-align:center;color:var(--text3)">尚無 TWSE 現貨法人金額資料</td></tr>'
-      )}
     </div>`;
 }

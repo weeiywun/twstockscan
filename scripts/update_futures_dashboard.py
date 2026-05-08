@@ -523,7 +523,7 @@ def fetch_twse_institutional_amount(date: datetime.date) -> dict[str, Any] | Non
         return None
 
 
-def fetch_stock_institutional_amounts(days: int = 5) -> dict[str, Any] | None:
+def fetch_stock_institutional_amounts(days: int = 4) -> dict[str, Any] | None:
     history: list[dict[str, Any]] = []
     for d in _latest_trading_dates(14):
         item = fetch_twse_institutional_amount(d)
@@ -554,6 +554,29 @@ def _contract_view(data: dict[str, Any] | None, product: str) -> dict[str, Any] 
         "traders": contract.get("traders", {}),
         "source": data.get("source"),
     }
+
+
+def _add_trader_oi_changes(
+    contract: dict[str, Any] | None,
+    previous_contract: dict[str, Any] | None,
+) -> dict[str, Any] | None:
+    if not contract or not previous_contract:
+        return contract
+    previous_traders = previous_contract.get("traders") or {}
+    changes: dict[str, dict[str, Any]] = {}
+    for key, item in (contract.get("traders") or {}).items():
+        current_oi = item.get("oi_net_lots")
+        previous_oi = (previous_traders.get(key) or {}).get("oi_net_lots")
+        if current_oi is None or previous_oi is None:
+            continue
+        changes[key] = {
+            "oi_net_lots": current_oi - previous_oi,
+            "previous_oi_net_lots": previous_oi,
+            "previous_date": previous_contract.get("date"),
+        }
+    if changes:
+        contract["trader_changes"] = changes
+    return contract
 
 
 def _retail_ratio(contract: dict[str, Any] | None, market_item: dict[str, Any] | None, symbol: str | None = None) -> dict[str, Any] | None:
@@ -771,6 +794,16 @@ def main() -> None:
     tx_night = _contract_view(night_institutional, "臺股期貨")
     mtx_night = _contract_view(night_institutional, "小型臺指期貨")
     tmf_night = _contract_view(night_institutional, "微型臺指期貨")
+    previous_day = None
+    if day_institutional and day_institutional.get("date"):
+        previous_dates = sorted(
+            [d for d in institutional_history if d < day_institutional["date"]],
+            reverse=True,
+        )
+        previous_day = institutional_history.get(previous_dates[0]) if previous_dates else None
+    tx_day = _add_trader_oi_changes(tx_day, _contract_view(previous_day, "臺股期貨"))
+    mtx_day = _add_trader_oi_changes(mtx_day, _contract_view(previous_day, "小型臺指期貨"))
+    tmf_day = _add_trader_oi_changes(tmf_day, _contract_view(previous_day, "微型臺指期貨"))
     retail_dashboard = _retail_rows(institutional_history, market_history, pc_ratio)
     retail = (retail_dashboard.get("rows", [{}])[0].get("detail") if retail_dashboard else None) or _retail_ratio(mtx_day, (market or {}).get("MTX"), "MTX")
 
