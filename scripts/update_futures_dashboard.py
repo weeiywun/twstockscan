@@ -35,6 +35,18 @@ HEADERS = {
     "User-Agent": "Mozilla/5.0",
     "Accept": "text/html,text/csv,application/json,*/*",
 }
+CNN_HEADERS = {
+    **HEADERS,
+    "User-Agent": (
+        "Mozilla/5.0 (Windows NT 10.0; Win64; x64) "
+        "AppleWebKit/537.36 (KHTML, like Gecko) "
+        "Chrome/125.0.0.0 Safari/537.36"
+    ),
+    "Accept": "application/json,text/plain,*/*",
+    "Accept-Language": "en-US,en;q=0.9",
+    "Origin": "https://edition.cnn.com",
+    "Referer": "https://edition.cnn.com/markets/fear-and-greed",
+}
 
 TAIFEX_BQ = "https://www.bq888.taifex.com.tw"
 TAIFEX_WEB = "https://www.taifex.com.tw"
@@ -375,22 +387,42 @@ def _legacy_pc_ratio(pc_ratio: dict[str, Any] | None) -> dict[str, Any] | None:
 
 def fetch_cnn_fear_greed() -> dict[str, Any] | None:
     try:
-        res = requests.get(
-            CNN_FEAR_GREED,
-            headers={
-                **HEADERS,
-                "Accept": "application/json",
-                "Referer": "https://edition.cnn.com/",
-            },
-            timeout=25,
-        )
-        res.raise_for_status()
-        data = res.json()
+        utc_today = datetime.now(timezone.utc).date()
+        dates = []
+        for candidate in (
+            TODAY,
+            utc_today,
+            TODAY - timedelta(days=1),
+            utc_today - timedelta(days=1),
+            TODAY - timedelta(days=7),
+        ):
+            if candidate not in dates:
+                dates.append(candidate)
+        urls = [f"{CNN_FEAR_GREED}/{d.isoformat()}" for d in dates] + [CNN_FEAR_GREED]
+        data: dict[str, Any] | None = None
+        last_error: Exception | None = None
+        for url in urls:
+            try:
+                res = requests.get(url, headers=CNN_HEADERS, timeout=25)
+                res.raise_for_status()
+                payload = res.json()
+                if isinstance(payload, dict):
+                    data = payload
+                    break
+            except Exception as exc:
+                last_error = exc
+        if data is None:
+            if last_error:
+                raise last_error
+            return None
         fg = data.get("fear_and_greed") or {}
+        historical = data.get("fear_and_greed_historical") or {}
         score = _num(fg.get("score"))
         if score is None:
+            score = _num(historical.get("score"))
+        if score is None:
             return None
-        rating = str(fg.get("rating") or "")
+        rating = str(fg.get("rating") or historical.get("rating") or "")
         history = {}
         for key, source_key in (
             ("previous_close", "previous_close"),
@@ -429,7 +461,7 @@ def fetch_cnn_fear_greed() -> dict[str, Any] | None:
             "score": round(score, 2),
             "rating": rating,
             "rating_zh": _rating_zh(rating),
-            "timestamp": fg.get("timestamp"),
+            "timestamp": fg.get("timestamp") or historical.get("timestamp"),
             "history": history,
             "indicators": indicators,
             "source": "cnn_fear_greed",
