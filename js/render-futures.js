@@ -84,7 +84,7 @@ function fdBiasComponentRows(marketBias) {
   return rows.map(row => `
     <tr>
       <td>${row.label || '—'}</td>
-      <td class="mono">${row.value == null ? '—' : `${fdSigned(row.value, row.unit === '%' ? 2 : 0)}${row.unit || ''}`}</td>
+      <td class="mono">${row.value == null ? '—' : `${fdSigned(row.value, row.unit === '%' ? 2 : row.unit === '億' ? 1 : 0)}${row.unit || ''}`}</td>
       <td class="mono">${row.weight || 0}%</td>
       <td class="mono ${fdTone(row.score)}">${fdSigned(row.score, 1)}</td>
     </tr>`).join('');
