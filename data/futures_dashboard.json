@@ -1,7 +1,7 @@
 {
   "date": "2026-05-08",
-  "updated": "2026-05-08T10:38:46.959614+08:00",
-  "source": "taifex_bq888+taifex_open_data+finmind",
+  "updated": "2026-05-08T10:55:37.357486+08:00",
+  "source": "taifex_bq888+taifex_open_data+twse_bfi82u",
   "market": {
     "TX": {
       "symbol": "TX",
@@ -26,33 +26,165 @@
   },
   "stock_institutional": {
     "date": "2026-05-07",
-    "traders": {
-      "foreign": {
-        "label": "外資",
-        "buy": 4156681909,
-        "sell": 3078571223,
-        "net": 1078110686
+    "history": [
+      {
+        "date": "2026-05-07",
+        "traders": {
+          "foreign": {
+            "label": "外資",
+            "buy_amount": 481490560104,
+            "sell_amount": 435079033534,
+            "net_amount": 46411526570
+          },
+          "investment_trust": {
+            "label": "投信",
+            "buy_amount": 34125520860,
+            "sell_amount": 19073192148,
+            "net_amount": 15052328712
+          },
+          "dealer": {
+            "label": "自營商",
+            "buy_amount": 44556611432,
+            "sell_amount": 48698877879,
+            "net_amount": -4142266447
+          },
+          "total": {
+            "label": "三大法人合計",
+            "buy_amount": 560172692396,
+            "sell_amount": 502851103561,
+            "net_amount": 57321588835
+          }
+        },
+        "source": "twse_bfi82u",
+        "unit": "TWD"
       },
-      "investment_trust": {
-        "label": "投信",
-        "buy": 116567919,
-        "sell": 119860033,
-        "net": -3292114
+      {
+        "date": "2026-05-06",
+        "traders": {
+          "foreign": {
+            "label": "外資",
+            "buy_amount": 604269420170,
+            "sell_amount": 529164512376,
+            "net_amount": 75104907794
+          },
+          "investment_trust": {
+            "label": "投信",
+            "buy_amount": 33542780925,
+            "sell_amount": 32021549000,
+            "net_amount": 1521231925
+          },
+          "dealer": {
+            "label": "自營商",
+            "buy_amount": 65944682343,
+            "sell_amount": 75555292975,
+            "net_amount": -9610610632
+          },
+          "total": {
+            "label": "三大法人合計",
+            "buy_amount": 703756883438,
+            "sell_amount": 636741354351,
+            "net_amount": 67015529087
+          }
+        },
+        "source": "twse_bfi82u",
+        "unit": "TWD"
       },
-      "dealer": {
-        "label": "自營商",
-        "buy": 2925334078,
-        "sell": 3851297122,
-        "net": -925963044
+      {
+        "date": "2026-05-05",
+        "traders": {
+          "foreign": {
+            "label": "外資",
+            "buy_amount": 358109943345,
+            "sell_amount": 354119676212,
+            "net_amount": 3990267133
+          },
+          "investment_trust": {
+            "label": "投信",
+            "buy_amount": 26841381710,
+            "sell_amount": 23114456726,
+            "net_amount": 3726924984
+          },
+          "dealer": {
+            "label": "自營商",
+            "buy_amount": 38588422748,
+            "sell_amount": 48675666564,
+            "net_amount": -10087243816
+          },
+          "total": {
+            "label": "三大法人合計",
+            "buy_amount": 423539747803,
+            "sell_amount": 425909799502,
+            "net_amount": -2370051699
+          }
+        },
+        "source": "twse_bfi82u",
+        "unit": "TWD"
       },
-      "total": {
-        "label": "三大法人合計",
-        "buy": 7198583906,
-        "sell": 7049728378,
-        "net": 148855528
+      {
+        "date": "2026-05-04",
+        "traders": {
+          "foreign": {
+            "label": "外資",
+            "buy_amount": 402015475312,
+            "sell_amount": 335039774559,
+            "net_amount": 66975700753
+          },
+          "investment_trust": {
+            "label": "投信",
+            "buy_amount": 16194865482,
+            "sell_amount": 14166407936,
+            "net_amount": 2028457546
+          },
+          "dealer": {
+            "label": "自營商",
+            "buy_amount": 48561133325,
+            "sell_amount": 39620532189,
+            "net_amount": 8940601136
+          },
+          "total": {
+            "label": "三大法人合計",
+            "buy_amount": 466771474119,
+            "sell_amount": 388826714684,
+            "net_amount": 77944759435
+          }
+        },
+        "source": "twse_bfi82u",
+        "unit": "TWD"
+      },
+      {
+        "date": "2026-04-30",
+        "traders": {
+          "foreign": {
+            "label": "外資",
+            "buy_amount": 406259095898,
+            "sell_amount": 459820821006,
+            "net_amount": -53561725108
+          },
+          "investment_trust": {
+            "label": "投信",
+            "buy_amount": 14855053761,
+            "sell_amount": 13771840985,
+            "net_amount": 1083212776
+          },
+          "dealer": {
+            "label": "自營商",
+            "buy_amount": 39999615117,
+            "sell_amount": 40788484701,
+            "net_amount": -788869584
+          },
+          "total": {
+            "label": "三大法人合計",
+            "buy_amount": 461113764776,
+            "sell_amount": 514381146692,
+            "net_amount": -53267381916
+          }
+        },
+        "source": "twse_bfi82u",
+        "unit": "TWD"
       }
-    },
-    "source": "finmind"
+    ],
+    "source": "twse_bfi82u",
+    "unit": "TWD"
   },
   "futures": {
     "day_session": {
@@ -237,7 +369,7 @@
   "summary": {
     "bias": "中性",
     "notes": [
-      "夜盤法人為期交所三大法人夜盤資料；日盤未平倉以最近公告交易日為準。",
+      "夜盤法人為期交所三大法人夜盤資料；若期交所公告值為 0，畫面會如實顯示。",
       "散戶多空比以小台三大法人淨未平倉反推，正值代表散戶偏多。"
     ]
   }
