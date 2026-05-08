@@ -326,7 +326,10 @@ function renderMarketDashboard() {
 function updatePerfSidebar() {
   const marketPanel = document.getElementById('marketPanel');
   const journalList = document.getElementById('journalList');
-  if (marketPanel) marketPanel.innerHTML = renderMarketDashboard();
+  if (marketPanel) {
+    marketPanel.innerHTML = '';
+    marketPanel.style.display = 'none';
+  }
   if (journalPanelVisible && journalList) {
     journalList.innerHTML = renderJournalList(DATA.performance_data?.journal || []);
   }
@@ -338,10 +341,6 @@ function setPerfSidebarMode(on) {
   const marketPanel = document.getElementById('marketPanel');
   const journalPanel = document.getElementById('journalPanel');
   if (on) {
-    layout?.classList.add('perf-mode');
-    layout?.classList.remove('sidebar-hidden');
-    if (sidebar) sidebar.style.display = '';
-    if (marketPanel) marketPanel.style.display = 'block';
     updatePerfSidebar();
     journalApplySecretState();
   } else {
@@ -634,7 +633,7 @@ function renderPerformance(strat, main) {
 
   setTimeout(() => initPerfChart(pd), 60);
 
-  // 切換績效頁側欄，固定顯示行情儀錶板，周記依暗門狀態展開。
+  // 切換績效頁側欄；行情儀錶板已移至 Future Dashboard，這裡只保留隱藏週記。
   setPerfSidebarMode(true);
   const jfDate = document.getElementById('jf-date');
   if (jfDate && !jfDate.value) jfDate.value = today;
@@ -989,10 +988,13 @@ function journalApplySecretState() {
   const journalPanel = document.getElementById('journalPanel');
   const journalList = document.getElementById('journalList');
 
-  layout?.classList.add('perf-mode');
+  layout?.classList.toggle('perf-mode', journalPanelVisible);
   layout?.classList.remove('sidebar-hidden');
-  if (sidebar) sidebar.style.display = '';
-  if (marketPanel) marketPanel.style.display = 'block';
+  if (sidebar) sidebar.style.display = journalPanelVisible ? '' : 'none';
+  if (marketPanel) {
+    marketPanel.innerHTML = '';
+    marketPanel.style.display = 'none';
+  }
   if (journalPanel) journalPanel.style.display = journalPanelVisible ? 'block' : 'none';
 
   if (!journalPanelVisible) {
