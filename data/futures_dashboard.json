@@ -1,6 +1,6 @@
 {
   "date": "2026-05-08",
-  "updated": "2026-05-08T20:42:40.336614+08:00",
+  "updated": "2026-05-08T20:59:37.406005+08:00",
   "source": "taifex_futContractsDate+taifex_futContractsDateAh+taifex_futDataDown+taifex_open_data+twse_bfi82u+cnn_fear_greed",
   "market": {
     "TX": {
@@ -163,37 +163,6 @@
         },
         "source": "twse_bfi82u",
         "unit": "TWD"
-      },
-      {
-        "date": "2026-05-04",
-        "traders": {
-          "foreign": {
-            "label": "外資",
-            "buy_amount": 402015475312,
-            "sell_amount": 335039774559,
-            "net_amount": 66975700753
-          },
-          "investment_trust": {
-            "label": "投信",
-            "buy_amount": 16194865482,
-            "sell_amount": 14166407936,
-            "net_amount": 2028457546
-          },
-          "dealer": {
-            "label": "自營商",
-            "buy_amount": 48561133325,
-            "sell_amount": 39620532189,
-            "net_amount": 8940601136
-          },
-          "total": {
-            "label": "三大法人合計",
-            "buy_amount": 466771474119,
-            "sell_amount": 388826714684,
-            "net_amount": 77944759435
-          }
-        },
-        "source": "twse_bfi82u",
-        "unit": "TWD"
       }
     ],
     "source": "twse_bfi82u",
@@ -204,7 +173,7 @@
       "score": 66.77,
       "rating": "greed",
       "rating_zh": "貪婪",
-      "timestamp": "2026-05-08T12:26:46+00:00",
+      "timestamp": "2026-05-08T12:41:46+00:00",
       "history": {
         "previous_close": 67.63,
         "1w": 66.09,
@@ -302,7 +271,29 @@
             "oi_net_lots": -8723
           }
         },
-        "source": "taifex_futContractsDate"
+        "source": "taifex_futContractsDate",
+        "trader_changes": {
+          "dealer": {
+            "oi_net_lots": 534,
+            "previous_oi_net_lots": -1034,
+            "previous_date": "2026-05-07"
+          },
+          "investment_trust": {
+            "oi_net_lots": 130,
+            "previous_oi_net_lots": 46177,
+            "previous_date": "2026-05-07"
+          },
+          "foreign": {
+            "oi_net_lots": -3398,
+            "previous_oi_net_lots": -51132,
+            "previous_date": "2026-05-07"
+          },
+          "total": {
+            "oi_net_lots": -2734,
+            "previous_oi_net_lots": -5989,
+            "previous_date": "2026-05-07"
+          }
+        }
       },
       "mtx": {
         "date": "2026-05-08",
@@ -345,7 +336,29 @@
             "oi_net_lots": -3662
           }
         },
-        "source": "taifex_futContractsDate"
+        "source": "taifex_futContractsDate",
+        "trader_changes": {
+          "dealer": {
+            "oi_net_lots": -745,
+            "previous_oi_net_lots": -4514,
+            "previous_date": "2026-05-07"
+          },
+          "investment_trust": {
+            "oi_net_lots": -2,
+            "previous_oi_net_lots": 73,
+            "previous_date": "2026-05-07"
+          },
+          "foreign": {
+            "oi_net_lots": 1468,
+            "previous_oi_net_lots": 58,
+            "previous_date": "2026-05-07"
+          },
+          "total": {
+            "oi_net_lots": 721,
+            "previous_oi_net_lots": -4383,
+            "previous_date": "2026-05-07"
+          }
+        }
       },
       "tmf": {
         "date": "2026-05-08",
@@ -388,7 +401,29 @@
             "oi_net_lots": -16228
           }
         },
-        "source": "taifex_futContractsDate"
+        "source": "taifex_futContractsDate",
+        "trader_changes": {
+          "dealer": {
+            "oi_net_lots": -12138,
+            "previous_oi_net_lots": -6148,
+            "previous_date": "2026-05-07"
+          },
+          "investment_trust": {
+            "oi_net_lots": 0,
+            "previous_oi_net_lots": 0,
+            "previous_date": "2026-05-07"
+          },
+          "foreign": {
+            "oi_net_lots": -1231,
+            "previous_oi_net_lots": 3289,
+            "previous_date": "2026-05-07"
+          },
+          "total": {
+            "oi_net_lots": -13369,
+            "previous_oi_net_lots": -2859,
+            "previous_date": "2026-05-07"
+          }
+        }
       }
     },
     "night_session": {
