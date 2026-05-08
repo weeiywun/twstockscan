@@ -6,6 +6,7 @@
 - 期交所：三大法人期貨日盤 / 夜盤、期貨每日行情下載
 - 期交所 open data：期貨每日行情、臺指選擇權 Put/Call Ratio
 - 證交所 BFI82U：三大法人現貨買賣金額
+- CNN Fear & Greed：美股市場情緒
 """
 
 from __future__ import annotations
@@ -38,6 +39,7 @@ HEADERS = {
 TAIFEX_BQ = "https://www.bq888.taifex.com.tw"
 TAIFEX_WEB = "https://www.taifex.com.tw"
 TAIFEX_DATA = "https://www.taifex.com.tw/data_gov/taifex_open_data.asp"
+CNN_FEAR_GREED = "https://production.dataviz.cnn.io/index/fearandgreed/graphdata"
 INVESTOR_KEYS = {
     "自營商": "dealer",
     "投信": "investment_trust",
@@ -112,6 +114,10 @@ def _twse_date(date: datetime.date) -> str:
     return date.strftime("%Y%m%d")
 
 
+def _clamp(value: float, low: float, high: float) -> float:
+    return max(low, min(high, value))
+
+
 def _trend(current: float | int | None, previous: float | int | None) -> str | None:
     if current is None or previous is None:
         return None
@@ -120,6 +126,17 @@ def _trend(current: float | int | None, previous: float | int | None) -> str | N
     if current < previous:
         return "下降"
     return "持平"
+
+
+def _rating_zh(rating: str | None) -> str:
+    mapping = {
+        "extreme fear": "極度恐懼",
+        "fear": "恐懼",
+        "neutral": "中性",
+        "greed": "貪婪",
+        "extreme greed": "極度貪婪",
+    }
+    return mapping.get(str(rating or "").lower(), rating or "未知")
 
 
 def _parse_taifex_institutional_table(html: str, source: str = "taifex_bq888") -> dict[str, Any] | None:
@@ -356,6 +373,73 @@ def _legacy_pc_ratio(pc_ratio: dict[str, Any] | None) -> dict[str, Any] | None:
     }
 
 
+def fetch_cnn_fear_greed() -> dict[str, Any] | None:
+    try:
+        res = requests.get(
+            CNN_FEAR_GREED,
+            headers={
+                **HEADERS,
+                "Accept": "application/json",
+                "Referer": "https://edition.cnn.com/",
+            },
+            timeout=25,
+        )
+        res.raise_for_status()
+        data = res.json()
+        fg = data.get("fear_and_greed") or {}
+        score = _num(fg.get("score"))
+        if score is None:
+            return None
+        rating = str(fg.get("rating") or "")
+        history = {}
+        for key, source_key in (
+            ("previous_close", "previous_close"),
+            ("1w", "previous_1_week"),
+            ("1m", "previous_1_month"),
+            ("1y", "previous_1_year"),
+        ):
+            val = _num(fg.get(source_key))
+            if val is not None:
+                history[key] = round(val, 2)
+        indicators: dict[str, dict[str, Any]] = {}
+        indicator_labels = {
+            "market_momentum_sp500": "Market Momentum",
+            "stock_price_strength": "Stock Price Strength",
+            "stock_price_breadth": "Stock Price Breadth",
+            "put_call_options": "Put/Call Options",
+            "market_volatility_vix": "Market Volatility",
+            "junk_bond_demand": "Junk Bond Demand",
+            "safe_haven_demand": "Safe Haven Demand",
+        }
+        for key, label in indicator_labels.items():
+            item = data.get(key)
+            if not isinstance(item, dict):
+                continue
+            item_score = _num(item.get("score"))
+            if item_score is None:
+                continue
+            item_rating = str(item.get("rating") or "")
+            indicators[key] = {
+                "label": label,
+                "score": round(item_score, 2),
+                "rating": item_rating,
+                "rating_zh": _rating_zh(item_rating),
+            }
+        return {
+            "score": round(score, 2),
+            "rating": rating,
+            "rating_zh": _rating_zh(rating),
+            "timestamp": fg.get("timestamp"),
+            "history": history,
+            "indicators": indicators,
+            "source": "cnn_fear_greed",
+            "url": "https://edition.cnn.com/markets/fear-and-greed",
+        }
+    except Exception as exc:
+        print(f"  ⚠️  CNN Fear & Greed 讀取失敗：{exc}")
+        return None
+
+
 def fetch_twse_institutional_amount(date: datetime.date) -> dict[str, Any] | None:
     url = "https://www.twse.com.tw/rwd/zh/fund/BFI82U"
     try:
@@ -531,29 +615,98 @@ def _retail_rows(
     }
 
 
-def _bias(data: dict[str, Any]) -> str:
-    score = 0
+def _component_score(value: float | int | None, scale: float, invert: bool = False) -> float | None:
+    if value is None:
+        return None
+    score = _clamp(float(value) / scale * 100, -100, 100)
+    return -score if invert else score
+
+
+def _market_bias(data: dict[str, Any]) -> dict[str, Any]:
     tx_total = (((data.get("futures") or {}).get("day_session") or {}).get("tx") or {}).get("traders", {}).get("total", {})
+    tx_foreign = (((data.get("futures") or {}).get("day_session") or {}).get("tx") or {}).get("traders", {}).get("foreign", {})
     night_total = (((data.get("futures") or {}).get("night_session") or {}).get("tx") or {}).get("traders", {}).get("total", {})
     retail = ((data.get("sentiment") or {}).get("retail_long_short") or {}).get("ratio")
     pc_oi = ((data.get("sentiment") or {}).get("pc_ratio") or {}).get("open_interest_ratio")
-    if (tx_total.get("oi_net_lots") or 0) > 0:
-        score += 1
-    elif (tx_total.get("oi_net_lots") or 0) < 0:
-        score -= 1
-    if (night_total.get("net_lots") or 0) > 0:
-        score += 1
-    elif (night_total.get("net_lots") or 0) < 0:
-        score -= 1
-    if retail is not None:
-        score += -1 if retail > 12 else 1 if retail < -12 else 0
-    if pc_oi is not None:
-        score += 1 if pc_oi > 130 else -1 if pc_oi < 90 else 0
-    if score >= 2:
-        return "偏多"
-    if score <= -2:
-        return "偏空"
-    return "中性"
+    fear_greed = ((data.get("us_sentiment") or {}).get("fear_greed") or {})
+    fg_score = fear_greed.get("score")
+
+    components = [
+        {
+            "key": "foreign_tx_oi",
+            "label": "外資台指期未平倉",
+            "value": tx_foreign.get("oi_net_lots"),
+            "unit": "口",
+            "weight": 25,
+            "score": _component_score(tx_foreign.get("oi_net_lots"), 30000),
+            "note": "外資期貨部位是台指期方向的核心籌碼。",
+        },
+        {
+            "key": "institutional_tx_oi",
+            "label": "三大法人台指期未平倉",
+            "value": tx_total.get("oi_net_lots"),
+            "unit": "口",
+            "weight": 20,
+            "score": _component_score(tx_total.get("oi_net_lots"), 50000),
+            "note": "法人合計未平倉用來確認整體籌碼方向。",
+        },
+        {
+            "key": "night_session",
+            "label": "夜盤三大法人買賣超",
+            "value": night_total.get("net_lots"),
+            "unit": "口",
+            "weight": 15,
+            "score": _component_score(night_total.get("net_lots"), 5000),
+            "note": "夜盤反映美股時段後的短線部位變化。",
+        },
+        {
+            "key": "retail_ratio",
+            "label": "散戶多空比",
+            "value": retail,
+            "unit": "%",
+            "weight": 15,
+            "score": _component_score(retail, 20, invert=True),
+            "note": "散戶偏多視為反向風險，散戶偏空則偏正向。",
+        },
+        {
+            "key": "pc_ratio",
+            "label": "選擇權未平倉 P/C",
+            "value": pc_oi,
+            "unit": "%",
+            "weight": 10,
+            "score": _component_score((pc_oi - 120) if pc_oi is not None else None, 60),
+            "note": "P/C 未平倉高於中性區，偏向避險需求升溫後的支撐訊號。",
+        },
+        {
+            "key": "cnn_fear_greed",
+            "label": "CNN Fear & Greed",
+            "value": fg_score,
+            "unit": "分",
+            "weight": 15,
+            "score": _component_score((fg_score - 50) if fg_score is not None else None, 50),
+            "note": "美股風險偏好作為台股開盤前外部情緒輔助。",
+        },
+    ]
+    valid = [c for c in components if c["score"] is not None]
+    total_weight = sum(c["weight"] for c in valid)
+    weighted_score = (
+        sum(c["score"] * c["weight"] for c in valid) / total_weight
+        if total_weight else 0
+    )
+    weighted_score = round(_clamp(weighted_score, -100, 100), 1)
+    label = "偏多" if weighted_score >= 20 else "偏空" if weighted_score <= -20 else "中性"
+    return {
+        "label": label,
+        "score": weighted_score,
+        "gauge": round((weighted_score + 100) / 2, 1),
+        "confidence": round(abs(weighted_score), 1),
+        "components": valid,
+        "definition": "台股期權籌碼 85% + CNN Fear & Greed 15%，分數 -100 偏空、0 中性、100 偏多。",
+    }
+
+
+def _bias(data: dict[str, Any]) -> str:
+    return _market_bias(data)["label"]
 
 
 def main() -> None:
@@ -566,6 +719,7 @@ def main() -> None:
     pc_ratio = fetch_pc_ratio()
     market_history = fetch_futures_market_history()
     stock_inst = fetch_stock_institutional_amounts()
+    fear_greed = fetch_cnn_fear_greed()
 
     institutional_history: dict[str, dict[str, Any]] = {}
     for row in (pc_ratio.get("history", [])[:5] if pc_ratio else []):
@@ -596,9 +750,12 @@ def main() -> None:
     out = {
         "date": max(dates) if dates else TODAY.isoformat(),
         "updated": NOW.isoformat(),
-        "source": "taifex_futContractsDate+taifex_futContractsDateAh+taifex_futDataDown+taifex_open_data" + ("+twse_bfi82u" if stock_inst else ""),
+        "source": "taifex_futContractsDate+taifex_futContractsDateAh+taifex_futDataDown+taifex_open_data" + ("+twse_bfi82u" if stock_inst else "") + ("+cnn_fear_greed" if fear_greed else ""),
         "market": market or {},
         "stock_institutional": stock_inst,
+        "us_sentiment": {
+            "fear_greed": fear_greed,
+        },
         "futures": {
             "day_session": {
                 "tx": tx_day,
@@ -618,11 +775,14 @@ def main() -> None:
         },
         "summary": {},
     }
+    market_bias = _market_bias(out)
     out["summary"] = {
-        "bias": _bias(out),
+        "bias": market_bias["label"],
+        "market_bias": market_bias,
         "notes": [
             "夜盤法人為期交所三大法人夜盤頁面資料，日期以盤後交易量歸屬日為準。",
             "散戶多空比以三大法人淨未平倉反向值 / 全市場全月份未沖銷契約數估算；正值代表散戶相對偏多。",
+            "Market Bias 採台股期權籌碼為主，CNN Fear & Greed 作為美股風險偏好輔助。",
         ],
     }
     with open(OUTPUT_PATH, "w", encoding="utf-8") as f:

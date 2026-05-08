@@ -27,6 +27,50 @@ function fdMetric(label, value, sub = '', tone = 'flat') {
     </div>`;
 }
 
+function fdGaugeAngle(gaugeValue) {
+  const value = Math.max(0, Math.min(100, Number(gaugeValue ?? 50)));
+  return -72 + value * 1.44;
+}
+
+function fdBiasTone(label) {
+  if (label === '偏多') return 'pos';
+  if (label === '偏空') return 'neg';
+  return 'flat';
+}
+
+function fdGaugeCard({ eyebrow, title, value, sub, gauge, tone = 'flat', left = 'FEAR', center = 'NEUTRAL', right = 'GREED' }) {
+  const angle = fdGaugeAngle(gauge);
+  return `
+    <section class="fd-gauge-card ${tone}">
+      <div class="fd-gauge-copy">
+        <div class="fd-gauge-eyebrow">${eyebrow}</div>
+        <div class="fd-gauge-title">${title}</div>
+        <div class="fd-gauge-value ${tone}">${value}</div>
+        <div class="fd-gauge-sub">${sub || ''}</div>
+      </div>
+      <div class="fd-gauge-wrap" style="--needle:${angle}deg">
+        <div class="fd-gauge-track"></div>
+        <div class="fd-gauge-needle"></div>
+        <div class="fd-gauge-hub"></div>
+        <div class="fd-gauge-scale">
+          <span>${left}</span><span>${center}</span><span>${right}</span>
+        </div>
+      </div>
+    </section>`;
+}
+
+function fdBiasComponentRows(marketBias) {
+  const rows = marketBias?.components || [];
+  if (!rows.length) return '<tr><td colspan="4" style="text-align:center;color:var(--text3)">尚無評分細項</td></tr>';
+  return rows.map(row => `
+    <tr>
+      <td>${row.label || '—'}</td>
+      <td class="mono">${row.value == null ? '—' : `${fdSigned(row.value, row.unit === '%' ? 2 : 0)}${row.unit || ''}`}</td>
+      <td class="mono">${row.weight || 0}%</td>
+      <td class="mono ${fdTone(row.score)}">${fdSigned(row.score, 1)}</td>
+    </tr>`).join('');
+}
+
 function fdIndexMetric(key, fallbackName) {
   const item = DATA.market_index_data?.indices?.[key] || {};
   const change = item.change_pct;
@@ -139,6 +183,8 @@ function renderFutureDashboard(strat, main) {
   const pc = fd.sentiment?.pc_ratio;
   const stock = fd.stock_institutional;
   const bias = fd.summary?.bias || '等待更新';
+  const marketBias = fd.summary?.market_bias || {};
+  const fearGreed = fd.us_sentiment?.fear_greed || {};
   const updated = fd.updated ? fd.updated.slice(0, 16).replace('T', ' ') : '尚未更新';
   const txTotal = dayTx?.traders?.total || {};
   const nightTotal = nightTx?.traders?.total || {};
@@ -154,10 +200,41 @@ function renderFutureDashboard(strat, main) {
           <div class="strat-title">${strat.icon} FUTURE DASHBOARD</div>
           <div class="strat-desc">${strat.description}</div>
         </div>
-        <div class="fd-bias ${bias === '偏多' ? 'pos' : bias === '偏空' ? 'neg' : ''}">
-          <span>MARKET BIAS</span>
-          <strong>${bias}</strong>
-        </div>
+      </div>
+
+      <div class="fd-hero-grid">
+        ${fdGaugeCard({
+          eyebrow: 'MARKET BIAS',
+          title: '台股期權籌碼溫度',
+          value: bias,
+          sub: `Score ${fdSigned(marketBias.score, 1)} · Confidence ${fdNum(marketBias.confidence, 1)}`,
+          gauge: marketBias.gauge,
+          tone: fdBiasTone(bias),
+          left: 'BEAR',
+          center: 'NEUTRAL',
+          right: 'BULL'
+        })}
+        ${fdGaugeCard({
+          eyebrow: 'CNN FEAR & GREED',
+          title: '美股風險情緒',
+          value: fearGreed.score == null ? '—' : fdNum(fearGreed.score, 0),
+          sub: `${fearGreed.rating_zh || fearGreed.rating || '等待更新'}${fearGreed.timestamp ? ' · ' + String(fearGreed.timestamp).slice(0, 16).replace('T', ' ') : ''}`,
+          gauge: fearGreed.score,
+          tone: fdTone((fearGreed.score ?? 50) - 50),
+          left: 'FEAR',
+          center: 'NEUTRAL',
+          right: 'GREED'
+        })}
+        <section class="fd-panel fd-bias-detail">
+          <div class="fd-panel-title">Bias 評分依據</div>
+          <div class="fd-panel-meta">${marketBias.definition || '等待資料更新'}</div>
+          <div class="table-scroll">
+            <table class="fd-table fd-bias-table">
+              <thead><tr><th>項目</th><th>數值</th><th>權重</th><th>分數</th></tr></thead>
+              <tbody>${fdBiasComponentRows(marketBias)}</tbody>
+            </table>
+          </div>
+        </section>
       </div>
 
       <div class="fd-grid fd-grid-6">
