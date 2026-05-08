@@ -1,6 +1,6 @@
 {
   "date": "2026-05-08",
-  "updated": "2026-05-08T20:59:37.406005+08:00",
+  "updated": "2026-05-08T22:23:11.341563+08:00",
   "source": "taifex_futContractsDate+taifex_futContractsDateAh+taifex_futDataDown+taifex_open_data+twse_bfi82u+cnn_fear_greed",
   "market": {
     "TX": {
@@ -138,27 +138,27 @@
         "traders": {
           "foreign": {
             "label": "外資",
-            "buy_amount": 358109943345,
-            "sell_amount": 354119676212,
-            "net_amount": 3990267133
+            "buy_amount": 345276991745,
+            "sell_amount": 341338204612,
+            "net_amount": 3938787133
           },
           "investment_trust": {
             "label": "投信",
-            "buy_amount": 26841381710,
-            "sell_amount": 23114456726,
-            "net_amount": 3726924984
+            "buy_amount": 26427264312,
+            "sell_amount": 23015776958,
+            "net_amount": 3411487354
           },
           "dealer": {
             "label": "自營商",
-            "buy_amount": 38588422748,
-            "sell_amount": 48675666564,
+            "buy_amount": 38588091728,
+            "sell_amount": 48675335544,
             "net_amount": -10087243816
           },
           "total": {
             "label": "三大法人合計",
-            "buy_amount": 423539747803,
-            "sell_amount": 425909799502,
-            "net_amount": -2370051699
+            "buy_amount": 410292347785,
+            "sell_amount": 413029317114,
+            "net_amount": -2736969329
           }
         },
         "source": "twse_bfi82u",
@@ -170,10 +170,10 @@
   },
   "us_sentiment": {
     "fear_greed": {
-      "score": 66.77,
+      "score": 67.89,
       "rating": "greed",
       "rating_zh": "貪婪",
-      "timestamp": "2026-05-08T12:41:46+00:00",
+      "timestamp": "2026-05-08T14:21:00+00:00",
       "history": {
         "previous_close": 67.63,
         "1w": 66.09,
@@ -189,19 +189,19 @@
         },
         "stock_price_strength": {
           "label": "Stock Price Strength",
-          "score": 62.8,
+          "score": 60.8,
           "rating": "greed",
           "rating_zh": "貪婪"
         },
         "stock_price_breadth": {
           "label": "Stock Price Breadth",
-          "score": 59.0,
+          "score": 62.4,
           "rating": "greed",
           "rating_zh": "貪婪"
         },
         "put_call_options": {
           "label": "Put/Call Options",
-          "score": 79.2,
+          "score": 89.6,
           "rating": "extreme greed",
           "rating_zh": "極度貪婪"
         },
@@ -213,13 +213,13 @@
         },
         "junk_bond_demand": {
           "label": "Junk Bond Demand",
-          "score": 22.6,
+          "score": 18.0,
           "rating": "extreme fear",
           "rating_zh": "極度恐懼"
         },
         "safe_haven_demand": {
           "label": "Safe Haven Demand",
-          "score": 94.2,
+          "score": 93.6,
           "rating": "extreme greed",
           "rating_zh": "極度貪婪"
         }
@@ -860,69 +860,78 @@
     }
   },
   "summary": {
-    "bias": "偏空",
+    "bias": "中性",
     "market_bias": {
-      "label": "偏空",
-      "score": -24.4,
-      "gauge": 37.8,
-      "confidence": 24.4,
+      "label": "中性",
+      "score": -2.2,
+      "gauge": 48.9,
+      "confidence": 2.2,
       "components": [
         {
-          "key": "foreign_tx_oi",
-          "label": "外資台指期未平倉",
-          "value": -54530,
-          "unit": "口",
-          "weight": 25,
-          "score": -100,
-          "note": "外資期貨部位是台指期方向的核心籌碼。"
-        },
-        {
-          "key": "institutional_tx_oi",
-          "label": "三大法人台指期未平倉",
-          "value": -8723,
-          "unit": "口",
-          "weight": 20,
-          "score": -17.446,
-          "note": "法人合計未平倉用來確認整體籌碼方向。"
-        },
-        {
-          "key": "night_session",
-          "label": "夜盤三大法人買賣超",
-          "value": -1307,
-          "unit": "口",
-          "weight": 15,
-          "score": -26.14,
-          "note": "夜盤反映美股時段後的短線部位變化。"
-        },
-        {
           "key": "retail_ratio",
-          "label": "散戶多空比",
-          "value": 9.33,
+          "label": "散戶多空比偏差",
+          "value": 4.05,
           "unit": "%",
-          "weight": 15,
-          "score": -46.650000000000006,
-          "note": "散戶偏多視為反向風險，散戶偏空則偏正向。"
+          "weight": 25,
+          "score": -40.5,
+          "note": "小台今日 9.33%，近期均值 5.28%；正偏差（比平均更偏多）為反向看空訊號。"
         },
         {
           "key": "pc_ratio",
           "label": "選擇權未平倉 P/C",
           "value": 181.36,
           "unit": "%",
-          "weight": 10,
+          "weight": 18,
           "score": 100,
-          "note": "P/C 未平倉高於中性區，偏向避險需求升溫後的支撐訊號。"
+          "note": "中性點 100%；高於 100% 代表 Put 買盤升溫，反向視為支撐訊號。"
+        },
+        {
+          "key": "foreign_stock_flow",
+          "label": "外資現貨買賣超",
+          "value": -120.8,
+          "unit": "億",
+          "weight": 15,
+          "score": -5.8,
+          "note": "±100億以內中性，±500億以上強烈訊號，指數曲線計分。"
         },
         {
           "key": "cnn_fear_greed",
           "label": "CNN Fear & Greed",
-          "value": 66.77,
+          "value": 67.89,
           "unit": "分",
-          "weight": 15,
-          "score": 33.53999999999999,
+          "weight": 12,
+          "score": 35.78,
           "note": "美股風險偏好作為台股開盤前外部情緒輔助。"
+        },
+        {
+          "key": "foreign_tx_oi_change",
+          "label": "外資台指期未平倉變化",
+          "value": -3398,
+          "unit": "口",
+          "weight": 12,
+          "score": -67.96,
+          "note": "日變化量（非存量）；正值為減空/加多，排除結構性空單干擾。"
+        },
+        {
+          "key": "night_session",
+          "label": "夜盤三大法人買賣超",
+          "value": -1307,
+          "unit": "口",
+          "weight": 10,
+          "score": -26.14,
+          "note": "夜盤反映美股時段後的短線部位變化。"
+        },
+        {
+          "key": "institutional_tx_oi_change",
+          "label": "三大法人台指期未平倉變化",
+          "value": -2734,
+          "unit": "口",
+          "weight": 8,
+          "score": -34.175,
+          "note": "日變化量；作為外資方向的合計確認。"
         }
       ],
-      "definition": "台股期權籌碼 85% + CNN Fear & Greed 15%，分數 -100 偏空、0 中性、100 偏多。"
+      "definition": "情緒反向 43% + 外資現貨 15% + CNN 12% + 台指期變化 20% + 夜盤 10%；門檻 ±25。"
     },
     "notes": [
       "夜盤法人為期交所三大法人夜盤頁面資料，日期以盤後交易量歸屬日為準。",
