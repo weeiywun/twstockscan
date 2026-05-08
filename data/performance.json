@@ -251,7 +251,18 @@
       "exit_price": null,
       "exit_date": null,
       "exit_net": null,
-      "confirmed": false
+      "confirmed": true,
+      "exits": [
+        {
+          "id": "e1778205883592",
+          "date": "2026-05-08",
+          "shares": 3000,
+          "exit_price": 86.5,
+          "exit_net": 258501,
+          "sell_fee": 221,
+          "sell_tax": 778
+        }
+      ]
     },
     {
       "id": "p1778130400466",
