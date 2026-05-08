@@ -52,6 +52,8 @@ TAIFEX_BQ = "https://www.bq888.taifex.com.tw"
 TAIFEX_WEB = "https://www.taifex.com.tw"
 TAIFEX_DATA = "https://www.taifex.com.tw/data_gov/taifex_open_data.asp"
 CNN_FEAR_GREED = "https://production.dataviz.cnn.io/index/fearandgreed/graphdata"
+GEMINI_MODEL = "gemini-2.0-flash"
+GEMINI_URL = f"https://generativelanguage.googleapis.com/v1beta/models/{GEMINI_MODEL}:generateContent"
 INVESTOR_KEYS = {
     "自營商": "dealer",
     "投信": "investment_trust",
@@ -677,69 +679,109 @@ def _component_score(value: float | int | None, scale: float, invert: bool = Fal
     return -score if invert else score
 
 
+def _stock_flow_score(net_amount_twd: float | int | None) -> float | None:
+    """外資現貨買賣超指數評分。
+    ±100億以內近中性（≈4分），±500億以上強烈訊號（100分），採平方曲線加速。
+    """
+    if net_amount_twd is None:
+        return None
+    value_yi = net_amount_twd / 1e8
+    sign = 1 if value_yi >= 0 else -1
+    ratio = min(abs(value_yi) / 500, 1.0)
+    return round(sign * ratio ** 2 * 100, 1)
+
+
 def _market_bias(data: dict[str, Any]) -> dict[str, Any]:
-    tx_total = (((data.get("futures") or {}).get("day_session") or {}).get("tx") or {}).get("traders", {}).get("total", {})
-    tx_foreign = (((data.get("futures") or {}).get("day_session") or {}).get("tx") or {}).get("traders", {}).get("foreign", {})
+    # ── 期貨日盤 ──
+    tx_day_contract = ((data.get("futures") or {}).get("day_session") or {}).get("tx") or {}
     night_total = (((data.get("futures") or {}).get("night_session") or {}).get("tx") or {}).get("traders", {}).get("total", {})
-    retail = ((data.get("sentiment") or {}).get("retail_long_short") or {}).get("ratio")
+    tx_foreign_oi_change = (tx_day_contract.get("trader_changes") or {}).get("foreign", {}).get("oi_net_lots")
+    tx_total_oi_change = (tx_day_contract.get("trader_changes") or {}).get("total", {}).get("oi_net_lots")
+
+    # ── 散戶多空比：偏離近期均值（消除結構性偏多）──
+    retail_rows = ((data.get("sentiment") or {}).get("retail_dashboard") or {}).get("rows") or []
+    mtx_row = next((r for r in retail_rows if r.get("key") == "mtx"), None)
+    retail_deviation: float | None = None
+    retail_today: float | None = None
+    retail_baseline: float | None = None
+    if mtx_row:
+        retail_today = mtx_row.get("today")
+        prev_ratios = [h.get("ratio") for h in (mtx_row.get("history") or [])[1:] if h.get("ratio") is not None]
+        if prev_ratios and retail_today is not None:
+            retail_baseline = round(sum(prev_ratios) / len(prev_ratios), 2)
+            retail_deviation = round(retail_today - retail_baseline, 2)
+        else:
+            retail_deviation = retail_today
+
+    # ── PC Ratio / 外資現貨 / 美股情緒 ──
     pc_oi = ((data.get("sentiment") or {}).get("pc_ratio") or {}).get("open_interest_ratio")
-    fear_greed = ((data.get("us_sentiment") or {}).get("fear_greed") or {})
-    fg_score = fear_greed.get("score")
+    stock_history = (data.get("stock_institutional") or {}).get("history") or []
+    foreign_stock_net = (stock_history[0].get("traders") or {}).get("foreign", {}).get("net_amount") if stock_history else None
+    fg_score = ((data.get("us_sentiment") or {}).get("fear_greed") or {}).get("score")
 
     components = [
         {
-            "key": "foreign_tx_oi",
-            "label": "外資台指期未平倉",
-            "value": tx_foreign.get("oi_net_lots"),
-            "unit": "口",
-            "weight": 25,
-            "score": _component_score(tx_foreign.get("oi_net_lots"), 30000),
-            "note": "外資期貨部位是台指期方向的核心籌碼。",
-        },
-        {
-            "key": "institutional_tx_oi",
-            "label": "三大法人台指期未平倉",
-            "value": tx_total.get("oi_net_lots"),
-            "unit": "口",
-            "weight": 20,
-            "score": _component_score(tx_total.get("oi_net_lots"), 50000),
-            "note": "法人合計未平倉用來確認整體籌碼方向。",
-        },
-        {
-            "key": "night_session",
-            "label": "夜盤三大法人買賣超",
-            "value": night_total.get("net_lots"),
-            "unit": "口",
-            "weight": 15,
-            "score": _component_score(night_total.get("net_lots"), 5000),
-            "note": "夜盤反映美股時段後的短線部位變化。",
-        },
-        {
             "key": "retail_ratio",
-            "label": "散戶多空比",
-            "value": retail,
+            "label": "散戶多空比偏差",
+            "value": retail_deviation,
             "unit": "%",
-            "weight": 15,
-            "score": _component_score(retail, 20, invert=True),
-            "note": "散戶偏多視為反向風險，散戶偏空則偏正向。",
+            "weight": 25,
+            "score": _component_score(retail_deviation, 10, invert=True),
+            "note": f"小台今日 {retail_today}%，近期均值 {retail_baseline}%；正偏差（比平均更偏多）為反向看空訊號。",
         },
         {
             "key": "pc_ratio",
             "label": "選擇權未平倉 P/C",
             "value": pc_oi,
             "unit": "%",
-            "weight": 10,
-            "score": _component_score((pc_oi - 120) if pc_oi is not None else None, 60),
-            "note": "P/C 未平倉高於中性區，偏向避險需求升溫後的支撐訊號。",
+            "weight": 18,
+            "score": _component_score((pc_oi - 100) if pc_oi is not None else None, 50),
+            "note": "中性點 100%；高於 100% 代表 Put 買盤升溫，反向視為支撐訊號。",
+        },
+        {
+            "key": "foreign_stock_flow",
+            "label": "外資現貨買賣超",
+            "value": round(foreign_stock_net / 1e8, 1) if foreign_stock_net is not None else None,
+            "unit": "億",
+            "weight": 15,
+            "score": _stock_flow_score(foreign_stock_net),
+            "note": "±100億以內中性，±500億以上強烈訊號，指數曲線計分。",
         },
         {
             "key": "cnn_fear_greed",
             "label": "CNN Fear & Greed",
             "value": fg_score,
             "unit": "分",
-            "weight": 15,
+            "weight": 12,
             "score": _component_score((fg_score - 50) if fg_score is not None else None, 50),
             "note": "美股風險偏好作為台股開盤前外部情緒輔助。",
+        },
+        {
+            "key": "foreign_tx_oi_change",
+            "label": "外資台指期未平倉變化",
+            "value": tx_foreign_oi_change,
+            "unit": "口",
+            "weight": 12,
+            "score": _component_score(tx_foreign_oi_change, 5000),
+            "note": "日變化量（非存量）；正值為減空/加多，排除結構性空單干擾。",
+        },
+        {
+            "key": "night_session",
+            "label": "夜盤三大法人買賣超",
+            "value": night_total.get("net_lots"),
+            "unit": "口",
+            "weight": 10,
+            "score": _component_score(night_total.get("net_lots"), 5000),
+            "note": "夜盤反映美股時段後的短線部位變化。",
+        },
+        {
+            "key": "institutional_tx_oi_change",
+            "label": "三大法人台指期未平倉變化",
+            "value": tx_total_oi_change,
+            "unit": "口",
+            "weight": 8,
+            "score": _component_score(tx_total_oi_change, 8000),
+            "note": "日變化量；作為外資方向的合計確認。",
         },
     ]
     valid = [c for c in components if c["score"] is not None]
@@ -749,15 +791,60 @@ def _market_bias(data: dict[str, Any]) -> dict[str, Any]:
         if total_weight else 0
     )
     weighted_score = round(_clamp(weighted_score, -100, 100), 1)
-    label = "偏多" if weighted_score >= 20 else "偏空" if weighted_score <= -20 else "中性"
+    label = "偏多" if weighted_score >= 25 else "偏空" if weighted_score <= -25 else "中性"
     return {
         "label": label,
         "score": weighted_score,
         "gauge": round((weighted_score + 100) / 2, 1),
         "confidence": round(abs(weighted_score), 1),
         "components": valid,
-        "definition": "台股期權籌碼 85% + CNN Fear & Greed 15%，分數 -100 偏空、0 中性、100 偏多。",
+        "definition": "情緒反向 43% + 外資現貨 15% + CNN 12% + 台指期變化 20% + 夜盤 10%；門檻 ±25。",
     }
+
+
+def _generate_commentary(market_bias: dict[str, Any]) -> str | None:
+    """呼叫 Gemini 生成市場溫度計的 AI 行情講評（60~90字）。無 API Key 時直接略過。"""
+    api_key = os.getenv("GEMINI_API_KEY")
+    if not api_key:
+        return None
+
+    score = market_bias.get("score", 0)
+    label = market_bias.get("label", "中性")
+    components = market_bias.get("components") or []
+
+    comp_lines = "\n".join(
+        f"- {c['label']}：{c['value']} {c.get('unit', '')}（評分 {round(c['score'], 1):+.1f}）"
+        for c in components
+        if c.get("score") is not None and c.get("value") is not None
+    )
+
+    prompt = (
+        "你是台股盤前分析師。以下是今日台股市場溫度計的量化數據，"
+        "請用繁體中文寫一段 60～90 字的行情講評，"
+        "說明當前市場情緒與主要驅動因素，語氣客觀簡潔，直接說重點，不要廢話。\n\n"
+        f"市場偏向：{label}（綜合分數 {score:+.1f}）\n"
+        f"各項指標：\n{comp_lines}\n\n"
+        "直接輸出講評文字，不加標題、不加引號。"
+    )
+
+    try:
+        payload = {
+            "contents": [{"parts": [{"text": prompt}]}],
+            "generationConfig": {"temperature": 0.3, "maxOutputTokens": 180},
+        }
+        res = requests.post(
+            GEMINI_URL,
+            params={"key": api_key},
+            json=payload,
+            headers=HEADERS,
+            timeout=30,
+        )
+        res.raise_for_status()
+        text = res.json()["candidates"][0]["content"]["parts"][0]["text"].strip()
+        return text
+    except Exception as exc:
+        print(f"  ⚠️  AI 講評生成失敗：{exc}")
+        return None
 
 
 def _bias(data: dict[str, Any]) -> str:
@@ -841,6 +928,9 @@ def main() -> None:
         "summary": {},
     }
     market_bias = _market_bias(out)
+    commentary = _generate_commentary(market_bias)
+    if commentary:
+        market_bias["commentary"] = commentary
     out["summary"] = {
         "bias": market_bias["label"],
         "market_bias": market_bias,

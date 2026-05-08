@@ -56,7 +56,7 @@ function fdBiasTone(label) {
   return 'flat';
 }
 
-function fdGaugeCard({ eyebrow, title, value, sub, gauge, tone = 'flat', left = 'FEAR', center = 'NEUTRAL', right = 'GREED' }) {
+function fdGaugeCard({ eyebrow, title, value, sub, gauge, tone = 'flat', left = 'FEAR', center = 'NEUTRAL', right = 'GREED', commentary = '' }) {
   const angle = fdGaugeAngle(gauge);
   return `
     <section class="fd-gauge-card ${tone}">
@@ -74,6 +74,7 @@ function fdGaugeCard({ eyebrow, title, value, sub, gauge, tone = 'flat', left = 
           <span>${left}</span><span>${center}</span><span>${right}</span>
         </div>
       </div>
+      ${commentary ? `<div class="fd-gauge-commentary">${commentary}</div>` : ''}
     </section>`;
 }
 
@@ -264,7 +265,8 @@ function renderFutureDashboard(strat, main) {
           tone: fdBiasTone(bias),
           left: 'BEAR',
           center: 'NEUTRAL',
-          right: 'BULL'
+          right: 'BULL',
+          commentary: marketBias.commentary || ''
         })}
         ${fdGaugeCard({
           eyebrow: 'CNN FEAR & GREED',

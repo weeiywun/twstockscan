@@ -532,6 +532,10 @@ tbody tr:hover .spark-bar{opacity:.9}
   display:flex;justify-content:space-between;
   font-size:9px;color:var(--text3);letter-spacing:.04em;
 }
+.fd-gauge-commentary{
+  font-size:12px;color:var(--text2);line-height:1.65;
+  padding-top:10px;border-top:1px solid var(--border);
+}
 .fd-bias-detail{padding:14px}
 .fd-bias-detail .fd-panel-meta{line-height:1.5;margin-bottom:10px}
 .fd-bias-table{min-width:420px}
