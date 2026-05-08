@@ -1,6 +1,6 @@
 {
   "date": "2026-05-08",
-  "updated": "2026-05-08T10:35:32.741866+08:00",
+  "updated": "2026-05-08T10:38:46.959614+08:00",
   "source": "taifex_bq888+taifex_open_data+finmind",
   "market": {
     "TX": {
@@ -16,11 +16,11 @@
     "MTX": {
       "symbol": "MTX",
       "date": "2026-05-07",
-      "front_month": "202605W2",
-      "close": 42133.0,
-      "settlement": 42133.0,
-      "volume": 97,
-      "open_interest": 71,
+      "front_month": "202605",
+      "close": 42355.0,
+      "settlement": 42352.0,
+      "volume": 128805,
+      "open_interest": 29761,
       "source": "taifex_open_data"
     }
   },
@@ -219,8 +219,8 @@
       "date": "2026-05-07",
       "contract": "小型臺指期貨",
       "institutional_net_open_interest": 5761,
-      "market_open_interest": 71,
-      "ratio": -8114.08,
+      "market_open_interest": 29761,
+      "ratio": -19.36,
       "source": "taifex_derived"
     },
     "pc_ratio": {
