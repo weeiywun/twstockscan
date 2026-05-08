@@ -184,6 +184,8 @@ def fetch_futures_daily_market() -> dict[str, Any] | None:
             session = row[-1].strip() if row else ""
             if symbol not in {"TX", "MTX"} or open_interest is None:
                 continue
+            if symbol == "MTX" and "W" in month:
+                continue
             if symbol not in by_symbol:
                 by_symbol[symbol] = {
                     "symbol": symbol,
