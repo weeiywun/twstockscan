@@ -57,11 +57,16 @@ jobs:
       - name: 更新大盤指數快取
         run: python scripts/update_market_index.py
 
+      - name: 更新期權籌碼儀錶板
+        env:
+          FINMIND_TOKEN: ${{ secrets.FINMIND_API_TOKEN }}
+        run: python scripts/update_futures_dashboard.py
+
       - name: Commit 價格快取
         run: |
           git config user.name  "github-actions[bot]"
           git config user.email "github-actions[bot]@users.noreply.github.com"
-          git add data/price_cache.parquet data/stock_list_cache.json data/market_index.json
+          git add data/price_cache.parquet data/stock_list_cache.json data/market_index.json data/futures_dashboard.json
           if ! git diff --staged --quiet; then
             git commit -m "data: price cache update $(date -u +%Y-%m-%d)"
             for i in {1..4}; do

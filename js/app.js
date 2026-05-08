@@ -6,6 +6,18 @@
 const PERF_UNLOCKED = new URLSearchParams(location.search).get('unlock') === 'perf';
 const STRATEGIES = [
   {
+    id: "future_dashboard",
+    name: "FUTURE DASHBOARD",
+    shortName: "FUTURE DASHBOARD",
+    icon: "▣",
+    group: null,
+    available: true,
+    description: "整合台股夜盤、美股收盤、三大法人期貨多空、散戶多空比與 PC Ratio，作為進場前的市場溫度計。",
+    conditions: [],
+    dataUpdated: "載入中...",
+    dataSource: "TAIFEX + FinMind",
+  },
+  {
     id: "performance",
     name: "績效追蹤",
     shortName: "績效追蹤",
@@ -108,6 +120,7 @@ const DATA = {
   stock_analysis_data:    null,
   performance_data:       null,
   market_index_data:      null,
+  futures_dashboard_data: null,
   right_top_data:         [],
   right_top_industry:     [],
   right_top_track_data:   null,
@@ -237,6 +250,7 @@ const NAV_GROUP_LABELS = {
 
 function _navBadge(s) {
   if (!s.available) return '—';
+  if (s.id === 'future_dashboard') return DATA.futures_dashboard_data?.summary?.bias || '—';
   if (s.id === 'performance') return (DATA.performance_data?.positions || []).filter(p => !p.confirmed).length;
   if (s.id === 'stock_analysis') return DATA.stock_analysis_data?.active?.length ?? '—';
   if (s.id === 'right_top_track') return DATA.right_top_track_data?.active?.length ?? '—';
@@ -257,6 +271,12 @@ function renderNav() {
   let html = '';
 
   // 績效：獨立置頂（需解鎖）
+  const future = STRATEGIES.find(s => s.id === 'future_dashboard');
+  if (future) {
+    html += _navTab(future);
+    html += `<div style="width:1px;background:var(--border);margin:10px 6px;align-self:stretch;flex-shrink:0"></div>`;
+  }
+
   const perf = STRATEGIES.find(s => s.id === 'performance');
   if (PERF_UNLOCKED && perf) {
     html += _navTab(perf);
@@ -314,6 +334,7 @@ function renderStrategy() {
   }
 
   if (strat.id !== 'performance' && typeof setPerfSidebarMode === 'function') setPerfSidebarMode(false);
+  if (strat.id === 'future_dashboard') { renderFutureDashboard(strat, main); return; }
   if (strat.id === 'chips_big_holder') { renderChipsHolder(strat, main);    return; }
   if (strat.id === 'volume_signal')    { renderVolumeSignal(strat, main);   return; }
   if (strat.id === 'stock_analysis')   { renderStockAnalysis(strat, main);  return; }
@@ -462,13 +483,14 @@ async function loadData() {
   const timestamp = new Date().getTime();
 
   try {
-    const [chipsRes, vsRes, aiRes, saRes, perfRes, miRes, rtRes, rttRes] = await Promise.all([
+    const [chipsRes, vsRes, aiRes, saRes, perfRes, miRes, fdRes, rtRes, rttRes] = await Promise.all([
       fetch(`data/chips_big_holder.json?t=${timestamp}`,   { cache: 'no-store' }).then(r => r.ok ? r.json() : null).catch(() => null),
       fetch(`data/volume_signal.json?t=${timestamp}`,      { cache: 'no-store' }).then(r => r.ok ? r.json() : null).catch(() => null),
       fetch(`data/ai_recommendations.json?t=${timestamp}`, { cache: 'no-store' }).then(r => r.ok ? r.json() : null).catch(() => null),
       fetch(`data/ai_analysis.json?t=${timestamp}`,        { cache: 'no-store' }).then(r => r.ok ? r.json() : null).catch(() => null),
       fetch(`data/performance.json?t=${timestamp}`,        { cache: 'no-store' }).then(r => r.ok ? r.json() : null).catch(() => null),
       fetch(`data/market_index.json?t=${timestamp}`,        { cache: 'no-store' }).then(r => r.ok ? r.json() : null).catch(() => null),
+      fetch(`data/futures_dashboard.json?t=${timestamp}`,   { cache: 'no-store' }).then(r => r.ok ? r.json() : null).catch(() => null),
       fetch(`data/right_top.json?t=${timestamp}`,          { cache: 'no-store' }).then(r => r.ok ? r.json() : null).catch(() => null),
       fetch(`data/right_top_track.json?t=${timestamp}`,    { cache: 'no-store' }).then(r => r.ok ? r.json() : null).catch(() => null),
     ]);
@@ -510,6 +532,12 @@ async function loadData() {
 
     if (miRes && miRes.indices) {
       DATA.market_index_data = miRes;
+    }
+
+    if (fdRes) {
+      DATA.futures_dashboard_data = fdRes;
+      const strat = STRATEGIES.find(s => s.id === 'future_dashboard');
+      if (strat) strat.dataUpdated = (fdRes.date || fdRes.updated || '').slice(0, 10) || strat.dataUpdated;
     }
 
     if (rtRes && rtRes.results) {

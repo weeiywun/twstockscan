@@ -468,6 +468,49 @@ tbody tr:hover .spark-bar{opacity:.9}
   padding:28px 16px;text-align:center;font-size:13px;color:var(--text3);
 }
 
+/* ── FUTURE DASHBOARD ───────────────────────── */
+.fd-header{
+  display:flex;align-items:flex-start;justify-content:space-between;gap:16px;
+}
+.fd-bias{
+  min-width:120px;padding:10px 12px;border:1px solid var(--border);
+  border-radius:var(--radius);background:var(--bg2);text-align:right;
+  box-shadow:var(--shadow-sm);
+}
+.fd-bias span{display:block;font-size:10px;color:var(--text3);letter-spacing:.06em}
+.fd-bias strong{display:block;font-size:22px;line-height:1.2;color:var(--text)}
+.fd-bias.pos strong{color:var(--market-up)}
+.fd-bias.neg strong{color:var(--market-down)}
+.fd-grid{display:grid;gap:10px;margin-bottom:16px}
+.fd-grid-6{grid-template-columns:repeat(6,minmax(0,1fr))}
+.fd-grid-4{grid-template-columns:repeat(4,minmax(0,1fr))}
+.fd-grid-3{grid-template-columns:repeat(3,minmax(0,1fr))}
+.fd-grid-2{grid-template-columns:repeat(2,minmax(0,1fr))}
+.fd-metric,.fd-panel{
+  background:var(--bg2);border:1px solid var(--border);
+  border-radius:var(--radius);box-shadow:var(--shadow-sm);
+}
+.fd-metric{padding:12px 14px;min-width:0}
+.fd-metric-label{font-size:11px;color:var(--text3);margin-bottom:4px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.fd-metric-value{
+  font-family:var(--mono);font-size:20px;font-weight:700;line-height:1.25;color:var(--text);
+  white-space:nowrap;overflow:hidden;text-overflow:ellipsis;
+}
+.fd-metric-value.pos,.fd-table .pos{color:var(--market-up)}
+.fd-metric-value.neg,.fd-table .neg{color:var(--market-down)}
+.fd-metric-value.flat,.fd-table .flat{color:var(--text2)}
+.fd-metric-sub{font-size:11px;color:var(--text3);margin-top:3px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.fd-panel{overflow:hidden;min-width:0}
+.fd-panel-hd{display:flex;align-items:center;justify-content:space-between;padding:12px 14px;border-bottom:1px solid var(--border);background:var(--bg3)}
+.fd-panel-title{font-size:12px;font-weight:700;color:var(--text2);letter-spacing:.04em}
+.fd-panel-meta{font-size:11px;color:var(--text3);margin-top:2px}
+.fd-table{min-width:620px}
+.fd-table th,.fd-table td{font-size:12px;padding:8px 10px}
+.fd-table td.mono{font-family:var(--mono);text-align:right}
+.fd-sentiment{display:grid;grid-template-columns:1fr;gap:8px;padding:12px}
+.fd-sentiment .fd-metric{box-shadow:none;background:var(--bg3)}
+.fd-note{padding:14px;color:var(--text2);font-size:12px;line-height:1.9}
+
 /* ── 標的分析頁面 ────────────────────────────── */
 .sa-date-group{margin-bottom:24px}
 .sa-date-header{
@@ -640,6 +683,10 @@ tbody tr:hover .spark-bar{opacity:.9}
   .market-index-list{display:grid;grid-template-columns:1fr 1fr}
   .market-index-row:nth-child(odd){border-right:1px solid var(--border)}
   .market-index-value{font-size:18px}
+  .fd-header{flex-direction:column}
+  .fd-bias{text-align:left;width:100%}
+  .fd-grid-6,.fd-grid-4,.fd-grid-3,.fd-grid-2{grid-template-columns:1fr 1fr}
+  .fd-table{min-width:560px}
 
   .summary-row,
   .perf-summary-row{grid-template-columns:1fr 1fr}
@@ -663,6 +710,7 @@ tbody tr:hover .spark-bar{opacity:.9}
   .perf-table{min-width:720px}
   .market-index-list{grid-template-columns:1fr}
   .market-index-row:nth-child(odd){border-right:none}
+  .fd-grid-6,.fd-grid-4,.fd-grid-3,.fd-grid-2{grid-template-columns:1fr}
 
   .strat-tab{padding:10px 12px 11px;font-size:12px}
 
