@@ -108,11 +108,10 @@ function fdTraderRows(contract) {
   return order.map(key => {
     const item = traders[key] || {};
     const oiChange = changes[key]?.oi_net_lots;
+    const label = key === 'total' ? '合計' : (item.label || key);
     return `
       <tr>
-        <td>${item.label || key}</td>
-        <td class="mono">${fdNum(item.buy_lots)}</td>
-        <td class="mono">${fdNum(item.sell_lots)}</td>
+        <td>${label}</td>
         <td class="mono ${fdTone(item.net_lots)}">${fdSigned(item.net_lots)}</td>
         <td class="mono">${fdNum(item.oi_long_lots)}</td>
         <td class="mono">${fdNum(item.oi_short_lots)}</td>
@@ -128,9 +127,10 @@ function fdNightRows(contract) {
   const order = ['foreign', 'investment_trust', 'dealer', 'total'];
   return order.map(key => {
     const item = traders[key] || {};
+    const label = key === 'total' ? '合計' : (item.label || key);
     return `
       <tr>
-        <td>${item.label || key}</td>
+        <td>${label}</td>
         <td class="mono ${fdTone(item.net_lots)}">${fdSigned(item.net_lots)}</td>
       </tr>`;
   }).join('');
@@ -210,7 +210,7 @@ function renderFutureDashboard(strat, main) {
   const txTotal = dayTx?.traders?.total || {};
   const nightTotal = nightTx?.traders?.total || {};
 
-  const dayHeaders = ['法人', '買方(口)', '賣方(口)', '買賣超(口)', '未平倉多(口)', '未平倉空(口)', '未平倉淨(口)'];
+  const dayHeaders = ['法人', '買賣超(口)', '未平倉多(口)', '未平倉空(口)', '未平倉淨(口)'];
   const nightHeaders = ['法人', '夜盤買賣超(口)'];
   const stockHeaders = ['日期', '外資(億)', '投信(億)', '自營商(億)', '合計(億)'];
 

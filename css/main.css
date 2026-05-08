@@ -570,10 +570,11 @@ tbody tr:hover .spark-bar{opacity:.9}
 .fd-panel-meta{font-size:11px;color:var(--text3);margin-top:2px}
 .fd-panel:not(.fd-bias-detail) > .fd-panel-title{padding:12px 14px 0}
 .fd-panel:not(.fd-bias-detail) > .fd-panel-meta{padding:0 14px 8px}
-.fd-table{min-width:620px}
+.fd-table{min-width:520px}
+.fd-market-flow .fd-panel:first-child .fd-table{min-width:460px}
 .fd-market-flow .fd-panel:nth-child(2) .fd-table{min-width:420px}
 .fd-market-flow .fd-panel:nth-child(3) .fd-table{min-width:220px}
-.fd-table th,.fd-table td{font-size:12px;padding:8px 10px}
+.fd-table th,.fd-table td{font-size:12px;padding:8px 8px}
 .fd-table th{text-align:left}
 .fd-table td.mono{font-family:var(--mono);text-align:right}
 .fd-compact-panel .fd-table{min-width:0}
@@ -581,6 +582,7 @@ tbody tr:hover .spark-bar{opacity:.9}
 .fd-sentiment{display:grid;grid-template-columns:1fr;gap:8px;padding:12px}
 .fd-sentiment .fd-metric{box-shadow:none;background:var(--bg3)}
 .fd-note{padding:14px;color:var(--text2);font-size:12px;line-height:1.9}
+.fd-note div{overflow-wrap:anywhere;word-break:break-word}
 
 /* ── 標的分析頁面 ────────────────────────────── */
 .sa-date-group{margin-bottom:24px}
