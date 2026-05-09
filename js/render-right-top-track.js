@@ -1,5 +1,5 @@
 // ════════════════════════════════════════════════════
-//  右上角標的追蹤：渲染器
+//  突破策略標的追蹤：渲染器
 // ════════════════════════════════════════════════════
 function renderRightTopTrack(strat, main) {
   const trackData = DATA.right_top_track_data;
@@ -14,7 +14,7 @@ function renderRightTopTrack(strat, main) {
         <div class="coming-soon" style="padding:64px 20px">
           <div class="coming-icon">◉</div>
           <div class="coming-title">等待資料</div>
-          <div class="coming-desc">右上角策略觸發後盤後自動加入追蹤。</div>
+          <div class="coming-desc">突破策略觸發後盤後自動加入追蹤。</div>
         </div>
       </div>`;
     return;
@@ -150,7 +150,7 @@ function renderRightTopTrack(strat, main) {
     activeHTML = `<div class="coming-soon" style="padding:48px 20px">
       <div class="coming-icon">◉</div>
       <div class="coming-title">目前無追蹤標的</div>
-      <div class="coming-desc">右上角策略觸發標的盤後自動加入追蹤，觀察 10 個交易日。</div>
+      <div class="coming-desc">突破策略觸發標的盤後自動加入追蹤，觀察 10 個交易日。</div>
     </div>`;
   } else {
     const rows = active.map((s, i) => {

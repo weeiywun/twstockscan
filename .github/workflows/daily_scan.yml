@@ -76,12 +76,12 @@ jobs:
             echo "快取無變動，略過提交"
           fi
 
-      - name: 右上角選股掃描
+      - name: 突破策略掃描
         env:
           FINMIND_TOKEN: ${{ secrets.FINMIND_API_TOKEN }}
         run: python scripts/scan_right_top.py
 
-      - name: 右上角標的追蹤
+      - name: 突破策略標的追蹤
         env:
           FINMIND_TOKEN: ${{ secrets.FINMIND_API_TOKEN }}
         run: python scripts/track_right_top.py

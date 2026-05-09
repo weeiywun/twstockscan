@@ -76,26 +76,24 @@ const STRATEGIES = [
     description: "籌碼集中入池標的首次觸發量增訊號後，維護月營收評級、現價損益與 10 個交易日觀察期。",
     conditions: [],
   },
-  // ── 策略二：右上角 ──
+  // ── 策略二：突破策略 ──
   {
     id: "right_top",
-    name: "右上角",
-    shortName: "右上角",
+    name: "突破策略",
+    shortName: "突破策略",
     icon: "▲",
     group: "right_top",
     available: true,
-    description: "全市場掃描週K第一根突破近 10 週收盤新高，且週量能同步放大的標的，並統計族群共振效應。",
+    description: "整合原右上角的盤整突破與日線動能突破，區分低波動打底後發動與強勢多頭續攻兩種型態。",
     conditions: [
-      "最新週收盤 > 前 10 週最高收盤（週K創新高）",
-      "前 3 週皆未創10週新高（排除強勢延續，確認第一根）",
-      "突破前10週價格波動幅度 < 20%（橫盤打底確認）",
-      "突破前10週均線斜率 < 5%（排除均線已走揚的趨勢股）",
-      "最新週成交量 ≥ 20週均量 × 1.5",
-      "20週均量 ≥ 500 張（流動性門檻）",
-      "掃描範圍：全市場上市 + 上櫃一般股（排除 ETF）",
+      "盤整突破：週收盤突破前 10 週高點，且突破前 10 週波動 < 20%",
+      "盤整突破：前 3 週未創 10 週新高，保留原本第一根突破精神",
+      "動能突破：Close > MA20 > MA60，日線突破前 60 日高",
+      "動能突破：突破前 10 日貼近 MA20 整理，今日量 ≥ 前 5 日均量 × 1.5",
+      "風險控制：MA20 乖離 < 10%，並以大戶近 3 週連增作為品質標籤",
     ],
     dataUpdated: "載入中...",
-    dataSource: "FinMind（每日盤後）",
+    dataSource: "FinMind + 集保大戶資料",
     dataKey: "right_top_data",
   },
   {
@@ -105,7 +103,7 @@ const STRATEGIES = [
     icon: "◉",
     group: "right_top",
     available: true,
-    description: "右上角策略觸發標的的後續追蹤，記錄入選收盤、現價、損益，觀察期 10 個交易日。",
+    description: "突破策略觸發標的的後續追蹤，記錄入選收盤、現價、損益，觀察期 10 個交易日。",
     conditions: [],
   },
 ];
@@ -245,7 +243,7 @@ function trendBars(trend, label, colorClass) {
 // ════════════════════════════════════════════════════
 const NAV_GROUP_LABELS = {
   chips:     '籌碼選股',
-  right_top: '右上角',
+  right_top: '突破策略',
 };
 
 function _navBadge(s) {
