@@ -68,8 +68,8 @@ const STRATEGIES = [
   },
   {
     id: "stock_analysis",
-    name: "量增訊號標的營收維護",
-    shortName: "營收維護",
+    name: "量增訊號標的追蹤",
+    shortName: "標的追蹤",
     icon: "◎",
     group: "chips",
     available: true,
