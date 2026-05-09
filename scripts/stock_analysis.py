@@ -1,8 +1,8 @@
 #!/usr/bin/env python3
 """
-標的分析主腳本
+量增訊號標的營收維護主腳本
 觸發條件：量增訊號掃出新標的（首次進入）
-流程：新聞爬蟲 → Claude API 評分 → 寫入 ai_analysis.json
+流程：月營收評級 + 籌碼量化評分 → 寫入 ai_analysis.json
 每日也更新 active 標的現價、損益、剩餘天數，並處理到期移轉。
 未釘選歷史保留 5 個交易日；釘選標的持續保留。
 """
@@ -201,7 +201,7 @@ def save_json(path: str, data: dict):
 
 
 def main():
-    print("=== 標的分析腳本 ===")
+    print("=== 量增訊號標的營收維護腳本 ===")
     finmind_token = os.environ.get("FINMIND_TOKEN", "")
 
     if not finmind_token:

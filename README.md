@@ -17,7 +17,7 @@ scripts/
 .github/workflows/
   daily_scan.yml              ← 每日主流程：價格快取、右上角、追蹤、量增訊號
   holdings_scan.yml           ← 每週主流程：TDCC 大戶持股與籌碼集中
-  stock_analysis.yml          ← 每日主流程成功後自動維護標的分析
+  stock_analysis.yml          ← 每日主流程成功後自動維護量增訊號標的營收與觀察期
   institutional_tags.yml      ← 大戶持股分析成功後自動補法人標籤
   update_current_prices.yml   ← 前端按鈕觸發的現價更新
 

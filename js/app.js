@@ -68,12 +68,12 @@ const STRATEGIES = [
   },
   {
     id: "stock_analysis",
-    name: "標的分析",
-    shortName: "標的分析",
+    name: "量增訊號標的營收維護",
+    shortName: "營收維護",
     icon: "◎",
     group: "chips",
     available: true,
-    description: "籌碼集中入池標的首次觸發量增訊號時啟動 AI 分析，結合新聞與量化數據評分，追蹤觀察 10 天。",
+    description: "籌碼集中入池標的首次觸發量增訊號後，維護月營收評級、現價損益與 10 個交易日觀察期。",
     conditions: [],
   },
   // ── 策略二：右上角 ──

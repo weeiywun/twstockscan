@@ -1,7 +1,7 @@
-name: 標的分析 (AI 評分)
+name: 量增訊號標的營收維護
 
 on:
-  # 每日選股掃描完成後自動觸發（維持 P&L 追蹤，Claude AI 分析已移除）
+  # 每日選股掃描完成後自動觸發，維護量增訊號標的的營收評級與觀察期損益。
   workflow_run:
     workflows: ["每日選股掃描"]
     types: [completed]
@@ -35,7 +35,7 @@ jobs:
       - name: Install dependencies
         run: pip install -r scripts/requirements.txt
 
-      - name: Run stock analysis
+      - name: Run revenue maintenance
         env:
           FINMIND_TOKEN: ${{ secrets.FINMIND_API_TOKEN }}
         run: python scripts/stock_analysis.py
@@ -79,5 +79,5 @@ jobs:
             -H "Authorization: Bearer $LINE_CHANNEL_ACCESS_TOKEN" \
             -d "{
               \"userIds\": $USER_IDS_JSON,
-              \"messages\": [{\"type\": \"text\", \"text\": \"⚠️ 標的分析 (AI 評分) workflow 執行失敗\n\n日期：$(date -u +%Y-%m-%d)\n\n請至 GitHub Actions 查看錯誤日誌：\n$RUN_URL\"}]
+              \"messages\": [{\"type\": \"text\", \"text\": \"⚠️ 量增訊號標的營收維護 workflow 執行失敗\n\n日期：$(date -u +%Y-%m-%d)\n\n請至 GitHub Actions 查看錯誤日誌：\n$RUN_URL\"}]
             }"
