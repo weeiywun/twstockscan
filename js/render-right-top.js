@@ -96,26 +96,25 @@ function renderRightTop(strat, main) {
   }
 
   function tagBadges(tags) {
-    // 語意分組：突破類(紅) / 量能類(橙) / 籌碼類(琥珀黃) / 輔助(灰)
-    const colorMap = {
-      '盤整突破':    '#dc2626',
-      '動能突破':    '#dc2626',
-      '雙重符合':    '#dc2626',
-      '週量強放大':  '#ea7317',
-      '日量強放大':  '#ea7317',
-      '日線啟動':    '#ea7317',
-      '千張大戶連增':'#d97706',
-      '400張同步':   '#d97706',
-      '低乖離':      '#9ca3af',
+    // 語意分組順序：突破類(紅0) / 量能類(橙1) / 籌碼類(琥珀2) / 輔助(灰3)
+    const meta = {
+      '盤整突破':    { color: '#dc2626', order: 0 },
+      '動能突破':    { color: '#dc2626', order: 0 },
+      '雙重符合':    { color: '#dc2626', order: 0 },
+      '週量強放大':  { color: '#ea7317', order: 1 },
+      '日量強放大':  { color: '#ea7317', order: 1 },
+      '日線啟動':    { color: '#ea7317', order: 1 },
+      '千張大戶連增':{ color: '#d97706', order: 2 },
+      '400張同步':   { color: '#d97706', order: 2 },
+      '低乖離':      { color: '#9ca3af', order: 3 },
     };
-    function rgba(hex, a) {
-      const r = parseInt(hex.slice(1,3),16), g = parseInt(hex.slice(3,5),16), b = parseInt(hex.slice(5,7),16);
-      return `rgba(${r},${g},${b},${a})`;
-    }
-    return (tags || []).map(t => {
-      const c = colorMap[t] || '#9ca3af';
-      return `<span class="tag-badge" style="color:${c};border-color:${rgba(c,.3)};background:${rgba(c,.08)}">${t}</span>`;
-    }).join('');
+    return (tags || [])
+      .slice()
+      .sort((a, b) => (meta[a]?.order ?? 9) - (meta[b]?.order ?? 9))
+      .map(t => {
+        const c = meta[t]?.color || '#9ca3af';
+        return `<span class="tag-badge" style="color:${c};border-color:${c}4d">${t}</span>`;
+      }).join('');
   }
 
   function exportRtCSV() {
