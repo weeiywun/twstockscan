@@ -162,12 +162,13 @@ def enrich_with_price(stock_id, token, cache=None):
     close_now = closes[-1]
     deviation = round((close_now - ema120) / ema120 * 100.0, 2)
     vol_5d    = round(sum(volumes[-5:]) / min(5, len(volumes)), 0)
+    vol_20d   = round(sum(volumes[-20:]) / min(20, len(volumes)), 0)
     wago      = closes[-6] if len(closes) >= 6 else closes[0]
     week_chg  = round((close_now - wago) / wago * 100.0, 2) if wago else None
     bbw       = _calc_bbw(closes)
     return {
         "close": round(close_now, 2), "ema120": round(ema120, 2),
-        "deviation": deviation, "vol_5d_avg": int(vol_5d),
+        "deviation": deviation, "vol_5d_avg": int(vol_5d), "vol_20d_avg": int(vol_20d),
         "week_chg_pct": week_chg, "bbw": bbw,
     }
 

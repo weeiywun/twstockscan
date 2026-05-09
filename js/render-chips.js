@@ -121,6 +121,7 @@ function renderChipsHolder(strat, main) {
           ${consecutiveBadge(d.consecutive_weeks)}
         </td>
         <td><span class="price-cell">${d.close != null ? d.close.toFixed(1) : '—'}</span></td>
+        <td><span style="font-family:var(--mono);font-size:12px">${d.vol_20d_avg != null ? Math.round(d.vol_20d_avg).toLocaleString() : '—'}</span></td>
         <td><span class="deviation ${weekClass}">${d.week_chg_pct != null ? weekSign + d.week_chg_pct.toFixed(2) + '%' : '—'}</span></td>
         <td>
           <span class="ema-cell">${d.ema120 != null ? d.ema120.toFixed(2) : '—'}</span><br>
@@ -133,7 +134,7 @@ function renderChipsHolder(strat, main) {
         <td><div class="tag-cell">${tagBadges(d.tags)}</div></td>
       </tr>
       <tr class="expand-row" id="expand-${d.stock_id}" style="display:none">
-        <td colspan="9">
+        <td colspan="10">
           <div class="expand-flat">
             <div class="expand-trend-wrap">
               ${(() => {
@@ -177,7 +178,7 @@ function renderChipsHolder(strat, main) {
       const rows = g.items.map(d => chipsRow(d)).join('');
       return `
         <tr class="industry-header-row">
-          <td colspan="9">
+          <td colspan="10">
             <span class="industry-name">${g.name}</span>
             <span class="industry-avg">平均3週增幅 ${avgSign}${g.avg.toFixed(2)}%</span>
             <span class="industry-count">${g.items.length} 支</span>
@@ -246,6 +247,7 @@ function renderChipsHolder(strat, main) {
             <tr>
               <th onclick="chipsSort('stock_id')">代號 / 名稱${sortIcon('stock_id')}</th>
               <th onclick="chipsSort('close')">現價${sortIcon('close')}</th>
+              <th onclick="chipsSort('vol_20d_avg')" data-tip="近 20 個交易日平均成交量（張）">20日均量${sortIcon('vol_20d_avg')}</th>
               <th onclick="chipsSort('week_chg_pct')">周漲跌${sortIcon('week_chg_pct')}</th>
               <th onclick="chipsSort('deviation')" data-tip="(現價-EMA120)/EMA120">乖離EMA120${sortIcon('deviation')}</th>
               <th onclick="chipsSort('big_pct_1000')" data-tip="千張大戶持股%">大戶比例${sortIcon('big_pct_1000')}</th>
@@ -301,6 +303,7 @@ function exportCSVChips() {
     'EMA120',
     '乖離EMA120(%)',
     '5日均量(張)',
+    '20日均量(張)',
     '布林帶寬度',
     '千張大戶比例(%)',
     '400張大戶比例(%)',
@@ -326,6 +329,7 @@ function exportCSVChips() {
     fmt(d.ema120),
     fmt(d.deviation),
     d.vol_5d_avg != null ? Math.round(d.vol_5d_avg) : '',
+    d.vol_20d_avg != null ? Math.round(d.vol_20d_avg) : '',
     fmt(d.bbw),
     fmt(d.big_pct_1000),
     fmt(d.big_pct_400),
