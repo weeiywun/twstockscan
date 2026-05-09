@@ -38,6 +38,9 @@ FINMIND_SLEEP = 0.35
 FLEX_MAX      = 15
 FC_PRIMARY    = "#e66e29"
 FC_ACCENT     = "#0c6b3e"
+FC_MUTED      = "#888888"
+FC_LIGHT      = "#aaaaaa"
+FC_TEXT       = "#555555"
 
 
 # ── CSV 解析 ──────────────────────────────────────────────────
@@ -191,13 +194,13 @@ def send_line_notification(results):
                          {"type": "box", "layout": "vertical", "flex": 3, "contents": [
                              {"type": "text", "text": r["stock_id"], "size": "md",
                               "weight": "bold", "color": FC_PRIMARY},
-                             {"type": "text", "text": r["name"], "size": "xs", "color": "#555"},
+                             {"type": "text", "text": r["name"], "size": "xs", "color": FC_TEXT},
                              {"type": "text", "text": tag_str, "size": "xxs", "color": FC_PRIMARY}]},
                          {"type": "box", "layout": "vertical", "flex": 2, "contents": [
                              {"type": "text", "text": f"{r['close']:.1f}" if r.get("close") else "—",
                               "size": "sm", "align": "center", "weight": "bold"},
                              {"type": "text", "text": dev_text, "size": "xs",
-                              "align": "center", "color": "#888"}]},
+                              "align": "center", "color": FC_MUTED}]},
                          {"type": "box", "layout": "vertical", "flex": 2, "contents": [
                              {"type": "text", "text": f"{r['big_pct_1000']:.1f}%",
                               "size": "sm", "align": "center", "weight": "bold"},
@@ -206,7 +209,7 @@ def send_line_notification(results):
     if len(results) > FLEX_MAX:
         rows.append({"type": "text",
                      "text": f"...還有 {len(results) - FLEX_MAX} 支，請查看完整報告",
-                     "size": "xs", "color": "#aaa", "margin": "md", "align": "center"})
+                     "size": "xs", "color": FC_LIGHT, "margin": "md", "align": "center"})
     bubble = {
         "type": "bubble", "size": "mega",
         "header": {"type": "box", "layout": "vertical", "paddingAll": "20px",
@@ -215,18 +218,18 @@ def send_line_notification(results):
                         "weight": "bold", "size": "lg", "color": FC_PRIMARY},
                        {"type": "box", "layout": "horizontal", "margin": "md",
                         "contents": [
-                            {"type": "text", "text": f"📅 {TODAY}", "size": "xs", "color": "#aaa"},
+                            {"type": "text", "text": f"📅 {TODAY}", "size": "xs", "color": FC_LIGHT},
                             {"type": "text", "text": f"✅ {len(results)} 支符合",
                              "size": "xs", "color": FC_ACCENT, "align": "end"}]}]},
         "body": {"type": "box", "layout": "vertical", "paddingAll": "20px",
                  "contents": [
                      {"type": "box", "layout": "horizontal", "contents": [
                          {"type": "text", "text": "代號/名稱/標籤", "size": "xxs",
-                          "color": "#aaa", "flex": 3},
+                          "color": FC_LIGHT, "flex": 3},
                          {"type": "text", "text": "收盤/乖離", "size": "xxs",
-                          "color": "#aaa", "flex": 2, "align": "center"},
+                          "color": FC_LIGHT, "flex": 2, "align": "center"},
                          {"type": "text", "text": "千張%/3週", "size": "xxs",
-                          "color": "#aaa", "flex": 2, "align": "center"}]},
+                          "color": FC_LIGHT, "flex": 2, "align": "center"}]},
                      *rows]},
         "footer": {"type": "box", "layout": "vertical", "paddingAll": "12px",
                    "contents": [{"type": "button", "style": "primary", "height": "sm",
@@ -244,7 +247,7 @@ def send_line_notification(results):
             headers={"Content-Type": "application/json", "Authorization": f"Bearer {token}"},
             timeout=15)
         print("[LINE] 推播成功" if resp.status_code == 200
-              else f"[LINE] 推播失敗：HTTP {resp.status_code}")
+              else f"[LINE] 推播失敗：HTTP {resp.status_code} {resp.text[:500]}")
     except Exception as e:
         print(f"[LINE] 推播例外：{e}")
 
