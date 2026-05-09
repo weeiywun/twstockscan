@@ -1,6 +1,8 @@
 name: 大戶持股分析
 
 on:
+  repository_dispatch:
+    types: [holdings_scan_weekly]
   # 每週六台灣時間 09:00（UTC 01:00）執行
   # TDCC 股權分散表於周五晚～周六凌晨更新，09:00 可確保資料就緒
   schedule:
@@ -20,7 +22,7 @@ jobs:
   analyze:
     runs-on: ubuntu-latest
     timeout-minutes: 60
-    if: ${{ github.event_name == 'schedule' || github.event.inputs.confirm == 'RUN_HOLDINGS_SCAN' }}
+    if: ${{ github.event_name == 'repository_dispatch' || github.event_name == 'schedule' || (github.event_name == 'workflow_dispatch' && github.event.inputs.confirm == 'RUN_HOLDINGS_SCAN') }}
 
     permissions:
       contents: write

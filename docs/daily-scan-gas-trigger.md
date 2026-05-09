@@ -1,6 +1,11 @@
-# GAS 觸發每日選股掃描
+# GAS 觸發選股掃描
 
-每日選股掃描 workflow 不使用 GitHub Actions 內建 `schedule`，改由 Google Apps Script 在台灣時間下午 5 點觸發 `repository_dispatch` 的 `daily_scan_1700` 事件。
+GitHub Actions 內建 `schedule` 偶爾會延遲或漏跑，因此主要排程交給 Google Apps Script：
+
+- 每日選股掃描：台灣時間每日 17:00 左右觸發 `daily_scan_1700`
+- 大戶籌碼選股：台灣時間每週六 09:10 左右觸發 `holdings_scan_weekly`
+
+`holdings_scan.yml` 仍保留 GitHub `schedule` 作為備援，但主要觸發來源建議使用 GAS。
 
 ## Apps Script
 
@@ -10,17 +15,21 @@ const GITHUB_REPO = 'twstockscan';
 const GITHUB_TOKEN = PropertiesService.getScriptProperties().getProperty('GITHUB_TOKEN');
 
 function triggerDailyScan1700() {
+  dispatchRepositoryEvent('daily_scan_1700');
+}
+
+function triggerHoldingsScanWeekly() {
+  dispatchRepositoryEvent('holdings_scan_weekly');
+}
+
+function dispatchRepositoryEvent(eventType) {
   const url = `https://api.github.com/repos/${GITHUB_OWNER}/${GITHUB_REPO}/dispatches`;
   const res = UrlFetchApp.fetch(url, {
     method: 'post',
     contentType: 'application/json',
-    headers: {
-      Authorization: `Bearer ${GITHUB_TOKEN}`,
-      Accept: 'application/vnd.github+json',
-      'X-GitHub-Api-Version': '2022-11-28',
-    },
+    headers: githubHeaders(),
     payload: JSON.stringify({
-      event_type: 'daily_scan_1700',
+      event_type: eventType,
       client_payload: {
         source: 'google_apps_script',
         triggered_at: new Date().toISOString(),
@@ -31,8 +40,21 @@ function triggerDailyScan1700() {
 
   const code = res.getResponseCode();
   if (code < 200 || code >= 300) {
-    throw new Error(`GitHub dispatch failed: ${code} ${res.getContentText()}`);
+    throw new Error(`GitHub dispatch failed: ${eventType} ${code} ${res.getContentText()}`);
   }
+
+  Logger.log(`GitHub dispatch accepted: ${eventType}`);
+}
+
+function githubHeaders() {
+  if (!GITHUB_TOKEN) {
+    throw new Error('Missing Script property: GITHUB_TOKEN');
+  }
+  return {
+    Authorization: `Bearer ${GITHUB_TOKEN}`,
+    Accept: 'application/vnd.github+json',
+    'X-GitHub-Api-Version': '2022-11-28',
+  };
 }
 ```
 
@@ -40,5 +62,12 @@ function triggerDailyScan1700() {
 
 1. 建立 GitHub fine-grained token，授權此 repo 的 `Contents: Read and write`。
 2. 在 Apps Script 的 Script properties 新增 `GITHUB_TOKEN`。
-3. 新增 time-driven trigger，執行 `triggerDailyScan1700`，時區選 `Asia/Taipei`，時間選下午 5 點附近。
-4. workflow 仍保留 `workflow_dispatch`，需要回填月份或臨時重跑時可手動執行。
+3. 新增 time-driven trigger：
+   - `triggerDailyScan1700`：每日，時區 `Asia/Taipei`，下午 5 點附近。
+   - `triggerHoldingsScanWeekly`：每週六，時區 `Asia/Taipei`，上午 9 點附近。
+4. GitHub workflow 仍保留 `workflow_dispatch`，需要臨時重跑時可手動執行。
+
+## 對應 Workflow
+
+- `daily_scan.yml` 接收 `repository_dispatch` type: `daily_scan_1700`
+- `holdings_scan.yml` 接收 `repository_dispatch` type: `holdings_scan_weekly`
