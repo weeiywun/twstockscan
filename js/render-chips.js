@@ -76,13 +76,24 @@ function renderChipsHolder(strat, main) {
     }).sort((a, b) => b.avg - a.avg);
   }
 
-  const tagColor = { '持續成長': '#3a86ff', '雙軌觸發': '#e66e29', '單周增幅': '#e63946', '外資連買': '#f0b429', '投信連買': '#f0b429' };
+  const tagColor = {
+    '持續成長': '#3a86ff',
+    '雙軌觸發': '#e66e29',
+    '單周增幅': '#e63946',
+    '外資連買': '#f0b429',
+    '投信連買': '#f0b429'
+  };
+  const institutionalTags = new Set(['外資連買', '投信連買']);
 
   function tagBadges(tags) {
     if (!tags || !tags.length) return '';
-    return tags.map(t =>
-      `<span class="tag-badge" style="background:${tagColor[t] || '#888'}">${t}</span>`
-    ).join('');
+    return tags.map(t => {
+      const isInst = institutionalTags.has(t);
+      const style = isInst
+        ? `background:rgba(240,180,41,0.15);color:#8a5a00;border:1px solid rgba(240,180,41,0.5)`
+        : `background:${tagColor[t] || '#888888'}`;
+      return `<span class="tag-badge ${isInst ? 'inst-tag' : ''}" style="${style}">${t}</span>`;
+    }).join('');
   }
 
   function consecutiveBadge(weeks) {
@@ -241,7 +252,7 @@ function renderChipsHolder(strat, main) {
               <th onclick="chipsSort('chg_4w_1000')" data-tip="千張大戶持股% [T日 − (T-28日)] 4週差值（百分點）">千張${sortIcon('chg_4w_1000')}</th>
               <th onclick="chipsSort('chg_4w_400')" data-tip="400張大戶持股% [T日 − (T-28日)] 4週差值（百分點）">400張${sortIcon('chg_4w_400')}</th>
               <th>趨勢</th>
-              <th onclick="chipsSort('tag_score')" data-tip="依積分排序：單周增幅+5、雙軌觸發+3、持續成長+1">篩選條件${sortIcon('tag_score')}</th>
+              <th onclick="chipsSort('tag_score')" data-tip="籌碼條件與法人連買標籤；排序分數採單周增幅+5、雙軌觸發+3、持續成長+1">籌碼/法人標籤${sortIcon('tag_score')}</th>
             </tr>
           </thead>
           <tbody>${tableBody}</tbody>
@@ -276,7 +287,7 @@ function exportCSVChips() {
   const data = DATA.chips_big_holder_data || [];
   if (!data.length) return;
   const strat = STRATEGIES.find(s => s.id === 'chips_big_holder');
-  const headers = ['代號(名稱)','現價','周漲跌(%)','乖離EMA120(%)','大戶比例(%)','千張大戶四周增幅(%)','400張大戶四周增幅(%)'];
+  const headers = ['代號(名稱)','現價','周漲跌(%)','乖離EMA120(%)','大戶比例(%)','千張大戶四周增幅(%)','400張大戶四周增幅(%)','標籤'];
   const rows = data.map(d => [
     `${d.stock_id}(${d.name})`,
     d.close?.toFixed(1) || '',
@@ -285,6 +296,7 @@ function exportCSVChips() {
     d.big_pct_1000?.toFixed(2) || '',
     d.chg_4w_1000 != null ? d.chg_4w_1000.toFixed(2) : '',
     d.chg_4w_400 != null ? d.chg_4w_400.toFixed(2) : '',
+    (d.tags || []).join(' / '),
   ]);
   const csv = [headers, ...rows].map(r => r.map(v => `"${String(v).replace(/"/g,'""')}"`).join(',')).join('\r\n');
   const blob = new Blob(['\uFEFF' + csv], { type: 'text/csv;charset=utf-8' });
