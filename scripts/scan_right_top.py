@@ -321,6 +321,7 @@ def build_industry_stats(results: list[dict]) -> list[dict]:
 
 def main() -> None:
     print("=== 突破策略掃描器：盤整突破 + 動能突破 ===")
+    allow_stale = "--allow-stale" in sys.argv
 
     if not os.path.exists(STOCK_LIST_PATH):
         print("stock_list_cache.json 不存在，請先執行 update_price_cache.py")
@@ -336,7 +337,14 @@ def main() -> None:
         print("price_cache.parquet 不存在或為空，請先執行 update_price_cache.py")
         _write_output([], [])
         return
-    _require_fresh_cache(price_cache)
+
+    if allow_stale:
+        signal_date = price_cache["date"].max().strftime("%Y-%m-%d")
+        print(f"--allow-stale：使用快取最新交易日 {signal_date} 作為訊號日期")
+    else:
+        _require_fresh_cache(price_cache)
+        signal_date = TODAY
+
     print(f"價格快取：{len(price_cache):,} 筆，{price_cache['stock_id'].nunique()} 檔")
 
     whale_map = load_whale_map()
@@ -376,7 +384,7 @@ def main() -> None:
                 "quality_score": quality_score,
                 **whale,
                 **signal_payload,
-                "signal_date": TODAY,
+                "signal_date": signal_date,
             })
             print(f"  {sid} {stock['name']} types={'+'.join(signal_types)} score={quality_score}")
 

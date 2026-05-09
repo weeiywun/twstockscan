@@ -32,7 +32,7 @@ jobs:
       - name: 更新價格快取（price_cache.parquet + stock_list_cache.json）
         env:
           FINMIND_TOKEN: ${{ secrets.FINMIND_API_TOKEN }}
-        run: python scripts/update_price_cache.py
+        run: python scripts/update_price_cache.py --allow-stale
 
       - name: Commit 價格快取
         run: |
@@ -51,7 +51,7 @@ jobs:
       - name: 突破策略掃描
         env:
           FINMIND_TOKEN: ${{ secrets.FINMIND_API_TOKEN }}
-        run: python scripts/scan_right_top.py
+        run: python scripts/scan_right_top.py --allow-stale
 
       - name: 突破策略標的追蹤
         env:

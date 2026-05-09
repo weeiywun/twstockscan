@@ -455,8 +455,11 @@ def main():
 
     updated = update_price_cache(start, end, token)
     if not updated and not backfill_month:
-        print(f"❌ {TODAY} 尚未取得有效日線資料，停止後續掃描以避免使用舊價量")
-        sys.exit(1)
+        if "--allow-stale" in sys.argv:
+            print(f"⚠️  {TODAY} 無新資料（非交易日），沿用既有快取")
+        else:
+            print(f"❌ {TODAY} 尚未取得有效日線資料，停止後續掃描以避免使用舊價量")
+            sys.exit(1)
     print("\n✅ 完成")
 
 
