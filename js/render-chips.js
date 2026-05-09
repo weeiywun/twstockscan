@@ -287,16 +287,59 @@ function exportCSVChips() {
   const data = DATA.chips_big_holder_data || [];
   if (!data.length) return;
   const strat = STRATEGIES.find(s => s.id === 'chips_big_holder');
-  const headers = ['代號(名稱)','現價','周漲跌(%)','乖離EMA120(%)','大戶比例(%)','千張大戶四周增幅(%)','400張大戶四周增幅(%)','標籤'];
+  const scoreTags = new Set(['持續成長', '雙軌觸發', '單周增幅']);
+  const instTags = new Set(['外資連買', '投信連買']);
+  const fmt = v => v != null ? Number(v).toFixed(2) : '';
+  const joinTrend = arr => Array.isArray(arr) ? arr.map(v => Number(v).toFixed(2)).join(' / ') : '';
+  const headers = [
+    '代號',
+    '名稱',
+    '產業',
+    '市值(億)',
+    '現價',
+    '周漲跌(%)',
+    'EMA120',
+    '乖離EMA120(%)',
+    '5日均量(張)',
+    '布林帶寬度',
+    '千張大戶比例(%)',
+    '400張大戶比例(%)',
+    '千張大戶3週累積(%)',
+    '400張大戶3週累積(%)',
+    '千張大戶4週增幅(百分點)',
+    '400張大戶4週增幅(百分點)',
+    '連續週數',
+    '評分標籤',
+    '法人標籤',
+    '全部標籤',
+    '趨勢日期',
+    '千張大戶趨勢',
+    '400張大戶趨勢'
+  ];
   const rows = data.map(d => [
-    `${d.stock_id}(${d.name})`,
-    d.close?.toFixed(1) || '',
-    d.week_chg_pct != null ? d.week_chg_pct.toFixed(2) : '',
-    d.deviation != null ? d.deviation.toFixed(2) : '',
-    d.big_pct_1000?.toFixed(2) || '',
-    d.chg_4w_1000 != null ? d.chg_4w_1000.toFixed(2) : '',
-    d.chg_4w_400 != null ? d.chg_4w_400.toFixed(2) : '',
+    d.stock_id || '',
+    d.name || '',
+    d.industry || '',
+    fmt(d.market_cap),
+    d.close != null ? Number(d.close).toFixed(1) : '',
+    fmt(d.week_chg_pct),
+    fmt(d.ema120),
+    fmt(d.deviation),
+    d.vol_5d_avg != null ? Math.round(d.vol_5d_avg) : '',
+    fmt(d.bbw),
+    fmt(d.big_pct_1000),
+    fmt(d.big_pct_400),
+    fmt(d.cumulative_3w),
+    fmt(d.cumulative_3w_400),
+    fmt(d.chg_4w_1000),
+    fmt(d.chg_4w_400),
+    d.consecutive_weeks || '',
+    (d.tags || []).filter(t => scoreTags.has(t)).join(' / '),
+    (d.tags || []).filter(t => instTags.has(t)).join(' / '),
     (d.tags || []).join(' / '),
+    (d.date_labels || []).join(' / '),
+    joinTrend(d.big_trend_1000),
+    joinTrend(d.big_trend_400),
   ]);
   const csv = [headers, ...rows].map(r => r.map(v => `"${String(v).replace(/"/g,'""')}"`).join(',')).join('\r\n');
   const blob = new Blob(['\uFEFF' + csv], { type: 'text/csv;charset=utf-8' });
