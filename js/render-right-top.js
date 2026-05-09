@@ -96,24 +96,24 @@ function renderRightTop(strat, main) {
   }
 
   function tagBadges(tags) {
-    // 語意分組：突破類(藍) / 量能類(琥珀) / 籌碼類(青) / 輔助(灰)
+    // 語意分組：突破類(紅) / 量能類(橙) / 籌碼類(琥珀黃) / 輔助(灰)
     const colorMap = {
-      '盤整突破':    '#2563eb',
-      '動能突破':    '#2563eb',
-      '雙重符合':    '#2563eb',
-      '週量強放大':  '#b7791f',
-      '日量強放大':  '#b7791f',
-      '日線啟動':    '#b7791f',
-      '千張大戶連增':'#0f766e',
-      '400張同步':   '#0f766e',
-      '低乖離':      '#64748b',
+      '盤整突破':    '#dc2626',
+      '動能突破':    '#dc2626',
+      '雙重符合':    '#dc2626',
+      '週量強放大':  '#ea7317',
+      '日量強放大':  '#ea7317',
+      '日線啟動':    '#ea7317',
+      '千張大戶連增':'#d97706',
+      '400張同步':   '#d97706',
+      '低乖離':      '#9ca3af',
     };
     function rgba(hex, a) {
       const r = parseInt(hex.slice(1,3),16), g = parseInt(hex.slice(3,5),16), b = parseInt(hex.slice(5,7),16);
       return `rgba(${r},${g},${b},${a})`;
     }
     return (tags || []).map(t => {
-      const c = colorMap[t] || '#64748b';
+      const c = colorMap[t] || '#9ca3af';
       return `<span class="tag-badge" style="color:${c};border-color:${rgba(c,.3)};background:${rgba(c,.08)}">${t}</span>`;
     }).join('');
   }
