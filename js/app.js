@@ -76,20 +76,6 @@ const STRATEGIES = [
     description: "籌碼集中入池標的首次觸發量增訊號後，維護月營收評級、現價損益與 10 個交易日觀察期。",
     conditions: [],
   },
-  // ── 社群策略：PTT 鄉民選股 ──
-  {
-    id: "ptt_stock",
-    name: "鄉民選股",
-    shortName: "鄉民選股",
-    icon: "◍",
-    group: "community",
-    available: true,
-    description: "爬取 PTT Stock 版 [標的] 文章，彙整鄉民討論熱度、多空方向與推噓數，保留 30 天滾動視窗。",
-    conditions: [],
-    dataUpdated: "載入中...",
-    dataSource: "PTT Stock 版",
-    dataKey: "ptt_data",
-  },
   // ── 策略二：突破策略 ──
   {
     id: "right_top",
@@ -119,6 +105,20 @@ const STRATEGIES = [
     available: true,
     description: "突破策略觸發標的的後續追蹤，記錄入選收盤、現價、損益，觀察期 10 個交易日。",
     conditions: [],
+  },
+  // ── 社群策略：PTT 鄉民選股 ──
+  {
+    id: "ptt_stock",
+    name: "鄉民選股",
+    shortName: "鄉民選股",
+    icon: "◍",
+    group: "community",
+    available: true,
+    description: "爬取 PTT Stock 版 [標的] 文章，彙整鄉民討論熱度、多空方向與推噓數，保留 30 天滾動視窗。",
+    conditions: [],
+    dataUpdated: "載入中...",
+    dataSource: "PTT Stock 版",
+    dataKey: "ptt_data",
   },
 ];
 
