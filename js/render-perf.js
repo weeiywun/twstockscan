@@ -373,7 +373,7 @@ function renderPerformance(strat, main) {
     return dates.length ? hist[dates[dates.length - 1]] : null;
   }
 
-  function activeRow(p) {
+  function activeRow(p, groupId = null) {
     const remaining = posRemainingShares(p);
     const cp = getLatestPrice(p.stock_id);
     const posCost = p.cost_price * remaining;
@@ -386,12 +386,16 @@ function renderPerformance(strat, main) {
     const sharesCell = (p.exits && p.exits.length)
       ? `${remaining.toLocaleString()}<span style="font-size:10px;color:var(--text3)"> / ${p.shares.toLocaleString()}</span>`
       : p.shares.toLocaleString();
+    const groupAttr = groupId ? ` data-group="${groupId}"` : '';
+    const subStyle = groupId ? 'background:var(--bg3);border-left:3px solid var(--border)' : '';
+    const stockCell = groupId
+      ? `<span style="font-size:11px;color:var(--text3);padding-left:8px">↳ ${p.entry_date}</span>`
+      : `<span class="stock-code">${p.stock_id}</span>${p.name && p.name !== p.stock_id ? `<span style="font-size:11px;color:var(--text3);margin-left:5px">${p.name}</span>` : ''}`;
     return `
-      <tr class="perf-pos-row">
-        <td><span class="stock-code">${p.stock_id}</span>${p.name && p.name !== p.stock_id ? `<span style="font-size:11px;color:var(--text3);margin-left:5px">${p.name}</span>` : ''}</td>
-        <td style="font-family:var(--mono);font-size:12px">${p.entry_date}</td>
-        <td style="font-family:var(--mono)">${sharesCell}</td>
-        <td style="font-family:var(--mono)">${p.cost_price.toFixed(2)}</td>
+      <tr class="perf-pos-row"${groupAttr} style="${subStyle}">
+        <td>${stockCell}</td>
+        ${groupId ? '' : `<td style="font-family:var(--mono);font-size:12px">${p.entry_date}</td>`}
+        ${groupId ? `<td colspan="2" style="font-family:var(--mono)">${sharesCell} 股　@ ${p.cost_price.toFixed(2)}</td>` : `<td style="font-family:var(--mono)">${sharesCell}</td><td style="font-family:var(--mono)">${p.cost_price.toFixed(2)}</td>`}
         <td style="font-family:var(--mono)">${cp != null ? cp.toFixed(2) : '<span style="color:var(--text3)">—</span>'}</td>
         <td><span style="font-family:var(--mono);color:${pc};font-weight:600">${ps}${pnlPct.toFixed(2)}%</span><br><span style="font-family:var(--mono);font-size:11px;color:${pc}">${ps}${Math.round(pnlAmt).toLocaleString()}</span></td>
         <td style="font-family:var(--mono);font-size:12px;color:var(--market-up)">${p.tp_price != null ? p.tp_price.toFixed(2) : '<span style="color:var(--text3)">—</span>'}</td>
@@ -401,7 +405,7 @@ function renderPerformance(strat, main) {
           <button class="perf-btn perf-btn-del" style="margin-left:4px" onclick="perfDeletePos('${p.id}')">刪除</button>
         </td>
       </tr>
-      <tr id="exit-form-${p.id}" style="display:none">
+      <tr id="exit-form-${p.id}"${groupAttr} style="display:none">
         <td colspan="9" style="padding:12px 16px;background:var(--bg3);border-bottom:1px solid var(--border)">
           <div style="display:flex;align-items:flex-end;gap:12px;flex-wrap:wrap">
             <span style="font-size:12px;color:var(--text2);font-weight:600;padding-bottom:2px">出場資訊</span>
@@ -429,6 +433,46 @@ function renderPerformance(strat, main) {
           </div>
         </td>
       </tr>`;
+  }
+
+  function activeGroupRows(stockId, positions) {
+    if (positions.length === 1) return activeRow(positions[0]);
+    const cp = getLatestPrice(stockId);
+    let totalRemaining = 0, totalCostVal = 0;
+    positions.forEach(p => {
+      const rem = posRemainingShares(p);
+      totalRemaining += rem;
+      totalCostVal += rem * p.cost_price;
+    });
+    const weightedCost = totalCostVal / totalRemaining;
+    const posVal = cp != null ? calcSellNet(cp, totalRemaining).net : totalCostVal;
+    const pnlAmt = posVal - totalCostVal;
+    const pnlPct = (posVal / totalCostVal - 1) * 100;
+    const pc = pnlPct >= 0 ? 'var(--market-up)' : 'var(--market-down)';
+    const ps = pnlPct >= 0 ? '+' : '';
+    const name = positions[0].name;
+    const groupId = `pgrp-${stockId}`;
+    const subRows = positions.map(p => activeRow(p, groupId)).join('');
+    return `
+      <tr class="perf-group-hd" onclick="togglePerfGroup('${groupId}')" style="cursor:pointer;background:var(--bg2)">
+        <td>
+          <span class="stock-code">${stockId}</span>
+          ${name && name !== stockId ? `<span style="font-size:11px;color:var(--text3);margin-left:5px">${name}</span>` : ''}
+          <span id="${groupId}-arrow" style="font-size:11px;margin-left:8px;color:var(--text3)">▾</span>
+          <span style="font-size:10px;padding:1px 5px;border-radius:3px;background:rgba(58,134,255,0.1);color:#3a86ff;border:1px solid rgba(58,134,255,0.3);margin-left:4px">${positions.length} 批</span>
+        </td>
+        <td style="font-size:11px;color:var(--text3)">—</td>
+        <td style="font-family:var(--mono);font-weight:600">${totalRemaining.toLocaleString()}</td>
+        <td style="font-family:var(--mono)">${weightedCost.toFixed(2)}<span style="font-size:10px;color:var(--text3)"> 均</span></td>
+        <td style="font-family:var(--mono)">${cp != null ? cp.toFixed(2) : '<span style="color:var(--text3)">—</span>'}</td>
+        <td>
+          <span style="font-family:var(--mono);color:${pc};font-weight:600">${ps}${pnlPct.toFixed(2)}%</span><br>
+          <span style="font-family:var(--mono);font-size:11px;color:${pc}">${ps}${Math.round(pnlAmt).toLocaleString()}</span>
+        </td>
+        <td>—</td><td>—</td>
+        <td></td>
+      </tr>
+      ${subRows}`;
   }
 
   function closedRow(p) {
@@ -566,7 +610,7 @@ function renderPerformance(strat, main) {
 
       <div class="perf-section">
         <div class="perf-section-hd">
-          <span class="section-title">持倉中　<span style="font-weight:400;color:var(--text3);font-size:12px">${active.length} 檔</span></span>
+          <span class="section-title">持倉中　<span style="font-weight:400;color:var(--text3);font-size:12px">${(() => { const ids = [...new Set(active.map(p => p.stock_id))]; return ids.length === active.length ? `${active.length} 檔` : `${ids.length} 檔（${active.length} 批）`; })()}</span></span>
           <button class="perf-btn perf-btn-add" onclick="perfShowAddForm()">＋ 新增持倉</button>
         </div>
         <div class="table-wrap">
@@ -577,7 +621,12 @@ function renderPerformance(strat, main) {
                 <th>現價</th><th>損益%</th><th>停利</th><th>停損</th><th>操作</th>
               </tr></thead>
               <tbody id="perfActiveBody">
-                ${active.length ? active.map(activeRow).join('') : `<tr id="perfEmptyRow"><td colspan="9" style="text-align:center;color:var(--text3);padding:24px 16px;font-size:13px">尚無持倉，點擊右上角「新增持倉」開始記錄</td></tr>`}
+                ${(() => {
+                  if (!active.length) return `<tr id="perfEmptyRow"><td colspan="9" style="text-align:center;color:var(--text3);padding:24px 16px;font-size:13px">尚無持倉，點擊右上角「新增持倉」開始記錄</td></tr>`;
+                  const groups = {};
+                  active.forEach(p => { if (!groups[p.stock_id]) groups[p.stock_id] = []; groups[p.stock_id].push(p); });
+                  return Object.entries(groups).map(([sid, ps]) => activeGroupRows(sid, ps)).join('');
+                })()}
                 <tr id="perfAddFormRow" style="display:none">
                   <td colspan="9" style="padding:14px 16px;background:var(--bg3);border-top:1px solid var(--border)">
                     <div style="display:grid;grid-template-columns:repeat(auto-fill,minmax(120px,1fr));gap:10px 12px;margin-bottom:10px">
@@ -644,6 +693,22 @@ function renderPerformance(strat, main) {
 // ════════════════════════════════════════════════════
 //  PERFORMANCE — 互動函式
 // ════════════════════════════════════════════════════
+function togglePerfGroup(groupId) {
+  const rows = document.querySelectorAll(`[data-group="${groupId}"]`);
+  const arrow = document.getElementById(groupId + '-arrow');
+  if (!rows.length) return;
+  const isHidden = rows[0].style.display === 'none';
+  rows.forEach(r => {
+    if (r.id && r.id.startsWith('exit-form-')) {
+      // 展開時出場表單維持收合，收合時同步隱藏
+      if (!isHidden) r.style.display = 'none';
+    } else {
+      r.style.display = isHidden ? '' : 'none';
+    }
+  });
+  if (arrow) arrow.textContent = isHidden ? '▾' : '▸';
+}
+
 function perfShowAddForm() {
   const row = document.getElementById('perfAddFormRow');
   const emptyRow = document.getElementById('perfEmptyRow');
