@@ -242,6 +242,12 @@ def build_stocks_summary(posts: list[dict[str, Any]]) -> dict[str, Any]:
 
 
 def main() -> None:
+    import argparse
+    parser = argparse.ArgumentParser()
+    parser.add_argument("--pages", type=int, default=5, help="最多翻幾頁（預設 5）")
+    args = parser.parse_args()
+    max_pages = args.pages
+
     os.makedirs(DATA_DIR, exist_ok=True)
     print(f"=== PTT Stock [標的] 爬取 {NOW.strftime('%Y-%m-%d %H:%M')} ===")
 
@@ -249,12 +255,12 @@ def main() -> None:
     existing_ids = {p["id"] for p in existing}
     print(f"  現有資料：{len(existing)} 筆")
 
-    # 爬取最新頁，遇到全是舊文章就停，最多翻 5 頁
+    # 爬取最新頁，遇到全是舊文章就停
     new_posts: list[dict[str, Any]] = []
     url: str | None = PTT_STOCK_INDEX
     pages_fetched = 0
 
-    while url and pages_fetched < 5:
+    while url and pages_fetched < max_pages:
         print(f"  爬取：{url}")
         soup = fetch_page(url)
         if not soup:

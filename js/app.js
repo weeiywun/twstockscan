@@ -76,6 +76,20 @@ const STRATEGIES = [
     description: "籌碼集中入池標的首次觸發量增訊號後，維護月營收評級、現價損益與 10 個交易日觀察期。",
     conditions: [],
   },
+  // ── 社群策略：PTT 鄉民選股 ──
+  {
+    id: "ptt_stock",
+    name: "鄉民選股",
+    shortName: "鄉民選股",
+    icon: "◍",
+    group: "community",
+    available: true,
+    description: "爬取 PTT Stock 版 [標的] 文章，彙整鄉民討論熱度、多空方向與推噓數，保留 30 天滾動視窗。",
+    conditions: [],
+    dataUpdated: "載入中...",
+    dataSource: "PTT Stock 版",
+    dataKey: "ptt_data",
+  },
   // ── 策略二：突破策略 ──
   {
     id: "right_top",
@@ -122,6 +136,7 @@ const DATA = {
   right_top_data:         [],
   right_top_industry:     [],
   right_top_track_data:   null,
+  ptt_data:               null,
 };
 let DATE_LABELS = [];
 
@@ -244,6 +259,7 @@ function trendBars(trend, label, colorClass) {
 const NAV_GROUP_LABELS = {
   chips:     '籌碼選股',
   right_top: '突破策略',
+  community: '鄉民選股',
 };
 
 function _navBadge(s) {
@@ -252,6 +268,7 @@ function _navBadge(s) {
   if (s.id === 'performance') return (DATA.performance_data?.positions || []).filter(p => !p.confirmed).length;
   if (s.id === 'stock_analysis') return DATA.stock_analysis_data?.active?.length ?? '—';
   if (s.id === 'right_top_track') return DATA.right_top_track_data?.active?.length ?? '—';
+  if (s.id === 'ptt_stock') return DATA.ptt_data ? Object.keys(DATA.ptt_data.stocks || {}).length : '—';
   return (DATA[s.dataKey] || []).length;
 }
 
@@ -338,6 +355,7 @@ function renderStrategy() {
   if (strat.id === 'stock_analysis')   { renderStockAnalysis(strat, main);  return; }
   if (strat.id === 'right_top')        { renderRightTop(strat, main);          return; }
   if (strat.id === 'right_top_track') { renderRightTopTrack(strat, main);     return; }
+  if (strat.id === 'ptt_stock')        { renderPttStock(strat, main);          return; }
   if (strat.id === 'performance')      { renderPerformance(strat, main);    return; }
 }
 
@@ -481,7 +499,7 @@ async function loadData() {
   const timestamp = new Date().getTime();
 
   try {
-    const [chipsRes, vsRes, aiRes, saRes, perfRes, miRes, fdRes, rtRes, rttRes] = await Promise.all([
+    const [chipsRes, vsRes, aiRes, saRes, perfRes, miRes, fdRes, rtRes, rttRes, pttRes] = await Promise.all([
       fetch(`data/chips_big_holder.json?t=${timestamp}`,   { cache: 'no-store' }).then(r => r.ok ? r.json() : null).catch(() => null),
       fetch(`data/volume_signal.json?t=${timestamp}`,      { cache: 'no-store' }).then(r => r.ok ? r.json() : null).catch(() => null),
       fetch(`data/ai_recommendations.json?t=${timestamp}`, { cache: 'no-store' }).then(r => r.ok ? r.json() : null).catch(() => null),
@@ -491,6 +509,7 @@ async function loadData() {
       fetch(`data/futures_dashboard.json?t=${timestamp}`,   { cache: 'no-store' }).then(r => r.ok ? r.json() : null).catch(() => null),
       fetch(`data/right_top.json?t=${timestamp}`,          { cache: 'no-store' }).then(r => r.ok ? r.json() : null).catch(() => null),
       fetch(`data/right_top_track.json?t=${timestamp}`,    { cache: 'no-store' }).then(r => r.ok ? r.json() : null).catch(() => null),
+      fetch(`data/ptt_stock.json?t=${timestamp}`,          { cache: 'no-store' }).then(r => r.ok ? r.json() : null).catch(() => null),
     ]);
 
     if (chipsRes && chipsRes.results) {
@@ -547,6 +566,12 @@ async function loadData() {
 
     if (rttRes && (rttRes.active || rttRes.expired)) {
       DATA.right_top_track_data = rttRes;
+    }
+
+    if (pttRes && pttRes.posts) {
+      DATA.ptt_data = pttRes;
+      const strat = STRATEGIES.find(s => s.id === 'ptt_stock');
+      if (strat) strat.dataUpdated = pttRes.updated || strat.dataUpdated;
     }
   } catch (e) {
     console.error('資料載入失敗:', e);
