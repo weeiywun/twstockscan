@@ -387,6 +387,36 @@ def _legacy_pc_ratio(pc_ratio: dict[str, Any] | None) -> dict[str, Any] | None:
     }
 
 
+def fetch_vix(days: int = 5) -> dict[str, Any] | None:
+    """從 stooq.com 取得 VIX 收盤價（不需 API key）。"""
+    try:
+        text = _request_text("https://stooq.com/q/d/l/?s=^vix&i=d")
+        rows = list(csv.reader(io.StringIO(text)))
+        # stooq CSV 格式：Date,Open,High,Low,Close,Volume（降序）
+        history = []
+        for row in rows[1:days + 1]:
+            if len(row) < 5:
+                continue
+            close = _num(row[4])
+            if close is None:
+                continue
+            history.append({"date": row[0], "close": close})
+        if not history:
+            return None
+        latest = history[0]
+        prev_close = history[1]["close"] if len(history) > 1 else None
+        return {
+            "date": latest["date"],
+            "close": latest["close"],
+            "change": round(latest["close"] - prev_close, 2) if prev_close is not None else None,
+            "history": history,
+            "source": "stooq",
+        }
+    except Exception as exc:
+        print(f"  ⚠️  VIX 讀取失敗：{exc}")
+        return None
+
+
 def fetch_cnn_fear_greed() -> dict[str, Any] | None:
     try:
         utc_today = datetime.now(timezone.utc).date()
@@ -691,6 +721,21 @@ def _stock_flow_score(net_amount_twd: float | int | None) -> float | None:
     return round(sign * ratio ** 2 * 100, 1)
 
 
+def _vix_score(vix_close: float | None, vix_change: float | None) -> float | None:
+    """VIX 行情狀態評分（非逆向，直接反映市場壓力）。
+    水位：VIX 20 為中性，每偏離 10 點得 ±100 分。
+    日變化：VIX 漲為負分，跌為正分，每 3 點對應 ±100 分。
+    兩者各佔 50%。
+    """
+    if vix_close is None:
+        return None
+    level_score = _component_score(20.0 - vix_close, scale=10)
+    if vix_change is not None:
+        change_score = _component_score(-vix_change, scale=3)
+        return round(0.5 * level_score + 0.5 * change_score, 1)
+    return round(level_score, 1)
+
+
 def _market_bias(data: dict[str, Any]) -> dict[str, Any]:
     # ── 期貨日盤 ──
     tx_day_contract = ((data.get("futures") or {}).get("day_session") or {}).get("tx") or {}
@@ -713,11 +758,36 @@ def _market_bias(data: dict[str, Any]) -> dict[str, Any]:
         else:
             retail_deviation = retail_today
 
-    # ── PC Ratio / 外資現貨 / 美股情緒 ──
-    pc_oi = ((data.get("sentiment") or {}).get("pc_ratio") or {}).get("open_interest_ratio")
+    # ── PC Ratio（動態基準 + 行情方向）──
+    pc_data = (data.get("sentiment") or {}).get("pc_ratio") or {}
+    pc_history = pc_data.get("history") or []
+    pc_oi = pc_data.get("open_interest_ratio")
+    pc_oi_baseline: float | None = None
+    pc_oi_deviation: float | None = None
+    if pc_oi is not None and pc_history:
+        hist_vals = [h.get("open_interest_ratio") for h in pc_history[1:] if h.get("open_interest_ratio") is not None]
+        if hist_vals:
+            pc_oi_baseline = round(sum(hist_vals) / len(hist_vals), 1)
+            pc_oi_deviation = round(pc_oi - pc_oi_baseline, 1)
+
+    # ── 外資現貨 / 美股情緒 / VIX ──
     stock_history = (data.get("stock_institutional") or {}).get("history") or []
     foreign_stock_net = (stock_history[0].get("traders") or {}).get("foreign", {}).get("net_amount") if stock_history else None
     fg_score = ((data.get("us_sentiment") or {}).get("fear_greed") or {}).get("score")
+    vix_data = (data.get("us_sentiment") or {}).get("vix") or {}
+    vix_close = vix_data.get("close")
+    vix_change = vix_data.get("change")
+
+    # PC Ratio 評分：偏離 5 日均值為正（今日比近期更防禦）→ 負分；無歷史時退回絕對水位
+    if pc_oi_deviation is not None:
+        pc_score = _component_score(pc_oi_deviation, 15, invert=True)
+        pc_note = (
+            f"今日 {pc_oi}%，近期均值 {pc_oi_baseline}%，偏差 {pc_oi_deviation:+.1f}%；"
+            "Put 部位高於近期均值代表防禦氣氛偏濃，市場動能偏弱。"
+        )
+    else:
+        pc_score = _component_score((100.0 - pc_oi) if pc_oi is not None else None, 30)
+        pc_note = f"今日 {pc_oi}%；Put 未平倉比率偏高代表市場處於防禦狀態（無歷史基準，採絕對值）。"
 
     components = [
         {
@@ -727,7 +797,7 @@ def _market_bias(data: dict[str, Any]) -> dict[str, Any]:
             "unit": "%",
             "weight": 25,
             "score": _component_score(retail_deviation, 10, invert=True),
-            "note": f"小台今日 {retail_today}%，近期均值 {retail_baseline}%；正偏差（比平均更偏多）為反向看空訊號。",
+            "note": f"小台今日 {retail_today}%，近期均值 {retail_baseline}%；散戶部位偏多超出均值，市場籌碼集中、易受賣壓。",
         },
         {
             "key": "pc_ratio",
@@ -735,8 +805,8 @@ def _market_bias(data: dict[str, Any]) -> dict[str, Any]:
             "value": pc_oi,
             "unit": "%",
             "weight": 18,
-            "score": _component_score((pc_oi - 100) if pc_oi is not None else None, 50),
-            "note": "中性點 100%；高於 100% 代表 Put 買盤升溫，反向視為支撐訊號。",
+            "score": pc_score,
+            "note": pc_note,
         },
         {
             "key": "foreign_stock_flow",
@@ -754,7 +824,7 @@ def _market_bias(data: dict[str, Any]) -> dict[str, Any]:
             "unit": "分",
             "weight": 12,
             "score": _component_score((fg_score - 50) if fg_score is not None else None, 50),
-            "note": "美股風險偏好作為台股開盤前外部情緒輔助。",
+            "note": "美股風險偏好；高分代表市場處於貪婪／風險偏好狀態，低分代表恐慌收縮。",
         },
         {
             "key": "foreign_tx_oi_change",
@@ -763,7 +833,7 @@ def _market_bias(data: dict[str, Any]) -> dict[str, Any]:
             "unit": "口",
             "weight": 12,
             "score": _component_score(tx_foreign_oi_change, 5000),
-            "note": "日變化量（非存量）；正值為減空/加多，排除結構性空單干擾。",
+            "note": "日變化量（非存量）；正值為減空/加多，反映外資對台股的即時方向。",
         },
         {
             "key": "night_session",
@@ -775,13 +845,16 @@ def _market_bias(data: dict[str, Any]) -> dict[str, Any]:
             "note": "夜盤反映美股時段後的短線部位變化。",
         },
         {
-            "key": "institutional_tx_oi_change",
-            "label": "三大法人台指期未平倉變化",
-            "value": tx_total_oi_change,
-            "unit": "口",
+            "key": "vix",
+            "label": "VIX 恐慌指數",
+            "value": vix_close,
+            "unit": "",
             "weight": 8,
-            "score": _component_score(tx_total_oi_change, 8000),
-            "note": "日變化量；作為外資方向的合計確認。",
+            "score": _vix_score(vix_close, vix_change),
+            "note": (
+                f"VIX {vix_close}（{'↑' if (vix_change or 0) > 0 else '↓' if (vix_change or 0) < 0 else '—'}"
+                f"{abs(vix_change):.2f}）；20 為中性點，高於 20 代表市場壓力升溫，低於 15 代表過度樂觀。"
+            ) if vix_close is not None else "VIX 資料暫無法取得。",
         },
     ]
     valid = [c for c in components if c["score"] is not None]
@@ -798,7 +871,7 @@ def _market_bias(data: dict[str, Any]) -> dict[str, Any]:
         "gauge": round((weighted_score + 100) / 2, 1),
         "confidence": round(abs(weighted_score), 1),
         "components": valid,
-        "definition": "情緒反向 43% + 外資現貨 15% + CNN 12% + 台指期變化 20% + 夜盤 10%；門檻 ±25。",
+        "definition": "散戶籌碼 25% + 選擇權P/C 18% + 外資現貨 15% + CNN情緒 12% + 外資期貨 12% + 夜盤 10% + VIX 8%；門檻 ±25。",
     }
 
 
@@ -862,6 +935,7 @@ def main() -> None:
     market_history = fetch_futures_market_history()
     stock_inst = fetch_stock_institutional_amounts()
     fear_greed = fetch_cnn_fear_greed()
+    vix = fetch_vix()
 
     institutional_history: dict[str, dict[str, Any]] = {}
     for row in (pc_ratio.get("history", [])[:5] if pc_ratio else []):
@@ -902,11 +976,12 @@ def main() -> None:
     out = {
         "date": max(dates) if dates else TODAY.isoformat(),
         "updated": NOW.isoformat(),
-        "source": "taifex_futContractsDate+taifex_futContractsDateAh+taifex_futDataDown+taifex_open_data" + ("+twse_bfi82u" if stock_inst else "") + ("+cnn_fear_greed" if fear_greed else ""),
+        "source": "taifex_futContractsDate+taifex_futContractsDateAh+taifex_futDataDown+taifex_open_data" + ("+twse_bfi82u" if stock_inst else "") + ("+cnn_fear_greed" if fear_greed else "") + ("+stooq_vix" if vix else ""),
         "market": market or {},
         "stock_institutional": stock_inst,
         "us_sentiment": {
             "fear_greed": fear_greed,
+            "vix": vix,
         },
         "futures": {
             "day_session": {
@@ -937,7 +1012,7 @@ def main() -> None:
         "notes": [
             "夜盤法人為期交所三大法人夜盤頁面資料，日期以盤後交易量歸屬日為準。",
             "散戶多空比以三大法人淨未平倉反向值 / 全市場全月份未沖銷契約數估算；正值代表散戶相對偏多。",
-            "Market Bias 採台股期權籌碼為主，CNN Fear & Greed 作為美股風險偏好輔助。",
+            "Market Bias 反映當前市場動能狀態，非逆向操作建議；各指標均以順勢方向計分。",
         ],
     }
     with open(OUTPUT_PATH, "w", encoding="utf-8") as f:
