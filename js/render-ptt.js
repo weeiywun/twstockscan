@@ -19,6 +19,16 @@ function _pttMarketBadge(market) {
   return '';
 }
 
+let pttSortCol = 'latest_date';
+let pttSortAsc  = false;
+
+function pttSort(col) {
+  if (pttSortCol === col) pttSortAsc = !pttSortAsc;
+  else { pttSortCol = col; pttSortAsc = false; }
+  const strat = STRATEGIES.find(s => s.id === 'ptt_stock');
+  renderPttStock(strat, document.getElementById('mainContent'));
+}
+
 function renderPttStock(strat, main) {
   const pd = DATA.ptt_data;
   const stocks = Object.values(pd?.stocks || {});
@@ -33,8 +43,17 @@ function renderPttStock(strat, main) {
     return;
   }
 
-  // 排序：預設最新日期
-  const sorted = stocks.slice().sort((a, b) => (b.latest_date || '').localeCompare(a.latest_date || ''));
+  // 排序
+  const sorted = stocks.slice().sort((a, b) => {
+    let va = a[pttSortCol], vb = b[pttSortCol];
+    if (va == null) va = typeof vb === 'number' ? -Infinity : '';
+    if (vb == null) vb = typeof va === 'number' ? -Infinity : '';
+    if (va < vb) return pttSortAsc ? -1 : 1;
+    if (va > vb) return pttSortAsc ? 1 : -1;
+    return 0;
+  });
+
+  const pttSortIcon = col => `<span class="sort-icon">${pttSortCol === col ? (pttSortAsc ? '↑' : '↓') : '·'}</span>`;
 
   // 摘要數字
   const totalBullish = stocks.reduce((n, s) => n + s.bullish, 0);
@@ -159,10 +178,10 @@ function renderPttStock(strat, main) {
             <thead>
               <tr>
                 <th>代號 / 名稱</th>
-                <th>篇數</th>
+                <th onclick="pttSort('posts_30d')" style="cursor:pointer">篇數${pttSortIcon('posts_30d')}</th>
                 <th>多空分佈</th>
-                <th>淨推文</th>
-                <th>最新日期</th>
+                <th onclick="pttSort('net_pushes')" style="cursor:pointer">淨推文${pttSortIcon('net_pushes')}</th>
+                <th onclick="pttSort('latest_date')" style="cursor:pointer">最新日期${pttSortIcon('latest_date')}</th>
               </tr>
             </thead>
             <tbody>${sorted.map(stockRow).join('')}</tbody>
