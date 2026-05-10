@@ -77,24 +77,24 @@ function renderChipsHolder(strat, main) {
   }
 
   const tagStyle = {
-    '持續成長': 'background:rgba(58,134,255,0.1);color:#3a86ff;border:1px solid rgba(58,134,255,0.35)',
-    '雙軌觸發': 'background:rgba(230,110,41,0.1);color:#e66e29;border:1px solid rgba(230,110,41,0.35)',
-    '單周增幅': 'background:rgba(230,57,70,0.1);color:#e63946;border:1px solid rgba(230,57,70,0.35)',
-    '外資連買': 'background:rgba(240,180,41,0.12);color:var(--amber);border:1px solid rgba(240,180,41,0.4)',
-    '投信連買': 'background:rgba(240,180,41,0.12);color:var(--amber);border:1px solid rgba(240,180,41,0.4)'
+    '持續成長': 'color:#3a86ff;border-color:rgba(58,134,255,0.5)',
+    '雙軌觸發': 'color:#e66e29;border-color:rgba(230,110,41,0.5)',
+    '單周增幅': 'color:#e63946;border-color:rgba(230,57,70,0.5)',
+    '外資連買': 'color:var(--amber);border-color:rgba(240,180,41,0.5)',
+    '投信連買': 'color:var(--amber);border-color:rgba(240,180,41,0.5)'
   };
 
   function tagBadges(tags) {
     if (!tags || !tags.length) return '';
     return tags.map(t => {
-      const style = tagStyle[t] || 'background:rgba(136,136,136,0.1);color:#888;border:1px solid rgba(136,136,136,0.3)';
+      const style = tagStyle[t] || 'color:#888;border-color:rgba(136,136,136,0.4)';
       return `<span class="tag-badge" style="${style}">${t}</span>`;
     }).join('');
   }
 
   function consecutiveBadge(weeks) {
     if (!weeks || weeks < 2) return '';
-    return `<span class="tag-badge" style="background:rgba(240,136,62,0.15);color:var(--amber);border:1px solid rgba(240,136,62,0.4);font-size:11px;font-weight:600">連續${weeks}週</span>`;
+    return `<span class="tag-badge" style="color:var(--amber);border-color:rgba(240,136,62,0.5);font-size:11px;font-weight:600">連續${weeks}週</span>`;
   }
 
   function chipsRow(d) {

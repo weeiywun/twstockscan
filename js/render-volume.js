@@ -12,9 +12,18 @@ function renderVolumeSignal(strat, main) {
     return;
   }
 
-  const tagColor = { '持續成長': '#3a86ff', '雙軌觸發': '#e66e29', '單周增幅': '#e63946', '外資連買': '#f0b429', '投信連買': '#f0b429' };
+  const tagStyle = {
+    '持續成長': 'color:#3a86ff;border-color:rgba(58,134,255,0.5)',
+    '雙軌觸發': 'color:#e66e29;border-color:rgba(230,110,41,0.5)',
+    '單周增幅': 'color:#e63946;border-color:rgba(230,57,70,0.5)',
+    '外資連買': 'color:var(--amber);border-color:rgba(240,180,41,0.5)',
+    '投信連買': 'color:var(--amber);border-color:rgba(240,180,41,0.5)'
+  };
   function tagBadges(tags) {
-    return (tags || []).map(t => `<span class="tag-badge" style="background:${tagColor[t]||'#888'}">${t}</span>`).join('');
+    return (tags || []).map(t => {
+      const style = tagStyle[t] || 'color:#888;border-color:rgba(136,136,136,0.4)';
+      return `<span class="tag-badge" style="${style}">${t}</span>`;
+    }).join('');
   }
 
   const sortIcon = col => `<span class="sort-icon">${sortCol===col ? (sortAsc?'↑':'↓') : '·'}</span>`;
@@ -67,7 +76,7 @@ function renderVolumeSignal(strat, main) {
             <div style="font-size:12px;color:var(--text2);line-height:1.9">
               <div>千張大戶比：<b>${d.big_pct_1000 != null ? d.big_pct_1000.toFixed(2) + '%' : '—'}</b></div>
               <div>3週累積增幅：<b class="big-pct ${(d.cumulative_3w||0)>=0?'pos':'neg'}">${d.cumulative_3w != null ? (d.cumulative_3w>=0?'+':'') + d.cumulative_3w.toFixed(2) + '%' : '—'}</b></div>
-              <div style="margin-top:4px">${(d.tags||[]).map(t=>`<span class="tag-badge" style="background:${{'持續成長':'#3a86ff','雙軌觸發':'#e66e29','單周增幅':'#e63946'}[t]||'#888'}">${t}</span>`).join(' ')}</div>
+              <div style="margin-top:4px">${tagBadges(d.tags)}</div>
             </div>
           </div>
           <div class="expand-section" style="flex:1;min-width:100px">
