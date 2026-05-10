@@ -281,22 +281,30 @@ function _navTab(s) {
   </button>`;
 }
 
+function _updateHdrBtns() {
+  const btnFuture = document.getElementById('hdrBtnFuture');
+  const btnPerf   = document.getElementById('hdrBtnPerf');
+  if (!btnFuture) return;
+
+  // 績效按鈕：需解鎖才顯示
+  if (btnPerf) btnPerf.style.display = PERF_UNLOCKED ? '' : 'none';
+
+  [btnFuture, btnPerf].forEach(btn => {
+    if (!btn || btn.style.display === 'none') return;
+    const isActive = btn.id === 'hdrBtnFuture'
+      ? activeStratId === 'future_dashboard'
+      : activeStratId === 'performance';
+    btn.style.background     = isActive ? 'var(--bg3)' : 'none';
+    btn.style.borderColor    = isActive ? 'var(--border)' : 'transparent';
+    btn.style.color          = isActive ? 'var(--text)'  : 'var(--text2)';
+  });
+}
+
 function renderNav() {
   const nav = document.getElementById('strategyNav');
   let html = '';
 
-  // 績效：獨立置頂（需解鎖）
-  const future = STRATEGIES.find(s => s.id === 'future_dashboard');
-  if (future) {
-    html += _navTab(future);
-    html += `<div style="width:1px;background:var(--border);margin:10px 6px;align-self:stretch;flex-shrink:0"></div>`;
-  }
-
-  const perf = STRATEGIES.find(s => s.id === 'performance');
-  if (PERF_UNLOCKED && perf) {
-    html += _navTab(perf);
-    html += `<div style="width:1px;background:var(--border);margin:10px 6px;align-self:stretch;flex-shrink:0"></div>`;
-  }
+  _updateHdrBtns();
 
   // 依 group 分組渲染
   const groupOrder = [];

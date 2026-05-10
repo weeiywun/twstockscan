@@ -19,6 +19,16 @@
       SR_PC
       <span class="version-badge">v0.4.0</span>
     </div>
+    <div id="hdrStratBtns" style="display:flex;align-items:center;gap:4px;margin-left:14px">
+      <button id="hdrBtnFuture" onclick="setStrategy('future_dashboard')"
+        style="font-size:11px;font-weight:600;font-family:var(--sans);padding:4px 10px;border-radius:5px;cursor:pointer;background:none;border:1px solid transparent;color:var(--text2);transition:all .15s;white-space:nowrap">
+        ▣ FUTURE
+      </button>
+      <button id="hdrBtnPerf" onclick="setStrategy('performance')"
+        style="display:none;font-size:11px;font-weight:600;font-family:var(--sans);padding:4px 10px;border-radius:5px;cursor:pointer;background:none;border:1px solid transparent;color:var(--text2);transition:all .15s;white-space:nowrap">
+        ◐ 績效
+      </button>
+    </div>
     <div class="header-meta">
       <button id="headerUpdateBtn" class="header-update-btn" onclick="triggerPriceUpdate(this)" title="觸發 GitHub Actions 重新抓取標的現價與大盤指數（需 GitHub Token）">↑ 更新市場資料</button>
     </div>
