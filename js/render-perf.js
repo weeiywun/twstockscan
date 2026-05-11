@@ -256,6 +256,100 @@ function initPerfChart(pd) {
 }
 
 // ════════════════════════════════════════════════════
+//  PERFORMANCE — 操作統計
+// ════════════════════════════════════════════════════
+function buildMonthlyStats(pd) {
+  const startCap  = pd?.starting_capital || 450000;
+  const positions = pd?.positions || [];
+  const trades    = [];
+
+  positions.forEach(p => {
+    if (p.exits && p.exits.length > 0) {
+      p.exits.forEach(ex => {
+        const cost = ex.shares * p.cost_price;
+        const pnl  = ex.exit_net - cost;
+        trades.push({ month: ex.date.slice(0, 7), pnl, cost });
+      });
+    } else if (p.confirmed && p.exit_date) {
+      const cost    = p.shares * p.cost_price;
+      const exitVal = p.exit_net != null ? p.exit_net : p.shares * p.exit_price;
+      trades.push({ month: p.exit_date.slice(0, 7), pnl: exitVal - cost, cost });
+    }
+  });
+
+  if (!trades.length) return [];
+
+  const monthMap = {};
+  trades.forEach(t => {
+    if (!monthMap[t.month]) monthMap[t.month] = [];
+    monthMap[t.month].push(t);
+  });
+
+  let cumulativePnl = 0;
+  const result = Object.keys(monthMap).sort().map(month => {
+    const capitalAtStart = startCap + cumulativePnl;
+    const mt             = monthMap[month];
+    const totalPnl       = mt.reduce((s, t) => s + t.pnl, 0);
+    const wins           = mt.filter(t => t.pnl > 0);
+    const losses         = mt.filter(t => t.pnl < 0);
+    const avgWinPct  = wins.length   ? wins.reduce((s, t) => s + (t.pnl / t.cost) * 100, 0) / wins.length   : null;
+    const avgLossPct = losses.length ? losses.reduce((s, t) => s + (t.pnl / t.cost) * 100, 0) / losses.length : null;
+    cumulativePnl += totalPnl;
+    return {
+      month, totalPnl,
+      monthReturnPct: capitalAtStart > 0 ? (totalPnl / capitalAtStart) * 100 : 0,
+      avgWinPct, avgLossPct,
+      winRate: mt.length > 0 ? (wins.length / mt.length) * 100 : 0,
+      wins: wins.length, losses: losses.length
+    };
+  });
+
+  return result.reverse();
+}
+
+function renderMonthlyStatsSection(pd) {
+  const stats = buildMonthlyStats(pd);
+  const fmt    = n => Math.round(n).toLocaleString();
+  const fmtPct = n => (n >= 0 ? '+' : '') + n.toFixed(2) + '%';
+  const col    = n => n >= 0 ? 'var(--green)' : 'var(--red)';
+
+  const rows = stats.length ? stats.map(s => {
+    const winColor = s.winRate >= 60 ? 'var(--green)' : s.winRate < 50 ? 'var(--red)' : 'var(--amber)';
+    return `
+      <tr>
+        <td style="font-family:var(--mono);font-size:12px;white-space:nowrap">${s.month}</td>
+        <td>
+          <span style="font-family:var(--mono);color:${col(s.totalPnl)};font-weight:700">${s.totalPnl >= 0 ? '+' : ''}${fmt(s.totalPnl)}</span>
+          <span style="font-family:var(--mono);font-size:11px;color:${col(s.monthReturnPct)};margin-left:6px">${fmtPct(s.monthReturnPct)}</span>
+        </td>
+        <td><span style="font-family:var(--mono);color:var(--green)">${s.avgWinPct != null ? '+' + s.avgWinPct.toFixed(2) + '%' : '—'}</span></td>
+        <td><span style="font-family:var(--mono);color:var(--red)">${s.avgLossPct != null ? s.avgLossPct.toFixed(2) + '%' : '—'}</span></td>
+        <td>
+          <span style="font-family:var(--mono);color:${winColor};font-weight:600">${s.winRate.toFixed(0)}%</span>
+          <span style="font-size:10px;color:var(--text3);margin-left:4px">${s.wins}勝 ${s.losses}敗</span>
+        </td>
+      </tr>`;
+  }).join('') : `<tr><td colspan="5" style="text-align:center;color:var(--text3);padding:24px 16px;font-size:13px">尚無出場記錄</td></tr>`;
+
+  return `
+    <div class="perf-section">
+      <div class="perf-section-hd">
+        <span class="section-title">操作統計　<span style="font-weight:400;color:var(--text3);font-size:12px">以出場日歸類</span></span>
+      </div>
+      <div class="table-wrap">
+        <div class="table-scroll">
+          <table>
+            <thead><tr>
+              <th>月份</th><th>報酬（NT$ / 月%）</th><th>平均報酬%</th><th>平均虧損%</th><th>勝率</th>
+            </tr></thead>
+            <tbody>${rows}</tbody>
+          </table>
+        </div>
+      </div>
+    </div>`;
+}
+
+// ════════════════════════════════════════════════════
 //  PERFORMANCE — 渲染主頁
 // ════════════════════════════════════════════════════
 function _formatIndexClose(value) {
@@ -607,6 +701,8 @@ function renderPerformance(strat, main) {
         <canvas id="perfChart" style="width:100%;height:100%"></canvas>
         ${!pd || !positions.length ? `<div style="position:absolute;inset:0;display:flex;align-items:center;justify-content:center;color:var(--text3);font-size:13px;pointer-events:none">新增持倉並同步資料後，圖表將自動產生</div>` : ''}
       </div>
+
+      ${renderMonthlyStatsSection(pd)}
 
       <div class="perf-section">
         <div class="perf-section-hd">
