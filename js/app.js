@@ -27,6 +27,23 @@ const STRATEGIES = [
     description: "記錄建倉出場，追蹤整體投組績效。",
     conditions: [],
   },
+  {
+    id: "ssr",
+    name: "SSR 交集雷達",
+    shortName: "SSR",
+    icon: "✦",
+    group: "ssr",
+    available: true,
+    description: "彙整籌碼集中、VCP、突破策略三組核心選股，找出同時命中 2 組以上的高共振標的。",
+    conditions: [
+      "C3 取 2：籌碼集中、VCP、突破策略任兩組同時命中",
+      "三策略全中：三組核心策略同時命中",
+      "VCP 命中含嚴格 VCP 與潛在 VCP，並在表格中保留分級",
+      "此頁只做交集總覽，不改變各策略原本的篩選邏輯",
+    ],
+    dataUpdated: "載入中...",
+    dataSource: "前端彙整既有策略結果",
+  },
   // ── 策略一：籌碼選股 ──
   {
     id: "chips_big_holder",
@@ -265,6 +282,7 @@ function trendBars(trend, label, colorClass) {
 //  RENDER STRATEGY TABS
 // ════════════════════════════════════════════════════
 const NAV_GROUP_LABELS = {
+  ssr:       'SSR',
   chips:     '籌碼選股',
   vcp:       'VCP',
   right_top: '突破策略',
@@ -274,6 +292,7 @@ function _navBadge(s) {
   if (!s.available) return '—';
   if (s.id === 'future_dashboard') return DATA.futures_dashboard_data?.summary?.bias || '—';
   if (s.id === 'performance') return (DATA.performance_data?.positions || []).filter(p => !p.confirmed).length;
+  if (s.id === 'ssr') return typeof buildSSRRows === 'function' ? buildSSRRows().length : '—';
   if (s.id === 'stock_analysis') return DATA.stock_analysis_data?.active?.length ?? '—';
   if (s.id === 'vcp')             return (DATA.vcp_data || []).length + (DATA.vcp_potential_data || []).length;
   if (s.id === 'right_top_track') return DATA.right_top_track_data?.active?.length ?? '—';
@@ -366,6 +385,7 @@ function renderStrategy() {
 
   if (strat.id !== 'performance' && typeof setPerfSidebarMode === 'function') setPerfSidebarMode(false);
   if (strat.id === 'future_dashboard') { renderFutureDashboard(strat, main); return; }
+  if (strat.id === 'ssr')              { renderSSR(strat, main);             return; }
   if (strat.id === 'chips_big_holder') { renderChipsHolder(strat, main);    return; }
   if (strat.id === 'volume_signal')    { renderVolumeSignal(strat, main);   return; }
   if (strat.id === 'stock_analysis')   { renderStockAnalysis(strat, main);  return; }
@@ -587,6 +607,14 @@ async function loadData() {
       DATA.right_top_industry = rtRes.industry_stats || [];
       const strat = STRATEGIES.find(s => s.id === 'right_top');
       if (strat) strat.dataUpdated = (rtRes.updated || '').slice(0, 10) || strat.dataUpdated;
+    }
+
+    const ssrStrat = STRATEGIES.find(s => s.id === 'ssr');
+    if (ssrStrat) {
+      const dates = ['chips_big_holder', 'vcp', 'right_top']
+        .map(id => STRATEGIES.find(s => s.id === id)?.dataUpdated)
+        .filter(d => d && d !== '載入中...');
+      ssrStrat.dataUpdated = dates.length ? dates.sort().slice(-1)[0] : ssrStrat.dataUpdated;
     }
 
     if (rttRes && (rttRes.active || rttRes.expired)) {
