@@ -2,10 +2,10 @@
 //  VCP 選股策略：Volatility Contraction Pattern
 // ═══════════════════════════════════════════════════════════════
 function renderVCP(strat, main) {
-  const rawData = DATA.vcp_data || [];
-  const industryStats = DATA.vcp_industry || [];
+  const strictData = DATA.vcp_data || [];
+  const potentialData = DATA.vcp_potential_data || [];
 
-  if (rawData.length === 0) {
+  if (strictData.length === 0 && potentialData.length === 0) {
     main.innerHTML = `
       <div class="strategy-panel active">
         <div class="strat-header">
@@ -31,6 +31,9 @@ function renderVCP(strat, main) {
   const vcpSortAsc = window._vcpSortAsc !== undefined ? window._vcpSortAsc : false;
   const vcpView   = window._vcpView   || 'stock';
   const vcpFilter = window._vcpFilter || 'all';
+  const vcpTier   = window._vcpTier   || 'potential';
+  const rawData = vcpTier === 'vcp' ? strictData : potentialData;
+  const industryStats = vcpTier === 'vcp' ? (DATA.vcp_industry || []) : (DATA.vcp_potential_industry || []);
 
   function vcpCompare(a, b) {
     const va = a[vcpSortCol] != null ? a[vcpSortCol] : '';
@@ -53,6 +56,9 @@ function renderVCP(strat, main) {
   function setVcpFilter(v) { window._vcpFilter = v; renderStrategy(); }
   window.setVcpFilter = setVcpFilter;
 
+  function setVcpTier(v) { window._vcpTier = v; window._vcpFilter = 'all'; renderStrategy(); }
+  window.setVcpTier = setVcpTier;
+
   function sortIcon(col) {
     return `<span class="sort-icon">${vcpSortCol === col ? (vcpSortAsc ? '↑' : '↓') : '·'}</span>`;
   }
@@ -61,17 +67,21 @@ function renderVCP(strat, main) {
     if (vcpFilter === 'near_pivot')   return !!d.is_near_pivot;
     if (vcpFilter === 'strong')       return d.contractions >= 3;
     if (vcpFilter === 'tight_pivot')  return d.pivot_range_pct != null && d.pivot_range_pct < 10;
+    if (vcpFilter === 'dry_up')       return d.dry_up_ratio != null && d.dry_up_ratio <= 0.8;
     if (vcpFilter === 'whale')        return !!d.whale_3w_up || !!d.whale_400_3w_up;
     return true;
   }
 
   const TAG_META = {
     'VCP':       { color: '#3b82f6', order: 0 },
+    '潛在VCP':   { color: '#0f766e', order: 0 },
     '靠近樞紐':   { color: '#dc2626', order: 0 },
     '2段收縮':   { color: '#10b981', order: 1 },
     '3段收縮':   { color: '#10b981', order: 1 },
     '4段收縮':   { color: '#10b981', order: 1 },
     '量縮到位':   { color: '#ea7317', order: 2 },
+    '近期量縮':   { color: '#ea7317', order: 2 },
+    '段量遞減':   { color: '#64748b', order: 2 },
     '樞紐緊縮':   { color: '#8b5cf6', order: 2 },
     '千張大戶連增': { color: '#d97706', order: 3 },
     '400張同步':  { color: '#d97706', order: 3 },
@@ -110,29 +120,34 @@ function renderVCP(strat, main) {
   const nearPivotCount = rawData.filter(d => d.is_near_pivot).length;
   const strongCount    = rawData.filter(d => d.contractions >= 3).length;
   const tightCount     = rawData.filter(d => d.pivot_range_pct != null && d.pivot_range_pct < 10).length;
+  const dryUpCount     = rawData.filter(d => d.dry_up_ratio != null && d.dry_up_ratio <= 0.8).length;
   const whaleCount     = rawData.filter(d => d.whale_3w_up || d.whale_400_3w_up).length;
   const topIndustry    = industryStats[0];
 
   function exportVcpCSV() {
     const headers = [
       '代號', '名稱', '產業', '市場', '品質分數', '標籤',
-      '收盤', '距MA100(%)', 'MA100',
+      '分級', '收盤', '距MA100(%)', 'MA50', 'MA100',
       '收縮段數', '收縮深度序列',
-      '量縮比', '樞紐高點', '樞紐振幅(%)', '靠近樞紐',
+      '段量比', '近5日/50日量比', '樞紐高點', '樞紐振幅(%)', '距樞紐(%)', '靠近樞紐',
       '千張大戶連增', '400張同步', '千張3週變化', '400張3週變化', '訊號日'
     ];
     const rows = rawData.map(d => [
       d.stock_id, d.name, d.industry, d.market,
       d.quality_score ?? '',
       (d.tags || []).join(' / '),
+      d.vcp_tier === 'vcp' ? 'VCP' : '潛在VCP',
       d.close ?? '',
       d.bias_ma100 ?? '',
+      d.ma50 ?? '',
       d.ma100 ?? '',
       d.contractions ?? '',
       (d.contraction_depths || []).join(' → ') + '%',
       d.vol_contraction_ratio ?? '',
+      d.dry_up_ratio ?? '',
       d.pivot_high ?? '',
       d.pivot_range_pct ?? '',
+      d.pivot_dist_pct ?? '',
       d.is_near_pivot ? 'Y' : '',
       d.whale_3w_up ? 'Y' : '',
       d.whale_400_3w_up ? 'Y' : '',
@@ -145,7 +160,7 @@ function renderVCP(strat, main) {
       .join('\r\n');
     const blob = new Blob(['﻿' + csv], { type: 'text/csv;charset=utf-8' });
     const url = URL.createObjectURL(blob);
-    const a = Object.assign(document.createElement('a'), { href: url, download: `vcp_${strat.dataUpdated}.csv` });
+    const a = Object.assign(document.createElement('a'), { href: url, download: `${vcpTier}_${strat.dataUpdated}.csv` });
     a.click();
     URL.revokeObjectURL(url);
   }
@@ -155,7 +170,7 @@ function renderVCP(strat, main) {
     return `
       <div class="table-wrap">
         <div class="table-toolbar">
-          <span class="table-title">VCP 標的池</span>
+          <span class="table-title">${vcpTier === 'vcp' ? 'VCP 標的池' : '潛在 VCP 觀察池'}</span>
           <div class="toolbar-right">
             <span class="updated-tag">更新：${strat.dataUpdated}</span>
             <button class="btn-csv" onclick="exportVcpCSV()">匯出 CSV</button>
@@ -172,7 +187,8 @@ function renderVCP(strat, main) {
                 <th onclick="vcpSort('bias_ma100')" style="cursor:pointer" data-tip="(收盤 - MA100) / MA100">距MA100${sortIcon('bias_ma100')}</th>
                 <th onclick="vcpSort('contractions')" style="cursor:pointer" data-tip="偵測到的 VCP 收縮段數（2~4）">段數${sortIcon('contractions')}</th>
                 <th data-tip="各段回調深度（由大到小）">收縮深度</th>
-                <th onclick="vcpSort('vol_contraction_ratio')" style="cursor:pointer" data-tip="最後一段均量 / 第一段均量；越小代表量縮越明顯">量縮比${sortIcon('vol_contraction_ratio')}</th>
+                <th onclick="vcpSort('vol_contraction_ratio')" style="cursor:pointer" data-tip="最後一段均量 / 第一段均量；越小代表量縮越明顯">段量比${sortIcon('vol_contraction_ratio')}</th>
+                <th onclick="vcpSort('dry_up_ratio')" style="cursor:pointer" data-tip="近 5 日均量 / 50 日均量；越低代表近期量縮越明顯">近期量縮${sortIcon('dry_up_ratio')}</th>
                 <th onclick="vcpSort('pivot_range_pct')" style="cursor:pointer" data-tip="最後一段收縮深度（越小代表樞紐越緊縮）">樞紐緊縮${sortIcon('pivot_range_pct')}</th>
                 <th onclick="vcpSort('big_1000_chg_3w')" style="cursor:pointer" data-tip="千張大戶持股比例近 3 週變化">大戶3週${sortIcon('big_1000_chg_3w')}</th>
                 <th>標籤</th>
@@ -182,9 +198,7 @@ function renderVCP(strat, main) {
               ${data.map(d => {
                 const mkt = d.market === 'TPEX' ? 'TPEX' : 'TWSE';
                 const tvSymbol = `${mkt}:${d.stock_id}`;
-                const pivotDist = d.pivot_high && d.close
-                  ? ((d.close - d.pivot_high) / d.pivot_high * 100).toFixed(1)
-                  : null;
+                const pivotDist = d.pivot_dist_pct != null ? Number(d.pivot_dist_pct).toFixed(1) : null;
                 const pivotColor = d.is_near_pivot ? 'var(--red)' : 'var(--text3)';
                 return `<tr>
                   <td>
@@ -213,6 +227,11 @@ function renderVCP(strat, main) {
                   <td>
                     <span style="font-family:var(--mono);font-size:13px;font-weight:600;color:${(d.vol_contraction_ratio || 1) < 0.6 ? 'var(--amber)' : 'var(--text2)'}">
                       ${d.vol_contraction_ratio != null ? d.vol_contraction_ratio.toFixed(2) : '—'}
+                    </span>
+                  </td>
+                  <td>
+                    <span style="font-family:var(--mono);font-size:13px;font-weight:600;color:${(d.dry_up_ratio || 9) <= 0.8 ? 'var(--amber)' : 'var(--text2)'}">
+                      ${d.dry_up_ratio != null ? d.dry_up_ratio.toFixed(2) : '—'}
                     </span>
                   </td>
                   <td>
@@ -292,24 +311,29 @@ function renderVCP(strat, main) {
       <div class="summary-row">
         <div class="summary-card">
           <div class="summary-label">VCP 命中</div>
-          <div class="summary-value blue">${rawData.length}</div>
-          <div class="summary-sub">符合完整 VCP 條件</div>
+          <div class="summary-value blue">${strictData.length}</div>
+          <div class="summary-sub">嚴格條件：3 段以上、pivot 緊縮、量縮</div>
+        </div>
+        <div class="summary-card">
+          <div class="summary-label">潛在 VCP</div>
+          <div class="summary-value" style="color:var(--green)">${potentialData.length}</div>
+          <div class="summary-sub">2 段以上收縮，觀察是否續縮</div>
         </div>
         <div class="summary-card">
           <div class="summary-label">靠近樞紐</div>
           <div class="summary-value" style="color:var(--red)">${nearPivotCount}</div>
-          <div class="summary-sub">距突破點 5% 以內</div>
-        </div>
-        <div class="summary-card">
-          <div class="summary-label">強型 VCP</div>
-          <div class="summary-value green">${strongCount}</div>
-          <div class="summary-sub">3 段以上收縮</div>
+          <div class="summary-sub">目前分頁：pivot 下方 5% 到上方 3%</div>
         </div>
         <div class="summary-card">
           <div class="summary-label">最強族群</div>
           <div class="summary-value" style="font-size:16px">${topIndustry ? topIndustry.industry : '—'}</div>
-          <div class="summary-sub">${topIndustry ? `${topIndustry.count} 檔同步形成 VCP` : '尚無資料'} · 大戶加持 ${whaleCount} 檔</div>
+          <div class="summary-sub">${topIndustry ? `${topIndustry.count} 檔` : '尚無資料'} · 近期量縮 ${dryUpCount} 檔 · 大戶 ${whaleCount} 檔</div>
         </div>
+      </div>
+
+      <div style="display:flex;gap:8px;padding:0 0 10px 0;flex-wrap:wrap">
+        <button class="view-btn ${vcpTier === 'potential' ? 'active' : ''}" onclick="setVcpTier('potential')">潛在 VCP ${potentialData.length}</button>
+        <button class="view-btn ${vcpTier === 'vcp' ? 'active' : ''}" onclick="setVcpTier('vcp')">VCP ${strictData.length}</button>
       </div>
 
       <div style="display:flex;gap:8px;padding:0 0 10px 0;flex-wrap:wrap">
@@ -317,6 +341,7 @@ function renderVCP(strat, main) {
         <button class="view-btn ${vcpFilter === 'near_pivot' ? 'active' : ''}" onclick="setVcpFilter('near_pivot')">靠近樞紐 ${nearPivotCount}</button>
         <button class="view-btn ${vcpFilter === 'strong' ? 'active' : ''}" onclick="setVcpFilter('strong')">3段以上 ${strongCount}</button>
         <button class="view-btn ${vcpFilter === 'tight_pivot' ? 'active' : ''}" onclick="setVcpFilter('tight_pivot')">樞紐緊縮 ${tightCount}</button>
+        <button class="view-btn ${vcpFilter === 'dry_up' ? 'active' : ''}" onclick="setVcpFilter('dry_up')">近期量縮 ${dryUpCount}</button>
         <button class="view-btn ${vcpFilter === 'whale' ? 'active' : ''}" onclick="setVcpFilter('whale')">大戶加持 ${whaleCount}</button>
       </div>
 
@@ -330,8 +355,8 @@ function renderVCP(strat, main) {
 }
 
 function _applyPriceToVCP(priceMap) {
-  if (!priceMap || !DATA.vcp_data) return;
-  DATA.vcp_data.forEach(item => {
+  if (!priceMap) return;
+  [...(DATA.vcp_data || []), ...(DATA.vcp_potential_data || [])].forEach(item => {
     const p = priceMap[item.stock_id];
     const close = typeof p === 'number' ? p : p?.close;
     if (close != null) item.close = close;

@@ -3,10 +3,10 @@
 VCP（Volatility Contraction Pattern）選股掃描器
 
 掃描符合 Mark Minervini《超級績效》書中 VCP 型態的台股：
-1. Stage 2 上升趨勢（收盤 > MA100，且 MA100 向上）
-2. 近 16 週內出現 2~4 段波動收縮（每段回調幅度嚴格遞減）
-3. 每段收縮期間成交量遞減
-4. 最後樞紐區間緊縮（潛在突破點）
+1. Stage 2 上升趨勢（收盤 > MA50 > MA100，且 MA100 向上）
+2. 使用已完成週 K 的 high/low 偵測 2~4 段波動收縮
+3. 嚴格 VCP 至少 3 段收縮，最後樞紐區間緊縮且量能萎縮
+4. 潛在 VCP 放寬段數與 pivot 範圍，作為觀察名單
 5. 交叉比對大戶持股（big1000.csv / big400.csv）
 """
 
@@ -34,15 +34,19 @@ TW_TZ = timezone(timedelta(hours=8))
 TODAY = datetime.now(TW_TZ).strftime("%Y-%m-%d")
 
 LOOKBACK_DAYS = 210
-BASE_WEEKS = 16        # 掃描最近 N 週作為底部基礎（快取約 27 週，保留彈性）
+BASE_WEEKS = 18        # 掃描最近 N 個已完成週作為底部基礎
 SWING_WINDOW = 1       # 週 K 擺動高低點識別 window（左右各 N 週）
-MIN_CONTRACTIONS = 2
+POTENTIAL_MIN_CONTRACTIONS = 2
+STRICT_MIN_CONTRACTIONS = 3
 MAX_CONTRACTIONS = 4
 MIN_FIRST_DEPTH = 6.0  # 第一段收縮最小回調幅度（%）
-MAX_LAST_DEPTH = 20.0  # 最後一段收縮最大回調幅度（%）；超過代表整理不夠緊
-PIVOT_NEAR_PCT  = 0.05  # 收盤距樞紐高點 5% 以內視為「靠近樞紐」
-PIVOT_MAX_ABOVE = 0.15  # 收盤超過樞紐 15% 以上視為「已走完波段」，排除
-PIVOT_L_MIN_IDX = BASE_WEEKS - 5  # 最後一段 L 必須在底部窗口的末 5 週內
+POTENTIAL_MAX_LAST_DEPTH = 15.0
+STRICT_MAX_LAST_DEPTH = 10.0
+POTENTIAL_PIVOT_BELOW = -8.0
+POTENTIAL_PIVOT_ABOVE = 8.0
+STRICT_PIVOT_BELOW = -5.0
+STRICT_PIVOT_ABOVE = 3.0
+PIVOT_L_MIN_IDX = BASE_WEEKS - 6  # 最後一段 L 必須在底部窗口的末 6 週內
 MA_PERIOD = 100        # 趨勢均線週期（快取僅 ~136 日，改用 MA100 取代 MA150）
 MIN_BARS = 105         # 最少需要 105 根日線（確保 MA100 有效）
 
@@ -70,25 +74,33 @@ def _to_weekly(df: pd.DataFrame) -> pd.DataFrame:
     return weekly.reset_index()
 
 
-def _find_swing_points(prices: list[float], window: int = 2) -> list[tuple[int, float, str]]:
+def _completed_weeks(weekly: pd.DataFrame, latest_date: pd.Timestamp) -> pd.DataFrame:
+    """排除尚未走完的本週週 K，只用完整週判斷 base 結構。"""
+    latest_week_end = latest_date + pd.offsets.Week(weekday=4)
+    if latest_date.weekday() == 4:
+        latest_week_end = latest_date
+    return weekly[weekly["date"] < latest_week_end].copy()
+
+
+def _find_swing_points(highs: list[float], lows: list[float], window: int = 2) -> list[tuple[int, float, str]]:
     """
     找出交替的擺動高低點（週 K 適用）。
-    每個點需比左右各 window 根 K 棒都高（低）才算擺動點。
+    高點使用 weekly high、低點使用 weekly low。
     回傳 [(index, price, 'H'|'L'), ...] 已強制交替。
     """
-    n = len(prices)
+    n = len(highs)
     raw: list[tuple[int, float, str]] = []
 
     for i in range(window, n - window):
-        is_h = all(prices[i] >= prices[i - j] for j in range(1, window + 1)) and \
-               all(prices[i] >= prices[i + j] for j in range(1, window + 1))
+        is_h = all(highs[i] >= highs[i - j] for j in range(1, window + 1)) and \
+               all(highs[i] >= highs[i + j] for j in range(1, window + 1))
         if is_h:
-            raw.append((i, prices[i], "H"))
+            raw.append((i, highs[i], "H"))
             continue
-        is_l = all(prices[i] <= prices[i - j] for j in range(1, window + 1)) and \
-               all(prices[i] <= prices[i + j] for j in range(1, window + 1))
+        is_l = all(lows[i] <= lows[i - j] for j in range(1, window + 1)) and \
+               all(lows[i] <= lows[i + j] for j in range(1, window + 1))
         if is_l:
-            raw.append((i, prices[i], "L"))
+            raw.append((i, lows[i], "L"))
 
     if not raw:
         return []
@@ -106,6 +118,12 @@ def _find_swing_points(prices: list[float], window: int = 2) -> list[tuple[int, 
     return alt
 
 
+def _avg_tail(series: pd.Series, n: int) -> float | None:
+    if len(series) < n:
+        return None
+    return float(series.tail(n).mean())
+
+
 def check_vcp(daily: pd.DataFrame) -> dict | None:
     """
     檢查單支股票是否符合 VCP 型態。
@@ -115,17 +133,19 @@ def check_vcp(daily: pd.DataFrame) -> dict | None:
         return None
 
     df = daily.sort_values("date").reset_index(drop=True).copy()
+    df["ma50"] = df["close"].rolling(50).mean()
     df["ma"] = df["close"].rolling(MA_PERIOD).mean()
 
     latest = df.iloc[-1]
-    if pd.isna(latest["ma"]):
+    if pd.isna(latest["ma"]) or pd.isna(latest["ma50"]):
         return None
 
     close_now = float(latest["close"])
     ma_now = float(latest["ma"])
+    ma50_now = float(latest["ma50"])
 
     # ── 1. Stage 2 趨勢過濾 ──────────────────────────────────────────
-    if close_now <= ma_now:
+    if close_now <= ma50_now or ma50_now <= ma_now:
         return None
 
     # MA 在過去 20 個交易日需持續上升
@@ -135,16 +155,18 @@ def check_vcp(daily: pd.DataFrame) -> dict | None:
 
     # ── 2. 轉週線，取最近 BASE_WEEKS 週 ─────────────────────────────
     weekly = _to_weekly(df)
+    weekly = _completed_weeks(weekly, pd.Timestamp(latest["date"]))
     min_weeks = BASE_WEEKS + SWING_WINDOW * 2 + 1
     if len(weekly) < min_weeks:
         return None
 
     base_wk = weekly.tail(BASE_WEEKS).reset_index(drop=True)
-    closes  = base_wk["close"].tolist()
+    highs   = base_wk["max"].tolist()
+    lows    = base_wk["min"].tolist()
     volumes = base_wk["volume_lots"].tolist()
 
     # ── 3. 找擺動高低點 ──────────────────────────────────────────────
-    swings = _find_swing_points(closes, window=SWING_WINDOW)
+    swings = _find_swing_points(highs, lows, window=SWING_WINDOW)
     if len(swings) < 3:  # 至少需要 H-L-H 或 L-H-L 才能萃取收縮
         return None
 
@@ -165,7 +187,7 @@ def check_vcp(daily: pd.DataFrame) -> dict | None:
                 "l_idx":   l_idx,   # 最後低點在底部窗口的位置
             })
 
-    if len(contractions) < MIN_CONTRACTIONS:
+    if len(contractions) < POTENTIAL_MIN_CONTRACTIONS:
         return None
 
     # 取最後 MAX_CONTRACTIONS 段作為完整的 VCP 底部
@@ -184,29 +206,40 @@ def check_vcp(daily: pd.DataFrame) -> dict | None:
         return None
     if depths[0] < MIN_FIRST_DEPTH:
         return None
-    if depths[-1] > MAX_LAST_DEPTH:
+    if depths[-1] > POTENTIAL_MAX_LAST_DEPTH:
         return None
 
-    # ── 6. 量能嚴格遞減驗證 ──────────────────────────────────────────
-    if not all(vols[i] >= vols[i + 1] for i in range(len(vols) - 1)):
+    # ── 6. 量能收縮驗證 ──────────────────────────────────────────────
+    if vols[-1] > vols[0] * 0.85:
         return None
 
     vol_contraction_ratio = round(vols[-1] / vols[0], 2) if vols[0] > 0 else None
+    volume_chain_ok = all(vols[i] >= vols[i + 1] for i in range(len(vols) - 1))
+    vol5 = _avg_tail(df["volume_lots"], 5)
+    vol50 = _avg_tail(df["volume_lots"], 50)
+    dry_up_ratio = round(vol5 / vol50, 2) if vol5 is not None and vol50 else None
 
     # ── 7. 樞紐高點與緊縮度 ──────────────────────────────────────────
     pivot_high = contractions[-1]["h_price"]  # 最後一段收縮的起點高位 = 潛在突破點
     pivot_range_pct = depths[-1]              # 最後一段收縮深度，反映樞紐緊縮程度
     pivot_dist_pct  = (close_now - pivot_high) / pivot_high * 100
 
-    # 排除已大幅突破樞紐的歷史形態（收盤超過樞紐 15% 以上）
-    if pivot_dist_pct > PIVOT_MAX_ABOVE * 100:
+    # 排除距離 pivot 太遠或已經延伸過多的形態。
+    if pivot_dist_pct < POTENTIAL_PIVOT_BELOW or pivot_dist_pct > POTENTIAL_PIVOT_ABOVE:
         return None
 
-    is_near_pivot = pivot_dist_pct >= -(PIVOT_NEAR_PCT * 100)
+    is_near_pivot = STRICT_PIVOT_BELOW <= pivot_dist_pct <= STRICT_PIVOT_ABOVE
+    is_strict_vcp = (
+        len(contractions) >= STRICT_MIN_CONTRACTIONS
+        and depths[-1] <= STRICT_MAX_LAST_DEPTH
+        and is_near_pivot
+        and vol_contraction_ratio is not None and vol_contraction_ratio <= 0.70
+        and dry_up_ratio is not None and dry_up_ratio <= 0.80
+    )
 
     # ── 8. 品質分數（純技術面，whale 加成由呼叫端疊加）──────────────
     score = 40  # 基礎分
-    score += min((len(contractions) - MIN_CONTRACTIONS) * 10, 20)
+    score += min((len(contractions) - POTENTIAL_MIN_CONTRACTIONS) * 10, 20)
 
     if vol_contraction_ratio is not None:
         if vol_contraction_ratio < 0.50:
@@ -229,24 +262,33 @@ def check_vcp(daily: pd.DataFrame) -> dict | None:
         score += 5
 
     # ── 9. 訊號標籤（技術面；whale 標籤由呼叫端疊加）───────────────
-    tags = ["VCP", f"{len(contractions)}段收縮"]
+    tags = ["VCP" if is_strict_vcp else "潛在VCP", f"{len(contractions)}段收縮"]
     if vol_contraction_ratio is not None and vol_contraction_ratio < 0.60:
         tags.append("量縮到位")
-    if pivot_range_pct < 10:   # 最後一段深度 <10% 視為樞紐緊縮
+    if dry_up_ratio is not None and dry_up_ratio <= 0.80:
+        tags.append("近期量縮")
+    if volume_chain_ok:
+        tags.append("段量遞減")
+    if pivot_range_pct <= STRICT_MAX_LAST_DEPTH:
         tags.append("樞紐緊縮")
     if is_near_pivot:
         tags.append("靠近樞紐")
 
     return {
         "close":                 round(close_now, 2),
+        "ma50":                  round(ma50_now, 2),
         "ma100":                 round(ma_now, 2),
         "bias_ma100":            round((close_now - ma_now) / ma_now * 100, 1),
         "contractions":          len(contractions),
         "contraction_depths":    depths,
         "vol_contraction_ratio": vol_contraction_ratio,
+        "dry_up_ratio":          dry_up_ratio,
+        "volume_chain_ok":       volume_chain_ok,
         "pivot_high":            pivot_high,
         "pivot_range_pct":       pivot_range_pct,
+        "pivot_dist_pct":        round(pivot_dist_pct, 1),
         "is_near_pivot":         is_near_pivot,
+        "vcp_tier":              "vcp" if is_strict_vcp else "potential",
         "tags":                  tags,
         "quality_score":         score,  # 最終分由 main() 疊加 whale 後覆蓋
     }
@@ -318,16 +360,18 @@ def build_industry_stats(results: list[dict]) -> list[dict]:
     return sorted(industry_map.values(), key=lambda x: x["count"], reverse=True)
 
 
-def _write_output(results: list[dict], industry_stats: list[dict]) -> None:
+def _write_output(results: list[dict], potential_results: list[dict], industry_stats: list[dict], potential_industry_stats: list[dict]) -> None:
     output = {
-        "strategy_id":   "vcp",
-        "updated":       now_tw(),
-        "results":       results,
-        "industry_stats": industry_stats,
+        "strategy_id":              "vcp",
+        "updated":                  now_tw(),
+        "results":                  results,
+        "potential_results":        potential_results,
+        "industry_stats":           industry_stats,
+        "potential_industry_stats": potential_industry_stats,
     }
     with open(OUTPUT_PATH, "w", encoding="utf-8") as f:
         json.dump(output, f, ensure_ascii=False, indent=2)
-    print(f"已寫入 {OUTPUT_PATH}，共 {len(results)} 檔")
+    print(f"已寫入 {OUTPUT_PATH}，VCP {len(results)} 檔，潛在 {len(potential_results)} 檔")
 
 
 def main() -> None:
@@ -336,7 +380,7 @@ def main() -> None:
 
     if not os.path.exists(STOCK_LIST_PATH):
         print("stock_list_cache.json 不存在，請先執行 update_price_cache.py")
-        _write_output([], [])
+        _write_output([], [], [], [])
         return
 
     with open(STOCK_LIST_PATH, encoding="utf-8") as f:
@@ -352,7 +396,7 @@ def main() -> None:
     price_cache = load_price_cache()
     if price_cache is None or price_cache.empty:
         print("price_cache.parquet 不存在，請先執行 update_price_cache.py")
-        _write_output([], [])
+        _write_output([], [], [], [])
         return
 
     if allow_stale:
@@ -372,6 +416,7 @@ def main() -> None:
 
     start_date = (datetime.now(TW_TZ) - timedelta(days=LOOKBACK_DAYS)).strftime("%Y-%m-%d")
     results: list[dict] = []
+    potential_results: list[dict] = []
     skipped = 0
 
     for i, stock in enumerate(stocks, 1):
@@ -397,7 +442,7 @@ def main() -> None:
             if whale.get("whale_400_3w_up"):
                 tags.append("400張同步")
 
-            results.append({
+            item = {
                 "stock_id":  sid,
                 "name":      stock["name"],
                 "industry":  stock.get("industry", ""),
@@ -407,10 +452,15 @@ def main() -> None:
                 "tags":          tags,
                 "quality_score": score,
                 "signal_date":   signal_date,
-            })
+            }
+            if signal.get("vcp_tier") == "vcp":
+                results.append(item)
+            else:
+                potential_results.append(item)
             depth_str = "→".join(str(d) for d in signal["contraction_depths"])
-            whale_flag = " 🐋千張" if whale.get("whale_3w_up") else ""
-            print(f"  {sid} {stock['name']}  {signal['contractions']}段 {depth_str}%  分={score}{whale_flag}")
+            tier_label = "VCP" if signal.get("vcp_tier") == "vcp" else "潛在"
+            whale_flag = " 千張" if whale.get("whale_3w_up") else ""
+            print(f"  {sid} {stock['name']}  {tier_label} {signal['contractions']}段 {depth_str}%  分={score}{whale_flag}")
         else:
             skipped += 1
 
@@ -418,10 +468,12 @@ def main() -> None:
             print(f"掃描進度：{i}/{len(stocks)}，命中 {len(results)}，跳過 {skipped}")
 
     results.sort(key=lambda r: r.get("quality_score", 0), reverse=True)
+    potential_results.sort(key=lambda r: r.get("quality_score", 0), reverse=True)
     industry_stats = build_industry_stats(results)
+    potential_industry_stats = build_industry_stats(potential_results)
 
-    print(f"完成：VCP 命中 {len(results)} 檔")
-    _write_output(results, industry_stats)
+    print(f"完成：VCP 命中 {len(results)} 檔，潛在 VCP {len(potential_results)} 檔")
+    _write_output(results, potential_results, industry_stats, potential_industry_stats)
 
 
 if __name__ == "__main__":

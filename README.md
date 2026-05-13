@@ -14,10 +14,10 @@ js/
   render-chips.js             ← 籌碼集中渲染
   render-volume.js            ← 量增訊號渲染
   render-analysis.js          ← 量增訊號標的追蹤渲染
+  render-vcp.js               ← VCP / 潛在 VCP 渲染
   render-right-top.js         ← 突破策略渲染
   render-right-top-track.js   ← 突破策略標的追蹤渲染
   render-perf.js              ← 績效追蹤渲染
-  render-ptt.js               ← 鄉民選股渲染
   render-breakout.js          ← （保留）爆量策略渲染
   render-ema.js               ← （保留）均線糾結策略渲染
 data/
@@ -25,11 +25,11 @@ data/
   stock_list_cache.json       ← 上市上櫃股票清單快取
   chips_big_holder.json       ← 籌碼集中掃描結果
   volume_signal.json          ← 量增訊號掃描結果
+  vcp.json                    ← VCP / 潛在 VCP 掃描結果
   right_top.json              ← 突破策略掃描結果
   right_top_track.json        ← 突破策略標的追蹤
   futures_dashboard.json      ← FUTURE DASHBOARD（期貨 + VIX + 情緒指標）
   market_index.json           ← 大盤指數（加權、櫃買、期貨夜盤）
-  ptt_stock.json              ← PTT Stock 版 [標的] 文章（30 天滾動）
   performance.json            ← 績效追蹤（建倉 / 出場紀錄）
   ai_recommendations.json     ← AI 選股推薦
   ai_analysis.json            ← 量增訊號標的 AI 分析
@@ -41,10 +41,10 @@ scripts/
   update_market_index.py      ← 更新大盤指數快取
   update_futures_dashboard.py ← 更新期貨籌碼 + VIX + CNN 情緒指標
   update_current_prices.py    ← 前端觸發的現價更新
+  scan_vcp.py                 ← VCP / 潛在 VCP 掃描
   scan_right_top.py           ← 突破策略掃描
   track_right_top.py          ← 突破策略標的追蹤更新
   scan_volume_signal.py       ← 量增訊號掃描（含 LINE 推播）
-  scan_ptt_stock.py           ← PTT Stock 版 [標的] 爬蟲（支援 --pages 參數）
   stock_analysis.py           ← 量增訊號標的追蹤 + 營收評級
   fetch_tdcc_holdings.py      ← TDCC 股權分散資料下載
   fetch_holdings_twsthr.py    ← 集保大戶持股資料處理
@@ -79,8 +79,8 @@ scripts/
 ### 突破策略
 整合盤整突破（週線突破前 10 週高點）與動能突破（日線 Close > MA20 > MA60，突破前 60 日高），區分低波動打底後發動與強勢多頭續攻兩種型態。
 
-### 鄉民選股
-爬取 PTT Stock 版 `[標的]` 文章，解析股票代號（台股 + 美股 ticker）、多空情緒、推噓數，保留 30 天滾動視窗。每日自動增量更新，前端可展開查看各篇文章標題連結。
+### VCP
+掃描 Mark Minervini VCP（Volatility Contraction Pattern）型態，分成「潛在 VCP」與「VCP」兩組。潛在 VCP 先找 Stage 2 上升趨勢、至少 2 段波動收縮、深度遞減與量能萎縮；VCP 進一步要求至少 3 段收縮、最後一段 ≤ 10%、接近 pivot，且近期量能收斂。
 
 ### 績效追蹤
 記錄建倉與出場，計算損益、報酬率與整體投組績效。同一標的多批建倉時，前端自動以加權平均成本合併顯示。需 URL 參數 `?unlock=perf` 解鎖。
@@ -91,7 +91,7 @@ scripts/
 
 | 時間 | 觸發方式 | Workflow | 內容 |
 |------|----------|----------|------|
-| 每個交易日 17:00 | Google Apps Script → repository_dispatch | `daily_scan.yml` | 價格快取、大盤指數、期貨儀錶板、突破策略、量增訊號、PTT 爬蟲 |
+| 每個交易日 17:00 | Google Apps Script → repository_dispatch | `daily_scan.yml` | 價格快取、大盤指數、期貨儀錶板、VCP、突破策略、量增訊號 |
 | daily_scan 成功後 | workflow_run | `stock_analysis.yml` | 量增訊號標的追蹤、營收評級、AI 排名 |
 | 每週六 | cron | `holdings_scan.yml` | TDCC 股權分散、籌碼集中掃描 |
 | holdings_scan 成功後 | workflow_run | `institutional_tags.yml` | 三大法人標籤 |
@@ -105,7 +105,6 @@ scripts/
 
 - `daily_scan.yml`：需輸入 `RUN_DAILY_SCAN`；支援 `backfill_month`（格式 `2025-10`）回填歷史資料
 - `holdings_scan.yml`：需輸入 `RUN_HOLDINGS_SCAN`
-- PTT 初始化補抓：`python scripts/scan_ptt_stock.py --pages 25`
 
 ---
 

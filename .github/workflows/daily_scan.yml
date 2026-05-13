@@ -98,9 +98,6 @@ jobs:
           LINE_USER_IDS: ${{ secrets.LINE_USER_IDS }}
         run: python scripts/scan_volume_signal.py
 
-      - name: PTT Stock [標的] 爬取
-        run: python scripts/scan_ptt_stock.py
-
       - name: 更新前端現價快照
         env:
           FINMIND_TOKEN: ${{ secrets.FINMIND_API_TOKEN }}
@@ -110,7 +107,7 @@ jobs:
         run: |
           git config user.name  "github-actions[bot]"
           git config user.email "github-actions[bot]@users.noreply.github.com"
-          git add data/vcp.json data/right_top.json data/right_top_track.json data/volume_signal.json data/performance.json data/chips_big_holder.json data/ptt_stock.json data/current_prices.json
+          git add data/vcp.json data/right_top.json data/right_top_track.json data/volume_signal.json data/performance.json data/chips_big_holder.json data/current_prices.json
           if ! git diff --staged --quiet; then
             git commit -m "data: daily scan update $(date -u +%Y-%m-%d)"
             for i in {1..4}; do

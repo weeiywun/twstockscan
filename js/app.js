@@ -82,15 +82,15 @@ const STRATEGIES = [
     name: "VCP 選股",
     shortName: "VCP",
     icon: "◈",
-    group: "right_top",
+    group: "vcp",
     available: true,
-    description: "掃描符合 Mark Minervini《超級績效》VCP 型態（Volatility Contraction Pattern）的標的：Stage 2 上升趨勢中，出現 2~4 段波動遞減收縮，成交量同步萎縮，最後形成緊縮樞紐區等待突破。",
+    description: "掃描符合 Mark Minervini《超級績效》VCP 型態（Volatility Contraction Pattern）的標的，分成潛在 VCP 與嚴格 VCP：先找 Stage 2 上升趨勢、波動遞減收縮、量能萎縮與緊縮樞紐，再依段數、pivot 位置與量縮品質分級。",
     conditions: [
-      "Stage 2：收盤 > MA100，且 MA100 在過去 20 個交易日持續上升",
-      "近 20 週出現 2~4 段 H→L 回調，每段回調幅度嚴格遞減",
-      "各段收縮期間平均成交量同步遞減",
-      "最後一段收縮回調幅度 < 20%，第一段回調 > 8%",
-      "靠近樞紐：收盤距最後樞紐高點 5% 以內（潛在突破點）",
+      "潛在 VCP：已完成週 K 出現 2 段以上 H→L 收縮，深度遞減",
+      "VCP：至少 3 段收縮，最後一段 ≤ 10%，且靠近 pivot",
+      "Stage 2：收盤 > MA50 > MA100，且 MA100 在過去 20 個交易日上升",
+      "Pivot：VCP 需在樞紐下方 5% 到上方 3% 內，避免過早或已延伸",
+      "量縮：最後收縮段量 ≤ 第一段 70%，近 5 日均量 ≤ 50 日均量 80%",
     ],
     dataUpdated: "載入中...",
     dataSource: "FinMind（每日盤後）",
@@ -125,20 +125,6 @@ const STRATEGIES = [
     description: "突破策略觸發標的的後續追蹤，記錄入選收盤、現價、損益，觀察期 10 個交易日。",
     conditions: [],
   },
-  // ── 社群策略：PTT 鄉民選股 ──
-  {
-    id: "ptt_stock",
-    name: "鄉民選股",
-    shortName: "鄉民選股",
-    icon: "◍",
-    group: "community",
-    available: true,
-    description: "爬取 PTT Stock 版 [標的] 文章，彙整鄉民討論熱度、多空方向與推噓數，保留 30 天滾動視窗。",
-    conditions: [],
-    dataUpdated: "載入中...",
-    dataSource: "PTT Stock 版",
-    dataKey: "ptt_data",
-  },
 ];
 
 
@@ -153,11 +139,12 @@ const DATA = {
   market_index_data:      null,
   futures_dashboard_data: null,
   vcp_data:               [],
+  vcp_potential_data:     [],
   vcp_industry:           [],
+  vcp_potential_industry: [],
   right_top_data:         [],
   right_top_industry:     [],
   right_top_track_data:   null,
-  ptt_data:               null,
 };
 let DATE_LABELS = [];
 
@@ -279,8 +266,8 @@ function trendBars(trend, label, colorClass) {
 // ════════════════════════════════════════════════════
 const NAV_GROUP_LABELS = {
   chips:     '籌碼選股',
+  vcp:       'VCP',
   right_top: '突破策略',
-  community: '鄉民選股',
 };
 
 function _navBadge(s) {
@@ -288,9 +275,8 @@ function _navBadge(s) {
   if (s.id === 'future_dashboard') return DATA.futures_dashboard_data?.summary?.bias || '—';
   if (s.id === 'performance') return (DATA.performance_data?.positions || []).filter(p => !p.confirmed).length;
   if (s.id === 'stock_analysis') return DATA.stock_analysis_data?.active?.length ?? '—';
-  if (s.id === 'vcp')             return (DATA.vcp_data || []).length;
+  if (s.id === 'vcp')             return (DATA.vcp_data || []).length + (DATA.vcp_potential_data || []).length;
   if (s.id === 'right_top_track') return DATA.right_top_track_data?.active?.length ?? '—';
-  if (s.id === 'ptt_stock') return DATA.ptt_data ? Object.keys(DATA.ptt_data.stocks || {}).length : '—';
   return (DATA[s.dataKey] || []).length;
 }
 
@@ -386,7 +372,6 @@ function renderStrategy() {
   if (strat.id === 'vcp')              { renderVCP(strat, main);               return; }
   if (strat.id === 'right_top')        { renderRightTop(strat, main);          return; }
   if (strat.id === 'right_top_track') { renderRightTopTrack(strat, main);     return; }
-  if (strat.id === 'ptt_stock')        { renderPttStock(strat, main);          return; }
   if (strat.id === 'performance')      { renderPerformance(strat, main);    return; }
 }
 
@@ -530,7 +515,7 @@ async function loadData() {
   const timestamp = new Date().getTime();
 
   try {
-    const [chipsRes, vsRes, aiRes, saRes, perfRes, miRes, fdRes, vcpRes, rtRes, rttRes, pttRes] = await Promise.all([
+    const [chipsRes, vsRes, aiRes, saRes, perfRes, miRes, fdRes, vcpRes, rtRes, rttRes] = await Promise.all([
       fetch(`data/chips_big_holder.json?t=${timestamp}`,   { cache: 'no-store' }).then(r => r.ok ? r.json() : null).catch(() => null),
       fetch(`data/volume_signal.json?t=${timestamp}`,      { cache: 'no-store' }).then(r => r.ok ? r.json() : null).catch(() => null),
       fetch(`data/ai_recommendations.json?t=${timestamp}`, { cache: 'no-store' }).then(r => r.ok ? r.json() : null).catch(() => null),
@@ -541,7 +526,6 @@ async function loadData() {
       fetch(`data/vcp.json?t=${timestamp}`,                { cache: 'no-store' }).then(r => r.ok ? r.json() : null).catch(() => null),
       fetch(`data/right_top.json?t=${timestamp}`,          { cache: 'no-store' }).then(r => r.ok ? r.json() : null).catch(() => null),
       fetch(`data/right_top_track.json?t=${timestamp}`,    { cache: 'no-store' }).then(r => r.ok ? r.json() : null).catch(() => null),
-      fetch(`data/ptt_stock.json?t=${timestamp}`,          { cache: 'no-store' }).then(r => r.ok ? r.json() : null).catch(() => null),
     ]);
 
     if (chipsRes && chipsRes.results) {
@@ -591,7 +575,9 @@ async function loadData() {
 
     if (vcpRes && vcpRes.results) {
       DATA.vcp_data     = vcpRes.results;
+      DATA.vcp_potential_data = vcpRes.potential_results || [];
       DATA.vcp_industry = vcpRes.industry_stats || [];
+      DATA.vcp_potential_industry = vcpRes.potential_industry_stats || [];
       const strat = STRATEGIES.find(s => s.id === 'vcp');
       if (strat) strat.dataUpdated = (vcpRes.updated || '').slice(0, 10) || strat.dataUpdated;
     }
@@ -607,11 +593,6 @@ async function loadData() {
       DATA.right_top_track_data = rttRes;
     }
 
-    if (pttRes && pttRes.posts) {
-      DATA.ptt_data = pttRes;
-      const strat = STRATEGIES.find(s => s.id === 'ptt_stock');
-      if (strat) strat.dataUpdated = pttRes.updated || strat.dataUpdated;
-    }
   } catch (e) {
     console.error('資料載入失敗:', e);
   }
