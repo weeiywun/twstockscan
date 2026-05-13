@@ -1,6 +1,6 @@
 {
   "strategy_id": "right_top",
-  "updated": "2026-05-12T17:13:39+08:00",
+  "updated": "2026-05-13T17:13:32+08:00",
   "results": [
     {
       "stock_id": "6292",
@@ -47,7 +47,81 @@
       "daily_vol_today": 1414,
       "daily_vol_5d_avg": 217.8,
       "daily_vol_ratio": 6.49,
-      "signal_date": "2026-05-12"
+      "signal_date": "2026-05-13"
+    },
+    {
+      "stock_id": "4440",
+      "name": "宜新實業",
+      "industry": "紡織纖維",
+      "market": "TWSE",
+      "is_consolidation_breakout": false,
+      "is_momentum_breakout": true,
+      "signal_types": [
+        "momentum"
+      ],
+      "tags": [
+        "動能突破",
+        "日線啟動",
+        "低乖離",
+        "400張同步",
+        "日量強放大"
+      ],
+      "quality_score": 56,
+      "whale_3w_up": false,
+      "whale_400_3w_up": true,
+      "big_pct_1000": 27.83,
+      "big_pct_400": 56.22,
+      "big_1000_chg_3w": 0.0,
+      "big_400_chg_3w": 0.92,
+      "close": 19.2,
+      "high_10w": 18.15,
+      "vol_latest_w": 869,
+      "vol_20w_avg": 451.1,
+      "vol_ratio": 1.93,
+      "change_pct": 6.08,
+      "week_date": "2026-05-15",
+      "daily_uptrend": true,
+      "daily_consolidating": true,
+      "daily_breakout_60d": true,
+      "daily_low_bias": true,
+      "ma20": 17.96,
+      "ma60": 17.25,
+      "bias_ma20": 6.89,
+      "high_60d": 18.15,
+      "daily_vol_today": 711,
+      "daily_vol_5d_avg": 73.2,
+      "daily_vol_ratio": 9.71,
+      "signal_date": "2026-05-13"
+    },
+    {
+      "stock_id": "8049",
+      "name": "晶采",
+      "industry": "光電業",
+      "market": "TPEX",
+      "is_consolidation_breakout": true,
+      "is_momentum_breakout": false,
+      "signal_types": [
+        "consolidation"
+      ],
+      "tags": [
+        "盤整突破",
+        "400張同步"
+      ],
+      "quality_score": 56,
+      "whale_3w_up": false,
+      "whale_400_3w_up": true,
+      "big_pct_1000": 27.07,
+      "big_pct_400": 32.91,
+      "big_1000_chg_3w": 0.0,
+      "big_400_chg_3w": 0.35,
+      "close": 25.8,
+      "high_10w": 25.7,
+      "vol_latest_w": 1158,
+      "vol_20w_avg": 676.4,
+      "vol_ratio": 1.71,
+      "change_pct": 2.38,
+      "week_date": "2026-05-15",
+      "signal_date": "2026-05-13"
     },
     {
       "stock_id": "6203",
@@ -77,7 +151,7 @@
       "vol_ratio": 8.57,
       "change_pct": 6.82,
       "week_date": "2026-05-08",
-      "signal_date": "2026-05-12"
+      "signal_date": "2026-05-13"
     },
     {
       "stock_id": "6237",
@@ -100,44 +174,14 @@
       "big_pct_400": 19.17,
       "big_1000_chg_3w": -1.88,
       "big_400_chg_3w": -0.04,
-      "close": 43.7,
+      "close": 43.45,
       "high_10w": 39.7,
-      "vol_latest_w": 5969,
+      "vol_latest_w": 6630,
       "vol_20w_avg": 1289.8,
-      "vol_ratio": 4.63,
-      "change_pct": 10.08,
+      "vol_ratio": 5.14,
+      "change_pct": 9.45,
       "week_date": "2026-05-15",
-      "signal_date": "2026-05-12"
-    },
-    {
-      "stock_id": "2364",
-      "name": "倫飛",
-      "industry": "電子工業",
-      "market": "TWSE",
-      "is_consolidation_breakout": true,
-      "is_momentum_breakout": false,
-      "signal_types": [
-        "consolidation"
-      ],
-      "tags": [
-        "盤整突破",
-        "週量強放大"
-      ],
-      "quality_score": 55,
-      "whale_3w_up": false,
-      "whale_400_3w_up": false,
-      "big_pct_1000": 51.35,
-      "big_pct_400": 55.86,
-      "big_1000_chg_3w": 0.0,
-      "big_400_chg_3w": 0.06,
-      "close": 70.9,
-      "high_10w": 66.2,
-      "vol_latest_w": 1832,
-      "vol_20w_avg": 754.3,
-      "vol_ratio": 2.43,
-      "change_pct": 10.95,
-      "week_date": "2026-05-15",
-      "signal_date": "2026-05-12"
+      "signal_date": "2026-05-13"
     },
     {
       "stock_id": "6143",
@@ -160,14 +204,104 @@
       "big_pct_400": 36.24,
       "big_1000_chg_3w": -4.16,
       "big_400_chg_3w": -2.4,
-      "close": 99.7,
+      "close": 101.5,
       "high_10w": 97.28,
-      "vol_latest_w": 8583,
+      "vol_latest_w": 12523,
       "vol_20w_avg": 3712.0,
-      "vol_ratio": 2.31,
-      "change_pct": 8.37,
+      "vol_ratio": 3.37,
+      "change_pct": 10.33,
       "week_date": "2026-05-15",
-      "signal_date": "2026-05-12"
+      "signal_date": "2026-05-13"
+    },
+    {
+      "stock_id": "4155",
+      "name": "訊映",
+      "industry": "化學生技醫療",
+      "market": "TWSE",
+      "is_consolidation_breakout": true,
+      "is_momentum_breakout": false,
+      "signal_types": [
+        "consolidation"
+      ],
+      "tags": [
+        "盤整突破",
+        "週量強放大"
+      ],
+      "quality_score": 55,
+      "whale_3w_up": false,
+      "whale_400_3w_up": false,
+      "big_pct_1000": 30.52,
+      "big_pct_400": 41.04,
+      "big_1000_chg_3w": 0.0,
+      "big_400_chg_3w": 0.53,
+      "close": 14.2,
+      "high_10w": 14.0,
+      "vol_latest_w": 2721,
+      "vol_20w_avg": 812.8,
+      "vol_ratio": 3.35,
+      "change_pct": 7.58,
+      "week_date": "2026-05-15",
+      "signal_date": "2026-05-13"
+    },
+    {
+      "stock_id": "2364",
+      "name": "倫飛",
+      "industry": "電子工業",
+      "market": "TWSE",
+      "is_consolidation_breakout": true,
+      "is_momentum_breakout": false,
+      "signal_types": [
+        "consolidation"
+      ],
+      "tags": [
+        "盤整突破",
+        "週量強放大"
+      ],
+      "quality_score": 55,
+      "whale_3w_up": false,
+      "whale_400_3w_up": false,
+      "big_pct_1000": 51.35,
+      "big_pct_400": 55.86,
+      "big_1000_chg_3w": 0.0,
+      "big_400_chg_3w": 0.06,
+      "close": 71.1,
+      "high_10w": 66.2,
+      "vol_latest_w": 2441,
+      "vol_20w_avg": 754.3,
+      "vol_ratio": 3.24,
+      "change_pct": 11.27,
+      "week_date": "2026-05-15",
+      "signal_date": "2026-05-13"
+    },
+    {
+      "stock_id": "8105",
+      "name": "凌巨",
+      "industry": "光電業",
+      "market": "TWSE",
+      "is_consolidation_breakout": true,
+      "is_momentum_breakout": false,
+      "signal_types": [
+        "consolidation"
+      ],
+      "tags": [
+        "盤整突破",
+        "週量強放大"
+      ],
+      "quality_score": 55,
+      "whale_3w_up": false,
+      "whale_400_3w_up": false,
+      "big_pct_1000": 59.2,
+      "big_pct_400": 62.4,
+      "big_1000_chg_3w": 0.82,
+      "big_400_chg_3w": 0.73,
+      "close": 16.2,
+      "high_10w": 13.95,
+      "vol_latest_w": 47705,
+      "vol_20w_avg": 19024.5,
+      "vol_ratio": 2.51,
+      "change_pct": 19.56,
+      "week_date": "2026-05-15",
+      "signal_date": "2026-05-13"
     },
     {
       "stock_id": "6227",
@@ -210,7 +344,7 @@
       "daily_vol_today": 1426,
       "daily_vol_5d_avg": 715.4,
       "daily_vol_ratio": 1.99,
-      "signal_date": "2026-05-12"
+      "signal_date": "2026-05-13"
     },
     {
       "stock_id": "4551",
@@ -253,50 +387,36 @@
       "daily_vol_today": 1251,
       "daily_vol_5d_avg": 672.4,
       "daily_vol_ratio": 1.86,
-      "signal_date": "2026-05-12"
+      "signal_date": "2026-05-13"
     },
     {
-      "stock_id": "6899",
-      "name": "創為精密",
-      "industry": "光電業",
-      "market": "TPEX",
-      "is_consolidation_breakout": false,
-      "is_momentum_breakout": true,
+      "stock_id": "6863",
+      "name": "永道-KY",
+      "industry": "電子工業",
+      "market": "TWSE",
+      "is_consolidation_breakout": true,
+      "is_momentum_breakout": false,
       "signal_types": [
-        "momentum"
+        "consolidation"
       ],
       "tags": [
-        "動能突破",
-        "日線啟動",
-        "低乖離",
-        "日量強放大"
+        "盤整突破"
       ],
       "quality_score": 50,
       "whale_3w_up": false,
       "whale_400_3w_up": false,
-      "big_pct_1000": 66.17,
-      "big_pct_400": 80.57,
-      "big_1000_chg_3w": 0.0,
-      "big_400_chg_3w": -0.02,
-      "close": 59.4,
-      "high_10w": 56.0,
-      "vol_latest_w": 524,
-      "vol_20w_avg": 72.2,
-      "vol_ratio": 7.26,
-      "change_pct": 10.82,
+      "big_pct_1000": 72.24,
+      "big_pct_400": 75.49,
+      "big_1000_chg_3w": 0.01,
+      "big_400_chg_3w": 0.02,
+      "close": 116.0,
+      "high_10w": 101.5,
+      "vol_latest_w": 1008,
+      "vol_20w_avg": 566.7,
+      "vol_ratio": 1.78,
+      "change_pct": 14.29,
       "week_date": "2026-05-15",
-      "daily_uptrend": true,
-      "daily_consolidating": true,
-      "daily_breakout_60d": true,
-      "daily_low_bias": true,
-      "ma20": 54.5,
-      "ma60": 52.48,
-      "bias_ma20": 8.99,
-      "high_60d": 56.0,
-      "daily_vol_today": 524,
-      "daily_vol_5d_avg": 10.0,
-      "daily_vol_ratio": 52.4,
-      "signal_date": "2026-05-12"
+      "signal_date": "2026-05-13"
     },
     {
       "stock_id": "8213",
@@ -325,7 +445,7 @@
       "vol_ratio": 1.73,
       "change_pct": 10.0,
       "week_date": "2026-05-15",
-      "signal_date": "2026-05-12"
+      "signal_date": "2026-05-13"
     },
     {
       "stock_id": "1612",
@@ -354,7 +474,7 @@
       "vol_ratio": 1.64,
       "change_pct": 2.95,
       "week_date": "2026-05-08",
-      "signal_date": "2026-05-12"
+      "signal_date": "2026-05-13"
     },
     {
       "stock_id": "2302",
@@ -383,7 +503,36 @@
       "vol_ratio": 1.64,
       "change_pct": 7.75,
       "week_date": "2026-05-08",
-      "signal_date": "2026-05-12"
+      "signal_date": "2026-05-13"
+    },
+    {
+      "stock_id": "8499",
+      "name": "鼎炫-KY",
+      "industry": "其他",
+      "market": "TWSE",
+      "is_consolidation_breakout": true,
+      "is_momentum_breakout": false,
+      "signal_types": [
+        "consolidation"
+      ],
+      "tags": [
+        "盤整突破"
+      ],
+      "quality_score": 50,
+      "whale_3w_up": false,
+      "whale_400_3w_up": false,
+      "big_pct_1000": 72.65,
+      "big_pct_400": 78.79,
+      "big_1000_chg_3w": 0.0,
+      "big_400_chg_3w": -0.02,
+      "close": 311.0,
+      "high_10w": 288.0,
+      "vol_latest_w": 1345,
+      "vol_20w_avg": 855.0,
+      "vol_ratio": 1.57,
+      "change_pct": 7.99,
+      "week_date": "2026-05-15",
+      "signal_date": "2026-05-13"
     },
     {
       "stock_id": "8477",
@@ -426,56 +575,13 @@
       "daily_vol_today": 350,
       "daily_vol_5d_avg": 57.2,
       "daily_vol_ratio": 6.12,
-      "signal_date": "2026-05-12"
+      "signal_date": "2026-05-13"
     },
     {
-      "stock_id": "1714",
-      "name": "和桐",
-      "industry": "化學工業",
-      "market": "TWSE",
-      "is_consolidation_breakout": false,
-      "is_momentum_breakout": true,
-      "signal_types": [
-        "momentum"
-      ],
-      "tags": [
-        "動能突破",
-        "日線啟動",
-        "低乖離",
-        "日量強放大"
-      ],
-      "quality_score": 50,
-      "whale_3w_up": false,
-      "whale_400_3w_up": false,
-      "big_pct_1000": 55.06,
-      "big_pct_400": 62.05,
-      "big_1000_chg_3w": -0.73,
-      "big_400_chg_3w": -0.45,
-      "close": 10.25,
-      "high_10w": 10.2,
-      "vol_latest_w": 21029,
-      "vol_20w_avg": 24295.5,
-      "vol_ratio": 0.87,
-      "change_pct": 12.14,
-      "week_date": "2026-05-15",
-      "daily_uptrend": true,
-      "daily_consolidating": true,
-      "daily_breakout_60d": true,
-      "daily_low_bias": true,
-      "ma20": 9.72,
-      "ma60": 9.59,
-      "bias_ma20": 5.46,
-      "high_60d": 10.2,
-      "daily_vol_today": 21029,
-      "daily_vol_5d_avg": 3557.6,
-      "daily_vol_ratio": 5.91,
-      "signal_date": "2026-05-12"
-    },
-    {
-      "stock_id": "8105",
-      "name": "凌巨",
+      "stock_id": "5220",
+      "name": "萬達光電",
       "industry": "光電業",
-      "market": "TWSE",
+      "market": "TPEX",
       "is_consolidation_breakout": false,
       "is_momentum_breakout": true,
       "signal_types": [
@@ -490,39 +596,85 @@
       "quality_score": 50,
       "whale_3w_up": false,
       "whale_400_3w_up": false,
-      "big_pct_1000": 59.2,
-      "big_pct_400": 62.4,
-      "big_1000_chg_3w": 0.82,
-      "big_400_chg_3w": 0.73,
-      "close": 14.75,
-      "high_10w": 13.95,
-      "vol_latest_w": 13450,
-      "vol_20w_avg": 19024.5,
+      "big_pct_1000": 19.61,
+      "big_pct_400": 43.57,
+      "big_1000_chg_3w": 0.0,
+      "big_400_chg_3w": -0.03,
+      "close": 21.5,
+      "high_10w": 20.5,
+      "vol_latest_w": 302,
+      "vol_20w_avg": 424.6,
       "vol_ratio": 0.71,
-      "change_pct": 8.86,
+      "change_pct": 6.17,
       "week_date": "2026-05-15",
       "daily_uptrend": true,
       "daily_consolidating": true,
       "daily_breakout_60d": true,
       "daily_low_bias": true,
-      "ma20": 13.78,
-      "ma60": 13.15,
-      "bias_ma20": 7.0,
-      "high_60d": 14.55,
-      "daily_vol_today": 11600,
-      "daily_vol_5d_avg": 1720.4,
-      "daily_vol_ratio": 6.74,
-      "signal_date": "2026-05-12"
+      "ma20": 20.42,
+      "ma60": 19.6,
+      "bias_ma20": 5.3,
+      "high_60d": 21.0,
+      "daily_vol_today": 207,
+      "daily_vol_5d_avg": 49.6,
+      "daily_vol_ratio": 4.17,
+      "signal_date": "2026-05-13"
+    },
+    {
+      "stock_id": "2441",
+      "name": "超豐",
+      "industry": "半導體業",
+      "market": "TWSE",
+      "is_consolidation_breakout": false,
+      "is_momentum_breakout": true,
+      "signal_types": [
+        "momentum"
+      ],
+      "tags": [
+        "動能突破",
+        "日線啟動",
+        "低乖離"
+      ],
+      "quality_score": 45,
+      "whale_3w_up": false,
+      "whale_400_3w_up": false,
+      "big_pct_1000": 69.31,
+      "big_pct_400": 73.63,
+      "big_1000_chg_3w": -1.67,
+      "big_400_chg_3w": -2.09,
+      "close": 97.3,
+      "high_10w": 95.5,
+      "vol_latest_w": 42819,
+      "vol_20w_avg": 52833.6,
+      "vol_ratio": 0.81,
+      "change_pct": 7.51,
+      "week_date": "2026-05-15",
+      "daily_uptrend": true,
+      "daily_consolidating": true,
+      "daily_breakout_60d": true,
+      "daily_low_bias": true,
+      "ma20": 91.18,
+      "ma60": 89.96,
+      "bias_ma20": 6.72,
+      "high_60d": 96.5,
+      "daily_vol_today": 23794,
+      "daily_vol_5d_avg": 13456.4,
+      "daily_vol_ratio": 1.77,
+      "signal_date": "2026-05-13"
     }
   ],
   "industry_stats": [
     {
       "industry": "電子工業",
-      "count": 3,
+      "count": 4,
       "stocks": [
         {
           "stock_id": "2364",
           "name": "倫飛"
+        },
+        {
+          "stock_id": "6863",
+          "name": "永道-KY"
         },
         {
           "stock_id": "8213",
@@ -531,6 +683,24 @@
         {
           "stock_id": "2302",
           "name": "麗正"
+        }
+      ]
+    },
+    {
+      "industry": "光電業",
+      "count": 3,
+      "stocks": [
+        {
+          "stock_id": "8049",
+          "name": "晶采"
+        },
+        {
+          "stock_id": "8105",
+          "name": "凌巨"
+        },
+        {
+          "stock_id": "5220",
+          "name": "萬達光電"
         }
       ]
     },
@@ -549,26 +719,26 @@
       ]
     },
     {
-      "industry": "光電業",
-      "count": 2,
-      "stocks": [
-        {
-          "stock_id": "6899",
-          "name": "創為精密"
-        },
-        {
-          "stock_id": "8105",
-          "name": "凌巨"
-        }
-      ]
-    },
-    {
       "industry": "半導體業",
-      "count": 1,
+      "count": 2,
       "stocks": [
         {
           "stock_id": "6237",
           "name": "驊訊"
+        },
+        {
+          "stock_id": "2441",
+          "name": "超豐"
+        }
+      ]
+    },
+    {
+      "industry": "紡織纖維",
+      "count": 1,
+      "stocks": [
+        {
+          "stock_id": "4440",
+          "name": "宜新實業"
         }
       ]
     },
@@ -579,6 +749,16 @@
         {
           "stock_id": "6143",
           "name": "振曜"
+        }
+      ]
+    },
+    {
+      "industry": "化學生技醫療",
+      "count": 1,
+      "stocks": [
+        {
+          "stock_id": "4155",
+          "name": "訊映"
         }
       ]
     },
@@ -613,22 +793,22 @@
       ]
     },
     {
+      "industry": "其他",
+      "count": 1,
+      "stocks": [
+        {
+          "stock_id": "8499",
+          "name": "鼎炫-KY"
+        }
+      ]
+    },
+    {
       "industry": "電子商務業",
       "count": 1,
       "stocks": [
         {
           "stock_id": "8477",
           "name": "創業家"
-        }
-      ]
-    },
-    {
-      "industry": "化學工業",
-      "count": 1,
-      "stocks": [
-        {
-          "stock_id": "1714",
-          "name": "和桐"
         }
       ]
     }
