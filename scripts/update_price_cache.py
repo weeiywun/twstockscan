@@ -292,6 +292,11 @@ def update_price_cache(start_date: str, end_date: str, token: str) -> bool:
     else:
         print(f"  回傳 {len(raw):,} 筆原始資料")
         new_df = _normalize(raw)
+        if start_date == end_date:
+            official_df = _fetch_official_daily_close(start_date)
+            if not official_df.empty:
+                new_df = pd.concat([new_df, official_df], ignore_index=True)
+                new_df = new_df.drop_duplicates(subset=["stock_id", "date"], keep="last")
 
     if new_df.empty:
         print("  ⚠️  無有效資料，略過")

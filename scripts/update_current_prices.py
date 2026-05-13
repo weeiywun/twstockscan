@@ -224,16 +224,22 @@ def main():
         print(f"  ✅ MIS 取得 {len(prices)}/{len(ids)} 支（資料日期：{data_date}）")
         sources.append("twse_mis")
 
-    # ── 2. price_cache fallback（補 MIS 缺漏）──
-    missing = ids - set(prices)
-    if missing:
-        print(f"  [2] 使用 price_cache 補缺漏（{len(missing)} 支）...")
-        cache_prices, cache_date = fetch_from_cache(missing)
-        if cache_prices:
+    # ── 2. price_cache fallback / 盤後覆蓋 ──
+    print("  [2] 使用 price_cache 取得盤後收盤...")
+    cache_prices, cache_date = fetch_from_cache(ids)
+    if cache_prices:
+        if not data_date or cache_date >= data_date:
             prices.update(cache_prices)
-            data_date = data_date or cache_date
+            data_date = cache_date
             sources.append("price_cache")
-            print(f"  ✅ price_cache 補到 {len(cache_prices)}/{len(missing)} 支")
+            print(f"  ✅ price_cache 覆蓋/補充 {len(cache_prices)}/{len(ids)} 支（資料日期：{cache_date}）")
+        else:
+            missing_from_cache = ids - set(prices)
+            supplement = {sid: price for sid, price in cache_prices.items() if sid in missing_from_cache}
+            if supplement:
+                prices.update(supplement)
+                sources.append("price_cache")
+                print(f"  ✅ price_cache 補缺漏 {len(supplement)}/{len(missing_from_cache)} 支（資料日期：{cache_date}）")
 
     # ── 3. FINMIND BYDATE fallback（補剩餘缺漏）──
     missing = ids - set(prices)
