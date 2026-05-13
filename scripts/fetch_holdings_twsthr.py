@@ -5,7 +5,7 @@
 股價/EMA120 透過 FinMind API 取得。
 
 篩選邏輯：
-  先決安全濾網：5日均量 > 500張、|乖離EMA120| <= 10%、千張大戶比例 > 30%
+  先決安全濾網：5日均量 > 500張、0% <= 乖離EMA120 <= 10%、千張大戶比例 > 30%
   標籤（可複選）：
     持續成長 +1：連續兩週 R > 0%（任一門檻）
     雙軌觸發 +3：R_400 >= 1.0% 且 R_1000 >= 1.0%
@@ -32,7 +32,7 @@ START_DATE      = (datetime.now(TW_TZ) - timedelta(days=180)).strftime("%Y-%m-%d
 BIG_PCT_MIN   = 30.0
 EMA_PERIOD    = 120
 VOL_MIN_LOTS  = 500
-DEV_MIN, DEV_MAX = -10.0, 10.0
+DEV_MIN, DEV_MAX = 0.0, 10.0
 BBW_MAX       = 15.0
 FINMIND_SLEEP = 0.35
 FLEX_MAX      = 15
