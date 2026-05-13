@@ -40,7 +40,9 @@ MIN_CONTRACTIONS = 2
 MAX_CONTRACTIONS = 4
 MIN_FIRST_DEPTH = 6.0  # 第一段收縮最小回調幅度（%）
 MAX_LAST_DEPTH = 20.0  # 最後一段收縮最大回調幅度（%）；超過代表整理不夠緊
-PIVOT_NEAR_PCT = 0.05  # 收盤距樞紐高點 5% 以內視為「靠近樞紐」
+PIVOT_NEAR_PCT  = 0.05  # 收盤距樞紐高點 5% 以內視為「靠近樞紐」
+PIVOT_MAX_ABOVE = 0.15  # 收盤超過樞紐 15% 以上視為「已走完波段」，排除
+PIVOT_L_MIN_IDX = BASE_WEEKS - 5  # 最後一段 L 必須在底部窗口的末 5 週內
 MA_PERIOD = 100        # 趨勢均線週期（快取僅 ~136 日，改用 MA100 取代 MA150）
 MIN_BARS = 105         # 最少需要 105 根日線（確保 MA100 有效）
 
@@ -139,8 +141,6 @@ def check_vcp(daily: pd.DataFrame) -> dict | None:
 
     base_wk = weekly.tail(BASE_WEEKS).reset_index(drop=True)
     closes  = base_wk["close"].tolist()
-    highs   = base_wk["max"].tolist()
-    lows    = base_wk["min"].tolist()
     volumes = base_wk["volume_lots"].tolist()
 
     # ── 3. 找擺動高低點 ──────────────────────────────────────────────
@@ -148,7 +148,7 @@ def check_vcp(daily: pd.DataFrame) -> dict | None:
     if len(swings) < 3:  # 至少需要 H-L-H 或 L-H-L 才能萃取收縮
         return None
 
-    # ── 4. 萃取 H→L 收縮段 ───────────────────────────────────────────
+    # ── 4. 萃取 H→L 收縮段（保留 l_idx 供時效性過濾使用）─────────────
     contractions = []
     for i in range(len(swings) - 1):
         if swings[i][2] == "H" and swings[i + 1][2] == "L":
@@ -162,6 +162,7 @@ def check_vcp(daily: pd.DataFrame) -> dict | None:
                 "avg_vol": avg_vol,
                 "h_price": round(h_price, 2),
                 "l_price": round(l_price, 2),
+                "l_idx":   l_idx,   # 最後低點在底部窗口的位置
             })
 
     if len(contractions) < MIN_CONTRACTIONS:
@@ -169,6 +170,11 @@ def check_vcp(daily: pd.DataFrame) -> dict | None:
 
     # 取最後 MAX_CONTRACTIONS 段作為完整的 VCP 底部
     contractions = contractions[-MAX_CONTRACTIONS:]
+
+    # ── 時效性過濾：最後一段 L 必須在末 5 週內 ───────────────────────
+    # 確保 VCP 仍在進行中，而非已走完波段的歷史形態
+    if contractions[-1]["l_idx"] < PIVOT_L_MIN_IDX:
+        return None
 
     depths = [c["depth"] for c in contractions]
     vols   = [c["avg_vol"] for c in contractions]
@@ -189,13 +195,14 @@ def check_vcp(daily: pd.DataFrame) -> dict | None:
 
     # ── 7. 樞紐高點與緊縮度 ──────────────────────────────────────────
     pivot_high = contractions[-1]["h_price"]  # 最後一段收縮的起點高位 = 潛在突破點
+    pivot_range_pct = depths[-1]              # 最後一段收縮深度，反映樞紐緊縮程度
+    pivot_dist_pct  = (close_now - pivot_high) / pivot_high * 100
 
-    last3_max = max(highs[-3:])
-    last3_min = min(lows[-3:])
-    last3_mid = (last3_max + last3_min) / 2
-    pivot_range_pct = round((last3_max - last3_min) / last3_mid * 100, 1) if last3_mid > 0 else 99.0
+    # 排除已大幅突破樞紐的歷史形態（收盤超過樞紐 15% 以上）
+    if pivot_dist_pct > PIVOT_MAX_ABOVE * 100:
+        return None
 
-    is_near_pivot = close_now >= pivot_high * (1 - PIVOT_NEAR_PCT)
+    is_near_pivot = pivot_dist_pct >= -(PIVOT_NEAR_PCT * 100)
 
     # ── 8. 品質分數（純技術面，whale 加成由呼叫端疊加）──────────────
     score = 40  # 基礎分
@@ -213,9 +220,9 @@ def check_vcp(daily: pd.DataFrame) -> dict | None:
     elif depth_ratio < 0.50:
         score += 5
 
-    if pivot_range_pct < 8:
+    if pivot_range_pct < 6:       # 最後一段深度 <6%：極緊縮
         score += 10
-    elif pivot_range_pct < 12:
+    elif pivot_range_pct < 10:    # <10%：緊縮良好
         score += 5
 
     if is_near_pivot:
@@ -225,7 +232,7 @@ def check_vcp(daily: pd.DataFrame) -> dict | None:
     tags = ["VCP", f"{len(contractions)}段收縮"]
     if vol_contraction_ratio is not None and vol_contraction_ratio < 0.60:
         tags.append("量縮到位")
-    if pivot_range_pct < 10:
+    if pivot_range_pct < 10:   # 最後一段深度 <10% 視為樞紐緊縮
         tags.append("樞紐緊縮")
     if is_near_pivot:
         tags.append("靠近樞紐")

@@ -173,7 +173,7 @@ function renderVCP(strat, main) {
                 <th onclick="vcpSort('contractions')" style="cursor:pointer" data-tip="偵測到的 VCP 收縮段數（2~4）">段數${sortIcon('contractions')}</th>
                 <th data-tip="各段回調深度（由大到小）">收縮深度</th>
                 <th onclick="vcpSort('vol_contraction_ratio')" style="cursor:pointer" data-tip="最後一段均量 / 第一段均量；越小代表量縮越明顯">量縮比${sortIcon('vol_contraction_ratio')}</th>
-                <th onclick="vcpSort('pivot_range_pct')" style="cursor:pointer" data-tip="最後 3 週價格振幅（越小代表越緊縮）">樞紐振幅${sortIcon('pivot_range_pct')}</th>
+                <th onclick="vcpSort('pivot_range_pct')" style="cursor:pointer" data-tip="最後一段收縮深度（越小代表樞紐越緊縮）">樞紐緊縮${sortIcon('pivot_range_pct')}</th>
                 <th onclick="vcpSort('big_1000_chg_3w')" style="cursor:pointer" data-tip="千張大戶持股比例近 3 週變化">大戶3週${sortIcon('big_1000_chg_3w')}</th>
                 <th>標籤</th>
               </tr>
