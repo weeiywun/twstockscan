@@ -78,6 +78,25 @@ const STRATEGIES = [
   },
   // ── 策略二：突破策略 ──
   {
+    id: "vcp",
+    name: "VCP 選股",
+    shortName: "VCP",
+    icon: "◈",
+    group: "right_top",
+    available: true,
+    description: "掃描符合 Mark Minervini《超級績效》VCP 型態（Volatility Contraction Pattern）的標的：Stage 2 上升趨勢中，出現 2~4 段波動遞減收縮，成交量同步萎縮，最後形成緊縮樞紐區等待突破。",
+    conditions: [
+      "Stage 2：收盤 > MA100，且 MA100 在過去 20 個交易日持續上升",
+      "近 20 週出現 2~4 段 H→L 回調，每段回調幅度嚴格遞減",
+      "各段收縮期間平均成交量同步遞減",
+      "最後一段收縮回調幅度 < 20%，第一段回調 > 8%",
+      "靠近樞紐：收盤距最後樞紐高點 5% 以內（潛在突破點）",
+    ],
+    dataUpdated: "載入中...",
+    dataSource: "FinMind（每日盤後）",
+    dataKey: "vcp_data",
+  },
+  {
     id: "right_top",
     name: "突破策略",
     shortName: "突破策略",
@@ -133,6 +152,8 @@ const DATA = {
   performance_data:       null,
   market_index_data:      null,
   futures_dashboard_data: null,
+  vcp_data:               [],
+  vcp_industry:           [],
   right_top_data:         [],
   right_top_industry:     [],
   right_top_track_data:   null,
@@ -267,6 +288,7 @@ function _navBadge(s) {
   if (s.id === 'future_dashboard') return DATA.futures_dashboard_data?.summary?.bias || '—';
   if (s.id === 'performance') return (DATA.performance_data?.positions || []).filter(p => !p.confirmed).length;
   if (s.id === 'stock_analysis') return DATA.stock_analysis_data?.active?.length ?? '—';
+  if (s.id === 'vcp')             return (DATA.vcp_data || []).length;
   if (s.id === 'right_top_track') return DATA.right_top_track_data?.active?.length ?? '—';
   if (s.id === 'ptt_stock') return DATA.ptt_data ? Object.keys(DATA.ptt_data.stocks || {}).length : '—';
   return (DATA[s.dataKey] || []).length;
@@ -361,6 +383,7 @@ function renderStrategy() {
   if (strat.id === 'chips_big_holder') { renderChipsHolder(strat, main);    return; }
   if (strat.id === 'volume_signal')    { renderVolumeSignal(strat, main);   return; }
   if (strat.id === 'stock_analysis')   { renderStockAnalysis(strat, main);  return; }
+  if (strat.id === 'vcp')              { renderVCP(strat, main);               return; }
   if (strat.id === 'right_top')        { renderRightTop(strat, main);          return; }
   if (strat.id === 'right_top_track') { renderRightTopTrack(strat, main);     return; }
   if (strat.id === 'ptt_stock')        { renderPttStock(strat, main);          return; }
@@ -507,7 +530,7 @@ async function loadData() {
   const timestamp = new Date().getTime();
 
   try {
-    const [chipsRes, vsRes, aiRes, saRes, perfRes, miRes, fdRes, rtRes, rttRes, pttRes] = await Promise.all([
+    const [chipsRes, vsRes, aiRes, saRes, perfRes, miRes, fdRes, vcpRes, rtRes, rttRes, pttRes] = await Promise.all([
       fetch(`data/chips_big_holder.json?t=${timestamp}`,   { cache: 'no-store' }).then(r => r.ok ? r.json() : null).catch(() => null),
       fetch(`data/volume_signal.json?t=${timestamp}`,      { cache: 'no-store' }).then(r => r.ok ? r.json() : null).catch(() => null),
       fetch(`data/ai_recommendations.json?t=${timestamp}`, { cache: 'no-store' }).then(r => r.ok ? r.json() : null).catch(() => null),
@@ -515,6 +538,7 @@ async function loadData() {
       fetch(`data/performance.json?t=${timestamp}`,        { cache: 'no-store' }).then(r => r.ok ? r.json() : null).catch(() => null),
       fetch(`data/market_index.json?t=${timestamp}`,        { cache: 'no-store' }).then(r => r.ok ? r.json() : null).catch(() => null),
       fetch(`data/futures_dashboard.json?t=${timestamp}`,   { cache: 'no-store' }).then(r => r.ok ? r.json() : null).catch(() => null),
+      fetch(`data/vcp.json?t=${timestamp}`,                { cache: 'no-store' }).then(r => r.ok ? r.json() : null).catch(() => null),
       fetch(`data/right_top.json?t=${timestamp}`,          { cache: 'no-store' }).then(r => r.ok ? r.json() : null).catch(() => null),
       fetch(`data/right_top_track.json?t=${timestamp}`,    { cache: 'no-store' }).then(r => r.ok ? r.json() : null).catch(() => null),
       fetch(`data/ptt_stock.json?t=${timestamp}`,          { cache: 'no-store' }).then(r => r.ok ? r.json() : null).catch(() => null),
@@ -565,6 +589,13 @@ async function loadData() {
       if (strat) strat.dataUpdated = (fdRes.date || fdRes.updated || '').slice(0, 10) || strat.dataUpdated;
     }
 
+    if (vcpRes && vcpRes.results) {
+      DATA.vcp_data     = vcpRes.results;
+      DATA.vcp_industry = vcpRes.industry_stats || [];
+      const strat = STRATEGIES.find(s => s.id === 'vcp');
+      if (strat) strat.dataUpdated = (vcpRes.updated || '').slice(0, 10) || strat.dataUpdated;
+    }
+
     if (rtRes && rtRes.results) {
       DATA.right_top_data     = rtRes.results;
       DATA.right_top_industry = rtRes.industry_stats || [];
@@ -596,6 +627,7 @@ async function loadData() {
         if (cpData.date === today || cpData.date === yesterday) {
           if (typeof _applyPriceToChips    === 'function') _applyPriceToChips(cpData.prices);
           if (typeof _applyPriceToVolumeSignal === 'function') _applyPriceToVolumeSignal(cpData.prices);
+          if (typeof _applyPriceToVCP       === 'function') _applyPriceToVCP(cpData.prices);
           if (typeof _applyPriceToRightTop === 'function') _applyPriceToRightTop(cpData.prices);
           if (typeof _applyPriceToRttTrack === 'function') _applyPriceToRttTrack(cpData.prices);
           if (typeof _applyPriceToAnalysis === 'function') _applyPriceToAnalysis(cpData.prices);

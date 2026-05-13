@@ -76,6 +76,11 @@ jobs:
             echo "快取無變動，略過提交"
           fi
 
+      - name: VCP 選股掃描
+        env:
+          FINMIND_TOKEN: ${{ secrets.FINMIND_API_TOKEN }}
+        run: python scripts/scan_vcp.py
+
       - name: 突破策略掃描
         env:
           FINMIND_TOKEN: ${{ secrets.FINMIND_API_TOKEN }}
@@ -100,7 +105,7 @@ jobs:
         run: |
           git config user.name  "github-actions[bot]"
           git config user.email "github-actions[bot]@users.noreply.github.com"
-          git add data/right_top.json data/right_top_track.json data/volume_signal.json data/performance.json data/chips_big_holder.json data/ptt_stock.json
+          git add data/vcp.json data/right_top.json data/right_top_track.json data/volume_signal.json data/performance.json data/chips_big_holder.json data/ptt_stock.json
           if ! git diff --staged --quiet; then
             git commit -m "data: daily scan update $(date -u +%Y-%m-%d)"
             for i in {1..4}; do
