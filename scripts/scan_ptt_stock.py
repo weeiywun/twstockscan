@@ -127,14 +127,17 @@ def _full_date(date_str: str) -> str:
     return f"{year}-{month:02d}-{day:02d}"
 
 
-def fetch_page(url: str) -> BeautifulSoup | None:
-    try:
-        res = requests.get(url, headers=HEADERS, timeout=15)
-        res.raise_for_status()
-        return BeautifulSoup(res.text, "html.parser")
-    except Exception as exc:
-        print(f"  ⚠️  fetch 失敗 {url}：{exc}")
-        return None
+def fetch_page(url: str, retries: int = 3) -> BeautifulSoup | None:
+    for attempt in range(1, retries + 1):
+        try:
+            res = requests.get(url, headers=HEADERS, timeout=15)
+            res.raise_for_status()
+            return BeautifulSoup(res.text, "html.parser")
+        except Exception as exc:
+            print(f"  ⚠️  fetch 失敗 {url}（{attempt}/{retries}）：{exc}")
+            if attempt < retries:
+                time.sleep(attempt * 1.5)
+    return None
 
 
 def parse_index_page(soup: BeautifulSoup) -> tuple[list[dict[str, Any]], str | None]:
@@ -244,7 +247,7 @@ def build_stocks_summary(posts: list[dict[str, Any]]) -> dict[str, Any]:
 def main() -> None:
     import argparse
     parser = argparse.ArgumentParser()
-    parser.add_argument("--pages", type=int, default=5, help="最多翻幾頁（預設 5）")
+    parser.add_argument("--pages", type=int, default=12, help="最多翻幾頁（預設 12）")
     args = parser.parse_args()
     max_pages = args.pages
 
@@ -259,11 +262,14 @@ def main() -> None:
     new_posts: list[dict[str, Any]] = []
     url: str | None = PTT_STOCK_INDEX
     pages_fetched = 0
+    fetch_failed = False
+    reached_existing_anchor = False
 
     while url and pages_fetched < max_pages:
         print(f"  爬取：{url}")
         soup = fetch_page(url)
         if not soup:
+            fetch_failed = True
             break
 
         page_posts, prev_url = parse_index_page(soup)
@@ -275,10 +281,19 @@ def main() -> None:
         pages_fetched += 1
         # 本頁有找到 [標的] 文章、但全是舊資料 → 停止往前翻
         if page_posts and not new_on_page:
+            reached_existing_anchor = True
             break
         url = prev_url
         if url:
             time.sleep(0.8)
+
+    if fetch_failed:
+        print("  ❌ PTT 抓取中斷，停止輸出，避免用舊資料冒充今日更新")
+        raise SystemExit(1)
+
+    if url and pages_fetched >= max_pages and not reached_existing_anchor:
+        print(f"  ❌ 已達翻頁上限 {max_pages}，仍未接回既有資料；停止輸出以避免資料不完整")
+        raise SystemExit(1)
 
     print(f"  本次新增：{len(new_posts)} 篇")
 

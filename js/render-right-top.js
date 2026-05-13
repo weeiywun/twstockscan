@@ -317,6 +317,7 @@ function _applyPriceToRightTop(priceMap) {
   if (!priceMap || !DATA.right_top_data) return;
   DATA.right_top_data.forEach(item => {
     const p = priceMap[item.stock_id];
-    if (p && p.close != null) item.close = p.close;
+    const close = typeof p === 'number' ? p : p?.close;
+    if (close != null) item.close = close;
   });
 }

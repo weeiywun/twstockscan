@@ -333,6 +333,7 @@ function _applyPriceToVCP(priceMap) {
   if (!priceMap || !DATA.vcp_data) return;
   DATA.vcp_data.forEach(item => {
     const p = priceMap[item.stock_id];
-    if (p && p.close != null) item.close = p.close;
+    const close = typeof p === 'number' ? p : p?.close;
+    if (close != null) item.close = close;
   });
 }
