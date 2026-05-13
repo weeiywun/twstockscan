@@ -335,7 +335,18 @@
       "exit_price": null,
       "exit_date": null,
       "exit_net": null,
-      "confirmed": false
+      "confirmed": true,
+      "exits": [
+        {
+          "id": "e1778646338640",
+          "date": "2026-05-13",
+          "shares": 1000,
+          "exit_price": 81.7,
+          "exit_net": 81386,
+          "sell_fee": 69,
+          "sell_tax": 245
+        }
+      ]
     },
     {
       "id": "p1778374255362",
