@@ -23,6 +23,7 @@ import requests
 
 SCRIPT_DIR = os.path.dirname(os.path.abspath(__file__))
 DATA_DIR   = os.path.join(SCRIPT_DIR, "..", "data")
+PERF_PATH  = os.path.join(DATA_DIR, "performance.json")
 
 TW_TZ = timezone(timedelta(hours=8))
 NOW   = datetime.now(TW_TZ)
@@ -175,6 +176,38 @@ def fetch_from_finmind(ids: set, token: str) -> tuple[dict, str]:
     return {}, ""
 
 
+def update_performance_prices(prices: dict, data_date: str) -> None:
+    """將現價快照同步進績效頁使用的 price_history。"""
+    if not prices or not data_date or not os.path.exists(PERF_PATH):
+        return
+    with open(PERF_PATH, encoding="utf-8") as f:
+        perf = json.load(f)
+
+    positions = perf.get("positions", [])
+    open_ids = {p.get("stock_id") for p in positions if not p.get("confirmed", False)}
+    open_ids.discard(None)
+    if not open_ids:
+        return
+
+    price_history = perf.get("price_history") or {}
+    updated = 0
+    for sid in sorted(open_ids):
+        if sid not in prices:
+            continue
+        price_history.setdefault(sid, {})[data_date] = round(float(prices[sid]), 2)
+        updated += 1
+
+    if not updated:
+        return
+
+    perf["price_history"] = price_history
+    perf["last_updated"] = data_date
+    with open(PERF_PATH, "w", encoding="utf-8") as f:
+        json.dump(perf, f, ensure_ascii=False, indent=2)
+        f.write("\n")
+    print(f"  ✅ performance.json 持倉現價已同步：{updated}/{len(open_ids)} 支（{data_date}）")
+
+
 def main():
     print(f"=== 現價快速更新 {TODAY} {NOW.strftime('%H:%M')} ===")
 
@@ -233,6 +266,8 @@ def main():
     out_path = os.path.join(DATA_DIR, "current_prices.json")
     with open(out_path, "w", encoding="utf-8") as f:
         json.dump(out, f, ensure_ascii=False, indent=2)
+
+    update_performance_prices(prices, data_date)
 
     print(f"  ✅ 已輸出 {len(prices)}/{len(ids)} 支現價（{data_date}）→ current_prices.json（來源：{out['source']}）")
 

@@ -631,6 +631,7 @@ async function loadData() {
           if (typeof _applyPriceToRightTop === 'function') _applyPriceToRightTop(cpData.prices);
           if (typeof _applyPriceToRttTrack === 'function') _applyPriceToRttTrack(cpData.prices);
           if (typeof _applyPriceToAnalysis === 'function') _applyPriceToAnalysis(cpData.prices);
+          if (typeof _applyPriceToPerf === 'function') await _applyPriceToPerf(cpData.prices, cpData.date, false);
         }
       }
     }

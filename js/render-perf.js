@@ -1114,7 +1114,7 @@ function _applyPriceToAnalysis(priceMap) {
   });
 }
 
-async function _applyPriceToPerf(priceMap, date) {
+async function _applyPriceToPerf(priceMap, date, persist = true) {
   const pd = DATA.performance_data;
   if (!pd) return;
   const openIds = [...new Set(
@@ -1133,7 +1133,7 @@ async function _applyPriceToPerf(priceMap, date) {
   pd.price_history = priceHistory;
   pd.last_updated = date;
   DATA.performance_data = pd;
-  if (ghToken()) await ghWritePerf(pd);
+  if (persist && ghToken()) await ghWritePerf(pd);
 }
 
 // ════════════════════════════════════════════════════

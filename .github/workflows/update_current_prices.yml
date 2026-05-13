@@ -54,7 +54,7 @@ jobs:
         run: |
           git config user.name  "github-actions[bot]"
           git config user.email "github-actions[bot]@users.noreply.github.com"
-          git add data/current_prices.json data/market_index.json data/futures_dashboard.json
+          git add data/current_prices.json data/performance.json data/market_index.json data/futures_dashboard.json
           if ! git diff --staged --quiet; then
             git commit -m "data: market snapshot update $(date -u +%Y-%m-%dT%H:%M:%SZ)"
             for i in {1..4}; do
