@@ -1,61 +1,61 @@
 {
   "date": "2026-05-14",
-  "updated": "2026-05-14T17:11:31.077053+08:00",
-  "source": "twse+twse_mis+yahoo_futures+yfinance",
+  "updated": "2026-05-15T07:03:46.994439+08:00",
+  "source": "yahoo_futures+yfinance",
   "indices": {
     "TAIEX": {
       "name": "台灣加權指數",
-      "close": 41751.75,
-      "date": "2026-05-14",
-      "source": "twse",
-      "change": 377.25,
-      "change_pct": 0.91,
-      "previous_close": 41374.5
+      "close": 41374.5,
+      "date": "2026-05-13",
+      "source": "yfinance",
+      "change": -523.82,
+      "change_pct": -1.25,
+      "previous_close": 41898.32
     },
     "TPEX": {
       "name": "櫃買加權指數",
-      "close": 426.57,
-      "date": "2026-05-14",
-      "source": "twse_mis",
-      "change": 6.03,
-      "change_pct": 1.43,
-      "previous_close": 420.54
+      "close": 420.54,
+      "date": "2026-05-13",
+      "source": "yfinance",
+      "change": -5.17,
+      "change_pct": -1.21,
+      "previous_close": 425.71
     },
     "TXF_NEAR": {
       "name": "台指近全",
-      "close": 41847.0,
+      "close": 42359.0,
       "date": "2026-05-14",
       "source": "yahoo_futures",
-      "change": 211.0,
-      "change_pct": 0.51,
-      "time": "17:12:50"
+      "change": 723.0,
+      "change_pct": 1.74,
+      "time": "04:59:58"
     },
     "NASDAQ": {
       "name": "那斯達克",
-      "close": 26402.34,
-      "date": "2026-05-13",
+      "close": 26635.22,
+      "date": "2026-05-14",
       "source": "yfinance",
-      "change": 314.14,
-      "change_pct": 1.2,
-      "previous_close": 26088.2
+      "change": 232.88,
+      "change_pct": 0.88,
+      "previous_close": 26402.34
     },
     "DOW": {
       "name": "道瓊",
-      "close": 49693.2,
-      "date": "2026-05-13",
+      "close": 50063.46,
+      "date": "2026-05-14",
       "source": "yfinance",
-      "change": -67.36,
-      "change_pct": -0.14,
-      "previous_close": 49760.56
+      "change": 370.26,
+      "change_pct": 0.75,
+      "previous_close": 49693.2
     },
     "SOX": {
       "name": "費半",
-      "close": 12017.98,
-      "date": "2026-05-13",
+      "close": 12073.78,
+      "date": "2026-05-14",
       "source": "yfinance",
-      "change": 300.72,
-      "change_pct": 2.57,
-      "previous_close": 11717.26
+      "change": 55.8,
+      "change_pct": 0.46,
+      "previous_close": 12017.98
     }
   }
 }
