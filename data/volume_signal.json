@@ -1,7 +1,58 @@
 {
   "strategy_id": "volume_signal",
-  "updated": "2026-05-14T17:14:16+08:00",
+  "updated": "2026-05-15T17:14:21+08:00",
   "results": [
+    {
+      "stock_id": "3704",
+      "name": "合勤控",
+      "industry": "通信",
+      "tags": [
+        "持續成長"
+      ],
+      "tag_score": 1,
+      "cumulative_3w": 0.46,
+      "big_pct_1000": 50.27,
+      "close": 38.2,
+      "vol_today": 8711,
+      "vol_10d_avg": 2813.0,
+      "vol_ratio": 3.1,
+      "ema5": 35.97,
+      "signal_date": "2026-05-15"
+    },
+    {
+      "stock_id": "2881",
+      "name": "富邦金",
+      "industry": "金融",
+      "tags": [
+        "持續成長"
+      ],
+      "tag_score": 1,
+      "cumulative_3w": 0.48,
+      "big_pct_1000": 83.13,
+      "close": 96.1,
+      "vol_today": 100425,
+      "vol_10d_avg": 33494.0,
+      "vol_ratio": 3.0,
+      "ema5": 94.27,
+      "signal_date": "2026-05-15"
+    },
+    {
+      "stock_id": "3413",
+      "name": "京鼎",
+      "industry": "半導",
+      "tags": [
+        "單周增幅"
+      ],
+      "tag_score": 5,
+      "cumulative_3w": 4.8,
+      "big_pct_1000": 33.83,
+      "close": 325.5,
+      "vol_today": 6509,
+      "vol_10d_avg": 2284.0,
+      "vol_ratio": 2.85,
+      "ema5": 314.92,
+      "signal_date": "2026-05-15"
+    },
     {
       "stock_id": "3479",
       "name": "安勤",
@@ -12,29 +63,29 @@
       "tag_score": 1,
       "cumulative_3w": 0.0,
       "big_pct_1000": 33.72,
-      "close": 104.0,
-      "vol_today": 1845,
-      "vol_10d_avg": 451.0,
-      "vol_ratio": 4.09,
-      "ema5": 95.84,
-      "signal_date": "2026-05-14"
+      "close": 102.0,
+      "vol_today": 1012,
+      "vol_10d_avg": 611.0,
+      "vol_ratio": 1.66,
+      "ema5": 98.56,
+      "signal_date": "2026-05-15"
     },
     {
-      "stock_id": "3290",
-      "name": "東浦",
-      "industry": "櫃電零",
+      "stock_id": "2882",
+      "name": "國泰金",
+      "industry": "金融",
       "tags": [
         "持續成長"
       ],
       "tag_score": 1,
-      "cumulative_3w": 2.73,
-      "big_pct_1000": 45.47,
-      "close": 48.4,
-      "vol_today": 2119,
-      "vol_10d_avg": 742.0,
-      "vol_ratio": 2.86,
-      "ema5": 47.6,
-      "signal_date": "2026-05-14"
+      "cumulative_3w": 0.3,
+      "big_pct_1000": 82.8,
+      "close": 77.9,
+      "vol_today": 54795,
+      "vol_10d_avg": 34040.0,
+      "vol_ratio": 1.61,
+      "ema5": 77.67,
+      "signal_date": "2026-05-15"
     },
     {
       "stock_id": "2027",
@@ -47,63 +98,30 @@
       "tag_score": 4,
       "cumulative_3w": 2.72,
       "big_pct_1000": 65.04,
-      "close": 39.8,
-      "vol_today": 57508,
-      "vol_10d_avg": 29522.0,
-      "vol_ratio": 1.95,
-      "ema5": 38.92,
-      "signal_date": "2026-05-14"
+      "close": 39.85,
+      "vol_today": 47747,
+      "vol_10d_avg": 31548.0,
+      "vol_ratio": 1.51,
+      "ema5": 39.21,
+      "signal_date": "2026-05-15"
     },
     {
-      "stock_id": "1563",
-      "name": "巧新",
-      "industry": "汽車",
+      "stock_id": "3004",
+      "name": "豐達科",
+      "industry": "鋼鐵",
       "tags": [
-        "持續成長"
-      ],
-      "tag_score": 1,
-      "cumulative_3w": -2.68,
-      "big_pct_1000": 30.16,
-      "close": 45.4,
-      "vol_today": 1579,
-      "vol_10d_avg": 821.0,
-      "vol_ratio": 1.92,
-      "ema5": 43.52,
-      "signal_date": "2026-05-14"
-    },
-    {
-      "stock_id": "3413",
-      "name": "京鼎",
-      "industry": "半導",
-      "tags": [
+        "持續成長",
         "單周增幅"
       ],
-      "tag_score": 5,
-      "cumulative_3w": 4.8,
-      "big_pct_1000": 33.83,
-      "close": 321.0,
-      "vol_today": 4059,
-      "vol_10d_avg": 2124.0,
-      "vol_ratio": 1.91,
-      "ema5": 311.88,
-      "signal_date": "2026-05-14"
-    },
-    {
-      "stock_id": "3704",
-      "name": "合勤控",
-      "industry": "通信",
-      "tags": [
-        "持續成長"
-      ],
-      "tag_score": 1,
-      "cumulative_3w": 0.46,
-      "big_pct_1000": 50.27,
-      "close": 36.7,
-      "vol_today": 4603,
-      "vol_10d_avg": 2571.0,
-      "vol_ratio": 1.79,
-      "ema5": 35.6,
-      "signal_date": "2026-05-14"
+      "tag_score": 6,
+      "cumulative_3w": 3.56,
+      "big_pct_1000": 49.7,
+      "close": 121.0,
+      "vol_today": 972,
+      "vol_10d_avg": 642.0,
+      "vol_ratio": 1.51,
+      "ema5": 116.67,
+      "signal_date": "2026-05-15"
     }
   ]
 }
