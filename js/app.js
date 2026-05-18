@@ -365,26 +365,21 @@ function renderNav() {
     grouped[g].push(s);
   });
 
-  groupOrder.forEach((g, i) => {
-    if (i > 0) {
-      html += `<div style="width:1px;background:var(--border);margin:10px 6px;align-self:stretch;flex-shrink:0"></div>`;
-    }
+  groupOrder.forEach(g => {
     const label = NAV_GROUP_LABELS[g];
     const collapsed = localStorage.getItem(`nav_group_collapsed_${g}`) === '1';
+    html += `<div class="nav-group ${collapsed ? 'collapsed' : ''}">`;
     if (label) {
       const totalCount = grouped[g].reduce((n, s) => { const b = _navBadge(s); return n + (+b || 0); }, 0);
-      html += `<button onclick="toggleNavGroup('${g}')"
-        style="display:flex;align-items:center;gap:4px;padding:0 8px 0 6px;font-size:10px;font-weight:600;
-               color:var(--text3);letter-spacing:.06em;white-space:nowrap;background:none;border:none;
-               cursor:pointer;height:100%;transition:color .15s;font-family:var(--sans)"
-        onmouseover="this.style.color='var(--text1)'" onmouseout="this.style.color='var(--text3)'">
+      html += `<button class="nav-group-label" onclick="toggleNavGroup('${g}')">
         ${label}${collapsed ? `<span class="badge" style="margin-left:2px">${totalCount}</span>` : ''}
-        <span style="font-size:9px;opacity:.7">${collapsed ? '▶' : '▼'}</span>
+        <span class="nav-group-caret">${collapsed ? '▶' : '▼'}</span>
       </button>`;
     }
     if (!collapsed) {
       grouped[g].forEach(s => { html += _navTab(s); });
     }
+    html += `</div>`;
   });
 
   nav.innerHTML = html;
