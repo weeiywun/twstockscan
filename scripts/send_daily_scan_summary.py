@@ -1,7 +1,7 @@
 #!/usr/bin/env python3
 """
 每日選股掃描完成通知
-- 讀取 volume_signal.json / right_top.json
+- 讀取 volume_signal.json / right_top.json / trust_momentum.json
 - 統計今日入選標的數量
 - 以 LINE Flex Message 推播摘要
 """
@@ -16,6 +16,7 @@ SCRIPT_DIR = os.path.dirname(os.path.abspath(__file__))
 DATA_DIR = os.path.join(SCRIPT_DIR, "..", "data")
 VOLUME_PATH = os.path.join(DATA_DIR, "volume_signal.json")
 RIGHT_TOP_PATH = os.path.join(DATA_DIR, "right_top.json")
+TRUST_PATH = os.path.join(DATA_DIR, "trust_momentum.json")
 
 TW_TZ = timezone(timedelta(hours=8))
 TODAY = datetime.now(TW_TZ).strftime("%Y-%m-%d")
@@ -86,9 +87,11 @@ def summary_row(label: str, count: int, color: str, preview: str) -> dict:
     }
 
 
-def build_flex_message(volume_items: list[dict], right_top_items: list[dict]) -> dict:
+def build_flex_message(volume_items: list[dict], right_top_items: list[dict], trust_items: list[dict]) -> dict:
     volume_preview = stock_preview(volume_items, "vol_ratio", "x")
     right_top_preview = stock_preview(right_top_items, "vol_ratio", "x")
+    trust_preview = stock_preview(trust_items, "trust_net_5d", "張")
+    total_count = len(volume_items) + len(right_top_items) + len(trust_items)
 
     bubble = {
         "type": "bubble",
@@ -108,7 +111,7 @@ def build_flex_message(volume_items: list[dict], right_top_items: list[dict]) ->
                         {"type": "text", "text": f"日期 {TODAY}", "size": "xs", "color": "#aaaaaa"},
                         {
                             "type": "text",
-                            "text": f"共 {len(volume_items) + len(right_top_items)} 支",
+                            "text": f"共 {total_count} 支",
                             "size": "xs",
                             "color": FLEX_ACCENT,
                             "align": "end",
@@ -126,6 +129,7 @@ def build_flex_message(volume_items: list[dict], right_top_items: list[dict]) ->
             "contents": [
                 summary_row("量增訊號", len(volume_items), FLEX_PRIMARY, volume_preview),
                 summary_row("右上角", len(right_top_items), FLEX_ACCENT, right_top_preview),
+                summary_row("投信動能", len(trust_items), "#0f766e", trust_preview),
             ],
         },
         "footer": {
@@ -145,7 +149,7 @@ def build_flex_message(volume_items: list[dict], right_top_items: list[dict]) ->
     }
     return {
         "type": "flex",
-        "altText": f"每日選股掃描 {TODAY}：量增訊號 {len(volume_items)} 支 / 右上角 {len(right_top_items)} 支",
+        "altText": f"每日選股掃描 {TODAY}：量增訊號 {len(volume_items)} 支 / 右上角 {len(right_top_items)} 支 / 投信動能 {len(trust_items)} 支",
         "contents": bubble,
     }
 
@@ -189,9 +193,10 @@ def send_line_message(message: dict) -> bool:
 def main() -> int:
     volume_items = today_unique_results(load_results(VOLUME_PATH))
     right_top_items = today_unique_results(load_results(RIGHT_TOP_PATH))
-    print(f"[summary] 量增訊號 {len(volume_items)} 支 / 右上角 {len(right_top_items)} 支")
+    trust_items = today_unique_results(load_results(TRUST_PATH))
+    print(f"[summary] 量增訊號 {len(volume_items)} 支 / 右上角 {len(right_top_items)} 支 / 投信動能 {len(trust_items)} 支")
 
-    message = build_flex_message(volume_items, right_top_items)
+    message = build_flex_message(volume_items, right_top_items, trust_items)
     return 0 if send_line_message(message) else 1
 
 

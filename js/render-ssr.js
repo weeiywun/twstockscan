@@ -1,6 +1,6 @@
 // ═══════════════════════════════════════════════════════════════
 //  SSR：Strategy Signal Radar
-//  彙整籌碼集中 / VCP / 突破策略，找出跨策略共振標的。
+//  彙整籌碼集中 / VCP / 突破策略 / 投信動能，找出跨策略共振標的。
 // ═══════════════════════════════════════════════════════════════
 function buildSSRRows() {
   const rows = new Map();
@@ -20,6 +20,7 @@ function buildSSRRows() {
         chips: null,
         vcp: null,
         breakout: null,
+        trust: null,
         tags: [],
         signal_dates: [],
       });
@@ -68,6 +69,19 @@ function buildSSRRows() {
     if (d.signal_date || d.week_date) row.signal_dates.push(d.signal_date || d.week_date);
   });
 
+  (DATA.trust_momentum_data || []).forEach(d => {
+    const row = ensure(d.stock_id, d);
+    if (!row) return;
+    row.trust = d;
+    row.strategies.push('trust');
+    row.score += 32;
+    if (d.quality_score != null) row.score += Math.min(Number(d.quality_score) / 10, 10);
+    if (d.trust_buy_days_10d >= 8) row.score += 5;
+    if (d.trust_vol_ratio_5d >= 0.2) row.score += 5;
+    row.tags.push('投信動能');
+    if (d.signal_date) row.signal_dates.push(d.signal_date);
+  });
+
   return [...rows.values()]
     .map(row => {
       row.strategies = [...new Set(row.strategies)];
@@ -78,6 +92,7 @@ function buildSSRRows() {
         row.chips ? '大戶' : null,
         row.vcp ? 'VCP' : null,
         row.breakout ? '突破' : null,
+        row.trust ? '投信' : null,
       ].filter(Boolean).join('+');
       row.score = Math.round(row.score);
       return row;
@@ -106,10 +121,12 @@ function renderSSR(strat, main) {
   window.ssrSort = ssrSort;
 
   function matchFilter(row) {
-    if (filter === 'triple') return row.strategy_count === 3;
+    if (filter === 'triple') return row.strategy_count >= 3;
     if (filter === 'chips_vcp') return row.chips && row.vcp;
     if (filter === 'chips_breakout') return row.chips && row.breakout;
     if (filter === 'vcp_breakout') return row.vcp && row.breakout;
+    if (filter === 'trust_vcp') return row.trust && row.vcp;
+    if (filter === 'trust_breakout') return row.trust && row.breakout;
     return row.strategy_count >= 2;
   }
 
@@ -129,10 +146,12 @@ function renderSSR(strat, main) {
   }
 
   const filtered = rows.filter(matchFilter).sort(compare);
-  const tripleCount = rows.filter(r => r.strategy_count === 3).length;
+  const tripleCount = rows.filter(r => r.strategy_count >= 3).length;
   const chipsVcpCount = rows.filter(r => r.chips && r.vcp).length;
   const chipsBreakoutCount = rows.filter(r => r.chips && r.breakout).length;
   const vcpBreakoutCount = rows.filter(r => r.vcp && r.breakout).length;
+  const trustVcpCount = rows.filter(r => r.trust && r.vcp).length;
+  const trustBreakoutCount = rows.filter(r => r.trust && r.breakout).length;
   const topIndustry = filtered.reduce((acc, row) => {
     const key = row.industry || '未分類';
     acc[key] = (acc[key] || 0) + 1;
@@ -156,6 +175,7 @@ function renderSSR(strat, main) {
       badges.push(`<span class="tag-badge" style="color:${isStrict ? '#3b82f6' : '#0f766e'};border-color:${isStrict ? '#3b82f64d' : '#0f766e4d'}">${isStrict ? 'VCP' : '潛在VCP'}</span>`);
     }
     if (row.breakout) badges.push(`<span class="tag-badge" style="color:#dc2626;border-color:#dc26264d">突破</span>`);
+    if (row.trust) badges.push(`<span class="tag-badge" style="color:#0f766e;border-color:#0f766e4d">投信</span>`);
     return badges.join('');
   }
 
@@ -172,6 +192,9 @@ function renderSSR(strat, main) {
       const types = (row.breakout.signal_types || []).join('、') || '突破策略';
       parts.push(`突破：${types}`);
     }
+    if (row.trust) {
+      parts.push(`投信：近5日 ${fmtNum(row.trust.trust_net_5d, 0)}張，${row.trust.trust_buy_days_10d || 0}/10日買超，占量 ${fmtPct((row.trust.trust_vol_ratio_5d || 0) * 100, 1)}`);
+    }
     return parts.join('<br>');
   }
 
@@ -180,7 +203,7 @@ function renderSSR(strat, main) {
       '代號', '名稱', '產業', '市場', '共振分數', '命中策略數', '組合',
       '收盤', '大戶千張2週', '大戶400張2週',
       'VCP分級', 'VCP段數', '距Pivot(%)',
-      '突破類型', '標籤'
+      '突破類型', '投信5日買超', '投信10日買超天數', '投信買超占量', '標籤'
     ];
     const csvRows = filtered.map(row => [
       row.stock_id,
@@ -197,6 +220,9 @@ function renderSSR(strat, main) {
       row.vcp?.contractions ?? '',
       row.vcp?.pivot_dist_pct ?? '',
       row.breakout ? ((row.breakout.signal_types || []).join(' / ') || '突破策略') : '',
+      row.trust?.trust_net_5d ?? '',
+      row.trust?.trust_buy_days_10d ?? '',
+      row.trust?.trust_vol_ratio_5d ?? '',
       row.tags.join(' / '),
     ]);
     const csv = [headers, ...csvRows]
@@ -229,14 +255,14 @@ function renderSSR(strat, main) {
 
       <div class="summary-row">
         <div class="summary-card">
-          <div class="summary-label">C3 取 2</div>
+          <div class="summary-label">C4 取 2</div>
           <div class="summary-value blue">${rows.length}</div>
           <div class="summary-sub">任兩組以上同時命中</div>
         </div>
         <div class="summary-card">
-          <div class="summary-label">三策略全中</div>
+          <div class="summary-label">三組以上</div>
           <div class="summary-value green">${tripleCount}</div>
-          <div class="summary-sub">大戶 + VCP + 突破</div>
+          <div class="summary-sub">四組策略任三組以上共振</div>
         </div>
         <div class="summary-card">
           <div class="summary-label">大戶 + VCP</div>
@@ -251,11 +277,13 @@ function renderSSR(strat, main) {
       </div>
 
       <div style="display:flex;gap:8px;padding:0 0 10px 0;flex-wrap:wrap">
-        <button class="view-btn ${filter === 'c3_2' ? 'active' : ''}" onclick="setSSRFilter('c3_2')">C3取2 ${rows.length}</button>
-        <button class="view-btn ${filter === 'triple' ? 'active' : ''}" onclick="setSSRFilter('triple')">三策略全中 ${tripleCount}</button>
+        <button class="view-btn ${filter === 'c3_2' ? 'active' : ''}" onclick="setSSRFilter('c3_2')">C4取2 ${rows.length}</button>
+        <button class="view-btn ${filter === 'triple' ? 'active' : ''}" onclick="setSSRFilter('triple')">三組以上 ${tripleCount}</button>
         <button class="view-btn ${filter === 'chips_vcp' ? 'active' : ''}" onclick="setSSRFilter('chips_vcp')">大戶+VCP ${chipsVcpCount}</button>
         <button class="view-btn ${filter === 'chips_breakout' ? 'active' : ''}" onclick="setSSRFilter('chips_breakout')">大戶+突破 ${chipsBreakoutCount}</button>
         <button class="view-btn ${filter === 'vcp_breakout' ? 'active' : ''}" onclick="setSSRFilter('vcp_breakout')">VCP+突破 ${vcpBreakoutCount}</button>
+        <button class="view-btn ${filter === 'trust_vcp' ? 'active' : ''}" onclick="setSSRFilter('trust_vcp')">投信+VCP ${trustVcpCount}</button>
+        <button class="view-btn ${filter === 'trust_breakout' ? 'active' : ''}" onclick="setSSRFilter('trust_breakout')">投信+突破 ${trustBreakoutCount}</button>
       </div>
 
       ${filtered.length === 0 ? emptyHTML : `
@@ -295,7 +323,7 @@ function renderSSR(strat, main) {
                       <div class="stock-industry" style="font-size:10px;color:var(--text3)">${row.market || '—'}</div>
                     </td>
                     <td><span style="font-family:var(--mono);font-size:16px;font-weight:700;color:${row.strategy_count === 3 ? 'var(--green)' : 'var(--blue)'}">${row.score}</span></td>
-                    <td><span style="font-family:var(--mono);font-weight:700">${row.strategy_count}/3</span></td>
+                    <td><span style="font-family:var(--mono);font-weight:700">${row.strategy_count}/4</span></td>
                     <td><span style="font-size:12px;color:var(--text2)">${row.industry || '—'}</span></td>
                     <td><span class="price-cell">${fmtNum(row.close)}</span></td>
                     <td><div class="tag-cell">${strategyBadges(row)}</div></td>

@@ -34,10 +34,10 @@ const STRATEGIES = [
     icon: "✦",
     group: "ssr",
     available: true,
-    description: "彙整籌碼集中、VCP、突破策略三組核心選股，找出同時命中 2 組以上的高共振標的。",
+    description: "彙整籌碼集中、VCP、突破策略、投信動能四組核心選股，找出同時命中 2 組以上的高共振標的。",
     conditions: [
-      "C3 取 2：籌碼集中、VCP、突破策略任兩組同時命中",
-      "三策略全中：三組核心策略同時命中",
+      "C4 取 2：籌碼集中、VCP、突破策略、投信動能任兩組同時命中",
+      "三組以上：四組核心策略任三組以上同時命中",
       "VCP 命中含嚴格 VCP 與潛在 VCP，並在表格中保留分級",
       "此頁只做交集總覽，不改變各策略原本的篩選邏輯",
     ],
@@ -142,6 +142,26 @@ const STRATEGIES = [
     description: "突破策略觸發標的的後續追蹤，記錄入選收盤、現價、損益，觀察期 10 個交易日。",
     conditions: [],
   },
+  // ── 策略三：資金動能 ──
+  {
+    id: "trust_momentum",
+    name: "投信動能",
+    shortName: "投信動能",
+    icon: "◆",
+    group: "funds",
+    available: true,
+    description: "追蹤投信近 5～10 日買超動能，找出連續買、買超占成交量有感，且股價尚未過度延伸的資金推升標的。",
+    conditions: [
+      "投信近 5 日買超 ≥ 3 日，或近 10 日買超 ≥ 6 日",
+      "近 5 日與近 10 日投信累計買超皆為正",
+      "投信近 5 日買超 / 近 20 日均量 × 5 ≥ 8%",
+      "20 日均量 ≥ 500 張",
+      "排除 5 日漲幅 > 25% 或 MA20 乖離 > 18% 的過熱標的",
+    ],
+    dataUpdated: "載入中...",
+    dataSource: "TWSE/TPEx 官方投信買賣超 + price_cache",
+    dataKey: "trust_momentum_data",
+  },
 ];
 
 
@@ -162,6 +182,8 @@ const DATA = {
   right_top_data:         [],
   right_top_industry:     [],
   right_top_track_data:   null,
+  trust_momentum_data:    [],
+  trust_momentum_industry: [],
 };
 let DATE_LABELS = [];
 
@@ -286,6 +308,7 @@ const NAV_GROUP_LABELS = {
   chips:     '籌碼選股',
   vcp:       'VCP',
   right_top: '突破策略',
+  funds:     '資金動能',
 };
 
 function _navBadge(s) {
@@ -392,6 +415,7 @@ function renderStrategy() {
   if (strat.id === 'vcp')              { renderVCP(strat, main);               return; }
   if (strat.id === 'right_top')        { renderRightTop(strat, main);          return; }
   if (strat.id === 'right_top_track') { renderRightTopTrack(strat, main);     return; }
+  if (strat.id === 'trust_momentum')   { renderTrustMomentum(strat, main);     return; }
   if (strat.id === 'performance')      { renderPerformance(strat, main);    return; }
 }
 
@@ -535,7 +559,7 @@ async function loadData() {
   const timestamp = new Date().getTime();
 
   try {
-    const [chipsRes, vsRes, aiRes, saRes, perfRes, miRes, fdRes, vcpRes, rtRes, rttRes] = await Promise.all([
+    const [chipsRes, vsRes, aiRes, saRes, perfRes, miRes, fdRes, vcpRes, rtRes, rttRes, tmRes] = await Promise.all([
       fetch(`data/chips_big_holder.json?t=${timestamp}`,   { cache: 'no-store' }).then(r => r.ok ? r.json() : null).catch(() => null),
       fetch(`data/volume_signal.json?t=${timestamp}`,      { cache: 'no-store' }).then(r => r.ok ? r.json() : null).catch(() => null),
       fetch(`data/ai_recommendations.json?t=${timestamp}`, { cache: 'no-store' }).then(r => r.ok ? r.json() : null).catch(() => null),
@@ -546,6 +570,7 @@ async function loadData() {
       fetch(`data/vcp.json?t=${timestamp}`,                { cache: 'no-store' }).then(r => r.ok ? r.json() : null).catch(() => null),
       fetch(`data/right_top.json?t=${timestamp}`,          { cache: 'no-store' }).then(r => r.ok ? r.json() : null).catch(() => null),
       fetch(`data/right_top_track.json?t=${timestamp}`,    { cache: 'no-store' }).then(r => r.ok ? r.json() : null).catch(() => null),
+      fetch(`data/trust_momentum.json?t=${timestamp}`,     { cache: 'no-store' }).then(r => r.ok ? r.json() : null).catch(() => null),
     ]);
 
     if (chipsRes && chipsRes.results) {
@@ -609,9 +634,16 @@ async function loadData() {
       if (strat) strat.dataUpdated = (rtRes.updated || '').slice(0, 10) || strat.dataUpdated;
     }
 
+    if (tmRes && tmRes.results) {
+      DATA.trust_momentum_data = tmRes.results;
+      DATA.trust_momentum_industry = tmRes.industry_stats || [];
+      const strat = STRATEGIES.find(s => s.id === 'trust_momentum');
+      if (strat) strat.dataUpdated = (tmRes.source_date || tmRes.updated || '').slice(0, 10) || strat.dataUpdated;
+    }
+
     const ssrStrat = STRATEGIES.find(s => s.id === 'ssr');
     if (ssrStrat) {
-      const dates = ['chips_big_holder', 'vcp', 'right_top']
+      const dates = ['chips_big_holder', 'vcp', 'right_top', 'trust_momentum']
         .map(id => STRATEGIES.find(s => s.id === id)?.dataUpdated)
         .filter(d => d && d !== '載入中...');
       ssrStrat.dataUpdated = dates.length ? dates.sort().slice(-1)[0] : ssrStrat.dataUpdated;
@@ -639,6 +671,7 @@ async function loadData() {
           if (typeof _applyPriceToVCP       === 'function') _applyPriceToVCP(cpData.prices);
           if (typeof _applyPriceToRightTop === 'function') _applyPriceToRightTop(cpData.prices);
           if (typeof _applyPriceToRttTrack === 'function') _applyPriceToRttTrack(cpData.prices);
+          if (typeof _applyPriceToTrustMomentum === 'function') _applyPriceToTrustMomentum(cpData.prices);
           if (typeof _applyPriceToAnalysis === 'function') _applyPriceToAnalysis(cpData.prices);
           if (typeof _applyPriceToPerf === 'function') await _applyPriceToPerf(cpData.prices, cpData.date, false);
         }

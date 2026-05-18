@@ -18,6 +18,7 @@ js/
   render-vcp.js               ← VCP / 潛在 VCP 渲染
   render-right-top.js         ← 突破策略渲染
   render-right-top-track.js   ← 突破策略標的追蹤渲染
+  render-trust.js             ← 投信動能渲染
   render-perf.js              ← 績效追蹤渲染
   render-breakout.js          ← （保留）爆量策略渲染
   render-ema.js               ← （保留）均線糾結策略渲染
@@ -29,6 +30,7 @@ data/
   vcp.json                    ← VCP / 潛在 VCP 掃描結果
   right_top.json              ← 突破策略掃描結果
   right_top_track.json        ← 突破策略標的追蹤
+  trust_momentum.json         ← 投信動能掃描結果（TWSE/TPEx 官方投信買賣超 + price_cache）
   futures_dashboard.json      ← FUTURE DASHBOARD（期貨 + VIX + 情緒指標）
   market_index.json           ← 大盤指數（加權、櫃買、期貨夜盤）
   performance.json            ← 績效追蹤（建倉 / 出場紀錄）
@@ -45,6 +47,7 @@ scripts/
   scan_vcp.py                 ← VCP / 潛在 VCP 掃描
   scan_right_top.py           ← 突破策略掃描
   track_right_top.py          ← 突破策略標的追蹤更新
+  scan_trust_momentum.py      ← 投信動能掃描（不逐檔查 FinMind）
   scan_volume_signal.py       ← 量增訊號掃描（含 LINE 推播）
   stock_analysis.py           ← 量增訊號標的追蹤 + 營收評級
   fetch_tdcc_holdings.py      ← TDCC 股權分散資料下載
@@ -75,7 +78,7 @@ scripts/
 每週末掃描全市場，追蹤千張大戶與 400 張大戶持股相對成長率（R），篩選低基期且量能充足的標的，標記「持續成長」「雙軌觸發」「單周增幅」三類標籤。
 
 ### SSR 交集雷達
-彙整籌碼集中、VCP、突破策略三組核心選股，單獨列出同時符合 2 組以上策略的標的，支援 C3 取 2、三策略全中、大戶 + VCP、大戶 + 突破、VCP + 突破等視角。
+彙整籌碼集中、VCP、突破策略、投信動能四組核心選股，單獨列出同時符合 2 組以上策略的標的，支援 C4 取 2、三組以上、大戶 + VCP、投信 + VCP、投信 + 突破等視角。
 
 ### 量增訊號
 每日盤後針對籌碼集中入池標的掃描量能突破訊號（當日量 ≥ 10 日均量 × 1.5，收盤 > EMA5），捕捉主力啟動時機，觸發時透過 LINE 推播。
@@ -86,6 +89,9 @@ scripts/
 ### VCP
 掃描 Mark Minervini VCP（Volatility Contraction Pattern）型態，分成「潛在 VCP」與「VCP」兩組。潛在 VCP 先找 Stage 2 上升趨勢、至少 2 段波動收縮、深度遞減與量能萎縮；VCP 進一步要求至少 3 段收縮、最後一段 ≤ 10%、接近 pivot，且近期量能收斂。
 
+### 投信動能
+追蹤投信近 5～10 日買超動能，篩選連續買、買超占成交量有感，且尚未過度延伸的資金推升標的。此策略獨立於大戶持股池，適合觀察主動式 ETF 與投信資金流入造成的短中期動能。
+
 ### 績效追蹤
 記錄建倉與出場，計算損益、報酬率與整體投組績效。同一標的多批建倉時，前端自動以加權平均成本合併顯示。需 URL 參數 `?unlock=perf` 解鎖。
 
@@ -95,7 +101,7 @@ scripts/
 
 | 時間 | 觸發方式 | Workflow | 內容 |
 |------|----------|----------|------|
-| 每個交易日 17:00 | Google Apps Script → repository_dispatch | `daily_scan.yml` | 價格快取、大盤指數、期貨儀錶板、VCP、突破策略、量增訊號 |
+| 每個交易日 17:00 | Google Apps Script → repository_dispatch | `daily_scan.yml` | 價格快取、大盤指數、期貨儀錶板、VCP、突破策略、投信動能、量增訊號 |
 | daily_scan 成功後 | workflow_run | `stock_analysis.yml` | 量增訊號標的追蹤、營收評級、AI 排名 |
 | 每週六或手動 | Google Apps Script → repository_dispatch / workflow_dispatch | `holdings_scan.yml` | TDCC 股權分散、籌碼集中掃描 |
 | 手動執行 | workflow_dispatch | `institutional_tags.yml` | 三大法人標籤 |
