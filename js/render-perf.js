@@ -163,7 +163,13 @@ function buildPerfChartData(pd) {
   const priceHistory = pd.price_history || {};
   const allDates = new Set();
   Object.values(priceHistory).forEach(h => Object.keys(h).forEach(d => allDates.add(d)));
-  positions.forEach(p => { if (p.entry_date) allDates.add(p.entry_date); });
+  positions.forEach(p => {
+    if (p.entry_date) allDates.add(p.entry_date);
+    if (p.exit_date) allDates.add(p.exit_date);
+    (p.exits || []).forEach(ex => {
+      if (ex.date) allDates.add(ex.date);
+    });
+  });
   const sorted = [...allDates].sort();
   if (sorted.length < 2) return null;
   const totalCost = positions.reduce((s, p) => s + p.shares * p.cost_price, 0);
