@@ -1,6 +1,6 @@
 {
   "date": "2026-05-18",
-  "updated": "2026-05-18T17:11:18.666991+08:00",
+  "updated": "2026-05-19T07:11:48.790884+08:00",
   "source": "twse+twse_mis+yahoo_futures+yfinance",
   "indices": {
     "TAIEX": {
@@ -14,48 +14,45 @@
     },
     "TPEX": {
       "name": "櫃買加權指數",
-      "close": 409.63,
+      "close": 411.18,
       "date": "2026-05-18",
-      "source": "twse_mis",
-      "change": -1.55,
-      "change_pct": -0.38,
-      "previous_close": 411.18
+      "source": "twse_mis"
     },
     "TXF_NEAR": {
       "name": "台指近全",
-      "close": 41113.0,
+      "close": 40878.0,
       "date": "2026-05-18",
       "source": "yahoo_futures",
-      "change": 316.0,
-      "change_pct": 0.77,
-      "time": "17:14:44"
+      "change": 81.0,
+      "change_pct": 0.2,
+      "time": "05:00:00"
     },
     "NASDAQ": {
       "name": "那斯達克",
-      "close": 26225.14,
-      "date": "2026-05-15",
+      "close": 26090.73,
+      "date": "2026-05-18",
       "source": "yfinance",
-      "change": -410.08,
-      "change_pct": -1.54,
-      "previous_close": 26635.22
+      "change": -134.41,
+      "change_pct": -0.51,
+      "previous_close": 26225.14
     },
     "DOW": {
       "name": "道瓊",
-      "close": 49526.17,
-      "date": "2026-05-15",
+      "close": 49686.12,
+      "date": "2026-05-18",
       "source": "yfinance",
-      "change": -537.29,
-      "change_pct": -1.07,
-      "previous_close": 50063.46
+      "change": 159.95,
+      "change_pct": 0.32,
+      "previous_close": 49526.17
     },
     "SOX": {
       "name": "費半",
-      "close": 11588.46,
-      "date": "2026-05-15",
+      "close": 11302.52,
+      "date": "2026-05-18",
       "source": "yfinance",
-      "change": -485.32,
-      "change_pct": -4.02,
-      "previous_close": 12073.78
+      "change": -285.94,
+      "change_pct": -2.47,
+      "previous_close": 11588.46
     }
   }
 }

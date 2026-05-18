@@ -1,40 +1,40 @@
 {
-  "date": "2026-05-18",
-  "updated": "2026-05-18T17:14:48.479857+08:00",
+  "date": "2026-05-19",
+  "updated": "2026-05-19T07:13:08.541638+08:00",
   "source": "taifex_futContractsDate+taifex_futContractsDateAh+taifex_futDataDown+taifex_open_data+twse_bfi82u+cnn_fear_greed",
   "market": {
     "TX": {
       "symbol": "TX",
-      "date": "2026-05-15",
+      "date": "2026-05-18",
       "front_month": "202605",
-      "close": 41012.0,
-      "settlement": 40998.0,
-      "volume": 100977,
-      "open_interest": 75507,
+      "close": 40807.0,
+      "settlement": 40797.0,
+      "volume": 99781,
+      "open_interest": 42895,
       "source": "taifex_open_data",
-      "open_interest_total": 94896
+      "open_interest_total": 91072
     },
     "TMF": {
       "symbol": "TMF",
-      "date": "2026-05-15",
+      "date": "2026-05-18",
       "front_month": "202605",
-      "close": 41000.0,
-      "settlement": 40998.0,
-      "volume": 227369,
-      "open_interest": 47860,
+      "close": 40805.0,
+      "settlement": 40797.0,
+      "volume": 159788,
+      "open_interest": 46547,
       "source": "taifex_open_data",
-      "open_interest_total": 74628
+      "open_interest_total": 78647
     },
     "MTX": {
       "symbol": "MTX",
-      "date": "2026-05-15",
+      "date": "2026-05-18",
       "front_month": "202605",
-      "close": 41001.0,
-      "settlement": 40998.0,
-      "volume": 200006,
-      "open_interest": 28165,
+      "close": 40803.0,
+      "settlement": 40797.0,
+      "volume": 143438,
+      "open_interest": 26038,
       "source": "taifex_open_data",
-      "open_interest_total": 41104
+      "open_interest_total": 41859
     }
   },
   "stock_institutional": {
@@ -45,27 +45,27 @@
         "traders": {
           "foreign": {
             "label": "外資",
-            "buy_amount": 365216050882,
-            "sell_amount": 410457013504,
+            "buy_amount": 381235569281,
+            "sell_amount": 426476531903,
             "net_amount": -45240962622
           },
           "investment_trust": {
             "label": "投信",
-            "buy_amount": 34368350613,
-            "sell_amount": 18651107230,
-            "net_amount": 15717243383
+            "buy_amount": 35500262069,
+            "sell_amount": 18835510074,
+            "net_amount": 16664751995
           },
           "dealer": {
             "label": "自營商",
-            "buy_amount": 42544624663,
-            "sell_amount": 56471010465,
+            "buy_amount": 42544938991,
+            "sell_amount": 56471324793,
             "net_amount": -13926385802
           },
           "total": {
             "label": "三大法人合計",
-            "buy_amount": 442129026158,
-            "sell_amount": 485579131199,
-            "net_amount": -43450105041
+            "buy_amount": 459280770341,
+            "sell_amount": 501783366770,
+            "net_amount": -42502596429
           }
         },
         "source": "twse_bfi82u",
@@ -170,10 +170,10 @@
   },
   "us_sentiment": {
     "fear_greed": {
-      "score": 62.91,
+      "score": 62.8,
       "rating": "greed",
       "rating_zh": "貪婪",
-      "timestamp": "2026-05-18T08:57:16+00:00",
+      "timestamp": "2026-05-18T22:56:17+00:00",
       "history": {
         "previous_close": 62.91,
         "1w": 65.4,
@@ -183,25 +183,25 @@
       "indicators": {
         "market_momentum_sp500": {
           "label": "Market Momentum",
-          "score": 98.2,
+          "score": 97.0,
           "rating": "extreme greed",
           "rating_zh": "極度貪婪"
         },
         "stock_price_strength": {
           "label": "Stock Price Strength",
-          "score": 49.0,
+          "score": 46.2,
           "rating": "neutral",
           "rating_zh": "中性"
         },
         "stock_price_breadth": {
           "label": "Stock Price Breadth",
-          "score": 33.2,
+          "score": 30.0,
           "rating": "fear",
           "rating_zh": "恐懼"
         },
         "put_call_options": {
           "label": "Put/Call Options",
-          "score": 95.0,
+          "score": 87.8,
           "rating": "extreme greed",
           "rating_zh": "極度貪婪"
         },
@@ -213,13 +213,13 @@
         },
         "junk_bond_demand": {
           "label": "Junk Bond Demand",
-          "score": 26.0,
+          "score": 38.6,
           "rating": "fear",
           "rating_zh": "恐懼"
         },
         "safe_haven_demand": {
           "label": "Safe Haven Demand",
-          "score": 89.0,
+          "score": 90.0,
           "rating": "extreme greed",
           "rating_zh": "極度貪婪"
         }
@@ -429,14 +429,14 @@
     },
     "night_session": {
       "tx": {
-        "date": "2026-05-18",
+        "date": "2026-05-19",
         "product": "臺股期貨",
         "traders": {
           "dealer": {
             "label": "自營商",
-            "buy_lots": 3445,
-            "sell_lots": 2742,
-            "net_lots": 703
+            "buy_lots": 4051,
+            "sell_lots": 3911,
+            "net_lots": 140
           },
           "investment_trust": {
             "label": "投信",
@@ -446,15 +446,15 @@
           },
           "foreign": {
             "label": "外資",
-            "buy_lots": 38176,
-            "sell_lots": 36030,
-            "net_lots": 2146
+            "buy_lots": 39610,
+            "sell_lots": 39759,
+            "net_lots": -149
           },
           "total": {
             "label": "三大法人合計",
-            "buy_lots": 41621,
-            "sell_lots": 38772,
-            "net_lots": 2849,
+            "buy_lots": 43661,
+            "sell_lots": 43670,
+            "net_lots": -9,
             "oi_long_lots": null,
             "oi_short_lots": null,
             "oi_net_lots": null
@@ -463,14 +463,14 @@
         "source": "taifex_futContractsDateAh"
       },
       "mtx": {
-        "date": "2026-05-18",
+        "date": "2026-05-19",
         "product": "小型臺指期貨",
         "traders": {
           "dealer": {
             "label": "自營商",
-            "buy_lots": 8451,
-            "sell_lots": 9363,
-            "net_lots": -912
+            "buy_lots": 11464,
+            "sell_lots": 11413,
+            "net_lots": 51
           },
           "investment_trust": {
             "label": "投信",
@@ -480,15 +480,15 @@
           },
           "foreign": {
             "label": "外資",
-            "buy_lots": 86057,
-            "sell_lots": 87010,
-            "net_lots": -953
+            "buy_lots": 96865,
+            "sell_lots": 97458,
+            "net_lots": -593
           },
           "total": {
             "label": "三大法人合計",
-            "buy_lots": 94508,
-            "sell_lots": 96373,
-            "net_lots": -1865,
+            "buy_lots": 108329,
+            "sell_lots": 108871,
+            "net_lots": -542,
             "oi_long_lots": null,
             "oi_short_lots": null,
             "oi_net_lots": null
@@ -497,14 +497,14 @@
         "source": "taifex_futContractsDateAh"
       },
       "tmf": {
-        "date": "2026-05-18",
+        "date": "2026-05-19",
         "product": "微型臺指期貨",
         "traders": {
           "dealer": {
             "label": "自營商",
-            "buy_lots": 15435,
-            "sell_lots": 21414,
-            "net_lots": -5979
+            "buy_lots": 22171,
+            "sell_lots": 22977,
+            "net_lots": -806
           },
           "investment_trust": {
             "label": "投信",
@@ -514,15 +514,15 @@
           },
           "foreign": {
             "label": "外資",
-            "buy_lots": 122134,
-            "sell_lots": 121990,
-            "net_lots": 144
+            "buy_lots": 121077,
+            "sell_lots": 121745,
+            "net_lots": -668
           },
           "total": {
             "label": "三大法人合計",
-            "buy_lots": 137569,
-            "sell_lots": 143404,
-            "net_lots": -5835,
+            "buy_lots": 143248,
+            "sell_lots": 144722,
+            "net_lots": -1474,
             "oi_long_lots": null,
             "oi_short_lots": null,
             "oi_net_lots": null
@@ -534,41 +534,52 @@
   },
   "sentiment": {
     "retail_long_short": {
-      "date": "2026-05-15",
+      "date": "2026-05-18",
       "symbol": "MTX",
       "contract": "小型臺指期貨",
-      "institutional_net_open_interest": -1365,
-      "estimated_retail_net_open_interest": 1365,
-      "market_open_interest": 41104,
-      "ratio": 3.32,
+      "institutional_net_open_interest": -1970,
+      "estimated_retail_net_open_interest": 1970,
+      "market_open_interest": 41859,
+      "ratio": 4.71,
       "definition": "三大法人淨未平倉反向值 / 全市場全月份未沖銷契約數；正值代表散戶相對偏多。",
       "source": "taifex_derived"
     },
     "retail_dashboard": {
-      "date": "2026-05-15",
+      "date": "2026-05-18",
       "rows": [
         {
           "key": "mtx",
           "label": "小台散戶多空比",
           "format": "percent",
-          "today": 3.32,
-          "previous": 1.03,
-          "change": 2.29,
+          "today": 4.71,
+          "previous": 3.32,
+          "change": 1.39,
           "trend": "上升",
-          "date": "2026-05-15",
-          "previous_date": "2026-05-14",
+          "date": "2026-05-18",
+          "previous_date": "2026-05-15",
           "detail": {
-            "date": "2026-05-15",
+            "date": "2026-05-18",
             "symbol": "MTX",
             "contract": "小型臺指期貨",
-            "institutional_net_open_interest": -1365,
-            "estimated_retail_net_open_interest": 1365,
-            "market_open_interest": 41104,
-            "ratio": 3.32,
+            "institutional_net_open_interest": -1970,
+            "estimated_retail_net_open_interest": 1970,
+            "market_open_interest": 41859,
+            "ratio": 4.71,
             "definition": "三大法人淨未平倉反向值 / 全市場全月份未沖銷契約數；正值代表散戶相對偏多。",
             "source": "taifex_derived"
           },
           "history": [
+            {
+              "date": "2026-05-18",
+              "symbol": "MTX",
+              "contract": "小型臺指期貨",
+              "institutional_net_open_interest": -1970,
+              "estimated_retail_net_open_interest": 1970,
+              "market_open_interest": 41859,
+              "ratio": 4.71,
+              "definition": "三大法人淨未平倉反向值 / 全市場全月份未沖銷契約數；正值代表散戶相對偏多。",
+              "source": "taifex_derived"
+            },
             {
               "date": "2026-05-15",
               "symbol": "MTX",
@@ -619,24 +630,35 @@
           "key": "tmf",
           "label": "微台散戶多空比",
           "format": "percent",
-          "today": 44.65,
-          "previous": 30.19,
-          "change": 14.46,
-          "trend": "上升",
-          "date": "2026-05-15",
-          "previous_date": "2026-05-14",
+          "today": 43.77,
+          "previous": 44.65,
+          "change": -0.88,
+          "trend": "下降",
+          "date": "2026-05-18",
+          "previous_date": "2026-05-15",
           "detail": {
-            "date": "2026-05-15",
+            "date": "2026-05-18",
             "symbol": "TMF",
             "contract": "微型臺指期貨",
-            "institutional_net_open_interest": -33322,
-            "estimated_retail_net_open_interest": 33322,
-            "market_open_interest": 74628,
-            "ratio": 44.65,
+            "institutional_net_open_interest": -34426,
+            "estimated_retail_net_open_interest": 34426,
+            "market_open_interest": 78647,
+            "ratio": 43.77,
             "definition": "三大法人淨未平倉反向值 / 全市場全月份未沖銷契約數；正值代表散戶相對偏多。",
             "source": "taifex_derived"
           },
           "history": [
+            {
+              "date": "2026-05-18",
+              "symbol": "TMF",
+              "contract": "微型臺指期貨",
+              "institutional_net_open_interest": -34426,
+              "estimated_retail_net_open_interest": 34426,
+              "market_open_interest": 78647,
+              "ratio": 43.77,
+              "definition": "三大法人淨未平倉反向值 / 全市場全月份未沖銷契約數；正值代表散戶相對偏多。",
+              "source": "taifex_derived"
+            },
             {
               "date": "2026-05-15",
               "symbol": "TMF",
@@ -687,24 +709,35 @@
           "key": "pc_ratio",
           "label": "Put/Call Ratio",
           "format": "decimal",
-          "today": 1.62,
+          "today": 1.41,
           "previous": 1.62,
-          "change": 0.0,
-          "trend": "持平",
-          "date": "2026-05-15",
-          "previous_date": "2026-05-14",
+          "change": -0.21,
+          "trend": "下降",
+          "date": "2026-05-18",
+          "previous_date": "2026-05-15",
           "detail": {
-            "date": "2026-05-15",
-            "put_volume": 485024,
-            "call_volume": 457751,
-            "volume_ratio": 105.96,
-            "put_open_interest": 108147,
-            "call_open_interest": 66581,
-            "open_interest_ratio": 162.43,
-            "ratio": 1.62,
+            "date": "2026-05-18",
+            "put_volume": 182703,
+            "call_volume": 182147,
+            "volume_ratio": 100.31,
+            "put_open_interest": 138277,
+            "call_open_interest": 98164,
+            "open_interest_ratio": 140.86,
+            "ratio": 1.41,
             "source": "taifex_open_data"
           },
           "history": [
+            {
+              "date": "2026-05-18",
+              "put_volume": 182703,
+              "call_volume": 182147,
+              "volume_ratio": 100.31,
+              "put_open_interest": 138277,
+              "call_open_interest": 98164,
+              "open_interest_ratio": 140.86,
+              "ratio": 1.41,
+              "source": "taifex_open_data"
+            },
             {
               "date": "2026-05-15",
               "put_volume": 485024,
@@ -748,17 +781,6 @@
               "open_interest_ratio": 161.65,
               "ratio": 1.62,
               "source": "taifex_open_data"
-            },
-            {
-              "date": "2026-05-11",
-              "put_volume": 153289,
-              "call_volume": 124848,
-              "volume_ratio": 122.78,
-              "put_open_interest": 114778,
-              "call_open_interest": 70705,
-              "open_interest_ratio": 162.33,
-              "ratio": 1.62,
-              "source": "taifex_open_data"
             }
           ]
         }
@@ -767,16 +789,27 @@
       "definition": "散戶多空比採國泰報告呈現邏輯：三大法人未平倉淨額反向值除以同商品全市場未沖銷契約數，並列今日、前一日與增減方向。"
     },
     "pc_ratio": {
-      "date": "2026-05-15",
-      "put_volume": 485024,
-      "call_volume": 457751,
-      "volume_ratio": 105.96,
-      "put_open_interest": 108147,
-      "call_open_interest": 66581,
-      "open_interest_ratio": 162.43,
-      "ratio": 1.62,
+      "date": "2026-05-18",
+      "put_volume": 182703,
+      "call_volume": 182147,
+      "volume_ratio": 100.31,
+      "put_open_interest": 138277,
+      "call_open_interest": 98164,
+      "open_interest_ratio": 140.86,
+      "ratio": 1.41,
       "source": "taifex_open_data",
       "history": [
+        {
+          "date": "2026-05-18",
+          "put_volume": 182703,
+          "call_volume": 182147,
+          "volume_ratio": 100.31,
+          "put_open_interest": 138277,
+          "call_open_interest": 98164,
+          "open_interest_ratio": 140.86,
+          "ratio": 1.41,
+          "source": "taifex_open_data"
+        },
         {
           "date": "2026-05-15",
           "put_volume": 485024,
@@ -820,49 +853,38 @@
           "open_interest_ratio": 161.65,
           "ratio": 1.62,
           "source": "taifex_open_data"
-        },
-        {
-          "date": "2026-05-11",
-          "put_volume": 153289,
-          "call_volume": 124848,
-          "volume_ratio": 122.78,
-          "put_open_interest": 114778,
-          "call_open_interest": 70705,
-          "open_interest_ratio": 162.33,
-          "ratio": 1.62,
-          "source": "taifex_open_data"
         }
       ],
       "previous_ratio": 1.62,
-      "change": 0.0,
-      "trend": "持平"
+      "change": -0.21,
+      "trend": "下降"
     }
   },
   "summary": {
     "bias": "中性",
     "market_bias": {
       "label": "中性",
-      "score": 13.1,
-      "gauge": 56.5,
-      "confidence": 13.1,
+      "score": 20.2,
+      "gauge": 60.1,
+      "confidence": 20.2,
       "components": [
         {
           "key": "retail_ratio",
           "label": "散戶多空比偏差",
-          "value": -0.7,
+          "value": 0.87,
           "unit": "%",
           "weight": 25,
-          "score": 6.999999999999999,
-          "note": "小台今日 3.32%，近期均值 4.02%；散戶部位偏多超出均值，市場籌碼集中、易受賣壓。"
+          "score": -8.7,
+          "note": "小台今日 4.71%，近期均值 3.84%；散戶部位偏多超出均值，市場籌碼集中、易受賣壓。"
         },
         {
           "key": "pc_ratio",
           "label": "選擇權未平倉 P/C",
-          "value": 162.43,
+          "value": 140.86,
           "unit": "%",
           "weight": 18,
-          "score": 10.0,
-          "note": "今日 162.43%，近期均值 163.9%，偏差 -1.5%；Put 部位高於近期均值代表防禦氣氛偏濃，市場動能偏弱。"
+          "score": 100,
+          "note": "今日 140.86%，近期均值 164.0%，偏差 -23.1%；Put 部位高於近期均值代表防禦氣氛偏濃，市場動能偏弱。"
         },
         {
           "key": "foreign_stock_flow",
@@ -876,10 +898,10 @@
         {
           "key": "cnn_fear_greed",
           "label": "CNN Fear & Greed",
-          "value": 62.91,
+          "value": 62.8,
           "unit": "分",
           "weight": 12,
-          "score": 25.819999999999993,
+          "score": 25.599999999999994,
           "note": "美股風險偏好；高分代表市場處於貪婪／風險偏好狀態，低分代表恐慌收縮。"
         },
         {
@@ -894,10 +916,10 @@
         {
           "key": "night_session",
           "label": "夜盤三大法人買賣超",
-          "value": 2849,
+          "value": -9,
           "unit": "口",
           "weight": 10,
-          "score": 56.98,
+          "score": -0.18,
           "note": "夜盤反映美股時段後的短線部位變化。"
         }
       ],
