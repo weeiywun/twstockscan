@@ -58,7 +58,7 @@ scripts/
   daily_scan.yml              ← 每日主流程（17:00 由 GAS 觸發）
   holdings_scan.yml           ← 每週六籌碼集中掃描
   stock_analysis.yml          ← 每日主流程成功後自動接續
-  institutional_tags.yml      ← 籌碼掃描完成後自動補法人標籤
+  institutional_tags.yml      ← 手動補法人標籤
   update_current_prices.yml   ← 前端「更新現價」按鈕觸發
   breakout_scan_manual.yml    ← 手動補跑突破策略
 .github/workflows-disabled/   ← 停用或一次性 workflow（不出現於 Actions 介面）
@@ -97,8 +97,8 @@ scripts/
 |------|----------|----------|------|
 | 每個交易日 17:00 | Google Apps Script → repository_dispatch | `daily_scan.yml` | 價格快取、大盤指數、期貨儀錶板、VCP、突破策略、量增訊號 |
 | daily_scan 成功後 | workflow_run | `stock_analysis.yml` | 量增訊號標的追蹤、營收評級、AI 排名 |
-| 每週六 | cron | `holdings_scan.yml` | TDCC 股權分散、籌碼集中掃描 |
-| holdings_scan 成功後 | workflow_run | `institutional_tags.yml` | 三大法人標籤 |
+| 每週六或手動 | Google Apps Script → repository_dispatch / workflow_dispatch | `holdings_scan.yml` | TDCC 股權分散、籌碼集中掃描 |
+| 手動執行 | workflow_dispatch | `institutional_tags.yml` | 三大法人標籤 |
 | 前端按鈕 | workflow_dispatch | `update_current_prices.yml` | 即時現價更新 |
 
 失敗時透過 LINE Messaging API 推播通知。
@@ -109,6 +109,7 @@ scripts/
 
 - `daily_scan.yml`：需輸入 `RUN_DAILY_SCAN`；支援 `backfill_month`（格式 `2025-10`）回填歷史資料
 - `holdings_scan.yml`：需輸入 `RUN_HOLDINGS_SCAN`
+- `institutional_tags.yml`：手動補上目前 `chips_big_holder.json` 標的的外資 / 投信連買標籤
 
 ---
 

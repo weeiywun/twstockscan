@@ -1,10 +1,7 @@
 name: 法人標籤更新
 
 on:
-  # 大戶持股分析完成後自動觸發
-  workflow_run:
-    workflows: ["大戶持股分析"]
-    types: [completed]
+  workflow_dispatch:
 
 concurrency:
   group: data-writes-main
@@ -14,9 +11,6 @@ jobs:
   update-tags:
     runs-on: ubuntu-latest
     timeout-minutes: 30
-
-    # 只在大戶持股分析成功後執行，避免手動重跑逐股查詢法人資料。
-    if: ${{ github.event.workflow_run.conclusion == 'success' }}
 
     permissions:
       contents: write
