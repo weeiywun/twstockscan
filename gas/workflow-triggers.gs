@@ -1,13 +1,44 @@
 const GITHUB_OWNER = 'weeiywun';
 const GITHUB_REPO = 'twstockscan';
 const GITHUB_TOKEN = PropertiesService.getScriptProperties().getProperty('GITHUB_TOKEN');
+const TIMEZONE = 'Asia/Taipei';
 
+// Daily scan is triggered by Google Apps Script instead of GitHub schedule.
+// Keep this at Taiwan time 17:00 so TWSE/TPEx institutional summaries are usually available.
 function triggerDailyScan1700() {
   dispatchRepositoryEvent('daily_scan_1700');
 }
 
 function triggerHoldingsScanWeekly() {
   dispatchRepositoryEvent('holdings_scan_weekly');
+}
+
+function installDailyScan1700Trigger() {
+  deleteTriggersFor_('triggerDailyScan1700');
+  ScriptApp.newTrigger('triggerDailyScan1700')
+    .timeBased()
+    .everyDays(1)
+    .atHour(17)
+    .nearMinute(0)
+    .inTimezone(TIMEZONE)
+    .create();
+}
+
+function installHoldingsScanWeeklyTrigger() {
+  deleteTriggersFor_('triggerHoldingsScanWeekly');
+  ScriptApp.newTrigger('triggerHoldingsScanWeekly')
+    .timeBased()
+    .onWeekDay(ScriptApp.WeekDay.SATURDAY)
+    .atHour(9)
+    .nearMinute(0)
+    .inTimezone(TIMEZONE)
+    .create();
+}
+
+function deleteTriggersFor_(handlerName) {
+  ScriptApp.getProjectTriggers()
+    .filter(trigger => trigger.getHandlerFunction() === handlerName)
+    .forEach(trigger => ScriptApp.deleteTrigger(trigger));
 }
 
 function dispatchRepositoryEvent(eventType) {

@@ -2,6 +2,7 @@ name: 每日選股掃描
 
 on:
   # 由 Google Apps Script 於台灣時間 17:00 觸發，避免 GitHub schedule 延遲或漏跑。
+  # 17:00 通常已可取得 TWSE/TPEx 盤後法人彙總，供法人動能掃描使用。
   repository_dispatch:
     types: [daily_scan_1700]
   workflow_dispatch:

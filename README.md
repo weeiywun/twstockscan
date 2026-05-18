@@ -109,6 +109,15 @@ scripts/
 
 失敗時透過 LINE Messaging API 推播通知。
 
+### Trigger 設計
+
+每日主流程不使用 GitHub Actions 內建 `schedule`，避免排程延遲或漏跑；改由 Google Apps Script 在台灣時間 17:00 呼叫 GitHub `repository_dispatch`，事件型別為 `daily_scan_1700`。17:00 通常已可取得 TWSE/TPEx 盤後法人彙總資料，因此法人動能會在同一條每日掃描流程內更新。
+
+GAS 腳本位於 `gas/workflow-triggers.gs`。首次部署或重建觸發器時，於 Apps Script 執行：
+
+- `installDailyScan1700Trigger()`：建立每日 17:00 觸發 `daily_scan_1700`
+- `installHoldingsScanWeeklyTrigger()`：建立每週六觸發 `holdings_scan_weekly`
+
 ---
 
 ## 手動觸發
