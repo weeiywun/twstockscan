@@ -1,6 +1,6 @@
 {
   "strategy_id": "vcp",
-  "updated": "2026-05-15T17:13:50+08:00",
+  "updated": "2026-05-18T17:15:42+08:00",
   "results": [
     {
       "stock_id": "6951",
@@ -8,9 +8,9 @@
       "industry": "創新版股票",
       "market": "TWSE",
       "close": 79.8,
-      "ma50": 79.1,
-      "ma100": 77.0,
-      "bias_ma100": 3.6,
+      "ma50": 79.2,
+      "ma100": 77.08,
+      "bias_ma100": 3.5,
       "contractions": 3,
       "contraction_depths": [
         10.1,
@@ -18,7 +18,7 @@
         4.4
       ],
       "vol_contraction_ratio": 0.66,
-      "dry_up_ratio": 0.71,
+      "dry_up_ratio": 0.66,
       "volume_chain_ok": false,
       "pivot_high": 82.4,
       "pivot_range_pct": 4.4,
@@ -39,7 +39,7 @@
       "big_pct_400": 66.17,
       "big_1000_chg_3w": 0.0,
       "big_400_chg_3w": 0.03,
-      "signal_date": "2026-05-15"
+      "signal_date": "2026-05-18"
     }
   ],
   "potential_results": [
@@ -48,10 +48,10 @@
       "name": "國化",
       "industry": "化學工業",
       "market": "TWSE",
-      "close": 47.9,
-      "ma50": 47.2,
-      "ma100": 47.04,
-      "bias_ma100": 1.8,
+      "close": 47.6,
+      "ma50": 47.16,
+      "ma100": 47.09,
+      "bias_ma100": 1.1,
       "contractions": 4,
       "contraction_depths": [
         16.3,
@@ -60,11 +60,11 @@
         5.5
       ],
       "vol_contraction_ratio": 0.15,
-      "dry_up_ratio": 0.94,
+      "dry_up_ratio": 0.91,
       "volume_chain_ok": false,
       "pivot_high": 48.8,
       "pivot_range_pct": 5.5,
-      "pivot_dist_pct": -1.8,
+      "pivot_dist_pct": -2.5,
       "is_near_pivot": true,
       "vcp_tier": "potential",
       "tags": [
@@ -81,58 +81,17 @@
       "big_pct_400": 72.55,
       "big_1000_chg_3w": 0.02,
       "big_400_chg_3w": -0.21,
-      "signal_date": "2026-05-15"
-    },
-    {
-      "stock_id": "2069",
-      "name": "運錩",
-      "industry": "鋼鐵工業",
-      "market": "TWSE",
-      "close": 19.7,
-      "ma50": 18.82,
-      "ma100": 18.71,
-      "bias_ma100": 5.3,
-      "contractions": 4,
-      "contraction_depths": [
-        14.4,
-        10.2,
-        6.4,
-        5.7
-      ],
-      "vol_contraction_ratio": 0.28,
-      "dry_up_ratio": 1.76,
-      "volume_chain_ok": true,
-      "pivot_high": 19.3,
-      "pivot_range_pct": 5.7,
-      "pivot_dist_pct": 2.1,
-      "is_near_pivot": true,
-      "vcp_tier": "potential",
-      "tags": [
-        "潛在VCP",
-        "4段收縮",
-        "量縮到位",
-        "段量遞減",
-        "樞紐緊縮",
-        "靠近樞紐"
-      ],
-      "quality_score": 95,
-      "whale_3w_up": false,
-      "whale_400_3w_up": false,
-      "big_pct_1000": 53.35,
-      "big_pct_400": 61.49,
-      "big_1000_chg_3w": 0.07,
-      "big_400_chg_3w": 0.47,
-      "signal_date": "2026-05-15"
+      "signal_date": "2026-05-18"
     },
     {
       "stock_id": "6026",
       "name": "福邦證",
       "industry": "金融業",
       "market": "TPEX",
-      "close": 15.4,
-      "ma50": 14.79,
-      "ma100": 14.24,
-      "bias_ma100": 8.2,
+      "close": 15.15,
+      "ma50": 14.8,
+      "ma100": 14.27,
+      "bias_ma100": 6.2,
       "contractions": 3,
       "contraction_depths": [
         18.2,
@@ -140,11 +99,11 @@
         3.3
       ],
       "vol_contraction_ratio": 0.52,
-      "dry_up_ratio": 1.98,
+      "dry_up_ratio": 1.49,
       "volume_chain_ok": true,
       "pivot_high": 15.0,
       "pivot_range_pct": 3.3,
-      "pivot_dist_pct": 2.7,
+      "pivot_dist_pct": 1.0,
       "is_near_pivot": true,
       "vcp_tier": "potential",
       "tags": [
@@ -162,30 +121,30 @@
       "big_pct_400": 50.42,
       "big_1000_chg_3w": 2.17,
       "big_400_chg_3w": 2.14,
-      "signal_date": "2026-05-15"
+      "signal_date": "2026-05-18"
     },
     {
-      "stock_id": "8081",
-      "name": "致新",
-      "industry": "半導體業",
-      "market": "TWSE",
-      "close": 255.5,
-      "ma50": 241.48,
-      "ma100": 231.29,
-      "bias_ma100": 10.5,
+      "stock_id": "3684",
+      "name": "榮昌",
+      "industry": "通信網路業",
+      "market": "TPEX",
+      "close": 61.1,
+      "ma50": 59.71,
+      "ma100": 59.02,
+      "bias_ma100": 3.5,
       "contractions": 3,
       "contraction_depths": [
-        14.2,
-        11.3,
-        8.9
+        23.0,
+        19.4,
+        8.5
       ],
-      "vol_contraction_ratio": 0.36,
-      "dry_up_ratio": 1.77,
+      "vol_contraction_ratio": 0.25,
+      "dry_up_ratio": 0.93,
       "volume_chain_ok": true,
-      "pivot_high": 246.0,
-      "pivot_range_pct": 8.9,
-      "pivot_dist_pct": 3.9,
-      "is_near_pivot": false,
+      "pivot_high": 61.0,
+      "pivot_range_pct": 8.5,
+      "pivot_dist_pct": 0.2,
+      "is_near_pivot": true,
       "vcp_tier": "potential",
       "tags": [
         "潛在VCP",
@@ -193,26 +152,26 @@
         "量縮到位",
         "段量遞減",
         "樞紐緊縮",
-        "千張大戶連增"
+        "靠近樞紐"
       ],
-      "quality_score": 82,
-      "whale_3w_up": true,
+      "quality_score": 80,
+      "whale_3w_up": false,
       "whale_400_3w_up": false,
-      "big_pct_1000": 24.18,
-      "big_pct_400": 40.29,
-      "big_1000_chg_3w": 0.49,
-      "big_400_chg_3w": -0.01,
-      "signal_date": "2026-05-15"
+      "big_pct_1000": 52.82,
+      "big_pct_400": 61.15,
+      "big_1000_chg_3w": -0.01,
+      "big_400_chg_3w": -0.03,
+      "signal_date": "2026-05-18"
     },
     {
       "stock_id": "4923",
       "name": "力士",
       "industry": "半導體業",
       "market": "TPEX",
-      "close": 36.65,
-      "ma50": 34.8,
-      "ma100": 32.88,
-      "bias_ma100": 11.5,
+      "close": 36.55,
+      "ma50": 34.89,
+      "ma100": 32.97,
+      "bias_ma100": 10.9,
       "contractions": 4,
       "contraction_depths": [
         23.7,
@@ -221,11 +180,11 @@
         14.1
       ],
       "vol_contraction_ratio": 0.17,
-      "dry_up_ratio": 3.65,
+      "dry_up_ratio": 3.72,
       "volume_chain_ok": false,
       "pivot_high": 38.0,
       "pivot_range_pct": 14.1,
-      "pivot_dist_pct": -3.6,
+      "pivot_dist_pct": -3.8,
       "is_near_pivot": true,
       "vcp_tier": "potential",
       "tags": [
@@ -241,86 +200,47 @@
       "big_pct_400": 38.12,
       "big_1000_chg_3w": -3.1,
       "big_400_chg_3w": -0.84,
-      "signal_date": "2026-05-15"
+      "signal_date": "2026-05-18"
     },
     {
-      "stock_id": "6655",
-      "name": "科定",
-      "industry": "其他",
-      "market": "TWSE",
-      "close": 135.0,
-      "ma50": 132.95,
-      "ma100": 126.84,
-      "bias_ma100": 6.4,
-      "contractions": 2,
-      "contraction_depths": [
-        9.0,
-        4.2
-      ],
-      "vol_contraction_ratio": 0.3,
-      "dry_up_ratio": 0.66,
-      "volume_chain_ok": true,
-      "pivot_high": 132.0,
-      "pivot_range_pct": 4.2,
-      "pivot_dist_pct": 2.3,
-      "is_near_pivot": true,
-      "vcp_tier": "potential",
-      "tags": [
-        "潛在VCP",
-        "2段收縮",
-        "量縮到位",
-        "近期量縮",
-        "段量遞減",
-        "樞紐緊縮",
-        "靠近樞紐"
-      ],
-      "quality_score": 75,
-      "whale_3w_up": false,
-      "whale_400_3w_up": false,
-      "big_pct_1000": 76.31,
-      "big_pct_400": 85.93,
-      "big_1000_chg_3w": -1.29,
-      "big_400_chg_3w": -0.12,
-      "signal_date": "2026-05-15"
-    },
-    {
-      "stock_id": "2420",
-      "name": "新巨",
+      "stock_id": "2385",
+      "name": "群光",
       "industry": "電子工業",
       "market": "TWSE",
-      "close": 56.7,
-      "ma50": 53.08,
-      "ma100": 52.09,
-      "bias_ma100": 8.8,
-      "contractions": 4,
+      "close": 127.0,
+      "ma50": 124.58,
+      "ma100": 121.26,
+      "bias_ma100": 4.7,
+      "contractions": 3,
       "contraction_depths": [
-        9.6,
-        8.3,
-        5.6,
-        5.1
+        7.5,
+        5.9,
+        5.8
       ],
-      "vol_contraction_ratio": 0.72,
-      "dry_up_ratio": 1.87,
-      "volume_chain_ok": false,
-      "pivot_high": 56.8,
-      "pivot_range_pct": 5.1,
-      "pivot_dist_pct": -0.2,
+      "vol_contraction_ratio": 0.76,
+      "dry_up_ratio": 0.99,
+      "volume_chain_ok": true,
+      "pivot_high": 129.0,
+      "pivot_range_pct": 5.8,
+      "pivot_dist_pct": -1.6,
       "is_near_pivot": true,
       "vcp_tier": "potential",
       "tags": [
         "潛在VCP",
-        "4段收縮",
+        "3段收縮",
+        "段量遞減",
         "樞紐緊縮",
-        "靠近樞紐"
+        "靠近樞紐",
+        "千張大戶連增"
       ],
-      "quality_score": 75,
-      "whale_3w_up": false,
+      "quality_score": 77,
+      "whale_3w_up": true,
       "whale_400_3w_up": false,
-      "big_pct_1000": 40.02,
-      "big_pct_400": 50.71,
-      "big_1000_chg_3w": 0.0,
-      "big_400_chg_3w": 0.49,
-      "signal_date": "2026-05-15"
+      "big_pct_1000": 70.73,
+      "big_pct_400": 78.06,
+      "big_1000_chg_3w": 0.73,
+      "big_400_chg_3w": 0.55,
+      "signal_date": "2026-05-18"
     },
     {
       "stock_id": "8109",
@@ -328,9 +248,9 @@
       "industry": "電子零組件業",
       "market": "TPEX",
       "close": 113.0,
-      "ma50": 107.53,
-      "ma100": 103.86,
-      "bias_ma100": 8.8,
+      "ma50": 107.73,
+      "ma100": 104.05,
+      "bias_ma100": 8.6,
       "contractions": 3,
       "contraction_depths": [
         11.6,
@@ -338,7 +258,7 @@
         7.0
       ],
       "vol_contraction_ratio": 0.82,
-      "dry_up_ratio": 0.96,
+      "dry_up_ratio": 0.82,
       "volume_chain_ok": false,
       "pivot_high": 113.5,
       "pivot_range_pct": 7.0,
@@ -359,44 +279,7 @@
       "big_pct_400": 54.12,
       "big_1000_chg_3w": 0.2,
       "big_400_chg_3w": 0.2,
-      "signal_date": "2026-05-15"
-    },
-    {
-      "stock_id": "5904",
-      "name": "寶雅",
-      "industry": "貿易百貨",
-      "market": "TPEX",
-      "close": 546.0,
-      "ma50": 524.91,
-      "ma100": 480.47,
-      "bias_ma100": 13.6,
-      "contractions": 3,
-      "contraction_depths": [
-        12.8,
-        7.1,
-        2.3
-      ],
-      "vol_contraction_ratio": 0.72,
-      "dry_up_ratio": 0.93,
-      "volume_chain_ok": false,
-      "pivot_high": 511.0,
-      "pivot_range_pct": 2.3,
-      "pivot_dist_pct": 6.8,
-      "is_near_pivot": false,
-      "vcp_tier": "potential",
-      "tags": [
-        "潛在VCP",
-        "3段收縮",
-        "樞紐緊縮"
-      ],
-      "quality_score": 70,
-      "whale_3w_up": false,
-      "whale_400_3w_up": false,
-      "big_pct_1000": 53.58,
-      "big_pct_400": 70.3,
-      "big_1000_chg_3w": 1.33,
-      "big_400_chg_3w": -0.06,
-      "signal_date": "2026-05-15"
+      "signal_date": "2026-05-18"
     },
     {
       "stock_id": "6113",
@@ -434,7 +317,7 @@
       "big_pct_400": 49.2,
       "big_1000_chg_3w": 0.03,
       "big_400_chg_3w": 0.06,
-      "signal_date": "2026-05-15"
+      "signal_date": "2026-05-18"
     },
     {
       "stock_id": "6654",
@@ -473,17 +356,130 @@
       "big_pct_400": 76.18,
       "big_1000_chg_3w": 0.0,
       "big_400_chg_3w": 0.0,
-      "signal_date": "2026-05-15"
+      "signal_date": "2026-05-18"
+    },
+    {
+      "stock_id": "2420",
+      "name": "新巨",
+      "industry": "電子工業",
+      "market": "TWSE",
+      "close": 59.5,
+      "ma50": 53.23,
+      "ma100": 52.19,
+      "bias_ma100": 14.0,
+      "contractions": 4,
+      "contraction_depths": [
+        9.6,
+        8.3,
+        5.6,
+        5.1
+      ],
+      "vol_contraction_ratio": 0.72,
+      "dry_up_ratio": 2.3,
+      "volume_chain_ok": false,
+      "pivot_high": 56.8,
+      "pivot_range_pct": 5.1,
+      "pivot_dist_pct": 4.8,
+      "is_near_pivot": false,
+      "vcp_tier": "potential",
+      "tags": [
+        "潛在VCP",
+        "4段收縮",
+        "樞紐緊縮"
+      ],
+      "quality_score": 70,
+      "whale_3w_up": false,
+      "whale_400_3w_up": false,
+      "big_pct_1000": 40.02,
+      "big_pct_400": 50.71,
+      "big_1000_chg_3w": 0.0,
+      "big_400_chg_3w": 0.49,
+      "signal_date": "2026-05-18"
+    },
+    {
+      "stock_id": "5904",
+      "name": "寶雅",
+      "industry": "貿易百貨",
+      "market": "TPEX",
+      "close": 536.0,
+      "ma50": 525.83,
+      "ma100": 481.38,
+      "bias_ma100": 11.3,
+      "contractions": 2,
+      "contraction_depths": [
+        7.1,
+        2.3
+      ],
+      "vol_contraction_ratio": 0.57,
+      "dry_up_ratio": 1.04,
+      "volume_chain_ok": true,
+      "pivot_high": 511.0,
+      "pivot_range_pct": 2.3,
+      "pivot_dist_pct": 4.9,
+      "is_near_pivot": false,
+      "vcp_tier": "potential",
+      "tags": [
+        "潛在VCP",
+        "2段收縮",
+        "量縮到位",
+        "段量遞減",
+        "樞紐緊縮"
+      ],
+      "quality_score": 68,
+      "whale_3w_up": false,
+      "whale_400_3w_up": false,
+      "big_pct_1000": 53.58,
+      "big_pct_400": 70.3,
+      "big_1000_chg_3w": 1.33,
+      "big_400_chg_3w": -0.06,
+      "signal_date": "2026-05-18"
+    },
+    {
+      "stock_id": "8088",
+      "name": "品安",
+      "industry": "半導體業",
+      "market": "TPEX",
+      "close": 53.5,
+      "ma50": 52.61,
+      "ma100": 52.54,
+      "bias_ma100": 1.8,
+      "contractions": 3,
+      "contraction_depths": [
+        41.2,
+        24.3,
+        11.6
+      ],
+      "vol_contraction_ratio": 0.5,
+      "dry_up_ratio": 1.65,
+      "volume_chain_ok": false,
+      "pivot_high": 56.7,
+      "pivot_range_pct": 11.6,
+      "pivot_dist_pct": -5.6,
+      "is_near_pivot": false,
+      "vcp_tier": "potential",
+      "tags": [
+        "潛在VCP",
+        "3段收縮",
+        "量縮到位"
+      ],
+      "quality_score": 68,
+      "whale_3w_up": false,
+      "whale_400_3w_up": false,
+      "big_pct_1000": 14.93,
+      "big_pct_400": 18.89,
+      "big_1000_chg_3w": -0.83,
+      "big_400_chg_3w": -1.41,
+      "signal_date": "2026-05-18"
     },
     {
       "stock_id": "2883",
       "name": "凱基金",
       "industry": "金融保險",
       "market": "TWSE",
-      "close": 21.85,
-      "ma50": 20.7,
-      "ma100": 19.27,
-      "bias_ma100": 13.4,
+      "close": 21.35,
+      "ma50": 20.69,
+      "ma100": 19.32,
+      "bias_ma100": 10.5,
       "contractions": 3,
       "contraction_depths": [
         12.9,
@@ -491,11 +487,11 @@
         6.7
       ],
       "vol_contraction_ratio": 0.53,
-      "dry_up_ratio": 1.21,
+      "dry_up_ratio": 1.22,
       "volume_chain_ok": false,
       "pivot_high": 21.5,
       "pivot_range_pct": 6.7,
-      "pivot_dist_pct": 1.6,
+      "pivot_dist_pct": -0.7,
       "is_near_pivot": true,
       "vcp_tier": "potential",
       "tags": [
@@ -512,82 +508,44 @@
       "big_pct_400": 66.58,
       "big_1000_chg_3w": 0.87,
       "big_400_chg_3w": 0.67,
-      "signal_date": "2026-05-15"
+      "signal_date": "2026-05-18"
     },
     {
-      "stock_id": "3432",
-      "name": "台端",
-      "industry": "電子零組件業",
-      "market": "TWSE",
-      "close": 19.05,
-      "ma50": 17.75,
-      "ma100": 16.95,
-      "bias_ma100": 12.4,
-      "contractions": 3,
-      "contraction_depths": [
-        22.7,
-        18.1,
-        12.8
-      ],
-      "vol_contraction_ratio": 0.18,
-      "dry_up_ratio": 0.91,
-      "volume_chain_ok": true,
-      "pivot_high": 17.95,
-      "pivot_range_pct": 12.8,
-      "pivot_dist_pct": 6.1,
-      "is_near_pivot": false,
-      "vcp_tier": "potential",
-      "tags": [
-        "潛在VCP",
-        "3段收縮",
-        "量縮到位",
-        "段量遞減"
-      ],
-      "quality_score": 65,
-      "whale_3w_up": false,
-      "whale_400_3w_up": false,
-      "big_pct_1000": 58.48,
-      "big_pct_400": 66.5,
-      "big_1000_chg_3w": 0.0,
-      "big_400_chg_3w": -0.01,
-      "signal_date": "2026-05-15"
-    },
-    {
-      "stock_id": "6598",
-      "name": "ABC-KY",
-      "industry": "化學生技醫療",
-      "market": "TWSE",
-      "close": 24.35,
-      "ma50": 23.27,
-      "ma100": 23.27,
-      "bias_ma100": 4.6,
+      "stock_id": "5324",
+      "name": "士開",
+      "industry": "建材營造",
+      "market": "TPEX",
+      "close": 11.55,
+      "ma50": 11.19,
+      "ma100": 10.92,
+      "bias_ma100": 5.8,
       "contractions": 2,
       "contraction_depths": [
-        16.5,
-        7.7
+        14.5,
+        14.3
       ],
-      "vol_contraction_ratio": 0.72,
-      "dry_up_ratio": 1.61,
+      "vol_contraction_ratio": 0.84,
+      "dry_up_ratio": 0.94,
       "volume_chain_ok": true,
-      "pivot_high": 23.25,
-      "pivot_range_pct": 7.7,
-      "pivot_dist_pct": 4.7,
+      "pivot_high": 12.2,
+      "pivot_range_pct": 14.3,
+      "pivot_dist_pct": -5.3,
       "is_near_pivot": false,
       "vcp_tier": "potential",
       "tags": [
         "潛在VCP",
         "2段收縮",
         "段量遞減",
-        "樞紐緊縮"
+        "400張同步"
       ],
-      "quality_score": 50,
+      "quality_score": 46,
       "whale_3w_up": false,
-      "whale_400_3w_up": false,
-      "big_pct_1000": 39.99,
-      "big_pct_400": 51.65,
-      "big_1000_chg_3w": -0.11,
-      "big_400_chg_3w": 0.27,
-      "signal_date": "2026-05-15"
+      "whale_400_3w_up": true,
+      "big_pct_1000": 71.75,
+      "big_pct_400": 77.6,
+      "big_1000_chg_3w": 0.64,
+      "big_400_chg_3w": 0.42,
+      "signal_date": "2026-05-18"
     }
   ],
   "industry_stats": [
@@ -608,26 +566,26 @@
       "count": 2,
       "stocks": [
         {
-          "stock_id": "8081",
-          "name": "致新"
-        },
-        {
           "stock_id": "4923",
           "name": "力士"
+        },
+        {
+          "stock_id": "8088",
+          "name": "品安"
         }
       ]
     },
     {
-      "industry": "電子零組件業",
+      "industry": "電子工業",
       "count": 2,
       "stocks": [
         {
-          "stock_id": "8109",
-          "name": "博大"
+          "stock_id": "2385",
+          "name": "群光"
         },
         {
-          "stock_id": "3432",
-          "name": "台端"
+          "stock_id": "2420",
+          "name": "新巨"
         }
       ]
     },
@@ -642,16 +600,6 @@
       ]
     },
     {
-      "industry": "鋼鐵工業",
-      "count": 1,
-      "stocks": [
-        {
-          "stock_id": "2069",
-          "name": "運錩"
-        }
-      ]
-    },
-    {
       "industry": "金融業",
       "count": 1,
       "stocks": [
@@ -662,32 +610,22 @@
       ]
     },
     {
-      "industry": "其他",
+      "industry": "通信網路業",
       "count": 1,
       "stocks": [
         {
-          "stock_id": "6655",
-          "name": "科定"
+          "stock_id": "3684",
+          "name": "榮昌"
         }
       ]
     },
     {
-      "industry": "電子工業",
+      "industry": "電子零組件業",
       "count": 1,
       "stocks": [
         {
-          "stock_id": "2420",
-          "name": "新巨"
-        }
-      ]
-    },
-    {
-      "industry": "貿易百貨",
-      "count": 1,
-      "stocks": [
-        {
-          "stock_id": "5904",
-          "name": "寶雅"
+          "stock_id": "8109",
+          "name": "博大"
         }
       ]
     },
@@ -712,6 +650,16 @@
       ]
     },
     {
+      "industry": "貿易百貨",
+      "count": 1,
+      "stocks": [
+        {
+          "stock_id": "5904",
+          "name": "寶雅"
+        }
+      ]
+    },
+    {
       "industry": "金融保險",
       "count": 1,
       "stocks": [
@@ -722,12 +670,12 @@
       ]
     },
     {
-      "industry": "化學生技醫療",
+      "industry": "建材營造",
       "count": 1,
       "stocks": [
         {
-          "stock_id": "6598",
-          "name": "ABC-KY"
+          "stock_id": "5324",
+          "name": "士開"
         }
       ]
     }
