@@ -1,6 +1,6 @@
 // ═══════════════════════════════════════════════════════════════
 //  SSR：Strategy Signal Radar
-//  彙整籌碼集中 / VCP / 突破策略 / 投信動能，找出跨策略共振標的。
+//  彙整籌碼集中 / VCP / 突破策略 / 投信動能 / 外資動能，找出跨策略共振標的。
 // ═══════════════════════════════════════════════════════════════
 function buildSSRRows() {
   const rows = new Map();
@@ -21,6 +21,8 @@ function buildSSRRows() {
         vcp: null,
         breakout: null,
         trust: null,
+        foreign: null,
+        institutional_confluence: null,
         tags: [],
         signal_dates: [],
       });
@@ -82,6 +84,28 @@ function buildSSRRows() {
     if (d.signal_date) row.signal_dates.push(d.signal_date);
   });
 
+  (DATA.foreign_momentum_data || []).forEach(d => {
+    const row = ensure(d.stock_id, d);
+    if (!row) return;
+    row.foreign = d;
+    row.strategies.push('foreign');
+    row.score += 30;
+    if (d.quality_score != null) row.score += Math.min(Number(d.quality_score) / 10, 10);
+    if (d.flow_regime === 'attack') row.score += 5;
+    if (d.inst_vol_ratio_5d >= 0.2) row.score += 5;
+    row.tags.push('外資動能');
+    if (d.signal_date) row.signal_dates.push(d.signal_date);
+  });
+
+  (DATA.institutional_confluence_data || []).forEach(d => {
+    const row = ensure(d.stock_id, d);
+    if (!row) return;
+    row.institutional_confluence = d;
+    row.score += 12;
+    row.tags.push('雙法人共振');
+    if (d.signal_date) row.signal_dates.push(d.signal_date);
+  });
+
   return [...rows.values()]
     .map(row => {
       row.strategies = [...new Set(row.strategies)];
@@ -93,6 +117,7 @@ function buildSSRRows() {
         row.vcp ? 'VCP' : null,
         row.breakout ? '突破' : null,
         row.trust ? '投信' : null,
+        row.foreign ? '外資' : null,
       ].filter(Boolean).join('+');
       row.score = Math.round(row.score);
       return row;
@@ -103,7 +128,7 @@ function buildSSRRows() {
 
 function renderSSR(strat, main) {
   const rows = buildSSRRows();
-  const filter = window._ssrFilter || 'c3_2';
+  const filter = window._ssrFilter || 'c5_2';
   const sortCol = window._ssrSortCol || 'score';
   const sortAsc = window._ssrSortAsc !== undefined ? window._ssrSortAsc : false;
 
@@ -127,6 +152,9 @@ function renderSSR(strat, main) {
     if (filter === 'vcp_breakout') return row.vcp && row.breakout;
     if (filter === 'trust_vcp') return row.trust && row.vcp;
     if (filter === 'trust_breakout') return row.trust && row.breakout;
+    if (filter === 'foreign_vcp') return row.foreign && row.vcp;
+    if (filter === 'foreign_breakout') return row.foreign && row.breakout;
+    if (filter === 'inst_confluence') return row.trust && row.foreign;
     return row.strategy_count >= 2;
   }
 
@@ -152,6 +180,9 @@ function renderSSR(strat, main) {
   const vcpBreakoutCount = rows.filter(r => r.vcp && r.breakout).length;
   const trustVcpCount = rows.filter(r => r.trust && r.vcp).length;
   const trustBreakoutCount = rows.filter(r => r.trust && r.breakout).length;
+  const foreignVcpCount = rows.filter(r => r.foreign && r.vcp).length;
+  const foreignBreakoutCount = rows.filter(r => r.foreign && r.breakout).length;
+  const instConfluenceCount = rows.filter(r => r.trust && r.foreign).length;
   const topIndustry = filtered.reduce((acc, row) => {
     const key = row.industry || '未分類';
     acc[key] = (acc[key] || 0) + 1;
@@ -176,6 +207,8 @@ function renderSSR(strat, main) {
     }
     if (row.breakout) badges.push(`<span class="tag-badge" style="color:#dc2626;border-color:#dc26264d">突破</span>`);
     if (row.trust) badges.push(`<span class="tag-badge" style="color:#0f766e;border-color:#0f766e4d">投信</span>`);
+    if (row.foreign) badges.push(`<span class="tag-badge" style="color:#2563eb;border-color:#2563eb4d">外資</span>`);
+    if (row.institutional_confluence) badges.push(`<span class="tag-badge" style="color:#7c3aed;border-color:#7c3aed4d">雙法人</span>`);
     return badges.join('');
   }
 
@@ -193,7 +226,16 @@ function renderSSR(strat, main) {
       parts.push(`突破：${types}`);
     }
     if (row.trust) {
-      parts.push(`投信：近5日 ${fmtNum(row.trust.trust_net_5d, 0)}張，${row.trust.trust_buy_days_10d || 0}/10日買超，占量 ${fmtPct((row.trust.trust_vol_ratio_5d || 0) * 100, 1)}`);
+      const trustNet5 = row.trust.inst_net_5d ?? row.trust.trust_net_5d;
+      const trustBuy10 = row.trust.inst_buy_days_10d ?? row.trust.trust_buy_days_10d ?? 0;
+      const trustRatio = row.trust.inst_vol_ratio_5d ?? row.trust.trust_vol_ratio_5d ?? 0;
+      parts.push(`投信：近5日 ${fmtNum(trustNet5, 0)}張，${trustBuy10}/10日買超，占量 ${fmtPct(trustRatio * 100, 1)}`);
+    }
+    if (row.foreign) {
+      const foreignNet5 = row.foreign.inst_net_5d ?? row.foreign.foreign_net_5d;
+      const foreignBuy10 = row.foreign.inst_buy_days_10d ?? row.foreign.foreign_buy_days_10d ?? 0;
+      const foreignRatio = row.foreign.inst_vol_ratio_5d ?? row.foreign.foreign_vol_ratio_5d ?? 0;
+      parts.push(`外資：近5日 ${fmtNum(foreignNet5, 0)}張，${foreignBuy10}/10日買超，占量 ${fmtPct(foreignRatio * 100, 1)}`);
     }
     return parts.join('<br>');
   }
@@ -203,7 +245,8 @@ function renderSSR(strat, main) {
       '代號', '名稱', '產業', '市場', '共振分數', '命中策略數', '組合',
       '收盤', '大戶千張2週', '大戶400張2週',
       'VCP分級', 'VCP段數', '距Pivot(%)',
-      '突破類型', '投信5日買超', '投信10日買超天數', '投信買超占量', '標籤'
+      '突破類型', '投信5日買超', '投信10日買超天數', '投信買超占量',
+      '外資5日買超', '外資10日買超天數', '外資買超占量', '標籤'
     ];
     const csvRows = filtered.map(row => [
       row.stock_id,
@@ -220,9 +263,12 @@ function renderSSR(strat, main) {
       row.vcp?.contractions ?? '',
       row.vcp?.pivot_dist_pct ?? '',
       row.breakout ? ((row.breakout.signal_types || []).join(' / ') || '突破策略') : '',
-      row.trust?.trust_net_5d ?? '',
-      row.trust?.trust_buy_days_10d ?? '',
-      row.trust?.trust_vol_ratio_5d ?? '',
+      row.trust?.inst_net_5d ?? row.trust?.trust_net_5d ?? '',
+      row.trust?.inst_buy_days_10d ?? row.trust?.trust_buy_days_10d ?? '',
+      row.trust?.inst_vol_ratio_5d ?? row.trust?.trust_vol_ratio_5d ?? '',
+      row.foreign?.inst_net_5d ?? row.foreign?.foreign_net_5d ?? '',
+      row.foreign?.inst_buy_days_10d ?? row.foreign?.foreign_buy_days_10d ?? '',
+      row.foreign?.inst_vol_ratio_5d ?? row.foreign?.foreign_vol_ratio_5d ?? '',
       row.tags.join(' / '),
     ]);
     const csv = [headers, ...csvRows]
@@ -240,7 +286,7 @@ function renderSSR(strat, main) {
     <div class="coming-soon" style="padding:48px 20px">
       <div class="coming-icon" style="font-size:28px">✦</div>
       <div class="coming-title">目前沒有交集標的</div>
-      <div class="coming-desc">三組策略同時命中的機率本來就低；等盤後資料更新後，這裡會自動彙整 C3 取 2 與三策略全中的標的。</div>
+      <div class="coming-desc">多組策略同時命中的機率本來就低；等盤後資料更新後，這裡會自動彙整 C5 取 2 與三組以上共振的標的。</div>
     </div>`;
 
   main.innerHTML = `
@@ -255,14 +301,14 @@ function renderSSR(strat, main) {
 
       <div class="summary-row">
         <div class="summary-card">
-          <div class="summary-label">C4 取 2</div>
+          <div class="summary-label">C5 取 2</div>
           <div class="summary-value blue">${rows.length}</div>
           <div class="summary-sub">任兩組以上同時命中</div>
         </div>
         <div class="summary-card">
           <div class="summary-label">三組以上</div>
           <div class="summary-value green">${tripleCount}</div>
-          <div class="summary-sub">四組策略任三組以上共振</div>
+          <div class="summary-sub">五組策略任三組以上共振</div>
         </div>
         <div class="summary-card">
           <div class="summary-label">大戶 + VCP</div>
@@ -277,13 +323,16 @@ function renderSSR(strat, main) {
       </div>
 
       <div style="display:flex;gap:8px;padding:0 0 10px 0;flex-wrap:wrap">
-        <button class="view-btn ${filter === 'c3_2' ? 'active' : ''}" onclick="setSSRFilter('c3_2')">C4取2 ${rows.length}</button>
+        <button class="view-btn ${filter === 'c5_2' ? 'active' : ''}" onclick="setSSRFilter('c5_2')">C5取2 ${rows.length}</button>
         <button class="view-btn ${filter === 'triple' ? 'active' : ''}" onclick="setSSRFilter('triple')">三組以上 ${tripleCount}</button>
+        <button class="view-btn ${filter === 'inst_confluence' ? 'active' : ''}" onclick="setSSRFilter('inst_confluence')">投信+外資 ${instConfluenceCount}</button>
         <button class="view-btn ${filter === 'chips_vcp' ? 'active' : ''}" onclick="setSSRFilter('chips_vcp')">大戶+VCP ${chipsVcpCount}</button>
         <button class="view-btn ${filter === 'chips_breakout' ? 'active' : ''}" onclick="setSSRFilter('chips_breakout')">大戶+突破 ${chipsBreakoutCount}</button>
         <button class="view-btn ${filter === 'vcp_breakout' ? 'active' : ''}" onclick="setSSRFilter('vcp_breakout')">VCP+突破 ${vcpBreakoutCount}</button>
         <button class="view-btn ${filter === 'trust_vcp' ? 'active' : ''}" onclick="setSSRFilter('trust_vcp')">投信+VCP ${trustVcpCount}</button>
         <button class="view-btn ${filter === 'trust_breakout' ? 'active' : ''}" onclick="setSSRFilter('trust_breakout')">投信+突破 ${trustBreakoutCount}</button>
+        <button class="view-btn ${filter === 'foreign_vcp' ? 'active' : ''}" onclick="setSSRFilter('foreign_vcp')">外資+VCP ${foreignVcpCount}</button>
+        <button class="view-btn ${filter === 'foreign_breakout' ? 'active' : ''}" onclick="setSSRFilter('foreign_breakout')">外資+突破 ${foreignBreakoutCount}</button>
       </div>
 
       ${filtered.length === 0 ? emptyHTML : `
@@ -322,8 +371,8 @@ function renderSSR(strat, main) {
                       </a>
                       <div class="stock-industry" style="font-size:10px;color:var(--text3)">${row.market || '—'}</div>
                     </td>
-                    <td><span style="font-family:var(--mono);font-size:16px;font-weight:700;color:${row.strategy_count === 3 ? 'var(--green)' : 'var(--blue)'}">${row.score}</span></td>
-                    <td><span style="font-family:var(--mono);font-weight:700">${row.strategy_count}/4</span></td>
+                    <td><span style="font-family:var(--mono);font-size:16px;font-weight:700;color:${row.strategy_count >= 3 ? 'var(--green)' : 'var(--blue)'}">${row.score}</span></td>
+                    <td><span style="font-family:var(--mono);font-weight:700">${row.strategy_count}/5</span></td>
                     <td><span style="font-size:12px;color:var(--text2)">${row.industry || '—'}</span></td>
                     <td><span class="price-cell">${fmtNum(row.close)}</span></td>
                     <td><div class="tag-cell">${strategyBadges(row)}</div></td>
