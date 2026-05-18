@@ -145,21 +145,22 @@ const STRATEGIES = [
   // ── 策略三：資金動能 ──
   {
     id: "trust_momentum",
-    name: "投信動能",
-    shortName: "投信動能",
+    name: "法人動能",
+    shortName: "法人動能",
     icon: "◆",
     group: "funds",
     available: true,
-    description: "追蹤投信近 5～10 日買超動能，找出連續買、買超占成交量有感，且股價尚未過度延伸的資金推升標的。",
+    description: "追蹤投信與外資近 5～10 日買超動能，區分攻擊、承接與雙法人共振。",
     conditions: [
-      "投信近 5 日買超 ≥ 3 日，或近 10 日買超 ≥ 6 日",
-      "近 5 日與近 10 日投信累計買超皆為正",
-      "投信近 5 日買超 / 近 20 日均量 × 5 ≥ 8%",
+      "法人近 5 日買超 ≥ 3 日，或近 10 日買超 ≥ 6 日",
+      "近 5 日與近 10 日法人累計買超皆為正",
+      "法人近 5 日買超 / 近 20 日均量 × 5 ≥ 8%",
       "20 日均量 ≥ 500 張",
-      "排除 5 日漲幅 > 25% 或 MA20 乖離 > 18% 的過熱標的",
+      "股價需站上 EMA120，避免長期弱勢反彈",
+      "價格同步轉強標記為攻擊，買超但價格走弱標記為承接",
     ],
     dataUpdated: "載入中...",
-    dataSource: "TWSE/TPEx 官方投信買賣超 + price_cache",
+    dataSource: "TWSE/TPEx 官方三大法人買賣超 + price_cache",
     dataKey: "trust_momentum_data",
   },
 ];
@@ -184,6 +185,10 @@ const DATA = {
   right_top_track_data:   null,
   trust_momentum_data:    [],
   trust_momentum_industry: [],
+  foreign_momentum_data:  [],
+  foreign_momentum_industry: [],
+  institutional_confluence_data: [],
+  institutional_confluence_industry: [],
 };
 let DATE_LABELS = [];
 
@@ -308,7 +313,7 @@ const NAV_GROUP_LABELS = {
   chips:     '籌碼選股',
   vcp:       'VCP',
   right_top: '突破策略',
-  funds:     '資金動能',
+  funds:     '法人動能',
 };
 
 function _navBadge(s) {
@@ -630,8 +635,12 @@ async function loadData() {
     }
 
     if (tmRes && tmRes.results) {
-      DATA.trust_momentum_data = tmRes.results;
-      DATA.trust_momentum_industry = tmRes.industry_stats || [];
+      DATA.trust_momentum_data = tmRes.trust_results || tmRes.results || [];
+      DATA.trust_momentum_industry = tmRes.trust_industry_stats || tmRes.industry_stats || [];
+      DATA.foreign_momentum_data = tmRes.foreign_results || [];
+      DATA.foreign_momentum_industry = tmRes.foreign_industry_stats || [];
+      DATA.institutional_confluence_data = tmRes.confluence_results || [];
+      DATA.institutional_confluence_industry = tmRes.confluence_industry_stats || [];
       const strat = STRATEGIES.find(s => s.id === 'trust_momentum');
       if (strat) strat.dataUpdated = (tmRes.source_date || tmRes.updated || '').slice(0, 10) || strat.dataUpdated;
     }

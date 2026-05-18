@@ -91,7 +91,7 @@ jobs:
           FINMIND_TOKEN: ${{ secrets.FINMIND_API_TOKEN }}
         run: python scripts/track_right_top.py
 
-      - name: 投信動能掃描
+      - name: 法人動能掃描
         run: python scripts/scan_trust_momentum.py
 
       - name: 量增訊號掃描
