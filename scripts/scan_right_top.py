@@ -5,6 +5,7 @@
 同一個 right_top.json 內保留兩種突破訊號：
 1. 盤整突破：原本「右上角」週線邏輯，要求突破前不要已經大漲。
 2. 動能突破：日線多頭排列、整理後突破 60 日高、量能放大且乖離不過熱。
+3. 價格突破：股價站上 EMA120，多頭均線排列，創前 60 日高且量能續航。
 """
 
 from __future__ import annotations
@@ -45,6 +46,13 @@ MOMENTUM_VOL_MULT = 1.5
 MOMENTUM_BIAS_MAX = 0.10
 CONSOLIDATE_DAYS = 10
 CONSOLIDATE_BIAS = 0.03
+
+PRICE_EMA_DAYS = 120
+PRICE_VOL_DAYS = 5
+PRICE_VOL_BASE_DAYS = 20
+PRICE_VOL_RATIO_MIN = 1.2
+PRICE_MIN_AVG_VOL_20D = 500
+PRICE_BIAS_EMA20_MAX = 0.25
 
 
 def now_tw() -> str:
@@ -184,6 +192,57 @@ def check_momentum_breakout(daily: pd.DataFrame) -> dict | None:
     }
 
 
+def check_price_breakout(daily: pd.DataFrame) -> dict | None:
+    min_days = max(PRICE_EMA_DAYS, MOMENTUM_HIGH_DAYS + 1, PRICE_VOL_BASE_DAYS)
+    if daily is None or len(daily) < min_days:
+        return None
+
+    df = daily.sort_values("date").reset_index(drop=True).copy()
+    df["ema20"] = df["close"].ewm(span=20, adjust=False).mean()
+    df["ema60"] = df["close"].ewm(span=60, adjust=False).mean()
+    df["ema120"] = df["close"].ewm(span=PRICE_EMA_DAYS, adjust=False).mean()
+    df["prev_60d_high"] = df["close"].shift(1).rolling(MOMENTUM_HIGH_DAYS).max()
+    df["vol_5d_avg"] = df["volume_lots"].rolling(PRICE_VOL_DAYS).mean()
+    df["vol_20d_avg"] = df["volume_lots"].rolling(PRICE_VOL_BASE_DAYS).mean()
+
+    latest = df.iloc[-1]
+    required = ["ema20", "ema60", "ema120", "prev_60d_high", "vol_5d_avg", "vol_20d_avg"]
+    if any(pd.isna(latest[col]) for col in required):
+        return None
+
+    close = float(latest["close"])
+    ema20 = float(latest["ema20"])
+    ema60 = float(latest["ema60"])
+    ema120 = float(latest["ema120"])
+    prev_high = float(latest["prev_60d_high"])
+    vol_5d_avg = float(latest["vol_5d_avg"])
+    vol_20d_avg = float(latest["vol_20d_avg"])
+    vol_ratio = vol_5d_avg / vol_20d_avg if vol_20d_avg else 0
+    bias_ema20 = close / ema20 - 1 if ema20 else 0
+    bias_ema120 = close / ema120 - 1 if ema120 else 0
+
+    is_uptrend = close > ema20 >= ema60 >= ema120 and close > ema120
+    is_breakout = close >= prev_high
+    is_volume = vol_ratio > PRICE_VOL_RATIO_MIN and vol_20d_avg >= PRICE_MIN_AVG_VOL_20D
+    is_not_extended = bias_ema20 <= PRICE_BIAS_EMA20_MAX
+
+    if not (is_uptrend and is_breakout and is_volume and is_not_extended):
+        return None
+
+    return {
+        "price_breakout_60d": True,
+        "ema20": round(ema20, 2),
+        "ema60": round(ema60, 2),
+        "ema120": round(ema120, 2),
+        "price_bias_ema20": round(bias_ema20 * 100, 2),
+        "price_bias_ema120": round(bias_ema120 * 100, 2),
+        "price_high_60d": round(prev_high, 2),
+        "price_vol_5d_avg": round(vol_5d_avg, 1),
+        "price_vol_20d_avg": round(vol_20d_avg, 1),
+        "price_vol_ratio": round(vol_ratio, 2),
+    }
+
+
 def _parse_whale_csv(path: str) -> tuple[dict[str, dict[str, float]], list[str]]:
     if not os.path.exists(path):
         return {}, []
@@ -237,7 +296,12 @@ def load_whale_map() -> dict[str, dict]:
     return whale_map
 
 
-def build_signal_tags(base_signal: dict | None, momentum_signal: dict | None, whale: dict) -> tuple[list[str], int, list[str]]:
+def build_signal_tags(
+    base_signal: dict | None,
+    momentum_signal: dict | None,
+    price_signal: dict | None,
+    whale: dict,
+) -> tuple[list[str], int, list[str]]:
     tags = []
     signal_types = []
     score = 0
@@ -250,7 +314,11 @@ def build_signal_tags(base_signal: dict | None, momentum_signal: dict | None, wh
         tags.extend(["動能突破", "日線啟動", "低乖離"])
         signal_types.append("momentum")
         score += 45
-    if base_signal and momentum_signal:
+    if price_signal:
+        tags.extend(["價格突破", "60日新高", "EMA多頭"])
+        signal_types.append("price")
+        score += 42
+    if sum(bool(x) for x in (base_signal, momentum_signal, price_signal)) >= 2:
         tags.append("雙重符合")
         score += 20
     if whale.get("whale_3w_up"):
@@ -264,6 +332,9 @@ def build_signal_tags(base_signal: dict | None, momentum_signal: dict | None, wh
         score += 5
     if momentum_signal and (momentum_signal.get("daily_vol_ratio") or 0) >= 2:
         tags.append("日量強放大")
+        score += 5
+    if price_signal and (price_signal.get("price_vol_ratio") or 0) >= 1.8:
+        tags.append("量能續航")
         score += 5
 
     return list(dict.fromkeys(tags)), min(score, 100), signal_types
@@ -320,7 +391,7 @@ def build_industry_stats(results: list[dict]) -> list[dict]:
 
 
 def main() -> None:
-    print("=== 突破策略掃描器：盤整突破 + 動能突破 ===")
+    print("=== 突破策略掃描器：盤整突破 + 動能突破 + 價格突破 ===")
     allow_stale = "--allow-stale" in sys.argv
 
     if not os.path.exists(STOCK_LIST_PATH):
@@ -363,14 +434,16 @@ def main() -> None:
         weekly_context = weekly_metrics(weekly)
         base_signal = check_consolidation_breakout(weekly)
         momentum_signal = check_momentum_breakout(daily)
+        price_signal = check_price_breakout(daily)
 
-        if base_signal or momentum_signal:
+        if base_signal or momentum_signal or price_signal:
             whale = whale_map.get(sid, {})
-            tags, quality_score, signal_types = build_signal_tags(base_signal, momentum_signal, whale)
+            tags, quality_score, signal_types = build_signal_tags(base_signal, momentum_signal, price_signal, whale)
             signal_payload = {
                 **(weekly_context or {}),
                 **(base_signal or {}),
                 **(momentum_signal or {}),
+                **(price_signal or {}),
             }
             results.append({
                 "stock_id": sid,
@@ -379,6 +452,7 @@ def main() -> None:
                 "market": stock.get("market", ""),
                 "is_consolidation_breakout": bool(base_signal),
                 "is_momentum_breakout": bool(momentum_signal),
+                "is_price_breakout": bool(price_signal),
                 "signal_types": signal_types,
                 "tags": tags,
                 "quality_score": quality_score,

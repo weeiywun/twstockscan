@@ -222,7 +222,8 @@ function renderSSR(strat, main) {
       parts.push(`VCP：${row.vcp.contractions || '—'}段 ${depths ? depths + '%' : ''}，距pivot ${fmtPct(row.vcp.pivot_dist_pct, 1)}`);
     }
     if (row.breakout) {
-      const types = (row.breakout.signal_types || []).join('、') || '突破策略';
+      const typeLabels = { consolidation: '盤整突破', momentum: '動能突破', price: '價格突破' };
+      const types = (row.breakout.signal_types || []).map(t => typeLabels[t] || t).join('、') || '突破策略';
       parts.push(`突破：${types}`);
     }
     if (row.trust) {
@@ -262,7 +263,7 @@ function renderSSR(strat, main) {
       row.vcp ? (row.vcp.vcp_tier === 'vcp' ? 'VCP' : '潛在VCP') : '',
       row.vcp?.contractions ?? '',
       row.vcp?.pivot_dist_pct ?? '',
-      row.breakout ? ((row.breakout.signal_types || []).join(' / ') || '突破策略') : '',
+      row.breakout ? ((row.breakout.signal_types || []).map(t => ({ consolidation: '盤整突破', momentum: '動能突破', price: '價格突破' }[t] || t)).join(' / ') || '突破策略') : '',
       row.trust?.inst_net_5d ?? row.trust?.trust_net_5d ?? '',
       row.trust?.inst_buy_days_10d ?? row.trust?.trust_buy_days_10d ?? '',
       row.trust?.inst_vol_ratio_5d ?? row.trust?.trust_vol_ratio_5d ?? '',

@@ -1,5 +1,5 @@
 // ═══════════════════════════════════════════════════════════════
-//  突破策略：盤整突破 + 動能突破
+//  突破策略：盤整突破 + 動能突破 + 價格突破
 // ═══════════════════════════════════════════════════════════════
 function renderRightTop(strat, main) {
   const rawData = DATA.right_top_data || [];
@@ -74,7 +74,8 @@ function renderRightTop(strat, main) {
   function matchFilter(d) {
     if (rtFilter === 'consolidation') return !!d.is_consolidation_breakout;
     if (rtFilter === 'momentum') return !!d.is_momentum_breakout;
-    if (rtFilter === 'dual') return !!d.is_consolidation_breakout && !!d.is_momentum_breakout;
+    if (rtFilter === 'price') return !!d.is_price_breakout;
+    if (rtFilter === 'dual') return [d.is_consolidation_breakout, d.is_momentum_breakout, d.is_price_breakout].filter(Boolean).length >= 2;
     if (rtFilter === 'whale') return !!d.whale_3w_up || !!d.whale_400_3w_up;
     return true;
   }
@@ -83,7 +84,8 @@ function renderRightTop(strat, main) {
   const data = filtered.slice().sort(rtCompare);
   const consolidationCount = rawData.filter(d => d.is_consolidation_breakout).length;
   const momentumCount = rawData.filter(d => d.is_momentum_breakout).length;
-  const dualCount = rawData.filter(d => d.is_consolidation_breakout && d.is_momentum_breakout).length;
+  const priceCount = rawData.filter(d => d.is_price_breakout).length;
+  const dualCount = rawData.filter(d => [d.is_consolidation_breakout, d.is_momentum_breakout, d.is_price_breakout].filter(Boolean).length >= 2).length;
   const whaleCount = rawData.filter(d => d.whale_3w_up || d.whale_400_3w_up).length;
   const topIndustry = industryStats[0];
 
@@ -100,10 +102,14 @@ function renderRightTop(strat, main) {
     const meta = {
       '盤整突破':    { color: '#dc2626', order: 0 },
       '動能突破':    { color: '#dc2626', order: 0 },
+      '價格突破':    { color: '#dc2626', order: 0 },
       '雙重符合':    { color: '#dc2626', order: 0 },
       '週量強放大':  { color: '#ea7317', order: 1 },
       '日量強放大':  { color: '#ea7317', order: 1 },
+      '量能續航':    { color: '#ea7317', order: 1 },
       '日線啟動':    { color: '#ea7317', order: 1 },
+      '60日新高':    { color: '#3b82f6', order: 1 },
+      'EMA多頭':     { color: '#0284c7', order: 1 },
       '千張大戶連增':{ color: '#d97706', order: 2 },
       '400張同步':   { color: '#d97706', order: 2 },
       '低乖離':      { color: '#9ca3af', order: 3 },
@@ -118,15 +124,16 @@ function renderRightTop(strat, main) {
   }
 
   function exportRtCSV() {
+    const typeLabels = { consolidation: '盤整突破', momentum: '動能突破', price: '價格突破' };
     const headers = [
       '代號', '名稱', '產業', '市場', '訊號類型', '品質分數', '標籤',
       '收盤', '週量比', '週漲幅(%)', '10週前高',
-      '日量比', 'MA20乖離(%)', 'MA20', 'MA60', '60日前高',
+      '日量比', '價格量比', 'MA20乖離(%)', 'EMA20乖離(%)', 'MA20', 'MA60', 'EMA20', 'EMA60', 'EMA120', '60日前高',
       '千張大戶連增', '400張同步', '千張3週變化', '400張3週變化', '訊號日'
     ];
     const rows = data.map(d => [
       d.stock_id, d.name, d.industry, d.market,
-      (d.signal_types || []).join(' / '),
+      (d.signal_types || []).map(t => typeLabels[t] || t).join(' / '),
       d.quality_score ?? '',
       (d.tags || []).join(' / '),
       d.close ?? '',
@@ -134,10 +141,15 @@ function renderRightTop(strat, main) {
       d.change_pct ?? '',
       d.high_10w ?? '',
       d.daily_vol_ratio ?? '',
+      d.price_vol_ratio ?? '',
       d.bias_ma20 ?? '',
+      d.price_bias_ema20 ?? '',
       d.ma20 ?? '',
       d.ma60 ?? '',
-      d.high_60d ?? '',
+      d.ema20 ?? '',
+      d.ema60 ?? '',
+      d.ema120 ?? '',
+      d.high_60d ?? d.price_high_60d ?? '',
       d.whale_3w_up ? 'Y' : '',
       d.whale_400_3w_up ? 'Y' : '',
       d.big_1000_chg_3w ?? '',
@@ -175,7 +187,8 @@ function renderRightTop(strat, main) {
                 <th onclick="rtSort('close')" style="cursor:pointer">收盤${sortIcon('close')}</th>
                 <th onclick="rtSort('vol_ratio')" style="cursor:pointer" data-tip="最新週量 ÷ 前20週均量">週量比${sortIcon('vol_ratio')}</th>
                 <th onclick="rtSort('daily_vol_ratio')" style="cursor:pointer" data-tip="今日量 ÷ 前5日均量">日量比${sortIcon('daily_vol_ratio')}</th>
-                <th onclick="rtSort('bias_ma20')" style="cursor:pointer" data-tip="(收盤-MA20)/MA20">MA20乖離${sortIcon('bias_ma20')}</th>
+                <th onclick="rtSort('price_vol_ratio')" style="cursor:pointer" data-tip="近5日均量 ÷ 20日均量">價格量比${sortIcon('price_vol_ratio')}</th>
+                <th onclick="rtSort('price_bias_ema20')" style="cursor:pointer" data-tip="(收盤-EMA20)/EMA20">EMA20乖離${sortIcon('price_bias_ema20')}</th>
                 <th onclick="rtSort('big_1000_chg_3w')" style="cursor:pointer">大戶3週${sortIcon('big_1000_chg_3w')}</th>
                 <th>訊號標籤</th>
               </tr>
@@ -184,6 +197,7 @@ function renderRightTop(strat, main) {
               ${data.map(d => {
                 const mkt = d.market === 'TPEX' ? 'TPEX' : 'TWSE';
                 const tvSymbol = `${mkt}:${d.stock_id}`;
+                const emaBias = d.price_bias_ema20 ?? d.bias_ma20;
                 return `<tr>
                   <td>
                     <a href="https://www.tradingview.com/chart/?symbol=${tvSymbol}"
@@ -208,7 +222,14 @@ function renderRightTop(strat, main) {
                     <span style="font-family:var(--mono);font-size:13px;font-weight:600;color:${d.is_momentum_breakout ? 'var(--amber)' : 'var(--text3)'}">${d.daily_vol_ratio ? `${fmtNum(d.daily_vol_ratio)}x` : '—'}</span><br>
                     <span style="font-size:10px;color:var(--text3)">${d.daily_vol_today ? Math.round(d.daily_vol_today).toLocaleString() + '張' : '—'}</span>
                   </td>
-                  <td><span class="deviation ${(d.bias_ma20 || 0) >= 0 ? 'pos' : 'neg'}" style="font-size:13px">${fmtPct(d.bias_ma20)}</span></td>
+                  <td>
+                    <span style="font-family:var(--mono);font-size:13px;font-weight:600;color:${d.is_price_breakout ? 'var(--red)' : 'var(--text3)'}">${d.price_vol_ratio ? `${fmtNum(d.price_vol_ratio)}x` : '—'}</span><br>
+                    <span style="font-size:10px;color:var(--text3)">${d.price_vol_20d_avg ? Math.round(d.price_vol_20d_avg).toLocaleString() + '張均' : '—'}</span>
+                  </td>
+                  <td>
+                    <span class="deviation ${(emaBias || 0) >= 0 ? 'pos' : 'neg'}" style="font-size:13px">${fmtPct(emaBias)}</span><br>
+                    <span style="font-size:10px;color:var(--text3)">EMA120 ${d.ema120 ? fmtNum(d.ema120) : '—'}</span>
+                  </td>
                   <td>
                     <span style="font-family:var(--mono);font-size:12px;color:${d.whale_3w_up ? 'var(--green)' : 'var(--text3)'}">${fmtPct(d.big_1000_chg_3w)}</span><br>
                     <span style="font-size:10px;color:var(--text3)">千張</span>
@@ -277,7 +298,7 @@ function renderRightTop(strat, main) {
         <div class="summary-card">
           <div class="summary-label">全部命中</div>
           <div class="summary-value green">${rawData.length}</div>
-          <div class="summary-sub">盤整突破 + 動能突破</div>
+          <div class="summary-sub">盤整突破 + 動能突破 + 價格突破</div>
         </div>
         <div class="summary-card">
           <div class="summary-label">盤整突破</div>
@@ -290,9 +311,9 @@ function renderRightTop(strat, main) {
           <div class="summary-sub">日線多頭啟動</div>
         </div>
         <div class="summary-card">
-          <div class="summary-label">最強族群</div>
-          <div class="summary-value" style="font-size:16px">${topIndustry ? topIndustry.industry : '—'}</div>
-          <div class="summary-sub">${topIndustry ? `${topIndustry.count} 檔同步突破` : '尚無資料'} · 大戶 ${whaleCount} 檔</div>
+          <div class="summary-label">價格突破</div>
+          <div class="summary-value" style="color:var(--red)">${priceCount}</div>
+          <div class="summary-sub">站上 EMA120 且創 60 日高</div>
         </div>
       </div>
 
@@ -300,6 +321,7 @@ function renderRightTop(strat, main) {
         <button class="view-btn ${rtFilter === 'all' ? 'active' : ''}" onclick="setRtFilter('all')">全部</button>
         <button class="view-btn ${rtFilter === 'consolidation' ? 'active' : ''}" onclick="setRtFilter('consolidation')">盤整突破</button>
         <button class="view-btn ${rtFilter === 'momentum' ? 'active' : ''}" onclick="setRtFilter('momentum')">動能突破</button>
+        <button class="view-btn ${rtFilter === 'price' ? 'active' : ''}" onclick="setRtFilter('price')">價格突破 ${priceCount}</button>
         <button class="view-btn ${rtFilter === 'dual' ? 'active' : ''}" onclick="setRtFilter('dual')">雙重符合 ${dualCount}</button>
         <button class="view-btn ${rtFilter === 'whale' ? 'active' : ''}" onclick="setRtFilter('whale')">大戶加持</button>
       </div>
