@@ -1,61 +1,58 @@
 {
   "date": "2026-05-19",
-  "updated": "2026-05-19T17:11:35.915437+08:00",
+  "updated": "2026-05-20T07:12:12.679690+08:00",
   "source": "twse+twse_mis+yahoo_futures+yfinance",
   "indices": {
     "TAIEX": {
       "name": "台灣加權指數",
-      "close": 40175.56,
-      "date": "2026-05-19",
+      "close": 10642.86,
+      "date": "2017-12-29",
       "source": "twse",
-      "change": -716.26,
-      "change_pct": -1.75,
-      "previous_close": 40891.82
+      "change": 75.22,
+      "change_pct": 0.71,
+      "previous_close": 10567.64
     },
     "TPEX": {
       "name": "櫃買加權指數",
-      "close": 398.18,
+      "close": 409.63,
       "date": "2026-05-19",
-      "source": "twse_mis",
-      "change": -11.45,
-      "change_pct": -2.8,
-      "previous_close": 409.63
+      "source": "twse_mis"
     },
     "TXF_NEAR": {
       "name": "台指近全",
-      "close": 40248.0,
+      "close": 40140.0,
       "date": "2026-05-19",
       "source": "yahoo_futures",
-      "change": 8.0,
-      "change_pct": 0.02,
-      "time": "17:13:00"
+      "change": 100.0,
+      "change_pct": 0.25,
+      "time": "04:59:57"
     },
     "NASDAQ": {
       "name": "那斯達克",
-      "close": 26090.73,
-      "date": "2026-05-18",
+      "close": 25870.71,
+      "date": "2026-05-19",
       "source": "yfinance",
-      "change": -134.41,
-      "change_pct": -0.51,
-      "previous_close": 26225.14
+      "change": -220.02,
+      "change_pct": -0.84,
+      "previous_close": 26090.73
     },
     "DOW": {
       "name": "道瓊",
-      "close": 49686.12,
-      "date": "2026-05-18",
+      "close": 49363.88,
+      "date": "2026-05-19",
       "source": "yfinance",
-      "change": 159.95,
-      "change_pct": 0.32,
-      "previous_close": 49526.17
+      "change": -322.24,
+      "change_pct": -0.65,
+      "previous_close": 49686.12
     },
     "SOX": {
       "name": "費半",
-      "close": 11302.52,
-      "date": "2026-05-18",
+      "close": 11305.5,
+      "date": "2026-05-19",
       "source": "yfinance",
-      "change": -285.94,
-      "change_pct": -2.47,
-      "previous_close": 11588.46
+      "change": 2.98,
+      "change_pct": 0.03,
+      "previous_close": 11302.52
     }
   }
 }
