@@ -1,24 +1,43 @@
 {
   "strategy_id": "volume_signal",
-  "updated": "2026-05-19T17:15:30+08:00",
+  "updated": "2026-05-20T17:15:24+08:00",
   "results": [
     {
-      "stock_id": "3004",
-      "name": "豐達科",
-      "industry": "鋼鐵",
+      "stock_id": "3479",
+      "name": "安勤",
+      "industry": "櫃電腦",
       "tags": [
         "持續成長",
-        "單周增幅"
+        "外資連買"
       ],
-      "tag_score": 6,
-      "cumulative_3w": 3.56,
-      "big_pct_1000": 49.7,
-      "close": 124.5,
-      "vol_today": 2063,
-      "vol_10d_avg": 850.0,
-      "vol_ratio": 2.43,
-      "ema5": 123.07,
-      "signal_date": "2026-05-19"
+      "tag_score": 1,
+      "cumulative_3w": 0.0,
+      "big_pct_1000": 33.72,
+      "close": 110.5,
+      "vol_today": 3244,
+      "vol_10d_avg": 747.0,
+      "vol_ratio": 4.34,
+      "ema5": 100.59,
+      "signal_date": "2026-05-20"
+    },
+    {
+      "stock_id": "2603",
+      "name": "長榮",
+      "industry": "航運",
+      "tags": [
+        "持續成長",
+        "雙軌觸發",
+        "外資連買"
+      ],
+      "tag_score": 4,
+      "cumulative_3w": 2.06,
+      "big_pct_1000": 64.01,
+      "close": 212.5,
+      "vol_today": 48099,
+      "vol_10d_avg": 13187.0,
+      "vol_ratio": 3.65,
+      "ema5": 201.66,
+      "signal_date": "2026-05-20"
     }
   ]
 }
