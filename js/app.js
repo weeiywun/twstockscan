@@ -201,6 +201,7 @@ const DATA = {
   volume_signal_data:     [],
   volume_pullback_data:    null,
   intraday_volume_pullback_data: [],
+  momentum_candidates_data: null,
   stock_analysis_data:    null,
   performance_data:       null,
   market_index_data:      null,
@@ -590,11 +591,12 @@ async function loadData() {
   const timestamp = new Date().getTime();
 
   try {
-    const [chipsRes, vsRes, vpbRes, ivpbRes, aiRes, saRes, perfRes, miRes, fdRes, vcpRes, rtRes, rttRes, tmRes] = await Promise.all([
+    const [chipsRes, vsRes, vpbRes, ivpbRes, mcRes, aiRes, saRes, perfRes, miRes, fdRes, vcpRes, rtRes, rttRes, tmRes] = await Promise.all([
       fetch(`data/chips_big_holder.json?t=${timestamp}`,   { cache: 'no-store' }).then(r => r.ok ? r.json() : null).catch(() => null),
       fetch(`data/volume_signal.json?t=${timestamp}`,      { cache: 'no-store' }).then(r => r.ok ? r.json() : null).catch(() => null),
       fetch(`data/volume_pullback.json?t=${timestamp}`,     { cache: 'no-store' }).then(r => r.ok ? r.json() : null).catch(() => null),
       fetch(`data/intraday_volume_pullback.json?t=${timestamp}`, { cache: 'no-store' }).then(r => r.ok ? r.json() : null).catch(() => null),
+      fetch(`data/momentum_candidates.json?t=${timestamp}`, { cache: 'no-store' }).then(r => r.ok ? r.json() : null).catch(() => null),
       fetch(`data/ai_recommendations.json?t=${timestamp}`, { cache: 'no-store' }).then(r => r.ok ? r.json() : null).catch(() => null),
       fetch(`data/ai_analysis.json?t=${timestamp}`,        { cache: 'no-store' }).then(r => r.ok ? r.json() : null).catch(() => null),
       fetch(`data/performance.json?t=${timestamp}`,        { cache: 'no-store' }).then(r => r.ok ? r.json() : null).catch(() => null),
@@ -639,6 +641,10 @@ async function loadData() {
 
     if (ivpbRes && ivpbRes.results) {
       DATA.intraday_volume_pullback_data = ivpbRes.results || [];
+    }
+
+    if (mcRes && mcRes.results) {
+      DATA.momentum_candidates_data = mcRes;
     }
 
     if (aiRes && aiRes.ranked) {

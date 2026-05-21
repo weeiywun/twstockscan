@@ -7,6 +7,8 @@ function renderVolumePullback(strat, main) {
   const active = model.active || [];
   const intraday = DATA.intraday_volume_pullback_data || [];
   const intradayMap = new Map(intraday.map(row => [row.stock_id, row]));
+  const momentum = DATA.momentum_candidates_data || {};
+  const momentumRows = momentum.results || [];
 
   if (active.length === 0) {
     main.innerHTML = `<div class="coming-soon">
@@ -128,6 +130,100 @@ function renderVolumePullback(strat, main) {
     </tr>`;
   }).join('');
 
+  const sourceLabel = src => ({
+    chips: '籌碼',
+    ignition: '點火',
+    volume_signal: '量增',
+    right_top_track: '突破追蹤',
+    breakout_track: '突破',
+    volume_pullback: '回測',
+    pullback: '回測',
+    stock_analysis: '追蹤',
+    follow: '追蹤',
+  }[src] || src);
+  const metricText = row => {
+    const m = row.metrics || {};
+    const parts = [];
+    if (m.ignition_vol_ratio != null) parts.push(`點火 ${Number(m.ignition_vol_ratio).toFixed(2)}x`);
+    if (m.today_vol_ratio != null) parts.push(`今日 ${Number(m.today_vol_ratio).toFixed(2)}x`);
+    if (m.track_pnl_pct != null) parts.push(`追蹤 ${Number(m.track_pnl_pct).toFixed(1)}%`);
+    if (m.pullback_from_ignition_close_pct != null) parts.push(`距點火 ${Number(m.pullback_from_ignition_close_pct).toFixed(1)}%`);
+    if (m.market_cap != null) parts.push(`市值 ${Number(m.market_cap).toFixed(1)}億`);
+    if (m.bbw != null) parts.push(`BBW ${Number(m.bbw).toFixed(1)}`);
+    if (m.rev_grade) parts.push(`營收 ${m.rev_grade}`);
+    return parts.join(' / ') || '—';
+  };
+  const momentumTop = momentumRows.slice(0, 10);
+  const momentumTable = momentumTop.map((row, idx) => {
+    const risk = (row.risk_flags || []).length
+      ? `<span class="tag-badge" style="color:var(--amber);border-color:rgba(210,150,40,.45)">${row.risk_flags[0]}</span>`
+      : '';
+    const statusColor = row.status === '再啟動'
+      ? 'var(--green)'
+      : (row.status === '點火首日' ? 'var(--amber)' : 'var(--text)');
+    return `<tr onclick="toggleExpand('mom-${row.stock_id}')" id="row-mom-${row.stock_id}">
+      <td style="color:var(--text3);font-family:var(--mono);font-size:12px">${idx + 1}</td>
+      <td>
+        <a href="https://www.tradingview.com/chart/?symbol=${getTVSymbol(row)}"
+          onclick="openTV('${getTVSymbol(row)}', event)"
+          style="text-decoration:none;display:inline-block">
+          <div class="stock-code" style="display:flex;align-items:center;gap:5px">
+            ${row.stock_id}<span style="font-size:9px;opacity:.45;font-family:var(--mono)">↗</span>
+          </div>
+          <div class="stock-name">${row.name || ''}</div>
+        </a>
+        <div class="stock-industry">${row.industry || ''}</div>
+      </td>
+      <td><span class="tag-badge" style="color:${statusColor};border-color:rgba(80,90,110,.35)">${row.status || '—'}</span>${risk}</td>
+      <td><span style="font-family:var(--mono);font-weight:700;color:var(--green)">${row.score ?? '—'}</span></td>
+      <td><span class="price-cell">${row.close != null ? Number(row.close).toFixed(1) : '—'}</span></td>
+      <td>${(row.sources || []).map(s => `<span class="tag-badge" style="color:var(--text2);border-color:rgba(80,90,110,.35)">${sourceLabel(s)}</span>`).join('')}</td>
+      <td style="font-size:12px;color:var(--text2);line-height:1.7">${metricText(row)}</td>
+    </tr>
+    <tr class="expand-row" id="expand-mom-${row.stock_id}" style="display:none">
+      <td colspan="7">
+        <div class="expand-content">
+          <div class="expand-section" style="flex:1;min-width:180px">
+            <h4>分數來源</h4>
+            <div style="font-size:12px;color:var(--text2);line-height:1.9">
+              ${Object.entries(row.score_parts || {}).map(([k, v]) => `<div>${sourceLabel(k)}：<b>${v}</b></div>`).join('') || '<div>—</div>'}
+            </div>
+          </div>
+          <div class="expand-section" style="flex:2;min-width:240px">
+            <h4>標籤</h4>
+            <div style="font-size:12px;color:var(--text2);line-height:1.9">${(row.tags || []).join(' / ') || '—'}</div>
+          </div>
+        </div>
+      </td>
+    </tr>`;
+  }).join('');
+  const momentumPanel = momentumRows.length ? `
+      <div class="table-wrap" style="margin-bottom:16px">
+        <div class="table-toolbar">
+          <span class="table-title">短線強勢雷達 Top 10</span>
+          <div class="toolbar-right"><span class="updated-tag">更新：${(momentum.updated || '').slice(0, 10) || strat.dataUpdated}</span></div>
+        </div>
+        <div class="filter-row" style="padding:10px 12px;border-bottom:1px solid var(--border);gap:8px;display:flex;flex-wrap:wrap;color:var(--text3);font-size:12px">
+          整合籌碼集中、量增訊號、突破追蹤、量增回測與標的追蹤；VCP / 法人動能暫不納入。
+        </div>
+        <div class="table-scroll">
+          <table>
+            <thead>
+              <tr>
+                <th>#</th>
+                <th>代號 / 名稱</th>
+                <th>狀態</th>
+                <th>爆發分數</th>
+                <th>收盤</th>
+                <th>來源</th>
+                <th>關鍵指標</th>
+              </tr>
+            </thead>
+            <tbody>${momentumTable}</tbody>
+          </table>
+        </div>
+      </div>` : '';
+
   main.innerHTML = `
     <div class="strategy-panel active">
       <div class="strat-header">
@@ -138,6 +234,11 @@ function renderVolumePullback(strat, main) {
         ${strat.conditions.map(c => `<div class="cond"><span class="cond-dot"></span>${c}</div>`).join('')}
       </div>
       <div class="summary-row">
+        <div class="summary-card">
+          <div class="summary-label">短線雷達</div>
+          <div class="summary-value green">${momentum.summary?.total ?? momentumRows.length}</div>
+          <div class="summary-sub">整合啟用策略</div>
+        </div>
         <div class="summary-card">
           <div class="summary-label">候選池</div>
           <div class="summary-value green">${active.length}</div>
@@ -154,6 +255,7 @@ function renderVolumePullback(strat, main) {
           <div class="summary-sub">盤中累積量達標</div>
         </div>
       </div>
+      ${momentumPanel}
       <div class="table-wrap">
         <div class="table-toolbar">
           <span class="table-title">量增回測候選名單</span>
