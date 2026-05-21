@@ -521,7 +521,18 @@
       "exit_price": null,
       "exit_date": null,
       "exit_net": null,
-      "confirmed": false
+      "confirmed": true,
+      "exits": [
+        {
+          "id": "e1779340765945",
+          "date": "2026-05-21",
+          "shares": 1000,
+          "exit_price": 51,
+          "exit_net": 50804,
+          "sell_fee": 43,
+          "sell_tax": 153
+        }
+      ]
     },
     {
       "id": "p1779172783547",
