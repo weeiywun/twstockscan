@@ -77,7 +77,10 @@ jobs:
             echo "快取無變動，略過提交"
           fi
 
-      - name: VCP 選股掃描
+      - name: VCP 選股掃描 [停用備用勿刪]
+        # DISABLED / BACKUP - DO NOT DELETE:
+        # Temporarily paused while the main workflow focuses on price breakout and big-holder tracking.
+        if: ${{ false }}
         env:
           FINMIND_TOKEN: ${{ secrets.FINMIND_API_TOKEN }}
         run: python scripts/scan_vcp.py
@@ -92,7 +95,10 @@ jobs:
           FINMIND_TOKEN: ${{ secrets.FINMIND_API_TOKEN }}
         run: python scripts/track_right_top.py
 
-      - name: 法人動能掃描
+      - name: 法人動能掃描 [停用備用勿刪]
+        # DISABLED / BACKUP - DO NOT DELETE:
+        # Temporarily paused as a strategy scan. Institutional labels continue through institutional_tags.yml.
+        if: ${{ false }}
         run: python scripts/scan_trust_momentum.py
 
       - name: 量增訊號掃描
@@ -111,7 +117,7 @@ jobs:
         run: |
           git config user.name  "github-actions[bot]"
           git config user.email "github-actions[bot]@users.noreply.github.com"
-          git add data/vcp.json data/right_top.json data/right_top_track.json data/trust_momentum.json data/volume_signal.json data/performance.json data/chips_big_holder.json data/current_prices.json
+          git add data/right_top.json data/right_top_track.json data/volume_signal.json data/performance.json data/chips_big_holder.json data/current_prices.json
           if ! git diff --staged --quiet; then
             git commit -m "data: daily scan update $(date -u +%Y-%m-%d)"
             for i in {1..4}; do

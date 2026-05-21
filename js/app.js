@@ -34,11 +34,11 @@ const STRATEGIES = [
     icon: "✦",
     group: "ssr",
     available: true,
-    description: "彙整籌碼集中、VCP、突破策略、投信動能、外資動能五組核心選股，找出同時命中 2 組以上的高共振標的。",
+    description: "目前聚焦籌碼集中與突破策略，找出大戶追蹤與價格突破同時命中的標的。VCP / 法人動能暫停備用勿刪。",
     conditions: [
-      "C5 取 2：籌碼集中、VCP、突破策略、投信動能、外資動能任兩組同時命中",
-      "三組以上：五組核心策略任三組以上同時命中",
-      "VCP 命中含嚴格 VCP 與潛在 VCP，並在表格中保留分級",
+      "目前主線：籌碼集中 + 突破策略",
+      "VCP / 法人動能已暫停備用勿刪，不納入前台交集與每日策略掃描",
+      "法人連買標籤仍由 institutional_tags.yml 維持更新",
       "此頁只做交集總覽，不改變各策略原本的篩選邏輯",
     ],
     dataUpdated: "載入中...",
@@ -96,6 +96,9 @@ const STRATEGIES = [
   // ── 策略二：突破策略 ──
   {
     id: "vcp",
+    // DISABLED / BACKUP - DO NOT DELETE:
+    // VCP is temporarily hidden while we focus on price breakout and big-holder tracking.
+    hidden: true,
     name: "VCP 選股",
     shortName: "VCP",
     icon: "◈",
@@ -147,6 +150,9 @@ const STRATEGIES = [
   // ── 策略三：資金動能 ──
   {
     id: "trust_momentum",
+    // DISABLED / BACKUP - DO NOT DELETE:
+    // Institutional momentum is temporarily hidden. Institutional tags remain updated by institutional_tags.yml.
+    hidden: true,
     name: "法人動能",
     shortName: "法人動能",
     icon: "◆",
@@ -366,7 +372,7 @@ function renderNav() {
   // 依 group 分組渲染
   const groupOrder = [];
   const grouped = {};
-  STRATEGIES.filter(s => s.group !== null).forEach(s => {
+  STRATEGIES.filter(s => s.group !== null && !s.hidden).forEach(s => {
     const g = s.group;
     if (!grouped[g]) { grouped[g] = []; groupOrder.push(g); }
     grouped[g].push(s);
@@ -569,10 +575,12 @@ async function loadData() {
       fetch(`data/performance.json?t=${timestamp}`,        { cache: 'no-store' }).then(r => r.ok ? r.json() : null).catch(() => null),
       fetch(`data/market_index.json?t=${timestamp}`,        { cache: 'no-store' }).then(r => r.ok ? r.json() : null).catch(() => null),
       fetch(`data/futures_dashboard.json?t=${timestamp}`,   { cache: 'no-store' }).then(r => r.ok ? r.json() : null).catch(() => null),
-      fetch(`data/vcp.json?t=${timestamp}`,                { cache: 'no-store' }).then(r => r.ok ? r.json() : null).catch(() => null),
+      // DISABLED / BACKUP - DO NOT DELETE: VCP data loading is paused while the tab is hidden.
+      Promise.resolve(null),
       fetch(`data/right_top.json?t=${timestamp}`,          { cache: 'no-store' }).then(r => r.ok ? r.json() : null).catch(() => null),
       fetch(`data/right_top_track.json?t=${timestamp}`,    { cache: 'no-store' }).then(r => r.ok ? r.json() : null).catch(() => null),
-      fetch(`data/trust_momentum.json?t=${timestamp}`,     { cache: 'no-store' }).then(r => r.ok ? r.json() : null).catch(() => null),
+      // DISABLED / BACKUP - DO NOT DELETE: institutional momentum data loading is paused; tag workflow remains active.
+      Promise.resolve(null),
     ]);
 
     if (chipsRes && chipsRes.results) {
@@ -649,7 +657,7 @@ async function loadData() {
 
     const ssrStrat = STRATEGIES.find(s => s.id === 'ssr');
     if (ssrStrat) {
-      const dates = ['chips_big_holder', 'vcp', 'right_top', 'trust_momentum']
+      const dates = ['chips_big_holder', 'right_top']
         .map(id => STRATEGIES.find(s => s.id === id)?.dataUpdated)
         .filter(d => d && d !== '載入中...');
       ssrStrat.dataUpdated = dates.length ? dates.sort().slice(-1)[0] : ssrStrat.dataUpdated;
@@ -674,10 +682,10 @@ async function loadData() {
         if (cpData.date === today || cpData.date === yesterday) {
           if (typeof _applyPriceToChips    === 'function') _applyPriceToChips(cpData.prices);
           if (typeof _applyPriceToVolumeSignal === 'function') _applyPriceToVolumeSignal(cpData.prices);
-          if (typeof _applyPriceToVCP       === 'function') _applyPriceToVCP(cpData.prices);
+          // DISABLED / BACKUP - DO NOT DELETE: VCP price patching is paused while the tab is hidden.
           if (typeof _applyPriceToRightTop === 'function') _applyPriceToRightTop(cpData.prices);
           if (typeof _applyPriceToRttTrack === 'function') _applyPriceToRttTrack(cpData.prices);
-          if (typeof _applyPriceToTrustMomentum === 'function') _applyPriceToTrustMomentum(cpData.prices);
+          // DISABLED / BACKUP - DO NOT DELETE: institutional momentum price patching is paused while the tab is hidden.
           if (typeof _applyPriceToAnalysis === 'function') _applyPriceToAnalysis(cpData.prices);
           if (typeof _applyPriceToPerf === 'function') await _applyPriceToPerf(cpData.prices, cpData.date, false);
         }
