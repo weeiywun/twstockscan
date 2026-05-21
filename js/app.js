@@ -84,6 +84,25 @@ const STRATEGIES = [
     dataKey: "volume_signal_data",
   },
   {
+    id: "volume_pullback",
+    name: "量增回測",
+    shortName: "量增回測",
+    icon: "◎",
+    group: "chips",
+    available: true,
+    description: "追蹤放量突破後回測不破的標的，鎖定點火後回穩與再啟動。",
+    conditions: [
+      "來源：籌碼集中入池、價格突破追蹤、既有量增訊號",
+      "點火：近 5 日任一天成交量 >= 10日均量 × 2.5，且收盤站上 EMA5 或 EMA20",
+      "回穩：目前收盤守住點火日低點與 EMA20，回落不超過 8%，量能降溫",
+      "再啟動：回穩後突破前一日高點，或量比重新 >= 1.5",
+      "10:00 盤中預警：盤中累積量 >= 10日均量 × 0.45，且 >= 200 張",
+    ],
+    dataUpdated: "載入中...",
+    dataSource: "price_cache + TWSE MIS 盤中即時行情",
+    dataKey: "volume_pullback_data",
+  },
+  {
     id: "stock_analysis",
     name: "量增訊號標的追蹤",
     shortName: "標的追蹤",
@@ -180,6 +199,8 @@ const STRATEGIES = [
 const DATA = {
   chips_big_holder_data:  [],
   volume_signal_data:     [],
+  volume_pullback_data:    null,
+  intraday_volume_pullback_data: [],
   stock_analysis_data:    null,
   performance_data:       null,
   market_index_data:      null,
@@ -330,6 +351,7 @@ function _navBadge(s) {
   if (s.id === 'performance') return (DATA.performance_data?.positions || []).filter(p => !p.confirmed).length;
   if (s.id === 'ssr') return typeof buildSSRRows === 'function' ? buildSSRRows().length : '—';
   if (s.id === 'stock_analysis') return DATA.stock_analysis_data?.active?.length ?? '—';
+  if (s.id === 'volume_pullback') return DATA.volume_pullback_data?.active?.length ?? '—';
   if (s.id === 'vcp')             return (DATA.vcp_data || []).length + (DATA.vcp_potential_data || []).length;
   if (s.id === 'right_top_track') return DATA.right_top_track_data?.active?.length ?? '—';
   return (DATA[s.dataKey] || []).length;
@@ -419,6 +441,7 @@ function renderStrategy() {
   if (strat.id === 'ssr')              { renderSSR(strat, main);             return; }
   if (strat.id === 'chips_big_holder') { renderChipsHolder(strat, main);    return; }
   if (strat.id === 'volume_signal')    { renderVolumeSignal(strat, main);   return; }
+  if (strat.id === 'volume_pullback')  { renderVolumePullback(strat, main); return; }
   if (strat.id === 'stock_analysis')   { renderStockAnalysis(strat, main);  return; }
   if (strat.id === 'vcp')              { renderVCP(strat, main);               return; }
   if (strat.id === 'right_top')        { renderRightTop(strat, main);          return; }
@@ -567,9 +590,11 @@ async function loadData() {
   const timestamp = new Date().getTime();
 
   try {
-    const [chipsRes, vsRes, aiRes, saRes, perfRes, miRes, fdRes, vcpRes, rtRes, rttRes, tmRes] = await Promise.all([
+    const [chipsRes, vsRes, vpbRes, ivpbRes, aiRes, saRes, perfRes, miRes, fdRes, vcpRes, rtRes, rttRes, tmRes] = await Promise.all([
       fetch(`data/chips_big_holder.json?t=${timestamp}`,   { cache: 'no-store' }).then(r => r.ok ? r.json() : null).catch(() => null),
       fetch(`data/volume_signal.json?t=${timestamp}`,      { cache: 'no-store' }).then(r => r.ok ? r.json() : null).catch(() => null),
+      fetch(`data/volume_pullback.json?t=${timestamp}`,     { cache: 'no-store' }).then(r => r.ok ? r.json() : null).catch(() => null),
+      fetch(`data/intraday_volume_pullback.json?t=${timestamp}`, { cache: 'no-store' }).then(r => r.ok ? r.json() : null).catch(() => null),
       fetch(`data/ai_recommendations.json?t=${timestamp}`, { cache: 'no-store' }).then(r => r.ok ? r.json() : null).catch(() => null),
       fetch(`data/ai_analysis.json?t=${timestamp}`,        { cache: 'no-store' }).then(r => r.ok ? r.json() : null).catch(() => null),
       fetch(`data/performance.json?t=${timestamp}`,        { cache: 'no-store' }).then(r => r.ok ? r.json() : null).catch(() => null),
@@ -604,6 +629,16 @@ async function loadData() {
       DATA.volume_signal_data = vsRes.results;
       const strat = STRATEGIES.find(s => s.id === 'volume_signal');
       if (strat) strat.dataUpdated = (vsRes.updated || '').slice(0, 10) || strat.dataUpdated;
+    }
+
+    if (vpbRes && (vpbRes.active || vpbRes.failed)) {
+      DATA.volume_pullback_data = vpbRes;
+      const strat = STRATEGIES.find(s => s.id === 'volume_pullback');
+      if (strat) strat.dataUpdated = (vpbRes.updated || '').slice(0, 10) || strat.dataUpdated;
+    }
+
+    if (ivpbRes && ivpbRes.results) {
+      DATA.intraday_volume_pullback_data = ivpbRes.results || [];
     }
 
     if (aiRes && aiRes.ranked) {

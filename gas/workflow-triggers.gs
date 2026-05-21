@@ -9,6 +9,10 @@ function triggerDailyScan1700() {
   dispatchRepositoryEvent('daily_scan_1700');
 }
 
+function triggerIntradayVolumePullback1000() {
+  dispatchRepositoryEvent('intraday_volume_pullback_1000');
+}
+
 function triggerHoldingsScanWeekly() {
   dispatchRepositoryEvent('holdings_scan_weekly');
 }
@@ -19,6 +23,17 @@ function installDailyScan1700Trigger() {
     .timeBased()
     .everyDays(1)
     .atHour(17)
+    .nearMinute(0)
+    .inTimezone(TIMEZONE)
+    .create();
+}
+
+function installIntradayVolumePullback1000Trigger() {
+  deleteTriggersFor_('triggerIntradayVolumePullback1000');
+  ScriptApp.newTrigger('triggerIntradayVolumePullback1000')
+    .timeBased()
+    .everyDays(1)
+    .atHour(10)
     .nearMinute(0)
     .inTimezone(TIMEZONE)
     .create();

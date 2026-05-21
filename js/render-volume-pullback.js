@@ -1,0 +1,192 @@
+//  量增回測：渲染器
+// ════════════════════════════════════════════════════
+let volumePullbackFilter = 'all';
+
+function renderVolumePullback(strat, main) {
+  const model = DATA.volume_pullback_data || {};
+  const active = model.active || [];
+  const intraday = DATA.intraday_volume_pullback_data || [];
+  const intradayMap = new Map(intraday.map(row => [row.stock_id, row]));
+
+  if (active.length === 0) {
+    main.innerHTML = `<div class="coming-soon">
+      <div class="coming-icon">${strat.icon}</div>
+      <div class="coming-title">${strat.name}</div>
+      <div class="coming-desc">目前沒有符合量增回測結構的標的，或資料尚未更新。<br>盤後建立候選池，10:00 再做盤中量能預警。</div>
+    </div>`;
+    return;
+  }
+
+  const counts = {
+    all: active.length,
+    reentry: active.filter(row => row.status === 'reentry').length,
+    pullback: active.filter(row => row.status === 'pullback').length,
+    ignition: active.filter(row => row.status === 'ignition').length,
+    intraday: intraday.length,
+  };
+  if (volumePullbackFilter !== 'all' && !(counts[volumePullbackFilter] > 0)) {
+    volumePullbackFilter = 'all';
+  }
+
+  const statusRank = { reentry: 1, pullback: 2, ignition: 3, watch: 4 };
+  let rowsData = active.slice();
+  if (volumePullbackFilter === 'intraday') {
+    rowsData = rowsData.filter(row => intradayMap.has(row.stock_id));
+  } else if (volumePullbackFilter !== 'all') {
+    rowsData = rowsData.filter(row => row.status === volumePullbackFilter);
+  }
+  rowsData.sort((a, b) => {
+    const ar = statusRank[a.status] || 9;
+    const br = statusRank[b.status] || 9;
+    if (ar !== br) return ar - br;
+    return (b.score || 0) - (a.score || 0);
+  });
+
+  const filterButton = (id, label) => {
+    const count = counts[id] || 0;
+    if (count === 0) return '';
+    const activeStyle = volumePullbackFilter === id
+      ? 'background:var(--green);border-color:var(--green);color:#fff'
+      : 'background:var(--bg);border-color:var(--border);color:var(--text2)';
+    return `<button onclick="setVolumePullbackFilter('${id}')" style="${activeStyle};border-width:1px;border-style:solid;border-radius:6px;padding:6px 10px;font-size:12px;cursor:pointer">${label} ${count}</button>`;
+  };
+
+  const rows = rowsData.map(row => {
+    const alert = intradayMap.get(row.stock_id);
+    const statusStyle = row.status === 'reentry'
+      ? 'color:var(--green)'
+      : (row.status === 'pullback' ? 'color:var(--amber)' : 'color:var(--text)');
+    const pullbackClass = row.pullback_from_ignition_close_pct >= 0 ? 'pos' : 'neg';
+    const sourceText = (row.sources || []).map(src => ({
+      chips: '籌碼集中',
+      price_breakout_track: '價格突破追蹤',
+      volume_signal: '量增訊號',
+    }[src] || src)).join(' / ');
+    return `<tr onclick="toggleExpand('vpb-${row.stock_id}')" id="row-vpb-${row.stock_id}">
+      <td>
+        <a href="https://www.tradingview.com/chart/?symbol=${getTVSymbol(row)}"
+          onclick="openTV('${getTVSymbol(row)}', event)"
+          style="text-decoration:none;display:inline-block">
+          <div class="stock-code" style="display:flex;align-items:center;gap:5px">
+            ${row.stock_id}<span style="font-size:9px;opacity:.45;font-family:var(--mono)">↗</span>
+          </div>
+          <div class="stock-name">${row.name || ''}</div>
+        </a>
+        <div class="stock-industry">${row.industry || sourceText || ''}</div>
+      </td>
+      <td>
+        <span class="tag-badge" style="color:var(--text);border-color:rgba(80,90,110,.35)">${row.status_label || row.status}</span>
+        ${alert ? `<span class="tag-badge" style="color:var(--green);border-color:rgba(20,160,100,.45)">10:00 放量</span>` : ''}
+      </td>
+      <td><span style="${statusStyle};font-family:var(--mono);font-weight:700">${row.score ?? '—'}</span></td>
+      <td>
+        <span class="price-cell">${row.close != null ? row.close.toFixed(1) : '—'}</span><br>
+        <span style="font-size:11px;color:var(--text3)">EMA20 ${row.ema20 != null ? row.ema20.toFixed(1) : '—'}</span>
+      </td>
+      <td>
+        <span class="amber-text" style="font-weight:600">${row.ignition_vol_ratio != null ? row.ignition_vol_ratio.toFixed(2) + 'x' : '—'}</span><br>
+        <span style="font-size:11px;color:var(--text3)">${row.ignition_date || '—'}</span>
+      </td>
+      <td><span class="big-pct ${pullbackClass}">${row.pullback_from_ignition_close_pct != null ? row.pullback_from_ignition_close_pct.toFixed(2) + '%' : '—'}</span></td>
+      <td>
+        ${alert ? `<span style="color:var(--green);font-weight:600">${alert.intraday_vol_ratio_to_10d != null ? alert.intraday_vol_ratio_to_10d.toFixed(2) + 'x' : '—'}</span><br>
+          <span style="font-size:11px;color:var(--text3)">${alert.intraday_volume_lots?.toLocaleString() || '—'} 張</span>` : '<span style="color:var(--text3)">—</span>'}
+      </td>
+    </tr>
+    <tr class="expand-row" id="expand-vpb-${row.stock_id}" style="display:none">
+      <td colspan="7">
+        <div class="expand-content">
+          <div class="expand-section" style="flex:1;min-width:160px">
+            <h4>結構</h4>
+            <div style="font-size:12px;color:var(--text2);line-height:1.9">
+              <div>點火日：<b>${row.ignition_date || '—'}</b></div>
+              <div>點火高/低：<b>${row.ignition_high ?? '—'} / ${row.ignition_low ?? '—'}</b></div>
+              <div>距點火：<b>${row.days_since_ignition ?? '—'} 日</b></div>
+              <div>支撐：<b>${row.support_ok ? '守住' : '待確認'}</b></div>
+            </div>
+          </div>
+          <div class="expand-section" style="flex:1;min-width:160px">
+            <h4>量能</h4>
+            <div style="font-size:12px;color:var(--text2);line-height:1.9">
+              <div>最新量比：<b>${row.vol_ratio != null ? row.vol_ratio.toFixed(2) + 'x' : '—'}</b></div>
+              <div>10日均量：<b>${row.vol_10d_avg?.toLocaleString() || '—'} 張</b></div>
+              <div>最新成交量：<b>${row.volume_lots?.toLocaleString() || '—'} 張</b></div>
+              <div>量能降溫：<b>${row.volume_cools ? '是' : '否'}</b></div>
+            </div>
+          </div>
+          <div class="expand-section" style="flex:1;min-width:160px">
+            <h4>10:00 預警</h4>
+            <div style="font-size:12px;color:var(--text2);line-height:1.9">
+              <div>狀態：<b>${alert ? '已觸發' : '未觸發 / 尚未掃描'}</b></div>
+              <div>盤中量：<b>${alert?.intraday_volume_lots?.toLocaleString() || '—'} 張</b></div>
+              <div>觸發門檻：<b>${alert?.intraday_trigger_volume?.toLocaleString() || '—'} 張</b></div>
+              <div>時間：<b>${alert?.intraday_time || '—'}</b></div>
+            </div>
+          </div>
+        </div>
+      </td>
+    </tr>`;
+  }).join('');
+
+  main.innerHTML = `
+    <div class="strategy-panel active">
+      <div class="strat-header">
+        <div class="strat-title">${strat.icon} ${strat.name}</div>
+        <div class="strat-desc">${strat.description}</div>
+      </div>
+      <div class="conditions">
+        ${strat.conditions.map(c => `<div class="cond"><span class="cond-dot"></span>${c}</div>`).join('')}
+      </div>
+      <div class="summary-row">
+        <div class="summary-card">
+          <div class="summary-label">候選池</div>
+          <div class="summary-value green">${active.length}</div>
+          <div class="summary-sub">盤後量增回測</div>
+        </div>
+        <div class="summary-card">
+          <div class="summary-label">回測 / 再啟動</div>
+          <div class="summary-value amber">${counts.pullback} / ${counts.reentry}</div>
+          <div class="summary-sub">人工優先檢查區</div>
+        </div>
+        <div class="summary-card">
+          <div class="summary-label">10:00 預警</div>
+          <div class="summary-value">${intraday.length}</div>
+          <div class="summary-sub">盤中累積量達標</div>
+        </div>
+      </div>
+      <div class="table-wrap">
+        <div class="table-toolbar">
+          <span class="table-title">量增回測候選名單</span>
+          <div class="toolbar-right"><span class="updated-tag">更新：${strat.dataUpdated}</span></div>
+        </div>
+        <div class="filter-row" style="padding:10px 12px;border-bottom:1px solid var(--border);gap:8px;display:flex;flex-wrap:wrap">
+          ${filterButton('all', '全部')}
+          ${filterButton('reentry', '再啟動')}
+          ${filterButton('pullback', '回測觀察')}
+          ${filterButton('ignition', '點火')}
+          ${filterButton('intraday', '10:00 放量')}
+        </div>
+        <div class="table-scroll ${rowsData.length > 10 ? 'table-vscroll' : ''}">
+          <table>
+            <thead>
+              <tr>
+                <th>代號 / 名稱</th>
+                <th>狀態</th>
+                <th>分數</th>
+                <th>收盤 / EMA20</th>
+                <th>點火量比 / 日期</th>
+                <th>回落幅度</th>
+                <th>盤中量比 / 量</th>
+              </tr>
+            </thead>
+            <tbody>${rows || `<tr><td colspan="7" style="text-align:center;color:var(--text3);padding:28px">此分類目前沒有標的</td></tr>`}</tbody>
+          </table>
+        </div>
+      </div>
+    </div>`;
+}
+
+function setVolumePullbackFilter(filter) {
+  volumePullbackFilter = filter;
+  renderStrategy();
+}
