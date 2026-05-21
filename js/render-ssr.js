@@ -128,7 +128,7 @@ function buildSSRRows() {
 
 function renderSSR(strat, main) {
   const rows = buildSSRRows();
-  const filter = window._ssrFilter || 'c5_2';
+  let filter = window._ssrFilter || 'c5_2';
   const sortCol = window._ssrSortCol || 'score';
   const sortAsc = window._ssrSortAsc !== undefined ? window._ssrSortAsc : false;
 
@@ -173,7 +173,6 @@ function renderSSR(strat, main) {
     return `<span class="sort-icon">${sortCol === col ? (sortAsc ? '↑' : '↓') : '·'}</span>`;
   }
 
-  const filtered = rows.filter(matchFilter).sort(compare);
   const tripleCount = rows.filter(r => r.strategy_count >= 3).length;
   const chipsVcpCount = rows.filter(r => r.chips && r.vcp).length;
   const chipsBreakoutCount = rows.filter(r => r.chips && r.breakout).length;
@@ -183,6 +182,26 @@ function renderSSR(strat, main) {
   const foreignVcpCount = rows.filter(r => r.foreign && r.vcp).length;
   const foreignBreakoutCount = rows.filter(r => r.foreign && r.breakout).length;
   const instConfluenceCount = rows.filter(r => r.trust && r.foreign).length;
+  const ssrFilterOptions = [
+    { key: 'c5_2', label: 'C5取2', count: rows.length, always: true },
+    { key: 'triple', label: '三組以上', count: tripleCount },
+    { key: 'inst_confluence', label: '投信+外資', count: instConfluenceCount },
+    { key: 'chips_vcp', label: '大戶+VCP', count: chipsVcpCount },
+    { key: 'chips_breakout', label: '大戶+突破', count: chipsBreakoutCount },
+    { key: 'vcp_breakout', label: 'VCP+突破', count: vcpBreakoutCount },
+    { key: 'trust_vcp', label: '投信+VCP', count: trustVcpCount },
+    { key: 'trust_breakout', label: '投信+突破', count: trustBreakoutCount },
+    { key: 'foreign_vcp', label: '外資+VCP', count: foreignVcpCount },
+    { key: 'foreign_breakout', label: '外資+突破', count: foreignBreakoutCount },
+  ];
+  const visibleSsrFilters = ssrFilterOptions.filter(opt => opt.always || opt.count > 0);
+  if (!visibleSsrFilters.some(opt => opt.key === filter)) {
+    filter = 'c5_2';
+    window._ssrFilter = filter;
+  }
+  const ssrFilterButtons = visibleSsrFilters.map(opt => `
+        <button class="view-btn ${filter === opt.key ? 'active' : ''}" onclick="setSSRFilter('${opt.key}')">${opt.label} ${opt.count}</button>`).join('');
+  const filtered = rows.filter(matchFilter).sort(compare);
   const topIndustry = filtered.reduce((acc, row) => {
     const key = row.industry || '未分類';
     acc[key] = (acc[key] || 0) + 1;
@@ -324,16 +343,7 @@ function renderSSR(strat, main) {
       </div>
 
       <div style="display:flex;gap:8px;padding:0 0 10px 0;flex-wrap:wrap">
-        <button class="view-btn ${filter === 'c5_2' ? 'active' : ''}" onclick="setSSRFilter('c5_2')">C5取2 ${rows.length}</button>
-        <button class="view-btn ${filter === 'triple' ? 'active' : ''}" onclick="setSSRFilter('triple')">三組以上 ${tripleCount}</button>
-        <button class="view-btn ${filter === 'inst_confluence' ? 'active' : ''}" onclick="setSSRFilter('inst_confluence')">投信+外資 ${instConfluenceCount}</button>
-        <button class="view-btn ${filter === 'chips_vcp' ? 'active' : ''}" onclick="setSSRFilter('chips_vcp')">大戶+VCP ${chipsVcpCount}</button>
-        <button class="view-btn ${filter === 'chips_breakout' ? 'active' : ''}" onclick="setSSRFilter('chips_breakout')">大戶+突破 ${chipsBreakoutCount}</button>
-        <button class="view-btn ${filter === 'vcp_breakout' ? 'active' : ''}" onclick="setSSRFilter('vcp_breakout')">VCP+突破 ${vcpBreakoutCount}</button>
-        <button class="view-btn ${filter === 'trust_vcp' ? 'active' : ''}" onclick="setSSRFilter('trust_vcp')">投信+VCP ${trustVcpCount}</button>
-        <button class="view-btn ${filter === 'trust_breakout' ? 'active' : ''}" onclick="setSSRFilter('trust_breakout')">投信+突破 ${trustBreakoutCount}</button>
-        <button class="view-btn ${filter === 'foreign_vcp' ? 'active' : ''}" onclick="setSSRFilter('foreign_vcp')">外資+VCP ${foreignVcpCount}</button>
-        <button class="view-btn ${filter === 'foreign_breakout' ? 'active' : ''}" onclick="setSSRFilter('foreign_breakout')">外資+突破 ${foreignBreakoutCount}</button>
+        ${ssrFilterButtons}
       </div>
 
       ${filtered.length === 0 ? emptyHTML : `
