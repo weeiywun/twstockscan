@@ -1,6 +1,6 @@
 {
   "strategy_id": "volume_signal",
-  "updated": "2026-05-20T17:15:24+08:00",
+  "updated": "2026-05-21T17:14:08+08:00",
   "results": [
     {
       "stock_id": "3479",
@@ -13,31 +13,100 @@
       "tag_score": 1,
       "cumulative_3w": 0.0,
       "big_pct_1000": 33.72,
-      "close": 110.5,
-      "vol_today": 3244,
-      "vol_10d_avg": 747.0,
-      "vol_ratio": 4.34,
-      "ema5": 100.59,
-      "signal_date": "2026-05-20"
+      "close": 117.5,
+      "vol_today": 5623,
+      "vol_10d_avg": 990.0,
+      "vol_ratio": 5.68,
+      "ema5": 103.89,
+      "signal_date": "2026-05-21"
     },
     {
-      "stock_id": "2603",
-      "name": "長榮",
+      "stock_id": "3708",
+      "name": "上緯投控",
+      "industry": "綠能",
+      "tags": [
+        "持續成長"
+      ],
+      "tag_score": 1,
+      "cumulative_3w": 4.51,
+      "big_pct_1000": 43.37,
+      "close": 126.5,
+      "vol_today": 3945,
+      "vol_10d_avg": 987.0,
+      "vol_ratio": 4.0,
+      "ema5": 117.24,
+      "signal_date": "2026-05-21"
+    },
+    {
+      "stock_id": "3704",
+      "name": "合勤控",
+      "industry": "通信",
+      "tags": [
+        "持續成長",
+        "外資連買"
+      ],
+      "tag_score": 1,
+      "cumulative_3w": 0.46,
+      "big_pct_1000": 50.27,
+      "close": 41.4,
+      "vol_today": 12325,
+      "vol_10d_avg": 3643.0,
+      "vol_ratio": 3.38,
+      "ema5": 37.96,
+      "signal_date": "2026-05-21"
+    },
+    {
+      "stock_id": "2352",
+      "name": "佳世達",
+      "industry": "電腦",
+      "tags": [
+        "持續成長",
+        "外資連買"
+      ],
+      "tag_score": 1,
+      "cumulative_3w": 0.14,
+      "big_pct_1000": 42.77,
+      "close": 27.2,
+      "vol_today": 16011,
+      "vol_10d_avg": 7241.0,
+      "vol_ratio": 2.21,
+      "ema5": 25.51,
+      "signal_date": "2026-05-21"
+    },
+    {
+      "stock_id": "2645",
+      "name": "長榮航太",
       "industry": "航運",
       "tags": [
         "持續成長",
-        "雙軌觸發",
         "外資連買"
       ],
-      "tag_score": 4,
-      "cumulative_3w": 2.06,
-      "big_pct_1000": 64.01,
-      "close": 212.5,
-      "vol_today": 48099,
-      "vol_10d_avg": 13187.0,
-      "vol_ratio": 3.65,
-      "ema5": 201.66,
-      "signal_date": "2026-05-20"
+      "tag_score": 1,
+      "cumulative_3w": 0.58,
+      "big_pct_1000": 79.15,
+      "close": 162.5,
+      "vol_today": 3594,
+      "vol_10d_avg": 1905.0,
+      "vol_ratio": 1.89,
+      "ema5": 152.48,
+      "signal_date": "2026-05-21"
+    },
+    {
+      "stock_id": "2353",
+      "name": "宏卅卅",
+      "industry": "電腦",
+      "tags": [
+        "雙軌觸發"
+      ],
+      "tag_score": 3,
+      "cumulative_3w": 2.17,
+      "big_pct_1000": 35.38,
+      "close": 28.4,
+      "vol_today": 41238,
+      "vol_10d_avg": 23693.0,
+      "vol_ratio": 1.74,
+      "ema5": 27.68,
+      "signal_date": "2026-05-21"
     }
   ]
 }
