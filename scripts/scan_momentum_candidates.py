@@ -37,6 +37,7 @@ HOT_INDUSTRY_KEYWORDS = (
     "電機",
     "通信",
 )
+MAX_EXTENDED_PCT = 15.0
 
 
 def load_json(path: str) -> dict[str, Any]:
@@ -251,15 +252,12 @@ def scan() -> dict[str, Any]:
         row = ensure_row(rows, sid, item.get("name", ""))
         merge_base(row, {"stock_id": sid, **item}, "stock_analysis")
         pnl = num(item.get("pnl_pct"))
-        rev_grade = item.get("rev_grade")
         row["metrics"].update({
             "ai_pnl_pct": round_or_none(pnl, 2),
-            "rev_grade": rev_grade,
         })
         score = 0
         if pnl >= 10:
             score += 8
-        score += {"S": 8, "A": 6, "B": 4}.get(rev_grade, 0)
         add_score(row, "follow", score)
 
     candidates = []
@@ -268,14 +266,18 @@ def scan() -> dict[str, Any]:
         industry = row.get("industry", "")
         source_bonus = min(12, max(0, len(row["sources"]) - 1) * 5)
         industry_bonus = 6 if any(key in industry for key in HOT_INDUSTRY_KEYWORDS) else 0
-        overheated = num(row["metrics"].get("track_pnl_pct")) > 45 or num(row["metrics"].get("pullback_from_ignition_close_pct")) > 35
-        risk_penalty = 8 if overheated else 0
-        score = sum(num(v) for v in row["score_parts"].values()) + source_bonus + industry_bonus - risk_penalty
+        track_pnl = num(row["metrics"].get("track_pnl_pct"))
+        pullback_pct = num(row["metrics"].get("pullback_from_ignition_close_pct"))
+        ai_pnl = num(row["metrics"].get("ai_pnl_pct"))
+        extended = max(track_pnl, pullback_pct, ai_pnl) > MAX_EXTENDED_PCT
+        if extended:
+            continue
+        score = sum(num(v) for v in row["score_parts"].values()) + source_bonus + industry_bonus
         if score < 35:
             continue
         row["score"] = round(score, 1)
         row["source_count"] = len(row["sources"])
-        row["risk_flags"] = ["短線延伸偏高"] if overheated else []
+        row["risk_flags"] = []
         candidates.append(row)
 
     candidates.sort(key=lambda r: (-num(r["score"]), r.get("status_rank", 9), r["stock_id"]))
@@ -292,6 +294,7 @@ def scan() -> dict[str, Any]:
             ],
             "disabled_sources": ["vcp", "trust_momentum"],
             "score_min": 35,
+            "max_extended_pct": MAX_EXTENDED_PCT,
         },
         "summary": {
             "total": len(candidates),

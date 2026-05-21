@@ -150,7 +150,6 @@ function renderVolumePullback(strat, main) {
     if (m.pullback_from_ignition_close_pct != null) parts.push(`距點火 ${Number(m.pullback_from_ignition_close_pct).toFixed(1)}%`);
     if (m.market_cap != null) parts.push(`市值 ${Number(m.market_cap).toFixed(1)}億`);
     if (m.bbw != null) parts.push(`BBW ${Number(m.bbw).toFixed(1)}`);
-    if (m.rev_grade) parts.push(`營收 ${m.rev_grade}`);
     return parts.join(' / ') || '—';
   };
   const momentumTop = momentumRows.slice(0, 10);
