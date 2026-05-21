@@ -88,7 +88,7 @@ const STRATEGIES = [
     name: "量增回測",
     shortName: "量增回測",
     icon: "◎",
-    group: "chips",
+    group: "ssr",
     available: true,
     description: "追蹤放量突破後回測不破的標的，鎖定點火後回穩與再啟動。",
     conditions: [
