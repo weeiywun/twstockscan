@@ -238,14 +238,15 @@ main{padding:24px 0 0;min-width:0}
 }
 .btn-csv:hover{background:rgba(88,166,255,0.1);border-color:var(--blue);color:var(--blue)}
 
-.table-scroll{overflow-x:auto;-webkit-overflow-scrolling:touch}
-table{width:100%;border-collapse:collapse;min-width:560px}
+.table-scroll{overflow-x:auto;-webkit-overflow-scrolling:touch;background:var(--bg2)}
+table{width:100%;border-collapse:separate;border-spacing:0;min-width:560px}
 .perf-table{min-width:920px}
 thead th{
   padding:8px 13px;text-align:left;
   font-size:11px;font-weight:600;color:var(--text3);
   letter-spacing:.04em;
   border-bottom:1px solid var(--border);background:var(--bg3);
+  background-clip:padding-box;box-shadow:0 1px 0 var(--border);
   cursor:pointer;user-select:none;white-space:nowrap;
   position:sticky;top:0;z-index:20;
 }
@@ -257,11 +258,15 @@ tbody tr{
   border-bottom:1px solid var(--border);
   transition:background .12s;cursor:pointer;
 }
-tbody tr:last-child{border-bottom:none}
-tbody tr:hover{background:rgba(0,0,0,0.03)}
-tbody tr.expanded{background:rgba(42,125,79,0.06)}
+tbody tr:last-child,
+tbody tr:last-child td{border-bottom:none}
+tbody tr:hover td{background:rgba(0,0,0,0.03)}
+tbody tr.expanded td{background:rgba(42,125,79,0.06)}
 
-td{padding:12px 14px;vertical-align:middle}
+td{
+  padding:12px 14px;vertical-align:middle;
+  background:var(--bg2);border-bottom:1px solid var(--border);
+}
 
 .stock-code{font-family:var(--mono);font-size:13px;font-weight:700;color:var(--green)}
 .stock-name{font-size:13px;font-weight:500;margin-bottom:1px;color:var(--text)}
@@ -292,7 +297,7 @@ td{padding:12px 14px;vertical-align:middle}
 tbody tr:hover .spark-bar{opacity:.9}
 
 /* ── Expand row ─────────────────────────────── */
-.expand-row td{padding:0}
+.expand-row td{padding:0;background:var(--bg3)}
 .expand-content{
   display:flex;flex-direction:row;flex-wrap:wrap;gap:20px;
   padding:14px 18px;
@@ -435,6 +440,7 @@ tbody tr:hover .spark-bar{opacity:.9}
 .table-scroll.table-vscroll{
   max-height:580px;
   overflow-y:auto;
+  position:relative;
 }
 .table-scroll{
   scrollbar-width:thin;
