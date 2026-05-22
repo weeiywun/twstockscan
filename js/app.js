@@ -201,6 +201,7 @@ const DATA = {
   volume_signal_data:     [],
   volume_pullback_data:    null,
   intraday_volume_pullback_data: [],
+  intraday_volume_pullback_meta: null,
   momentum_candidates_data: null,
   stock_analysis_data:    null,
   performance_data:       null,
@@ -641,6 +642,7 @@ async function loadData() {
 
     if (ivpbRes && ivpbRes.results) {
       DATA.intraday_volume_pullback_data = ivpbRes.results || [];
+      DATA.intraday_volume_pullback_meta = ivpbRes;
     }
 
     if (mcRes && mcRes.results) {

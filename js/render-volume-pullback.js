@@ -6,11 +6,12 @@ function renderVolumePullback(strat, main) {
   const model = DATA.volume_pullback_data || {};
   const active = model.active || [];
   const intraday = DATA.intraday_volume_pullback_data || [];
+  const intradayMeta = DATA.intraday_volume_pullback_meta || {};
   const intradayMap = new Map(intraday.map(row => [row.stock_id, row]));
   const momentum = DATA.momentum_candidates_data || {};
   const momentumRows = momentum.results || [];
 
-  if (active.length === 0) {
+  if (active.length === 0 && intraday.length === 0) {
     main.innerHTML = `<div class="coming-soon">
       <div class="coming-icon">${strat.icon}</div>
       <div class="coming-title">${strat.name}</div>
@@ -129,6 +130,72 @@ function renderVolumePullback(strat, main) {
       </td>
     </tr>`;
   }).join('');
+
+  const intradayRows = intraday.slice()
+    .sort((a, b) => (b.intraday_vol_ratio_to_10d || 0) - (a.intraday_vol_ratio_to_10d || 0))
+    .map(row => {
+      const poolRow = intradayMap.get(row.stock_id) || row;
+      const statusText = poolRow.status_label || row.status_label || row.status || '預警';
+      return `<tr>
+        <td>
+          <a href="https://www.tradingview.com/chart/?symbol=${getTVSymbol(row)}"
+            onclick="openTV('${getTVSymbol(row)}', event)"
+            style="text-decoration:none;display:inline-block">
+            <div class="stock-code" style="display:flex;align-items:center;gap:5px">
+              ${row.stock_id}<span style="font-size:9px;opacity:.45;font-family:var(--mono)">↗</span>
+            </div>
+            <div class="stock-name">${row.name || ''}</div>
+          </a>
+          <div class="stock-industry">${row.industry || ''}</div>
+        </td>
+        <td><span class="tag-badge" style="color:var(--green);border-color:rgba(20,160,100,.45)">${statusText}</span></td>
+        <td>
+          <span style="color:var(--green);font-weight:700;font-family:var(--mono)">${row.intraday_vol_ratio_to_10d != null ? Number(row.intraday_vol_ratio_to_10d).toFixed(2) + 'x' : '—'}</span><br>
+          <span style="font-size:11px;color:var(--text3)">${row.intraday_volume_lots?.toLocaleString() || '—'} 張</span>
+        </td>
+        <td>
+          <span class="price-cell">${row.intraday_close != null ? Number(row.intraday_close).toFixed(1) : '—'}</span><br>
+          <span style="font-size:11px;color:var(--text3)">昨收 ${row.yesterday_close != null ? Number(row.yesterday_close).toFixed(1) : '—'}</span>
+        </td>
+        <td>
+          <span style="font-family:var(--mono)">${row.intraday_trigger_volume?.toLocaleString() || '—'} 張</span><br>
+          <span style="font-size:11px;color:var(--text3)">${row.intraday_time || intradayMeta.scan_time || '10:00'}</span>
+        </td>
+      </tr>`;
+    }).join('');
+
+  const intradayUpdated = intradayMeta.updated
+    ? intradayMeta.updated.slice(0, 16).replace('T', ' ')
+    : '';
+  const intradayPanel = `
+      <div class="table-wrap" style="margin-bottom:16px;border-color:${intraday.length ? 'rgba(20,160,100,.35)' : 'var(--border)'}">
+        <div class="table-toolbar">
+          <span class="table-title">10:00 盤中量增預警</span>
+          <div class="toolbar-right">
+            <span class="updated-tag">${intradayUpdated || '尚未掃描'}</span>
+          </div>
+        </div>
+        ${intraday.length ? `
+        <div class="table-scroll">
+          <table>
+            <thead>
+              <tr>
+                <th>代號 / 名稱</th>
+                <th>結構</th>
+                <th>盤中量比 / 量</th>
+                <th>盤中價 / 昨收</th>
+                <th>觸發門檻 / 時間</th>
+              </tr>
+            </thead>
+            <tbody>${intradayRows}</tbody>
+          </table>
+        </div>` : `
+        <div style="padding:16px;color:var(--text3);font-size:13px;line-height:1.8">
+          ${intradayMeta.status === 'ok'
+            ? '今日 10:00 掃描已完成，目前沒有候選標的達到盤中放量門檻。'
+            : '尚未取得今日 10:00 盤中預警結果；workflow 完成後會自動顯示在這裡。'}
+        </div>`}
+      </div>`;
 
   const sourceLabel = src => ({
     chips: '籌碼',
@@ -254,6 +321,7 @@ function renderVolumePullback(strat, main) {
           <div class="summary-sub">盤中累積量達標</div>
         </div>
       </div>
+      ${intradayPanel}
       ${momentumPanel}
       <div class="table-wrap">
         <div class="table-toolbar">
