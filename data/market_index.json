@@ -1,6 +1,6 @@
 {
   "date": "2026-05-22",
-  "updated": "2026-05-22T17:11:24.587768+08:00",
+  "updated": "2026-05-23T07:10:35.899498+08:00",
   "source": "twse+twse_mis+yahoo_futures+yfinance",
   "indices": {
     "TAIEX": {
@@ -14,48 +14,45 @@
     },
     "TPEX": {
       "name": "櫃買加權指數",
-      "close": 423.25,
+      "close": 409.8,
       "date": "2026-05-22",
-      "source": "twse_mis",
-      "change": 13.45,
-      "change_pct": 3.28,
-      "previous_close": 409.8
+      "source": "twse_mis"
     },
     "TXF_NEAR": {
       "name": "台指近全",
-      "close": 42387.0,
+      "close": 42634.0,
       "date": "2026-05-22",
       "source": "yahoo_futures",
-      "change": 68.0,
-      "change_pct": 0.16,
-      "time": "17:12:49"
+      "change": 179.0,
+      "change_pct": 0.42,
+      "time": "04:59:58"
     },
     "NASDAQ": {
       "name": "那斯達克",
-      "close": 26293.1,
-      "date": "2026-05-21",
+      "close": 26343.97,
+      "date": "2026-05-22",
       "source": "yfinance",
-      "change": 22.74,
-      "change_pct": 0.09,
-      "previous_close": 26270.36
+      "change": 50.87,
+      "change_pct": 0.19,
+      "previous_close": 26293.1
     },
     "DOW": {
       "name": "道瓊",
-      "close": 50285.66,
-      "date": "2026-05-21",
+      "close": 50579.7,
+      "date": "2026-05-22",
       "source": "yfinance",
-      "change": 276.31,
-      "change_pct": 0.55,
-      "previous_close": 50009.35
+      "change": 294.04,
+      "change_pct": 0.58,
+      "previous_close": 50285.66
     },
     "SOX": {
       "name": "費半",
-      "close": 11964.08,
-      "date": "2026-05-21",
+      "close": 12202.54,
+      "date": "2026-05-22",
       "source": "yfinance",
-      "change": 150.79,
-      "change_pct": 1.28,
-      "previous_close": 11813.29
+      "change": 238.46,
+      "change_pct": 1.99,
+      "previous_close": 11964.08
     }
   },
   "history": {
@@ -114,7 +111,7 @@
       "2026-05-22": 42267.97
     },
     "TPEX": {
-      "2026-05-22": 423.25
+      "2026-05-22": 409.8
     }
   }
 }
