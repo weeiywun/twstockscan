@@ -21,6 +21,8 @@ import requests
 SCRIPT_DIR = os.path.dirname(os.path.abspath(__file__))
 DATA_DIR = os.path.join(SCRIPT_DIR, "..", "data")
 OUTPUT_PATH = os.path.join(DATA_DIR, "market_index.json")
+PERFORMANCE_PATH = os.path.join(DATA_DIR, "performance.json")
+HISTORY_LIMIT = 520
 
 TW_TZ = timezone(timedelta(hours=8))
 NOW = datetime.now(TW_TZ)
@@ -85,6 +87,27 @@ def _previous_weekday(date: datetime.date) -> datetime.date:
     while d.weekday() >= 5:
         d -= timedelta(days=1)
     return d
+
+
+def _parse_date(value: Any) -> datetime.date | None:
+    if not value:
+        return None
+    try:
+        return datetime.fromisoformat(str(value)[:10]).date()
+    except ValueError:
+        return None
+
+
+def _month_starts(start: datetime.date, end: datetime.date) -> list[datetime.date]:
+    current = start.replace(day=1)
+    months = []
+    while current <= end:
+        months.append(current)
+        if current.month == 12:
+            current = current.replace(year=current.year + 1, month=1)
+        else:
+            current = current.replace(month=current.month + 1)
+    return months
 
 
 def _after_market_close() -> bool:
@@ -311,12 +334,125 @@ def fetch_txf_near_from_yahoo() -> dict[str, Any] | None:
     return None
 
 
+def fetch_taiex_history_from_twse(start_date: datetime.date) -> dict[str, float]:
+    """Fetch TAIEX daily closes from TWSE monthly history, starting at start_date."""
+    urls = [
+        "https://www.twse.com.tw/rwd/zh/TAI/MI_5MINS_HIST",
+        "https://www.twse.com.tw/indicesReport/MI_5MINS_HIST",
+    ]
+    history: dict[str, float] = {}
+    for month_start in _month_starts(start_date, TODAY):
+        for url in urls:
+            data = _fetch_json(url, {"date": _twse_date(month_start), "response": "json"})
+            rows = data.get("data") if data else None
+            if not rows:
+                continue
+            for row in rows:
+                if not isinstance(row, list) or len(row) < 5:
+                    continue
+                date = _parse_date(_roc_date(str(row[0])))
+                close = _num(row[4])
+                if date is None or close is None or date < start_date or date > TODAY:
+                    continue
+                history[date.isoformat()] = close
+            break
+        time.sleep(0.12)
+    return history
+
+
+def fetch_taiex_history_from_yfinance(start_date: datetime.date) -> dict[str, float]:
+    try:
+        import yfinance as yf
+
+        hist = yf.Ticker("^TWII").history(
+            start=start_date.isoformat(),
+            end=(TODAY + timedelta(days=1)).isoformat(),
+            interval="1d",
+            auto_adjust=False,
+        )
+        if hist.empty:
+            return {}
+        result: dict[str, float] = {}
+        valid = hist.dropna(subset=["Close"])
+        for idx, row in valid.iterrows():
+            result[idx.strftime("%Y-%m-%d")] = round(float(row["Close"]), 2)
+        return result
+    except Exception as exc:
+        print(f"  ⚠️  yfinance ^TWII history 讀取失敗：{exc}")
+        return {}
+
+
 def fetch_first_yfinance(symbols: list[str], name: str) -> dict[str, Any] | None:
     for symbol in symbols:
         result = fetch_from_yfinance(symbol, name)
         if result:
             return result
     return None
+
+
+def load_existing_history() -> dict[str, dict[str, float]]:
+    if not os.path.exists(OUTPUT_PATH):
+        return {}
+    try:
+        with open(OUTPUT_PATH, encoding="utf-8") as f:
+            data = json.load(f)
+        history = data.get("history") or {}
+        if isinstance(history, dict):
+            return history
+    except Exception:
+        return {}
+    return {}
+
+
+def benchmark_start_date() -> datetime.date:
+    dates: list[datetime.date] = []
+    if os.path.exists(PERFORMANCE_PATH):
+        try:
+            with open(PERFORMANCE_PATH, encoding="utf-8") as f:
+                data = json.load(f)
+            for position in data.get("positions", []):
+                for key in ("entry_date", "exit_date"):
+                    d = _parse_date(position.get(key))
+                    if d:
+                        dates.append(d)
+                for ex in position.get("exits", []) or []:
+                    d = _parse_date(ex.get("date"))
+                    if d:
+                        dates.append(d)
+            for hist in (data.get("price_history") or {}).values():
+                if isinstance(hist, dict):
+                    for d in hist:
+                        parsed = _parse_date(d)
+                        if parsed:
+                            dates.append(parsed)
+        except Exception as exc:
+            print(f"  ⚠️  performance 起始日期讀取失敗：{exc}")
+    if dates:
+        return min(dates)
+    return TODAY - timedelta(days=90)
+
+
+def update_history(indices: dict[str, dict[str, Any]]) -> dict[str, dict[str, float]]:
+    history = load_existing_history()
+    start_date = benchmark_start_date()
+    taiex_history = fetch_taiex_history_from_twse(start_date)
+    if not taiex_history:
+        taiex_history = fetch_taiex_history_from_yfinance(start_date)
+    if taiex_history:
+        series = history.setdefault("TAIEX", {})
+        series.update(taiex_history)
+        print(f"  ✅ TAIEX history：{len(taiex_history)} 筆（from {start_date.isoformat()}）")
+    for key in ("TAIEX", "TPEX"):
+        item = indices.get(key) or {}
+        date = item.get("date")
+        close = _num(item.get("close"))
+        if not date or close is None:
+            continue
+        series = history.setdefault(key, {})
+        series[str(date)[:10]] = close
+        kept_dates = sorted(series)[-HISTORY_LIMIT:]
+        history[key] = {d: series[d] for d in kept_dates}
+    return history
 
 
 def main() -> None:
@@ -358,6 +494,7 @@ def main() -> None:
         "updated": NOW.isoformat(),
         "source": "+".join(sorted({x["source"] for x in indices.values()})),
         "indices": indices,
+        "history": update_history(indices),
     }
     with open(OUTPUT_PATH, "w", encoding="utf-8") as f:
         json.dump(out, f, ensure_ascii=False, indent=2)

@@ -207,7 +207,43 @@ function buildPerfChartData(pd) {
     totalLine.push(parseFloat(((cash + mktVal) / startCap * 100 - 100).toFixed(2)));
     realizedLine.push(parseFloat(((cash + realVal) / startCap * 100 - 100).toFixed(2)));
   });
-  return { labels: sorted, totalLine, realizedLine };
+  const benchmark = buildMarketBenchmarkLine(sorted, 'TAIEX');
+  return { labels: sorted, totalLine, realizedLine, benchmarkLine: benchmark.line, benchmarkLabel: benchmark.label };
+}
+
+function buildMarketBenchmarkLine(labels, indexKey = 'TAIEX') {
+  const market = DATA.market_index_data || {};
+  const indexInfo = market.indices?.[indexKey] || {};
+  const history = market.history?.[indexKey] || {};
+  const series = { ...history };
+  if (indexInfo.date && indexInfo.close != null) {
+    series[String(indexInfo.date).slice(0, 10)] = Number(indexInfo.close);
+  }
+  const dates = Object.keys(series).filter(d => Number.isFinite(Number(series[d]))).sort();
+  if (!labels.length || dates.length < 2) {
+    return { label: indexInfo.name || '加權指數', line: [] };
+  }
+  const firstLabel = labels[0];
+  const baseDate = dates.find(d => d >= firstLabel) || dates[0];
+  const baseClose = Number(series[baseDate]);
+  if (!baseClose) {
+    return { label: indexInfo.name || '加權指數', line: [] };
+  }
+  let lastClose = null;
+  let idx = 0;
+  const line = labels.map(label => {
+    while (idx < dates.length && dates[idx] <= label) {
+      lastClose = Number(series[dates[idx]]);
+      idx++;
+    }
+    if (label < baseDate || lastClose == null) return null;
+    return parseFloat(((lastClose / baseClose) * 100 - 100).toFixed(2));
+  });
+  const usablePoints = line.filter(v => v != null).length;
+  return {
+    label: `${indexInfo.name || '加權指數'}基準`,
+    line: usablePoints >= 2 ? line : [],
+  };
 }
 
 // ════════════════════════════════════════════════════
@@ -237,7 +273,17 @@ function initPerfChart(pd) {
           borderColor: '#087f5b', backgroundColor: 'rgba(8,127,91,0.08)',
           borderWidth: 2, fill: true,
           pointRadius: cd && cd.labels.length < 30 ? 3 : 1, tension: 0.3,
-        }
+        },
+        ...(cd && cd.benchmarkLine.length ? [
+        {
+          label: cd?.benchmarkLabel || '加權指數',
+          data: cd.benchmarkLine,
+          borderColor: '#64748b', backgroundColor: 'transparent',
+          borderWidth: 2, borderDash: [2, 3],
+          pointRadius: 0, tension: 0.25,
+          spanGaps: true,
+        },
+        ] : []),
       ]
     },
     options: {
@@ -706,6 +752,9 @@ function renderPerformance(strat, main) {
       <div class="perf-chart-wrap">
         <canvas id="perfChart" style="width:100%;height:100%"></canvas>
         ${!pd || !positions.length ? `<div style="position:absolute;inset:0;display:flex;align-items:center;justify-content:center;color:var(--text3);font-size:13px;pointer-events:none">新增持倉並同步資料後，圖表將自動產生</div>` : ''}
+      </div>
+      <div style="font-size:11px;color:var(--text3);margin:-12px 0 18px;line-height:1.7">
+        大盤基準以績效表格最早日期歸零，和你的總報酬、已實現損益使用同一組日期比較。
       </div>
 
       ${renderMonthlyStatsSection(pd)}
