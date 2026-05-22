@@ -1,6 +1,10 @@
 //  量增回測：渲染器
 // ════════════════════════════════════════════════════
 let volumePullbackFilter = 'all';
+let volumePullbackSortCol = 'score';
+let volumePullbackSortAsc = false;
+let momentumSortCol = 'score';
+let momentumSortAsc = false;
 
 function renderVolumePullback(strat, main) {
   const model = DATA.volume_pullback_data || {};
@@ -32,12 +36,28 @@ function renderVolumePullback(strat, main) {
   if (volumePullbackFilter !== 'all') {
     rowsData = rowsData.filter(row => row.status === volumePullbackFilter);
   }
-  rowsData.sort((a, b) => {
-    const ar = statusRank[a.status] || 9;
-    const br = statusRank[b.status] || 9;
-    if (ar !== br) return ar - br;
-    return (b.score || 0) - (a.score || 0);
-  });
+
+  function sortValue(row, col) {
+    if (col === 'status') return statusRank[row.status] || 9;
+    if (col === 'pullback_from_ignition_close_pct') return row.pullback_from_ignition_close_pct;
+    if (col === 'ignition_vol_ratio') return row.ignition_vol_ratio;
+    return row[col];
+  }
+
+  function compareRows(a, b, col, asc) {
+    const va = sortValue(a, col);
+    const vb = sortValue(b, col);
+    const na = Number(va);
+    const nb = Number(vb);
+    const cmp = !Number.isNaN(na) && !Number.isNaN(nb)
+      ? na - nb
+      : String(va ?? '').localeCompare(String(vb ?? ''));
+    return asc ? cmp : -cmp;
+  }
+
+  rowsData.sort((a, b) => compareRows(a, b, volumePullbackSortCol, volumePullbackSortAsc));
+
+  const sortIcon = (col, activeCol, asc) => `<span class="sort-icon">${activeCol === col ? (asc ? '↑' : '↓') : '·'}</span>`;
 
   const filterButton = (id, label) => {
     const count = counts[id] || 0;
@@ -132,7 +152,27 @@ function renderVolumePullback(strat, main) {
     if (m.bbw != null) parts.push(`BBW ${Number(m.bbw).toFixed(1)}`);
     return parts.join(' / ') || '—';
   };
-  const momentumTop = momentumRows.slice(0, 10);
+  function momentumValue(row, col) {
+    const m = row.metrics || {};
+    if (col === 'status') {
+      return { '再啟動': 1, '點火首日': 2, '回測觀察': 3, '觀察': 4 }[row.status] || 9;
+    }
+    if (col === 'primary_metric') {
+      return m.ignition_vol_ratio ?? m.today_vol_ratio ?? m.track_pnl_pct ?? m.pullback_from_ignition_close_pct ?? 0;
+    }
+    return row[col] ?? m[col];
+  }
+  function compareMomentum(a, b) {
+    const va = momentumValue(a, momentumSortCol);
+    const vb = momentumValue(b, momentumSortCol);
+    const na = Number(va);
+    const nb = Number(vb);
+    const cmp = !Number.isNaN(na) && !Number.isNaN(nb)
+      ? na - nb
+      : String(va ?? '').localeCompare(String(vb ?? ''));
+    return momentumSortAsc ? cmp : -cmp;
+  }
+  const momentumTop = momentumRows.slice().sort(compareMomentum).slice(0, 10);
   const momentumTable = momentumTop.map((row, idx) => {
     const risk = (row.risk_flags || []).length
       ? `<span class="tag-badge" style="color:var(--amber);border-color:rgba(210,150,40,.45)">${row.risk_flags[0]}</span>`
@@ -190,12 +230,12 @@ function renderVolumePullback(strat, main) {
             <thead>
               <tr>
                 <th>#</th>
-                <th>代號 / 名稱</th>
-                <th>狀態</th>
-                <th>爆發分數</th>
-                <th>收盤</th>
+                <th onclick="momentumSort('stock_id')" style="cursor:pointer">代號 / 名稱${sortIcon('stock_id', momentumSortCol, momentumSortAsc)}</th>
+                <th onclick="momentumSort('status')" style="cursor:pointer">狀態${sortIcon('status', momentumSortCol, momentumSortAsc)}</th>
+                <th onclick="momentumSort('score')" style="cursor:pointer">爆發分數${sortIcon('score', momentumSortCol, momentumSortAsc)}</th>
+                <th onclick="momentumSort('close')" style="cursor:pointer">收盤${sortIcon('close', momentumSortCol, momentumSortAsc)}</th>
                 <th>來源</th>
-                <th>關鍵指標</th>
+                <th onclick="momentumSort('primary_metric')" style="cursor:pointer">關鍵指標${sortIcon('primary_metric', momentumSortCol, momentumSortAsc)}</th>
               </tr>
             </thead>
             <tbody>${momentumTable}</tbody>
@@ -245,12 +285,12 @@ function renderVolumePullback(strat, main) {
           <table>
             <thead>
               <tr>
-                <th>代號 / 名稱</th>
-                <th>狀態</th>
-                <th>分數</th>
-                <th>收盤 / EMA20</th>
-                <th>點火量比 / 日期</th>
-                <th>回落幅度</th>
+                <th onclick="volumePullbackSort('stock_id')" style="cursor:pointer">代號 / 名稱${sortIcon('stock_id', volumePullbackSortCol, volumePullbackSortAsc)}</th>
+                <th onclick="volumePullbackSort('status')" style="cursor:pointer">狀態${sortIcon('status', volumePullbackSortCol, volumePullbackSortAsc)}</th>
+                <th onclick="volumePullbackSort('score')" style="cursor:pointer">分數${sortIcon('score', volumePullbackSortCol, volumePullbackSortAsc)}</th>
+                <th onclick="volumePullbackSort('close')" style="cursor:pointer">收盤 / EMA20${sortIcon('close', volumePullbackSortCol, volumePullbackSortAsc)}</th>
+                <th onclick="volumePullbackSort('ignition_vol_ratio')" style="cursor:pointer">點火量比 / 日期${sortIcon('ignition_vol_ratio', volumePullbackSortCol, volumePullbackSortAsc)}</th>
+                <th onclick="volumePullbackSort('pullback_from_ignition_close_pct')" style="cursor:pointer">回落幅度${sortIcon('pullback_from_ignition_close_pct', volumePullbackSortCol, volumePullbackSortAsc)}</th>
               </tr>
             </thead>
             <tbody>${rows || `<tr><td colspan="6" style="text-align:center;color:var(--text3);padding:28px">此分類目前沒有標的</td></tr>`}</tbody>
@@ -262,5 +302,17 @@ function renderVolumePullback(strat, main) {
 
 function setVolumePullbackFilter(filter) {
   volumePullbackFilter = filter;
+  renderStrategy();
+}
+
+function volumePullbackSort(col) {
+  if (volumePullbackSortCol === col) volumePullbackSortAsc = !volumePullbackSortAsc;
+  else { volumePullbackSortCol = col; volumePullbackSortAsc = false; }
+  renderStrategy();
+}
+
+function momentumSort(col) {
+  if (momentumSortCol === col) momentumSortAsc = !momentumSortAsc;
+  else { momentumSortCol = col; momentumSortAsc = false; }
   renderStrategy();
 }

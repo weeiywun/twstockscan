@@ -133,6 +133,8 @@ function renderSSR(strat, main) {
   let filter = window._ssrFilter || 'c5_2';
   const sortCol = window._ssrSortCol || 'score';
   const sortAsc = window._ssrSortAsc !== undefined ? window._ssrSortAsc : false;
+  const intradaySortCol = window._ssrIntradaySortCol || 'intraday_vol_ratio_to_10d';
+  const intradaySortAsc = window._ssrIntradaySortAsc !== undefined ? window._ssrIntradaySortAsc : false;
 
   function setSSRFilter(v) {
     window._ssrFilter = v;
@@ -146,6 +148,13 @@ function renderSSR(strat, main) {
     renderStrategy();
   }
   window.ssrSort = ssrSort;
+
+  function ssrIntradaySort(col) {
+    if (window._ssrIntradaySortCol === col) window._ssrIntradaySortAsc = !window._ssrIntradaySortAsc;
+    else { window._ssrIntradaySortCol = col; window._ssrIntradaySortAsc = false; }
+    renderStrategy();
+  }
+  window.ssrIntradaySort = ssrIntradaySort;
 
   function matchFilter(row) {
     if (filter === 'triple') return row.strategy_count >= 3;
@@ -173,6 +182,10 @@ function renderSSR(strat, main) {
 
   function sortIcon(col) {
     return `<span class="sort-icon">${sortCol === col ? (sortAsc ? '↑' : '↓') : '·'}</span>`;
+  }
+
+  function intradaySortIcon(col) {
+    return `<span class="sort-icon">${intradaySortCol === col ? (intradaySortAsc ? '↑' : '↓') : '·'}</span>`;
   }
 
   const tripleCount = rows.filter(r => r.strategy_count >= 3).length;
@@ -215,8 +228,22 @@ function renderSSR(strat, main) {
     const updated = intradayMeta.updated
       ? intradayMeta.updated.slice(0, 16).replace('T', ' ')
       : '';
+    function intradayValue(row, col) {
+      if (col === 'status') return { reentry: 1, pullback: 2, ignition: 3, watch: 4 }[row.status] || 9;
+      return row[col];
+    }
+    function compareIntraday(a, b) {
+      const va = intradayValue(a, intradaySortCol);
+      const vb = intradayValue(b, intradaySortCol);
+      const na = Number(va);
+      const nb = Number(vb);
+      const cmp = !Number.isNaN(na) && !Number.isNaN(nb)
+        ? na - nb
+        : String(va ?? '').localeCompare(String(vb ?? ''));
+      return intradaySortAsc ? cmp : -cmp;
+    }
     const intradayRows = intraday.slice()
-      .sort((a, b) => (b.intraday_vol_ratio_to_10d || 0) - (a.intraday_vol_ratio_to_10d || 0))
+      .sort(compareIntraday)
       .map(row => {
         const statusText = row.status_label || row.status || '預警';
         const tvSymbol = getTVSymbol(row);
@@ -261,11 +288,11 @@ function renderSSR(strat, main) {
             <table>
               <thead>
                 <tr>
-                  <th>代號 / 名稱</th>
-                  <th>結構</th>
-                  <th>盤中量比 / 量</th>
-                  <th>盤中價 / 昨收</th>
-                  <th>觸發門檻 / 時間</th>
+                  <th onclick="ssrIntradaySort('stock_id')" style="cursor:pointer">代號 / 名稱${intradaySortIcon('stock_id')}</th>
+                  <th onclick="ssrIntradaySort('status')" style="cursor:pointer">結構${intradaySortIcon('status')}</th>
+                  <th onclick="ssrIntradaySort('intraday_vol_ratio_to_10d')" style="cursor:pointer">盤中量比 / 量${intradaySortIcon('intraday_vol_ratio_to_10d')}</th>
+                  <th onclick="ssrIntradaySort('intraday_close')" style="cursor:pointer">盤中價 / 昨收${intradaySortIcon('intraday_close')}</th>
+                  <th onclick="ssrIntradaySort('intraday_trigger_volume')" style="cursor:pointer">觸發門檻 / 時間${intradaySortIcon('intraday_trigger_volume')}</th>
                 </tr>
               </thead>
               <tbody>${intradayRows}</tbody>
