@@ -1,6 +1,6 @@
 {
   "strategy_id": "volume_pullback",
-  "updated": "2026-05-22T17:14:14+08:00",
+  "updated": "2026-05-23T10:30:42+08:00",
   "model": {
     "ignition_vol_ratio_min": 2.5,
     "lookback_days": 5,
@@ -498,18 +498,12 @@
     {
       "stock_id": "2603",
       "name": "長榮",
-      "industry": "航運",
+      "industry": "航運業",
       "market": "TWSE",
       "sources": [
-        "chips",
-        "price_breakout_track",
-        "volume_signal"
+        "price_breakout_track"
       ],
-      "source_tags": [
-        "持續成長",
-        "雙軌觸發",
-        "外資連買"
-      ],
+      "source_tags": [],
       "status": "reentry",
       "status_label": "再啟動",
       "score": 110,
@@ -1464,12 +1458,17 @@
     {
       "stock_id": "4306",
       "name": "炎洲",
-      "industry": "塑膠工業",
+      "industry": "塑膠",
       "market": "TWSE",
       "sources": [
-        "price_breakout_track"
+        "chips",
+        "price_breakout_track",
+        "volume_signal"
       ],
-      "source_tags": [],
+      "source_tags": [
+        "持續成長",
+        "雙軌觸發"
+      ],
       "status": "reentry",
       "status_label": "再啟動",
       "score": 95,
@@ -2234,17 +2233,12 @@
     {
       "stock_id": "2352",
       "name": "佳世達",
-      "industry": "電腦",
+      "industry": "電腦及週邊設備業",
       "market": "TWSE",
       "sources": [
-        "chips",
-        "price_breakout_track",
-        "volume_signal"
+        "price_breakout_track"
       ],
-      "source_tags": [
-        "持續成長",
-        "外資連買"
-      ],
+      "source_tags": [],
       "status": "ignition",
       "status_label": "點火",
       "score": 85,
@@ -2328,42 +2322,6 @@
       "ignition_low": 42.5,
       "ignition_volume_lots": 3580,
       "ignition_vol_ratio": 4.25,
-      "pullback_from_ignition_close_pct": 0.0,
-      "support_ok": true,
-      "volume_cools": false
-    },
-    {
-      "stock_id": "3479",
-      "name": "安勤",
-      "industry": "櫃電腦",
-      "market": "",
-      "sources": [
-        "chips",
-        "volume_signal"
-      ],
-      "source_tags": [
-        "持續成長",
-        "外資連買"
-      ],
-      "status": "ignition",
-      "status_label": "點火",
-      "score": 84,
-      "signal_date": "2026-05-22",
-      "ignition_date": "2026-05-22",
-      "days_since_ignition": 0,
-      "close": 125.5,
-      "high": 128.0,
-      "low": 116.5,
-      "volume_lots": 6006,
-      "vol_10d_avg": 1482.0,
-      "vol_ratio": 4.05,
-      "ema5": 114.12,
-      "ema20": 101.86,
-      "ignition_close": 125.5,
-      "ignition_high": 128.0,
-      "ignition_low": 116.5,
-      "ignition_volume_lots": 6006,
-      "ignition_vol_ratio": 4.05,
       "pullback_from_ignition_close_pct": 0.0,
       "support_ok": true,
       "volume_cools": false
@@ -2492,6 +2450,41 @@
       "ignition_low": 248.0,
       "ignition_volume_lots": 4243,
       "ignition_vol_ratio": 3.66,
+      "pullback_from_ignition_close_pct": 0.0,
+      "support_ok": true,
+      "volume_cools": false
+    },
+    {
+      "stock_id": "2332",
+      "name": "友訊",
+      "industry": "通信",
+      "market": "",
+      "sources": [
+        "chips",
+        "volume_signal"
+      ],
+      "source_tags": [
+        "持續成長"
+      ],
+      "status": "ignition",
+      "status_label": "點火",
+      "score": 81,
+      "signal_date": "2026-05-22",
+      "ignition_date": "2026-05-22",
+      "days_since_ignition": 0,
+      "close": 15.45,
+      "high": 15.7,
+      "low": 14.45,
+      "volume_lots": 12015,
+      "vol_10d_avg": 3465.0,
+      "vol_ratio": 3.47,
+      "ema5": 14.57,
+      "ema20": 14.32,
+      "ignition_close": 15.45,
+      "ignition_high": 15.7,
+      "ignition_low": 14.45,
+      "ignition_volume_lots": 12015,
+      "ignition_vol_ratio": 3.47,
       "pullback_from_ignition_close_pct": 0.0,
       "support_ok": true,
       "volume_cools": false
@@ -2627,17 +2620,12 @@
     {
       "stock_id": "3704",
       "name": "合勤控",
-      "industry": "通信",
+      "industry": "電子工業",
       "market": "TWSE",
       "sources": [
-        "chips",
-        "price_breakout_track",
-        "volume_signal"
+        "price_breakout_track"
       ],
-      "source_tags": [
-        "持續成長",
-        "外資連買"
-      ],
+      "source_tags": [],
       "status": "ignition",
       "status_label": "點火",
       "score": 78,
@@ -2736,6 +2724,7 @@
         "volume_signal"
       ],
       "source_tags": [
+        "持續成長",
         "雙軌觸發"
       ],
       "status": "ignition",
