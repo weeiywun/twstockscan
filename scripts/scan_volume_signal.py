@@ -25,8 +25,10 @@ OUTPUT_PATH = os.path.join(DATA_DIR, "volume_signal.json")
 PERF_PATH   = os.path.join(DATA_DIR, "performance.json")
 
 TW_TZ      = timezone(timedelta(hours=8))
-TODAY      = datetime.now(TW_TZ).strftime("%Y-%m-%d")
-START_DATE = (datetime.now(TW_TZ) - timedelta(days=40)).strftime("%Y-%m-%d")
+TODAY      = os.environ.get("SCAN_DATE") or datetime.now(TW_TZ).strftime("%Y-%m-%d")
+START_DATE = (
+    datetime.strptime(TODAY, "%Y-%m-%d").replace(tzinfo=TW_TZ) - timedelta(days=40)
+).strftime("%Y-%m-%d") if TODAY != "latest_cache" else ""
 
 VOL_MULT      = 1.5
 EMA5_PERIOD   = 5
@@ -37,6 +39,14 @@ def _require_fresh_cache(cache) -> None:
     if cache is None or cache.empty:
         return
     latest = cache["date"].max().strftime("%Y-%m-%d")
+    global TODAY, START_DATE
+    if TODAY == "latest_cache":
+        TODAY = latest
+        START_DATE = (
+            datetime.strptime(TODAY, "%Y-%m-%d").replace(tzinfo=TW_TZ) - timedelta(days=40)
+        ).strftime("%Y-%m-%d")
+        print(f"  Using latest price cache date as SCAN_DATE: {TODAY}")
+        return
     if latest != TODAY:
         print(f"❌ price_cache.parquet 最新資料為 {latest}，不是 {TODAY}；停止量增訊號掃描，避免用舊價量產生今日訊號")
         sys.exit(1)

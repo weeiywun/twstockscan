@@ -85,6 +85,52 @@ jobs:
             echo "資料無變動，略過提交"
           fi
 
+      - name: Refresh dependent scans from latest trading day
+        env:
+          FINMIND_TOKEN: ${{ secrets.FINMIND_API_TOKEN }}
+          LINE_CHANNEL_ACCESS_TOKEN: ${{ secrets.LINE_CHANNEL_ACCESS_TOKEN }}
+          LINE_USER_IDS: ${{ secrets.LINE_USER_IDS }}
+          SCAN_DATE: latest_cache
+        run: python scripts/scan_volume_signal.py
+
+      - name: Refresh volume pullback model
+        run: python scripts/scan_volume_pullback.py
+
+      - name: Refresh frontend current prices
+        env:
+          FINMIND_TOKEN: ${{ secrets.FINMIND_API_TOKEN }}
+        run: python scripts/update_current_prices.py
+
+      - name: Refresh momentum candidates
+        run: python scripts/scan_momentum_candidates.py
+
+      - name: Commit dependent scan results
+        run: |
+          git config user.name  "github-actions[bot]"
+          git config user.email "github-actions[bot]@users.noreply.github.com"
+          git add data/volume_signal.json data/volume_pullback.json data/momentum_candidates.json data/performance.json data/chips_big_holder.json data/current_prices.json
+
+          if ! git diff --staged --quiet; then
+            git commit -m "data: post-holdings scan refresh $(date -u +%Y-%m-%d)"
+
+            for i in {1..4}; do
+              echo "Post-holdings push attempt $i..."
+              git pull --rebase --autostash origin main && git push && {
+                echo "Push success"
+                break
+              } || {
+                if [ $i -lt 4 ]; then
+                  sleep $((2 ** i))
+                else
+                  echo "Push failed"
+                  exit 1
+                fi
+              }
+            done
+          else
+            echo "No dependent scan changes"
+          fi
+
       - name: Notify LINE on failure
         if: failure()
         env:
