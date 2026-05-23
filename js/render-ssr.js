@@ -128,6 +128,10 @@ function buildSSRRows() {
 
 function renderSSR(strat, main) {
   const rows = buildSSRRows();
+  // DISABLED / BACKUP - DO NOT DELETE:
+  // 10:00 intraday volume alerts are paused. Keep the renderer and data
+  // loading in place so the feature can be restored without rebuilding it.
+  const SHOW_INTRADAY_ALERT_PANEL = false;
   const intraday = DATA.intraday_volume_pullback_data || [];
   const intradayMeta = DATA.intraday_volume_pullback_meta || {};
   let filter = window._ssrFilter || 'c5_2';
@@ -418,11 +422,6 @@ function renderSSR(strat, main) {
 
       <div class="summary-row">
         <div class="summary-card">
-          <div class="summary-label">10:00 預警</div>
-          <div class="summary-value green">${intraday.length}</div>
-          <div class="summary-sub">盤中量增回測達標</div>
-        </div>
-        <div class="summary-card">
           <div class="summary-label">C5 取 2</div>
           <div class="summary-value blue">${rows.length}</div>
           <div class="summary-sub">任兩組以上同時命中</div>
@@ -439,7 +438,7 @@ function renderSSR(strat, main) {
         </div>
       </div>
 
-      ${renderIntradaySSRPanel()}
+      ${SHOW_INTRADAY_ALERT_PANEL ? renderIntradaySSRPanel() : ''}
 
       <div style="display:flex;gap:8px;padding:0 0 10px 0;flex-wrap:wrap">
         ${ssrFilterButtons}

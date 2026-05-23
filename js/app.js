@@ -96,10 +96,10 @@ const STRATEGIES = [
       "點火：近 5 日任一天成交量 >= 10日均量 × 2.5，且收盤站上 EMA5 或 EMA20",
       "回穩：目前收盤守住點火日低點與 EMA20，回落不超過 8%，量能降溫",
       "再啟動：回穩後突破前一日高點，或量比重新 >= 1.5",
-      "10:00 盤中預警：盤中累積量 >= 10日均量 × 0.45，且 >= 200 張",
+      "10:00 盤中預警：目前停用備用，功能保留勿刪",
     ],
     dataUpdated: "載入中...",
-    dataSource: "price_cache + TWSE MIS 盤中即時行情",
+    dataSource: "price_cache + TWSE MIS 盤中即時行情（10:00 預警停用備用）",
     dataKey: "volume_pullback_data",
   },
   {
