@@ -1,6 +1,6 @@
 {
   "strategy_id": "volume_pullback",
-  "updated": "2026-05-23T10:30:42+08:00",
+  "updated": "2026-05-23T18:37:10+08:00",
   "model": {
     "ignition_vol_ratio_min": 2.5,
     "lookback_days": 5,
@@ -8,10 +8,10 @@
     "reentry_vol_ratio_min": 1.5
   },
   "summary": {
-    "active": 94,
+    "active": 95,
     "failed": 7,
     "reentry": 46,
-    "pullback": 15,
+    "pullback": 16,
     "ignition": 33
   },
   "active": [
@@ -178,12 +178,15 @@
     {
       "stock_id": "6491",
       "name": "晶碩",
-      "industry": "生技醫療業",
+      "industry": "生技",
       "market": "TWSE",
       "sources": [
+        "chips",
         "price_breakout_track"
       ],
-      "source_tags": [],
+      "source_tags": [
+        "持續成長"
+      ],
       "status": "reentry",
       "status_label": "再啟動",
       "score": 115,
@@ -1847,6 +1850,40 @@
       "volume_cools": true
     },
     {
+      "stock_id": "2886",
+      "name": "兆豐金",
+      "industry": "金融",
+      "market": "",
+      "sources": [
+        "chips"
+      ],
+      "source_tags": [
+        "持續成長"
+      ],
+      "status": "pullback",
+      "status_label": "回穩觀察",
+      "score": 95,
+      "signal_date": "2026-05-22",
+      "ignition_date": "2026-05-19",
+      "days_since_ignition": 3,
+      "close": 39.9,
+      "high": 40.3,
+      "low": 39.9,
+      "volume_lots": 28877,
+      "vol_10d_avg": 25441.0,
+      "vol_ratio": 1.14,
+      "ema5": 40.02,
+      "ema20": 39.76,
+      "ignition_close": 40.65,
+      "ignition_high": 41.4,
+      "ignition_low": 39.65,
+      "ignition_volume_lots": 57543,
+      "ignition_vol_ratio": 2.89,
+      "pullback_from_ignition_close_pct": -1.85,
+      "support_ok": true,
+      "volume_cools": true
+    },
+    {
       "stock_id": "5425",
       "name": "台半",
       "industry": "半導體業",
@@ -2464,7 +2501,7 @@
         "volume_signal"
       ],
       "source_tags": [
-        "持續成長"
+        "雙軌觸發"
       ],
       "status": "ignition",
       "status_label": "點火",
@@ -2618,6 +2655,43 @@
       "volume_cools": false
     },
     {
+      "stock_id": "2421",
+      "name": "建準",
+      "industry": "電零",
+      "market": "TWSE",
+      "sources": [
+        "chips",
+        "price_breakout_track",
+        "volume_signal"
+      ],
+      "source_tags": [
+        "雙軌觸發",
+        "單周增幅"
+      ],
+      "status": "ignition",
+      "status_label": "點火",
+      "score": 78,
+      "signal_date": "2026-05-22",
+      "ignition_date": "2026-05-22",
+      "days_since_ignition": 0,
+      "close": 158.5,
+      "high": 163.5,
+      "low": 153.5,
+      "volume_lots": 16310,
+      "vol_10d_avg": 5351.0,
+      "vol_ratio": 3.05,
+      "ema5": 150.44,
+      "ema20": 146.11,
+      "ignition_close": 158.5,
+      "ignition_high": 163.5,
+      "ignition_low": 153.5,
+      "ignition_volume_lots": 16310,
+      "ignition_vol_ratio": 3.05,
+      "pullback_from_ignition_close_pct": 0.0,
+      "support_ok": true,
+      "volume_cools": false
+    },
+    {
       "stock_id": "3704",
       "name": "合勤控",
       "industry": "電子工業",
@@ -2682,38 +2756,6 @@
       "volume_cools": false
     },
     {
-      "stock_id": "2421",
-      "name": "建準",
-      "industry": "電子工業",
-      "market": "TWSE",
-      "sources": [
-        "price_breakout_track"
-      ],
-      "source_tags": [],
-      "status": "ignition",
-      "status_label": "點火",
-      "score": 78,
-      "signal_date": "2026-05-22",
-      "ignition_date": "2026-05-22",
-      "days_since_ignition": 0,
-      "close": 158.5,
-      "high": 163.5,
-      "low": 153.5,
-      "volume_lots": 16310,
-      "vol_10d_avg": 5351.0,
-      "vol_ratio": 3.05,
-      "ema5": 150.44,
-      "ema20": 146.11,
-      "ignition_close": 158.5,
-      "ignition_high": 163.5,
-      "ignition_low": 153.5,
-      "ignition_volume_lots": 16310,
-      "ignition_vol_ratio": 3.05,
-      "pullback_from_ignition_close_pct": 0.0,
-      "support_ok": true,
-      "volume_cools": false
-    },
-    {
       "stock_id": "2353",
       "name": "宏卅卅",
       "industry": "電腦",
@@ -2724,8 +2766,7 @@
         "volume_signal"
       ],
       "source_tags": [
-        "持續成長",
-        "雙軌觸發"
+        "持續成長"
       ],
       "status": "ignition",
       "status_label": "點火",
@@ -2746,6 +2787,42 @@
       "ignition_low": 28.5,
       "ignition_volume_lots": 70184,
       "ignition_vol_ratio": 2.77,
+      "pullback_from_ignition_close_pct": 0.0,
+      "support_ok": true,
+      "volume_cools": false
+    },
+    {
+      "stock_id": "6214",
+      "name": "精誠",
+      "industry": "資服",
+      "market": "TWSE",
+      "sources": [
+        "chips",
+        "price_breakout_track",
+        "volume_signal"
+      ],
+      "source_tags": [
+        "持續成長"
+      ],
+      "status": "ignition",
+      "status_label": "點火",
+      "score": 77,
+      "signal_date": "2026-05-22",
+      "ignition_date": "2026-05-22",
+      "days_since_ignition": 0,
+      "close": 130.0,
+      "high": 131.0,
+      "low": 127.0,
+      "volume_lots": 2833,
+      "vol_10d_avg": 1018.0,
+      "vol_ratio": 2.78,
+      "ema5": 126.53,
+      "ema20": 123.36,
+      "ignition_close": 130.0,
+      "ignition_high": 131.0,
+      "ignition_low": 127.0,
+      "ignition_volume_lots": 2833,
+      "ignition_vol_ratio": 2.78,
       "pullback_from_ignition_close_pct": 0.0,
       "support_ok": true,
       "volume_cools": false
@@ -2810,38 +2887,6 @@
       "ignition_low": 422.0,
       "ignition_volume_lots": 2029,
       "ignition_vol_ratio": 2.85,
-      "pullback_from_ignition_close_pct": 0.0,
-      "support_ok": true,
-      "volume_cools": false
-    },
-    {
-      "stock_id": "6214",
-      "name": "精誠",
-      "industry": "電子工業",
-      "market": "TWSE",
-      "sources": [
-        "price_breakout_track"
-      ],
-      "source_tags": [],
-      "status": "ignition",
-      "status_label": "點火",
-      "score": 77,
-      "signal_date": "2026-05-22",
-      "ignition_date": "2026-05-22",
-      "days_since_ignition": 0,
-      "close": 130.0,
-      "high": 131.0,
-      "low": 127.0,
-      "volume_lots": 2833,
-      "vol_10d_avg": 1018.0,
-      "vol_ratio": 2.78,
-      "ema5": 126.53,
-      "ema20": 123.36,
-      "ignition_close": 130.0,
-      "ignition_high": 131.0,
-      "ignition_low": 127.0,
-      "ignition_volume_lots": 2833,
-      "ignition_vol_ratio": 2.78,
       "pullback_from_ignition_close_pct": 0.0,
       "support_ok": true,
       "volume_cools": false
@@ -3139,12 +3184,15 @@
     {
       "stock_id": "2412",
       "name": "中華電",
-      "industry": "通信網路業",
+      "industry": "通信",
       "market": "TWSE",
       "sources": [
+        "chips",
         "price_breakout_track"
       ],
-      "source_tags": [],
+      "source_tags": [
+        "持續成長"
+      ],
       "status": "failed",
       "status_label": "失敗",
       "score": 13,
