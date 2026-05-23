@@ -16,8 +16,6 @@ SCRIPT_DIR = os.path.dirname(os.path.abspath(__file__))
 DATA_DIR = os.path.join(SCRIPT_DIR, "..", "data")
 VOLUME_PATH = os.path.join(DATA_DIR, "volume_signal.json")
 RIGHT_TOP_PATH = os.path.join(DATA_DIR, "right_top.json")
-TRUST_PATH = os.path.join(DATA_DIR, "trust_momentum.json")
-
 TW_TZ = timezone(timedelta(hours=8))
 TODAY = datetime.now(TW_TZ).strftime("%Y-%m-%d")
 SITE_URL = "https://weeiywun.github.io/twstockscan/?unlock=perf"
@@ -27,7 +25,7 @@ FLEX_PRIMARY = "#0c6b3e"
 FLEX_ACCENT = "#f0883e"
 FLEX_MUTED = "#888888"
 FLEX_BG = "#f7f8fa"
-MAX_PREVIEW = 5
+MAX_PREVIEW = 3
 
 
 def performance_image_url() -> str:
@@ -101,15 +99,10 @@ def summary_row(label: str, count: int, color: str, preview: str) -> dict:
 def build_flex_message(
     volume_items: list[dict],
     right_top_items: list[dict],
-    trust_items: list[dict],
-    foreign_items: list[dict],
-    confluence_items: list[dict],
 ) -> dict:
     volume_preview = stock_preview(volume_items, "vol_ratio", "x")
     right_top_preview = stock_preview(right_top_items, "vol_ratio", "x")
-    inst_preview = stock_preview(confluence_items or trust_items or foreign_items, "inst_net_5d", "張")
-    inst_count = len(trust_items) + len(foreign_items) + len(confluence_items)
-    total_count = len(volume_items) + len(right_top_items) + inst_count
+    total_count = len(volume_items) + len(right_top_items)
 
     bubble = {
         "type": "bubble",
@@ -154,12 +147,6 @@ def build_flex_message(
             "contents": [
                 summary_row("量增訊號", len(volume_items), FLEX_PRIMARY, volume_preview),
                 summary_row("右上角", len(right_top_items), FLEX_ACCENT, right_top_preview),
-                summary_row(
-                    "法人動能",
-                    inst_count,
-                    "#0f766e",
-                    f"投信 {len(trust_items)} / 外資 {len(foreign_items)} / 共振 {len(confluence_items)}｜{inst_preview}",
-                ),
             ],
         },
         "footer": {
@@ -181,7 +168,7 @@ def build_flex_message(
         "type": "flex",
         "altText": (
             f"每日選股掃描 {TODAY}：量增訊號 {len(volume_items)} 支 / "
-            f"右上角 {len(right_top_items)} 支 / 法人動能 {inst_count} 支"
+            f"右上角 {len(right_top_items)} 支"
         ),
         "contents": bubble,
     }
@@ -226,15 +213,11 @@ def send_line_message(message: dict) -> bool:
 def main() -> int:
     volume_items = today_unique_results(load_results(VOLUME_PATH))
     right_top_items = today_unique_results(load_results(RIGHT_TOP_PATH))
-    trust_items = today_unique_results(load_section(TRUST_PATH, "trust_results"))
-    foreign_items = today_unique_results(load_section(TRUST_PATH, "foreign_results"))
-    confluence_items = today_unique_results(load_section(TRUST_PATH, "confluence_results"))
     print(
-        f"[summary] 量增訊號 {len(volume_items)} 支 / 右上角 {len(right_top_items)} 支 / "
-        f"法人動能 投信 {len(trust_items)} 支 外資 {len(foreign_items)} 支 共振 {len(confluence_items)} 支"
+        f"[summary] 量增訊號 {len(volume_items)} 支 / 右上角 {len(right_top_items)} 支"
     )
 
-    message = build_flex_message(volume_items, right_top_items, trust_items, foreign_items, confluence_items)
+    message = build_flex_message(volume_items, right_top_items)
     return 0 if send_line_message(message) else 1
 
 

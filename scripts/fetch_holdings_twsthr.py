@@ -35,7 +35,7 @@ VOL_MIN_LOTS  = 500
 DEV_MIN, DEV_MAX = 0.0, 10.0
 BBW_MAX       = 15.0
 FINMIND_SLEEP = 0.35
-FLEX_MAX      = 15
+FLEX_MAX      = 3
 FC_PRIMARY    = "#e66e29"
 FC_ACCENT     = "#0c6b3e"
 FC_MUTED      = "#888888"
@@ -216,7 +216,7 @@ def send_line_notification(results):
                               "align": "center", "color": FC_ACCENT}]}]})
     if len(results) > FLEX_MAX:
         rows.append({"type": "text",
-                     "text": f"...還有 {len(results) - FLEX_MAX} 支，請查看完整報告",
+                     "text": f"其餘 {len(results) - FLEX_MAX} 支請點擊下方查看完整報告",
                      "size": "xs", "color": FC_LIGHT, "margin": "md", "align": "center"})
     bubble = {
         "type": "bubble", "size": "mega",
