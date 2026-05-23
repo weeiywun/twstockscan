@@ -54,10 +54,23 @@ function renderChipsHolder(strat, main) {
 
   // 排序（個股模式）
   function combined3w(d) { return (d.cumulative_3w || 0) + (d.cumulative_3w_400 || 0); }
+  function latestWeekChange(d, type) {
+    const key = type === '400' ? 'chg_1w_400' : 'chg_1w_1000';
+    const trend = type === '400' ? d.big_trend_400 : d.big_trend_1000;
+    if (d[key] != null) return d[key];
+    return Array.isArray(trend) && trend.length >= 2
+      ? +(trend[trend.length - 1] - trend[trend.length - 2]).toFixed(2)
+      : null;
+  }
+  function sortValue(d, col) {
+    if (col === 'chg_1w_1000') return latestWeekChange(d, '1000');
+    if (col === 'chg_1w_400') return latestWeekChange(d, '400');
+    return d[col];
+  }
 
   const sortedData = allData.slice().sort((a, b) => {
-    const va = a[sortCol] ?? -9999;
-    const vb = b[sortCol] ?? -9999;
+    const va = sortValue(a, sortCol) ?? -9999;
+    const vb = sortValue(b, sortCol) ?? -9999;
     return sortAsc ? va - vb : vb - va;
   });
 
@@ -102,6 +115,8 @@ function renderChipsHolder(strat, main) {
     const weekSign = (d.week_chg_pct >= 0) ? '+' : '';
     const weekClass = d.week_chg_pct >= 0 ? 'pos' : 'neg';
     const devClass  = d.deviation  >= 0 ? 'pos' : 'neg';
+    const chg1w1000 = latestWeekChange(d, '1000');
+    const chg1w400 = latestWeekChange(d, '400');
     return `
       <tr onclick="toggleExpand('${d.stock_id}')" id="row-${d.stock_id}">
         <td>
@@ -124,8 +139,8 @@ function renderChipsHolder(strat, main) {
           <span class="deviation ${devClass}">${d.deviation != null ? devSign + d.deviation.toFixed(2) + '%' : '—'}</span>
         </td>
         <td><span class="big-pct">${d.big_pct_1000 != null ? d.big_pct_1000.toFixed(2) + '%' : '—'}</span></td>
-        <td><span class="big-pct ${d.chg_4w_1000 != null && d.chg_4w_1000 >= 0 ? 'pos' : 'neg'}">${d.chg_4w_1000 != null ? (d.chg_4w_1000 > 0 ? '+' : '') + d.chg_4w_1000.toFixed(2) + '%' : '—'}</span></td>
-        <td><span class="big-pct ${d.chg_4w_400 != null && d.chg_4w_400 >= 0 ? 'pos' : 'neg'}">${d.chg_4w_400 != null ? (d.chg_4w_400 > 0 ? '+' : '') + d.chg_4w_400.toFixed(2) + '%' : '—'}</span></td>
+        <td><span class="big-pct ${chg1w1000 != null && chg1w1000 >= 0 ? 'pos' : 'neg'}">${chg1w1000 != null ? (chg1w1000 > 0 ? '+' : '') + chg1w1000.toFixed(2) + '%' : '—'}</span></td>
+        <td><span class="big-pct ${chg1w400 != null && chg1w400 >= 0 ? 'pos' : 'neg'}">${chg1w400 != null ? (chg1w400 > 0 ? '+' : '') + chg1w400.toFixed(2) + '%' : '—'}</span></td>
         <td><div class="spark">${sparkBars(d.big_trend_1000 || [])}</div></td>
         <td><div class="tag-cell">${tagBadges(d.tags)}</div></td>
       </tr>
@@ -137,26 +152,26 @@ function renderChipsHolder(strat, main) {
                 const labels = d.date_labels || DATE_LABELS;
                 const t1000  = d.big_trend_1000 || [];
                 const t400   = d.big_trend_400  || [];
-                const cum1000 = t1000.length >= 4 ? t1000[t1000.length-1] - t1000[0] : null;
-                const cum400  = t400.length  >= 4 ? t400[t400.length-1]  - t400[0]  : null;
-                const cum1000Sign = cum1000 != null && cum1000 >= 0 ? '+' : '';
-                const cum400Sign  = cum400  != null && cum400  >= 0 ? '+' : '';
+                const week1000 = t1000.length >= 2 ? +(t1000[t1000.length-1] - t1000[t1000.length-2]).toFixed(2) : null;
+                const week400  = t400.length  >= 2 ? +(t400[t400.length-1]  - t400[t400.length-2]).toFixed(2) : null;
+                const week1000Sign = week1000 != null && week1000 >= 0 ? '+' : '';
+                const week400Sign  = week400  != null && week400  >= 0 ? '+' : '';
                 const dateHdrs = [...labels].reverse().map(l => `<th>${l}</th>`).join('');
                 const cells1000 = [...t1000].reverse().map(v => `<td>${v.toFixed(2)}%</td>`).join('');
                 const cells400  = [...t400].reverse().map(v  => `<td>${v.toFixed(2)}%</td>`).join('');
                 return `<table class="expand-table">
                   <thead><tr>
-                    <th></th><th>4週增幅</th>${dateHdrs}
+                    <th></th><th>單周增幅</th>${dateHdrs}
                   </tr></thead>
                   <tbody>
                     <tr>
                       <td>千張大戶</td>
-                      <td class="expand-cum ${cum1000!=null&&cum1000>=0?'pos':'neg'}">${cum1000!=null?cum1000Sign+cum1000.toFixed(2)+'%':'—'}</td>
+                      <td class="expand-cum ${week1000!=null&&week1000>=0?'pos':'neg'}">${week1000!=null?week1000Sign+week1000.toFixed(2)+'%':'—'}</td>
                       ${cells1000}
                     </tr>
                     <tr>
                       <td>400張大戶</td>
-                      <td class="expand-cum ${cum400!=null&&cum400>=0?'pos':'neg'}">${cum400!=null?cum400Sign+cum400.toFixed(2)+'%':'—'}</td>
+                      <td class="expand-cum ${week400!=null&&week400>=0?'pos':'neg'}">${week400!=null?week400Sign+week400.toFixed(2)+'%':'—'}</td>
                       ${cells400}
                     </tr>
                   </tbody>
@@ -247,8 +262,8 @@ function renderChipsHolder(strat, main) {
               <th onclick="chipsSort('week_chg_pct')">周漲跌${sortIcon('week_chg_pct')}</th>
               <th onclick="chipsSort('deviation')" data-tip="(現價-EMA120)/EMA120">乖離EMA120${sortIcon('deviation')}</th>
               <th onclick="chipsSort('big_pct_1000')" data-tip="千張大戶持股%">大戶比例${sortIcon('big_pct_1000')}</th>
-              <th onclick="chipsSort('chg_4w_1000')" data-tip="千張大戶持股% [T日 − (T-28日)] 4週差值（百分點）">千張${sortIcon('chg_4w_1000')}</th>
-              <th onclick="chipsSort('chg_4w_400')" data-tip="400張大戶持股% [T日 − (T-28日)] 4週差值（百分點）">400張${sortIcon('chg_4w_400')}</th>
+              <th onclick="chipsSort('chg_1w_1000')" data-tip="千張大戶持股% 最近一期 − 前一期差值（百分點）">千張${sortIcon('chg_1w_1000')}</th>
+              <th onclick="chipsSort('chg_1w_400')" data-tip="400張大戶持股% 最近一期 − 前一期差值（百分點）">400張${sortIcon('chg_1w_400')}</th>
               <th>趨勢</th>
               <th onclick="chipsSort('tag_score')" data-tip="籌碼條件與法人連買標籤；排序分數採單周增幅+5、雙軌觸發+3、持續成長+1">籌碼/法人標籤${sortIcon('tag_score')}</th>
             </tr>
@@ -305,8 +320,10 @@ function exportCSVChips() {
     '400張大戶比例(%)',
     '千張大戶3週累積(%)',
     '400張大戶3週累積(%)',
-    '千張大戶4週增幅(百分點)',
-    '400張大戶4週增幅(百分點)',
+    '千張大戶單周增幅(百分點)',
+    '400張大戶單周增幅(百分點)',
+    '千張大戶近四次差值(百分點)',
+    '400張大戶近四次差值(百分點)',
     '連續週數',
     '評分標籤',
     '法人標籤',
@@ -331,6 +348,8 @@ function exportCSVChips() {
     fmt(d.big_pct_400),
     fmt(d.cumulative_3w),
     fmt(d.cumulative_3w_400),
+    fmt(d.chg_1w_1000 ?? (Array.isArray(d.big_trend_1000) && d.big_trend_1000.length >= 2 ? d.big_trend_1000[d.big_trend_1000.length - 1] - d.big_trend_1000[d.big_trend_1000.length - 2] : null)),
+    fmt(d.chg_1w_400 ?? (Array.isArray(d.big_trend_400) && d.big_trend_400.length >= 2 ? d.big_trend_400[d.big_trend_400.length - 1] - d.big_trend_400[d.big_trend_400.length - 2] : null)),
     fmt(d.chg_4w_1000),
     fmt(d.chg_4w_400),
     d.consecutive_weeks || '',
