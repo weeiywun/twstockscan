@@ -21,12 +21,19 @@ TRUST_PATH = os.path.join(DATA_DIR, "trust_momentum.json")
 TW_TZ = timezone(timedelta(hours=8))
 TODAY = datetime.now(TW_TZ).strftime("%Y-%m-%d")
 SITE_URL = "https://weeiywun.github.io/twstockscan/?unlock=perf"
+PERFORMANCE_IMAGE_URL = "https://weeiywun.github.io/twstockscan/assets/line/performance-latest.png"
 
 FLEX_PRIMARY = "#0c6b3e"
 FLEX_ACCENT = "#f0883e"
 FLEX_MUTED = "#888888"
 FLEX_BG = "#f7f8fa"
 MAX_PREVIEW = 5
+
+
+def performance_image_url() -> str:
+    base_url = os.environ.get("LINE_PERFORMANCE_IMAGE_URL", PERFORMANCE_IMAGE_URL).strip()
+    sep = "&" if "?" in base_url else "?"
+    return f"{base_url}{sep}v={TODAY.replace('-', '')}"
 
 
 def load_results(path: str) -> list[dict]:
@@ -130,6 +137,13 @@ def build_flex_message(
                     ],
                 },
             ],
+        },
+        "hero": {
+            "type": "image",
+            "url": performance_image_url(),
+            "size": "full",
+            "aspectRatio": "20:9",
+            "aspectMode": "cover",
         },
         "body": {
             "type": "box",

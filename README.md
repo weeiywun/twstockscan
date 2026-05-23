@@ -60,6 +60,7 @@ scripts/
   fetch_holdings_twsthr.py    ← 集保大戶持股資料處理
   update_institutional_tags.py← 三大法人標籤更新
   call_ai_ranking.py          ← AI 選股排名（Gemini）
+  generate_line_performance_chart.py ← 產生 LINE 卡片用績效折線圖（覆蓋 latest）
   send_daily_scan_summary.py  ← 每日掃描完成 LINE 推播摘要
   finmind_client.py           ← FinMind API 封裝
   requirements.txt            ← Python 相依套件
@@ -104,6 +105,8 @@ scripts/
 
 ### 績效追蹤
 記錄建倉與出場，計算損益、報酬率與整體投組績效。同一標的多批建倉時，前端自動以加權平均成本合併顯示。需 URL 參數 `?unlock=perf` 解鎖。
+
+每日與週六 workflow 會覆蓋產生 `assets/line/performance-latest.png`，作為 LINE Flex Message 上方績效圖。圖片只保留最新版本，LINE 推播以 GitHub Pages 公開網址加日期參數引用，避免快取顯示舊圖。
 
 ---
 

@@ -116,6 +116,9 @@ jobs:
           FINMIND_TOKEN: ${{ secrets.FINMIND_API_TOKEN }}
         run: python scripts/update_current_prices.py
 
+      - name: Generate LINE performance chart
+        run: python scripts/generate_line_performance_chart.py
+
       - name: 短線強勢雷達
         run: python scripts/scan_momentum_candidates.py
 
@@ -123,7 +126,7 @@ jobs:
         run: |
           git config user.name  "github-actions[bot]"
           git config user.email "github-actions[bot]@users.noreply.github.com"
-          git add data/right_top.json data/right_top_track.json data/volume_signal.json data/volume_pullback.json data/momentum_candidates.json data/performance.json data/chips_big_holder.json data/current_prices.json
+          git add data/right_top.json data/right_top_track.json data/volume_signal.json data/volume_pullback.json data/momentum_candidates.json data/performance.json data/chips_big_holder.json data/current_prices.json assets/line/performance-latest.png
           if ! git diff --staged --quiet; then
             git commit -m "data: daily scan update $(date -u +%Y-%m-%d)"
             for i in {1..4}; do

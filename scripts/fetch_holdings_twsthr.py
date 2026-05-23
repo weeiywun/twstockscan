@@ -41,6 +41,13 @@ FC_ACCENT     = "#0c6b3e"
 FC_MUTED      = "#888888"
 FC_LIGHT      = "#aaaaaa"
 FC_TEXT       = "#555555"
+PERFORMANCE_IMAGE_URL = "https://weeiywun.github.io/twstockscan/assets/line/performance-latest.png"
+
+
+def performance_image_url():
+    base_url = os.environ.get("LINE_PERFORMANCE_IMAGE_URL", PERFORMANCE_IMAGE_URL).strip()
+    sep = "&" if "?" in base_url else "?"
+    return f"{base_url}{sep}v={TODAY.replace('-', '')}"
 
 
 # ── CSV 解析 ──────────────────────────────────────────────────
@@ -222,6 +229,8 @@ def send_line_notification(results):
                             {"type": "text", "text": f"📅 {TODAY}", "size": "xs", "color": FC_LIGHT},
                             {"type": "text", "text": f"✅ {len(results)} 支符合",
                              "size": "xs", "color": FC_ACCENT, "align": "end"}]}]},
+        "hero": {"type": "image", "url": performance_image_url(), "size": "full",
+                 "aspectRatio": "20:9", "aspectMode": "cover"},
         "body": {"type": "box", "layout": "vertical", "paddingAll": "20px",
                  "contents": [
                      {"type": "box", "layout": "horizontal", "contents": [

@@ -1,0 +1,328 @@
+<!doctype html>
+<html lang="zh-Hant">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>LINE Flex Message Demo</title>
+  <style>
+    :root{
+      --bg:#eef1f5;
+      --card:#ffffff;
+      --text:#18202b;
+      --muted:#7b8494;
+      --line:#dde3eb;
+      --green:#0c6b3e;
+      --red:#d93025;
+      --amber:#f0883e;
+      --blue:#2563eb;
+    }
+    *{box-sizing:border-box}
+    body{
+      margin:0;
+      padding:32px 16px 56px;
+      background:var(--bg);
+      color:var(--text);
+      font-family:-apple-system,BlinkMacSystemFont,"Segoe UI","Noto Sans TC",sans-serif;
+    }
+    .page{
+      max-width:1040px;
+      margin:0 auto;
+      display:grid;
+      grid-template-columns:repeat(auto-fit,minmax(320px,1fr));
+      gap:22px;
+      align-items:start;
+    }
+    h1{
+      max-width:1040px;
+      margin:0 auto 20px;
+      font-size:20px;
+      letter-spacing:0;
+    }
+    .phone{
+      background:#dfe7ef;
+      border:1px solid #cbd5e1;
+      border-radius:18px;
+      padding:14px;
+      box-shadow:0 18px 42px rgba(15,23,42,.12);
+    }
+    .bubble{
+      background:var(--card);
+      border-radius:16px;
+      overflow:hidden;
+      box-shadow:0 1px 0 rgba(15,23,42,.05);
+    }
+    .hero{
+      padding:18px;
+      background:#f8fafc;
+      border-bottom:1px solid var(--line);
+    }
+    .eyebrow{
+      color:var(--muted);
+      font-size:12px;
+      margin-bottom:4px;
+    }
+    .title{
+      display:flex;
+      align-items:flex-end;
+      justify-content:space-between;
+      gap:10px;
+      font-weight:800;
+      font-size:20px;
+    }
+    .date{
+      color:var(--muted);
+      font-size:12px;
+      font-weight:500;
+      white-space:nowrap;
+    }
+    .chart{
+      height:110px;
+      margin-top:14px;
+      border:1px solid var(--line);
+      border-radius:10px;
+      background:#fff;
+      position:relative;
+      overflow:hidden;
+    }
+    .chart img{
+      width:100%;
+      height:100%;
+      object-fit:cover;
+      display:block;
+    }
+    .body{padding:14px 14px 16px}
+    .section-title{
+      display:flex;
+      justify-content:space-between;
+      align-items:center;
+      margin:4px 0 8px;
+      font-size:13px;
+      font-weight:800;
+    }
+    .pill{
+      display:inline-flex;
+      align-items:center;
+      justify-content:center;
+      min-width:34px;
+      padding:2px 8px;
+      border-radius:999px;
+      font-size:11px;
+      font-weight:800;
+      border:1px solid transparent;
+    }
+    .pill.green{color:var(--green);background:rgba(12,107,62,.1);border-color:rgba(12,107,62,.24)}
+    .pill.amber{color:var(--amber);background:rgba(240,136,62,.12);border-color:rgba(240,136,62,.24)}
+    .pill.gray{color:var(--muted);background:#f3f5f7;border-color:var(--line)}
+    .row{
+      padding:10px 0;
+      border-top:1px solid var(--line);
+      display:grid;
+      grid-template-columns:1fr auto;
+      gap:8px;
+    }
+    .row:first-of-type{border-top:0}
+    .name{
+      font-size:14px;
+      font-weight:800;
+      margin-bottom:2px;
+    }
+    .sub{
+      color:var(--muted);
+      font-size:12px;
+      line-height:1.45;
+    }
+    .pnl{
+      font-family:ui-monospace,SFMono-Regular,Menlo,monospace;
+      font-size:14px;
+      font-weight:800;
+      white-space:nowrap;
+      text-align:right;
+    }
+    .pnl.pos{color:var(--green)}
+    .pnl.neg{color:var(--red)}
+    .comment{
+      grid-column:1 / -1;
+      color:#3f4858;
+      font-size:12px;
+      line-height:1.45;
+      padding-left:8px;
+      border-left:3px solid #d6dde7;
+    }
+    .divider{
+      height:8px;
+      margin:6px -14px 10px;
+      background:#f3f5f7;
+      border-top:1px solid var(--line);
+      border-bottom:1px solid var(--line);
+    }
+    .cta{
+      display:block;
+      margin-top:12px;
+      padding:10px 12px;
+      border-radius:8px;
+      background:var(--green);
+      color:#fff;
+      text-align:center;
+      font-weight:800;
+      font-size:13px;
+      text-decoration:none;
+    }
+    .hint{
+      max-width:1040px;
+      margin:16px auto 0;
+      color:var(--muted);
+      font-size:13px;
+      line-height:1.6;
+    }
+  </style>
+</head>
+<body>
+  <h1>LINE Flex Message Demo</h1>
+  <div class="page">
+    <div class="phone">
+      <div class="bubble">
+        <div class="hero">
+          <div class="eyebrow">每日 17:00 選股結果</div>
+          <div class="title">
+            <span>持倉與今日雷達</span>
+            <span class="date">2026-05-23</span>
+          </div>
+          <div class="chart">
+            <img src="../assets/line/performance-latest.png" alt="績效折線圖">
+          </div>
+        </div>
+        <div class="body">
+          <div class="section-title">
+            <span>目前持倉追蹤</span>
+            <span class="pill green">3 檔</span>
+          </div>
+          <div class="row">
+            <div>
+              <div class="name">3704 合勤控</div>
+              <div class="sub">成本 40.5｜現價 44.0</div>
+            </div>
+            <div class="pnl pos">+8.64%</div>
+            <div class="comment">收盤站上突破區，先看 43-44 是否守穩。</div>
+          </div>
+          <div class="row">
+            <div>
+              <div class="name">4306 炎洲</div>
+              <div class="sub">成本 13.8｜現價 15.1</div>
+            </div>
+            <div class="pnl pos">+9.42%</div>
+            <div class="comment">量增回測再啟動，若量縮不破可續抱。</div>
+          </div>
+          <div class="row">
+            <div>
+              <div class="name">2355 敬鵬</div>
+              <div class="sub">成本 61.2｜現價 59.4</div>
+            </div>
+            <div class="pnl neg">-2.94%</div>
+            <div class="comment">低於成本，留意是否跌破回測支撐。</div>
+          </div>
+          <div class="divider"></div>
+          <div class="section-title">
+            <span>SSR 交集 Top 3</span>
+            <span class="pill amber">多策略</span>
+          </div>
+          <div class="row">
+            <div>
+              <div class="name">3704 合勤控</div>
+              <div class="sub">收盤 44.0｜成交量 12,325 張</div>
+            </div>
+          </div>
+          <div class="row">
+            <div>
+              <div class="name">4306 炎洲</div>
+              <div class="sub">收盤 15.1｜成交量 8,420 張</div>
+            </div>
+          </div>
+          <div class="row">
+            <div>
+              <div class="name">3441 聯一光</div>
+              <div class="sub">收盤 52.9｜成交量 6,810 張</div>
+            </div>
+          </div>
+          <a class="cta" href="#">打開前端確認</a>
+        </div>
+      </div>
+    </div>
+
+    <div class="phone">
+      <div class="bubble">
+        <div class="hero">
+          <div class="eyebrow">週六大戶持股掃描</div>
+          <div class="title">
+            <span>大戶更新摘要</span>
+            <span class="date">2026-05-23</span>
+          </div>
+          <div class="chart">
+            <img src="../assets/line/performance-latest.png" alt="績效折線圖">
+          </div>
+        </div>
+        <div class="body">
+          <div class="section-title">
+            <span>目前持倉追蹤</span>
+            <span class="pill green">同步顯示</span>
+          </div>
+          <div class="row">
+            <div>
+              <div class="name">3704 合勤控</div>
+              <div class="sub">成本 40.5｜現價 44.0</div>
+            </div>
+            <div class="pnl pos">+8.64%</div>
+            <div class="comment">突破區支撐有效，續看 44 站穩。</div>
+          </div>
+          <div class="row">
+            <div>
+              <div class="name">4306 炎洲</div>
+              <div class="sub">成本 13.8｜現價 15.1</div>
+            </div>
+            <div class="pnl pos">+9.42%</div>
+            <div class="comment">量能點火後回測守住，保留觀察。</div>
+          </div>
+          <div class="divider"></div>
+          <div class="section-title">
+            <span>大戶篩選 Top 5</span>
+            <span class="pill gray">週資料</span>
+          </div>
+          <div class="row">
+            <div>
+              <div class="name">2603 長榮</div>
+              <div class="sub">收盤 212.0 <span style="color:var(--green)">+3.2%</span>｜週漲 +8.4%｜量 48,200 張 <span style="color:var(--green)">+42%</span></div>
+            </div>
+          </div>
+          <div class="row">
+            <div>
+              <div class="name">3704 合勤控</div>
+              <div class="sub">收盤 44.0 <span style="color:var(--green)">+6.3%</span>｜週漲 +12.8%｜量 12,325 張 <span style="color:var(--green)">+238%</span></div>
+            </div>
+          </div>
+          <div class="row">
+            <div>
+              <div class="name">2352 佳世達</div>
+              <div class="sub">收盤 27.2 <span style="color:var(--green)">+1.9%</span>｜週漲 +5.6%｜量 9,840 張 <span style="color:var(--green)">+31%</span></div>
+            </div>
+          </div>
+          <div class="row">
+            <div>
+              <div class="name">3441 聯一光</div>
+              <div class="sub">收盤 52.9 <span style="color:var(--red)">-0.8%</span>｜週漲 +9.9%｜量 6,810 張 <span style="color:var(--red)">-12%</span></div>
+            </div>
+          </div>
+          <div class="row">
+            <div>
+              <div class="name">4306 炎洲</div>
+              <div class="sub">收盤 15.1 <span style="color:var(--green)">+2.7%</span>｜週漲 +11.4%｜量 8,420 張 <span style="color:var(--green)">+68%</span></div>
+            </div>
+          </div>
+          <a class="cta" href="#">打開大戶清單</a>
+        </div>
+      </div>
+    </div>
+  </div>
+  <p class="hint">
+    Demo 說明：Flex Message 內的績效折線圖需要一張公開 HTTPS 圖片 URL。上線時可由 GitHub Actions 產生 PNG 並提交到 GitHub Pages，再在卡片中用 image 元件引用。
+  </p>
+</body>
+</html>
