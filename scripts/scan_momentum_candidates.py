@@ -38,6 +38,7 @@ HOT_INDUSTRY_KEYWORDS = (
     "通信",
 )
 MAX_EXTENDED_PCT = 15.0
+PRIORITY_RANK = {"A": 1, "B": 2, "C": 3}
 
 
 def load_json(path: str) -> dict[str, Any]:
@@ -110,6 +111,41 @@ def set_status(row: dict[str, Any], label: str, rank: int) -> None:
 
 def add_score(row: dict[str, Any], key: str, score: float) -> None:
     row["score_parts"][key] = max(num(row["score_parts"].get(key)), score)
+
+
+def set_priority(row: dict[str, Any]) -> None:
+    metrics = row.get("metrics", {})
+    sources = set(row.get("sources", []))
+    rev_score = num(metrics.get("rev_score"))
+    chip_score = num(metrics.get("chip_score"))
+    today_vol_ratio = num(metrics.get("today_vol_ratio"))
+    ignition_vol_ratio = num(metrics.get("ignition_vol_ratio"))
+    pullback_status = metrics.get("pullback_status")
+    source_count = len(sources)
+    reasons: list[str] = []
+
+    if rev_score >= 8 and chip_score >= 6:
+        reasons.extend(["大戶營收>=8", "籌碼>=6"])
+        level = "A"
+    elif pullback_status == "reentry":
+        reasons.append("量增回測再啟動")
+        level = "A"
+    elif today_vol_ratio >= 3 and {"chips", "volume_signal"}.issubset(sources):
+        reasons.append("大戶池放量>=3x")
+        level = "A"
+    elif source_count >= 3 and ignition_vol_ratio >= 3:
+        reasons.append("多策略共振且點火量>=3x")
+        level = "A"
+    elif rev_score >= 6 or chip_score >= 6 or today_vol_ratio >= 1.5 or pullback_status in ("pullback", "ignition"):
+        reasons.append("達觀察條件")
+        level = "B"
+    else:
+        reasons.append("低優先觀察")
+        level = "C"
+
+    row["priority_level"] = level
+    row["priority_rank"] = PRIORITY_RANK.get(level, 9)
+    row["priority_reason"] = reasons
 
 
 def scan() -> dict[str, Any]:
@@ -254,6 +290,9 @@ def scan() -> dict[str, Any]:
         pnl = num(item.get("pnl_pct"))
         row["metrics"].update({
             "ai_pnl_pct": round_or_none(pnl, 2),
+            "rev_score": round_or_none(item.get("quant_scores", {}).get("rev_score"), 1),
+            "chip_score": round_or_none(item.get("quant_scores", {}).get("chip_score"), 1),
+            "trend_score": round_or_none(item.get("quant_scores", {}).get("trend_score"), 1),
         })
         score = 0
         if pnl >= 10:
@@ -278,9 +317,10 @@ def scan() -> dict[str, Any]:
         row["score"] = round(score, 1)
         row["source_count"] = len(row["sources"])
         row["risk_flags"] = []
+        set_priority(row)
         candidates.append(row)
 
-    candidates.sort(key=lambda r: (-num(r["score"]), r.get("status_rank", 9), r["stock_id"]))
+    candidates.sort(key=lambda r: (r.get("priority_rank", 9), -num(r["score"]), r.get("status_rank", 9), r["stock_id"]))
     return {
         "strategy_id": "momentum_candidates",
         "updated": now_tw(),
@@ -295,10 +335,22 @@ def scan() -> dict[str, Any]:
             "disabled_sources": ["vcp", "trust_momentum"],
             "score_min": 35,
             "max_extended_pct": MAX_EXTENDED_PCT,
+            "priority_rules": {
+                "A": [
+                    "rev_score >= 8 and chip_score >= 6",
+                    "volume pullback reentry",
+                    "chips + volume signal with volume ratio >= 3",
+                    "3+ sources with ignition volume ratio >= 3",
+                ],
+                "B": ["single quality or ignition/pullback observation condition"],
+            },
         },
         "summary": {
             "total": len(candidates),
             "top10": len(candidates[:10]),
+            "priority_a": sum(1 for r in candidates if r.get("priority_level") == "A"),
+            "priority_b": sum(1 for r in candidates if r.get("priority_level") == "B"),
+            "priority_c": sum(1 for r in candidates if r.get("priority_level") == "C"),
             "reentry": sum(1 for r in candidates if r.get("status") == "再啟動"),
             "ignition": sum(1 for r in candidates if r.get("status") == "點火首日"),
             "pullback": sum(1 for r in candidates if r.get("status") == "回穩觀察"),

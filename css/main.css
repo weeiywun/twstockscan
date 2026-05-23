@@ -150,6 +150,14 @@ header .page-inner{
   font-size:10px;font-weight:600;margin:1px 2px 1px 0;
   white-space:nowrap;border:1px solid;
 }
+.priority-badge{
+  display:inline-flex;align-items:center;justify-content:center;
+  min-width:36px;padding:3px 7px;border-radius:4px;
+  font-size:11px;font-weight:700;border:1px solid var(--border);
+}
+.priority-badge.a{color:var(--green);background:rgba(46,213,115,0.12);border-color:rgba(46,213,115,0.45)}
+.priority-badge.b{color:var(--amber);background:rgba(240,136,62,0.12);border-color:rgba(240,136,62,0.45)}
+.priority-badge.c{color:var(--text3);background:var(--bg3);border-color:var(--border)}
 .tag-cell{display:flex;flex-wrap:wrap;gap:2px;min-width:0}
 
 /* ── View mode toggle ────────────────────────── */

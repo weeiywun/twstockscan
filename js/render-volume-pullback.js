@@ -5,12 +5,14 @@ let volumePullbackSortCol = 'score';
 let volumePullbackSortAsc = false;
 let momentumSortCol = 'score';
 let momentumSortAsc = false;
+let momentumPriorityFilter = 'A';
 
 function renderVolumePullback(strat, main) {
   const model = DATA.volume_pullback_data || {};
   const active = model.active || [];
   const momentum = DATA.momentum_candidates_data || {};
   const momentumRows = momentum.results || [];
+  const priorityRank = { A: 1, B: 2, C: 3 };
 
   if (active.length === 0) {
     main.innerHTML = `<div class="coming-soon">
@@ -154,6 +156,7 @@ function renderVolumePullback(strat, main) {
   };
   function momentumValue(row, col) {
     const m = row.metrics || {};
+    if (col === 'priority_level') return priorityRank[getMomentumPriority(row)] || 9;
     if (col === 'status') {
       return { '再啟動': 1, '點火首日': 2, '回測觀察': 3, '觀察': 4 }[row.status] || 9;
     }
@@ -161,6 +164,24 @@ function renderVolumePullback(strat, main) {
       return m.ignition_vol_ratio ?? m.today_vol_ratio ?? m.track_pnl_pct ?? m.pullback_from_ignition_close_pct ?? 0;
     }
     return row[col] ?? m[col];
+  }
+  function getMomentumPriority(row) {
+    if (row.priority_level) return row.priority_level;
+    const m = row.metrics || {};
+    const sources = row.sources || [];
+    if ((m.rev_score >= 8 && m.chip_score >= 6) || m.pullback_status === 'reentry') return 'A';
+    if ((m.today_vol_ratio >= 3 && sources.includes('chips') && sources.includes('volume_signal')) || sources.length >= 3) return 'A';
+    if (m.rev_score >= 6 || m.chip_score >= 6 || m.today_vol_ratio >= 1.5 || ['pullback', 'ignition'].includes(m.pullback_status)) return 'B';
+    return 'C';
+  }
+  function getMomentumPriorityReason(row) {
+    if (row.priority_reason && row.priority_reason.length) return row.priority_reason;
+    const m = row.metrics || {};
+    if (m.rev_score >= 8 && m.chip_score >= 6) return ['營收/籌碼共振'];
+    if (m.pullback_status === 'reentry') return ['量增回測再啟動'];
+    if (m.today_vol_ratio >= 3) return ['放量>=3x'];
+    if ((row.sources || []).length >= 3) return ['多策略共振'];
+    return ['觀察'];
   }
   function compareMomentum(a, b) {
     const va = momentumValue(a, momentumSortCol);
@@ -172,7 +193,28 @@ function renderVolumePullback(strat, main) {
       : String(va ?? '').localeCompare(String(vb ?? ''));
     return momentumSortAsc ? cmp : -cmp;
   }
-  const momentumTop = momentumRows.slice().sort(compareMomentum).slice(0, 10);
+  let momentumFiltered = momentumRows.slice();
+  if (momentumPriorityFilter === 'focus') {
+    momentumFiltered = momentumFiltered.filter(row => ['A', 'B'].includes(getMomentumPriority(row)));
+  } else if (momentumPriorityFilter !== 'all') {
+    momentumFiltered = momentumFiltered.filter(row => getMomentumPriority(row) === momentumPriorityFilter);
+  }
+  const momentumTop = momentumFiltered.slice().sort(compareMomentum).slice(0, 10);
+  const priorityCounts = {
+    all: momentumRows.length,
+    focus: momentumRows.filter(row => ['A', 'B'].includes(getMomentumPriority(row))).length,
+    A: momentumRows.filter(row => getMomentumPriority(row) === 'A').length,
+    B: momentumRows.filter(row => getMomentumPriority(row) === 'B').length,
+    C: momentumRows.filter(row => getMomentumPriority(row) === 'C').length,
+  };
+  const priorityButton = (id, label) => {
+    const count = priorityCounts[id] || 0;
+    if (id !== 'all' && count === 0) return '';
+    const activeStyle = momentumPriorityFilter === id
+      ? 'background:var(--green);border-color:var(--green);color:#fff'
+      : 'background:var(--bg);border-color:var(--border);color:var(--text2)';
+    return `<button onclick="setMomentumPriorityFilter('${id}')" style="${activeStyle};border-width:1px;border-style:solid;border-radius:6px;padding:6px 10px;font-size:12px;cursor:pointer">${label} ${count}</button>`;
+  };
   const momentumTable = momentumTop.map((row, idx) => {
     const risk = (row.risk_flags || []).length
       ? `<span class="tag-badge" style="color:var(--amber);border-color:rgba(210,150,40,.45)">${row.risk_flags[0]}</span>`
@@ -182,6 +224,10 @@ function renderVolumePullback(strat, main) {
       : (row.status === '點火首日' ? 'var(--amber)' : 'var(--text)');
     return `<tr onclick="toggleExpand('mom-${row.stock_id}')" id="row-mom-${row.stock_id}">
       <td style="color:var(--text3);font-family:var(--mono);font-size:12px">${idx + 1}</td>
+      <td>
+        <span class="priority-badge ${getMomentumPriority(row).toLowerCase()}">${getMomentumPriority(row)}級</span>
+        <div style="font-size:10px;color:var(--text3);margin-top:3px">${getMomentumPriorityReason(row).slice(0, 2).join(' / ')}</div>
+      </td>
       <td>
         <a href="https://www.tradingview.com/chart/?symbol=${getTVSymbol(row)}"
           onclick="openTV('${getTVSymbol(row)}', event)"
@@ -200,7 +246,7 @@ function renderVolumePullback(strat, main) {
       <td style="font-size:12px;color:var(--text2);line-height:1.7">${metricText(row)}</td>
     </tr>
     <tr class="expand-row" id="expand-mom-${row.stock_id}" style="display:none">
-      <td colspan="7">
+      <td colspan="8">
         <div class="expand-content">
           <div class="expand-section" style="flex:1;min-width:180px">
             <h4>分數來源</h4>
@@ -225,11 +271,19 @@ function renderVolumePullback(strat, main) {
         <div class="filter-row" style="padding:10px 12px;border-bottom:1px solid var(--border);gap:8px;display:flex;flex-wrap:wrap;color:var(--text3);font-size:12px">
           整合籌碼集中、量增訊號、突破追蹤、量增回測與標的追蹤；VCP / 法人動能暫不納入。
         </div>
+        <div class="filter-row" style="padding:0 12px 10px;border-bottom:1px solid var(--border);gap:8px;display:flex;flex-wrap:wrap">
+          ${priorityButton('focus', 'A/B優先')}
+          ${priorityButton('A', 'A級')}
+          ${priorityButton('B', 'B級')}
+          ${priorityButton('C', 'C級')}
+          ${priorityButton('all', '全部')}
+        </div>
         <div class="table-scroll">
           <table>
             <thead>
               <tr>
                 <th>#</th>
+                <th onclick="momentumSort('priority_level')" style="cursor:pointer">優先級${sortIcon('priority_level', momentumSortCol, momentumSortAsc)}</th>
                 <th onclick="momentumSort('stock_id')" style="cursor:pointer">代號 / 名稱${sortIcon('stock_id', momentumSortCol, momentumSortAsc)}</th>
                 <th onclick="momentumSort('status')" style="cursor:pointer">狀態${sortIcon('status', momentumSortCol, momentumSortAsc)}</th>
                 <th onclick="momentumSort('score')" style="cursor:pointer">爆發分數${sortIcon('score', momentumSortCol, momentumSortAsc)}</th>
@@ -314,5 +368,10 @@ function volumePullbackSort(col) {
 function momentumSort(col) {
   if (momentumSortCol === col) momentumSortAsc = !momentumSortAsc;
   else { momentumSortCol = col; momentumSortAsc = false; }
+  renderStrategy();
+}
+
+function setMomentumPriorityFilter(filter) {
+  momentumPriorityFilter = filter;
   renderStrategy();
 }

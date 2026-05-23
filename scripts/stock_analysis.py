@@ -139,6 +139,27 @@ def add_trading_days(start: date, n: int) -> date:
             added += 1
     return d
 
+
+def classify_priority(item: dict) -> tuple[str, list[str]]:
+    scores = item.get("quant_scores") or {}
+    rev_score = float(scores.get("rev_score") or 0)
+    chip_score = float(scores.get("chip_score") or 0)
+    trend_score = float(scores.get("trend_score") or 0)
+    reasons: list[str] = []
+
+    if rev_score >= 8:
+        reasons.append("營收分數>=8")
+    if chip_score >= 6:
+        reasons.append("籌碼分數>=6")
+    if trend_score >= 4:
+        reasons.append("趨勢分數>=4")
+
+    if rev_score >= 8 and chip_score >= 6:
+        return "A", reasons or ["營收與籌碼共振"]
+    if rev_score >= 6 or chip_score >= 6:
+        return "B", reasons or ["單一品質條件達標"]
+    return "C", reasons or ["品質條件待觀察"]
+
 def trading_days_remaining(expire: date, today: date) -> int:
     """今日到 expire 之間還有幾個交易日（含 expire 當天）"""
     if today > expire:
@@ -275,6 +296,9 @@ def main():
             "quant_scores":   result["quant_scores"],
             "pinned":         False,
         }
+        priority_level, priority_reason = classify_priority(entry)
+        entry["priority_level"] = priority_level
+        entry["priority_reason"] = priority_reason
         active_list.append(entry)
         print(f"    ✅ {sid} 入池，到期 {expire_obj}，營收等級 {result['rev_grade']}")
 
@@ -284,6 +308,9 @@ def main():
 
     for item in active_list:
         sid = item["ticker"]
+        priority_level, priority_reason = classify_priority(item)
+        item["priority_level"] = priority_level
+        item["priority_reason"] = priority_reason
 
         # 更新剩餘天數
         expire_obj = date.fromisoformat(item["expire_date"])

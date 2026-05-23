@@ -340,6 +340,26 @@ def build_signal_tags(
     return list(dict.fromkeys(tags)), min(score, 100), signal_types
 
 
+def classify_priority(row: dict) -> tuple[str, list[str]]:
+    quality = float(row.get("quality_score") or 0)
+    change_pct = float(row.get("change_pct") or 0)
+    price_vol_ratio = float(row.get("price_vol_ratio") or 0)
+    reasons: list[str] = []
+
+    if quality >= 54:
+        reasons.append("品質分>=54")
+    if change_pct >= 18.5:
+        reasons.append("突破幅度>=18.5%")
+    if price_vol_ratio >= 1.9:
+        reasons.append("5日量/20日量>=1.9")
+
+    if quality >= 54 and change_pct >= 18.5 and price_vol_ratio >= 1.9:
+        return "A", reasons
+    if quality >= 50 and change_pct >= 10 and price_vol_ratio >= 1.5:
+        return "B", reasons or ["突破條件達觀察標準"]
+    return "C", reasons or ["突破強度或量能待確認"]
+
+
 def _merge_industries(value: str, industry: str) -> str:
     parts = [p.strip() for p in (value or "").split(" / ") if p.strip()]
     if industry and industry not in parts:
@@ -445,7 +465,7 @@ def main() -> None:
                 **(momentum_signal or {}),
                 **(price_signal or {}),
             }
-            results.append({
+            row = {
                 "stock_id": sid,
                 "name": stock["name"],
                 "industry": stock.get("industry", ""),
@@ -459,13 +479,22 @@ def main() -> None:
                 **whale,
                 **signal_payload,
                 "signal_date": signal_date,
-            })
+            }
+            priority_level, priority_reason = classify_priority(row)
+            row["priority_level"] = priority_level
+            row["priority_reason"] = priority_reason
+            row["priority_rank"] = {"A": 1, "B": 2, "C": 3}.get(priority_level, 9)
+            results.append(row)
             print(f"  {sid} {stock['name']} types={'+'.join(signal_types)} score={quality_score}")
 
         if i % 200 == 0:
             print(f"掃描進度：{i}/{len(stocks)}，命中 {len(results)}，快取缺漏 {skipped}")
 
-    results.sort(key=lambda row: (row.get("quality_score") or 0, row.get("vol_ratio") or 0), reverse=True)
+    results.sort(key=lambda row: (
+        -row.get("priority_rank", 9),
+        row.get("quality_score") or 0,
+        row.get("vol_ratio") or 0,
+    ), reverse=True)
     industry_stats = build_industry_stats(results)
 
     print(f"完成：命中 {len(results)} 檔，快取缺漏 {skipped} 檔")

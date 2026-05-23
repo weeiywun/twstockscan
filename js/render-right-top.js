@@ -27,7 +27,7 @@ function renderRightTop(strat, main) {
     return;
   }
 
-  const rtSortCol = window._rtSortCol || 'quality_score';
+  const rtSortCol = window._rtSortCol || 'priority_rank';
   const rtSortAsc = window._rtSortAsc !== undefined ? window._rtSortAsc : false;
   const rtView = window._rtView || 'stock';
   const rtFilter = window._rtFilter || 'all';
@@ -43,6 +43,7 @@ function renderRightTop(strat, main) {
       : (!isNaN(numA) && !isNaN(numB))
         ? numA - numB
         : String(va).localeCompare(String(vb));
+    if (rtSortCol === 'priority_rank') return rtSortAsc ? -cmp : cmp;
     return rtSortAsc ? cmp : -cmp;
   }
 
