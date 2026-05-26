@@ -611,6 +611,74 @@
       "priority_reason": [
         "籌碼分數>=6"
       ]
+    },
+    {
+      "ticker": "3708",
+      "name": "上緯投控",
+      "industry": "綠能",
+      "trigger_date": "2026-05-26",
+      "expire_date": "2026-06-09",
+      "days_remaining": 11,
+      "entry_price": 131.5,
+      "current_price": 131.5,
+      "pnl_pct": 0.0,
+      "rev_grade": "C",
+      "quant_scores": {
+        "trend_score": 7.2,
+        "chip_score": 9.2,
+        "rev_score": 4.0
+      },
+      "pinned": false,
+      "priority_level": "B",
+      "priority_reason": [
+        "籌碼分數>=6",
+        "趨勢分數>=4"
+      ]
+    },
+    {
+      "ticker": "2353",
+      "name": "宏卅卅",
+      "industry": "電腦",
+      "trigger_date": "2026-05-26",
+      "expire_date": "2026-06-09",
+      "days_remaining": 11,
+      "entry_price": 31.9,
+      "current_price": 31.9,
+      "pnl_pct": 0.0,
+      "rev_grade": "S",
+      "quant_scores": {
+        "trend_score": 7.9,
+        "chip_score": 4.0,
+        "rev_score": 10.0
+      },
+      "pinned": false,
+      "priority_level": "B",
+      "priority_reason": [
+        "營收分數>=8",
+        "趨勢分數>=4"
+      ]
+    },
+    {
+      "ticker": "2881",
+      "name": "富邦金",
+      "industry": "金融",
+      "trigger_date": "2026-05-26",
+      "expire_date": "2026-06-09",
+      "days_remaining": 11,
+      "entry_price": 103.5,
+      "current_price": 103.5,
+      "pnl_pct": 0.0,
+      "rev_grade": "C",
+      "quant_scores": {
+        "trend_score": 1.9,
+        "chip_score": 0.0,
+        "rev_score": 4.0
+      },
+      "pinned": false,
+      "priority_level": "C",
+      "priority_reason": [
+        "品質條件待觀察"
+      ]
     }
   ],
   "expired": [
