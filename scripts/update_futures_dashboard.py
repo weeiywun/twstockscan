@@ -524,7 +524,9 @@ def fetch_twse_institutional_amount(date: datetime.date) -> dict[str, Any] | Non
         for row in data.get("data", []):
             name = row[0]
             key = None
-            if "外資及陸資" in name:
+            # TWSE 曾使用「外資及陸資」，後改為「外資」；
+            # 同時排除「外資自營商」（屬自營商分類，非外資合計列）。
+            if "外資及陸資" in name or (name.startswith("外資") and "自營商" not in name):
                 key = "foreign"
             elif name == "投信":
                 key = "investment_trust"
