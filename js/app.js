@@ -228,6 +228,7 @@ const DATA = {
   performance_data:       null,
   market_index_data:      null,
   futures_dashboard_data: null,
+  margin_balance_data:    null,
   vcp_data:               [],
   vcp_potential_data:     [],
   vcp_industry:           [],
@@ -370,7 +371,7 @@ const NAV_GROUP_LABELS = {
 
 function _navBadge(s) {
   if (!s.available) return '—';
-  if (s.id === 'future_dashboard') return DATA.futures_dashboard_data?.summary?.bias || '—';
+  if (s.id === 'future_dashboard') return DATA.futures_dashboard_data?.us_sentiment?.fear_greed?.score ?? '—';
   if (s.id === 'performance') return (DATA.performance_data?.positions || []).filter(p => !p.confirmed).length;
   if (s.id === 'ssr') return typeof buildSSRRows === 'function' ? buildSSRRows().length : '—';
   if (s.id === 'stock_analysis') return DATA.stock_analysis_data?.active?.length ?? '—';
@@ -615,7 +616,7 @@ async function loadData() {
   const timestamp = new Date().getTime();
 
   try {
-    const [chipsRes, vsRes, vpbRes, mpbRes, ivpbRes, mcRes, aiRes, saRes, perfRes, miRes, fdRes, vcpRes, rtRes, rttRes, tmRes] = await Promise.all([
+    const [chipsRes, vsRes, vpbRes, mpbRes, ivpbRes, mcRes, aiRes, saRes, perfRes, miRes, fdRes, mbRes, vcpRes, rtRes, rttRes, tmRes] = await Promise.all([
       fetch(`data/chips_big_holder.json?t=${timestamp}`,   { cache: 'no-store' }).then(r => r.ok ? r.json() : null).catch(() => null),
       fetch(`data/volume_signal.json?t=${timestamp}`,      { cache: 'no-store' }).then(r => r.ok ? r.json() : null).catch(() => null),
       fetch(`data/volume_pullback.json?t=${timestamp}`,     { cache: 'no-store' }).then(r => r.ok ? r.json() : null).catch(() => null),
@@ -627,6 +628,7 @@ async function loadData() {
       fetch(`data/performance.json?t=${timestamp}`,        { cache: 'no-store' }).then(r => r.ok ? r.json() : null).catch(() => null),
       fetch(`data/market_index.json?t=${timestamp}`,        { cache: 'no-store' }).then(r => r.ok ? r.json() : null).catch(() => null),
       fetch(`data/futures_dashboard.json?t=${timestamp}`,   { cache: 'no-store' }).then(r => r.ok ? r.json() : null).catch(() => null),
+      fetch(`data/margin_balance.json?t=${timestamp}`,      { cache: 'no-store' }).then(r => r.ok ? r.json() : null).catch(() => null),
       // DISABLED / BACKUP - DO NOT DELETE: VCP data loading is paused while the tab is hidden.
       Promise.resolve(null),
       fetch(`data/right_top.json?t=${timestamp}`,          { cache: 'no-store' }).then(r => r.ok ? r.json() : null).catch(() => null),
@@ -699,6 +701,10 @@ async function loadData() {
       DATA.futures_dashboard_data = fdRes;
       const strat = STRATEGIES.find(s => s.id === 'future_dashboard');
       if (strat) strat.dataUpdated = (fdRes.date || fdRes.updated || '').slice(0, 10) || strat.dataUpdated;
+    }
+
+    if (mbRes) {
+      DATA.margin_balance_data = mbRes;
     }
 
     if (vcpRes && vcpRes.results) {

@@ -37,6 +37,7 @@ data/
   right_top_track.json        ← 突破策略標的追蹤
   trust_momentum.json         ← 法人動能掃描結果（TWSE/TPEx 官方法人買賣超 + price_cache）
   futures_dashboard.json      ← FUTURE DASHBOARD（期貨 + VIX + 情緒指標）
+  margin_balance.json         ← 融資餘額（TWSE/TPEx 官方資料，市場槓桿觀察）
   market_index.json           ← 大盤指數（加權、櫃買、期貨夜盤）
   performance.json            ← 績效追蹤（建倉 / 出場紀錄）
   ai_recommendations.json     ← AI 選股推薦
@@ -48,6 +49,7 @@ scripts/
   update_price_cache.py       ← 維護全市場價格快取（支援 --backfill 回填）
   update_market_index.py      ← 更新大盤指數快取
   update_futures_dashboard.py ← 更新期貨籌碼 + VIX + CNN 情緒指標
+  update_margin_balance.py    ← 更新上市 / 上櫃融資餘額快取（官方資料）
   update_current_prices.py    ← 前端觸發的現價更新
   scan_vcp.py                 ← VCP / 潛在 VCP 掃描
   scan_right_top.py           ← 突破策略掃描
@@ -83,7 +85,7 @@ scripts/
 ## 策略說明
 
 ### FUTURE DASHBOARD
-整合台股夜盤、美股收盤、三大法人期貨多空、散戶多空比、PC Ratio（5 日動態基準）、CNN 恐懼貪婪指數與 VIX，計算 Market Bias 分數（-100 ～ +100），反映當前市場動能狀態。各指標均以順勢方向計分，非逆向操作建議。
+Future Dashboard 改為市場背景儀表板：上層分成台股盤面與美股盤面，台股側整合加權 / 櫃買 / 台指期、散戶多空比、PC Ratio 與今日解讀；美股側保留 CNN Fear & Greed 與主要美股指數。下層呈現三大法人現貨買賣超、融資餘額折線圖，以及台指期法人多空（日 / 夜合併）。此頁僅做環境與槓桿溫度判斷，不直接產生個股買賣訊號。
 
 ### 籌碼集中
 每週末掃描全市場，追蹤千張大戶與 400 張大戶持股相對成長率（R），篩選低基期且量能充足的標的，標記「持續成長」「雙軌觸發」「單周增幅」三類標籤。
