@@ -514,6 +514,7 @@ tbody tr:hover .spark-bar{opacity:.9}
   display:grid;grid-template-columns:minmax(260px,1fr) minmax(260px,1fr) minmax(360px,1.25fr);
   gap:12px;margin-bottom:16px;align-items:stretch;
 }
+.fd-hero-grid-simple{grid-template-columns:minmax(280px,.72fr) minmax(420px,1.28fr)}
 .fd-gauge-card{
   position:relative;overflow:hidden;min-width:0;min-height:220px;
   background:var(--bg2);border:1px solid var(--border);
@@ -583,6 +584,7 @@ tbody tr:hover .spark-bar{opacity:.9}
 .fd-grid-3{grid-template-columns:repeat(3,minmax(0,1fr))}
 .fd-grid-2{grid-template-columns:repeat(2,minmax(0,1fr))}
 .fd-market-flow{grid-template-columns:minmax(360px,1.2fr) minmax(280px,.95fr) minmax(220px,.65fr);align-items:start}
+.fd-focus-grid{grid-template-columns:minmax(520px,1.45fr) minmax(260px,.55fr);align-items:stretch}
 .fd-metric,.fd-panel{
   background:var(--bg2);border:1px solid var(--border);
   border-radius:var(--radius);box-shadow:var(--shadow-sm);
@@ -637,6 +639,35 @@ tbody tr:hover .spark-bar{opacity:.9}
 .fd-sentiment .fd-metric{box-shadow:none;background:var(--bg3)}
 .fd-note{padding:14px;color:var(--text2);font-size:12px;line-height:1.9}
 .fd-note div{overflow-wrap:anywhere;word-break:break-word}
+.fd-market-brief{padding:14px}
+.fd-market-brief-grid{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:10px;margin-top:12px}
+.fd-market-brief-grid .fd-metric{box-shadow:none;background:var(--bg3)}
+.fd-chart-panel{min-height:330px}
+.fd-chart-panel .fd-panel-hd{align-items:flex-start}
+.fd-chart-legend{display:flex;align-items:center;gap:12px;font-size:11px;color:var(--text3);white-space:nowrap}
+.fd-dot{display:inline-block;width:8px;height:8px;border-radius:50%;margin-right:5px}
+.fd-dot.retail{background:var(--market-up)}
+.fd-dot.micro{background:var(--amber)}
+.fd-dot.index{background:#4f8cc9}
+.fd-chart-wrap{padding:8px 14px 4px}
+.fd-retail-chart{display:block;width:100%;height:auto;max-height:260px}
+.fd-chart-axis{stroke:var(--border2);stroke-width:1}
+.fd-chart-zero{stroke:var(--text3);stroke-width:1;stroke-dasharray:4 4;opacity:.45}
+.fd-chart-line{fill:none;stroke-width:3;stroke-linecap:round;stroke-linejoin:round}
+.fd-chart-line.retail{stroke:var(--market-up)}
+.fd-chart-line.micro{stroke:var(--amber)}
+.fd-chart-line.index{stroke:#4f8cc9;stroke-width:2.5;stroke-dasharray:5 5}
+.fd-chart-label{font-size:11px;fill:var(--text3);font-family:var(--mono)}
+.fd-chart-summary{
+  display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:8px;
+  padding:0 14px 14px;font-size:12px;color:var(--text2);
+}
+.fd-chart-summary b{font-family:var(--mono)}
+.fd-chart-summary .pos{color:var(--market-up)}
+.fd-chart-summary .neg{color:var(--market-down)}
+.fd-read-panel{padding:14px;display:flex;flex-direction:column;gap:10px}
+.fd-read-text{font-size:14px;line-height:1.8;color:var(--text);font-weight:600}
+.fd-read-hint{font-size:12px;line-height:1.7;color:var(--text3);padding-top:10px;border-top:1px solid var(--border)}
 
 /* ── 標的分析頁面 ────────────────────────────── */
 .sa-date-group{margin-bottom:24px}
@@ -820,7 +851,9 @@ tbody tr:hover .spark-bar{opacity:.9}
   .fd-header{flex-direction:column}
   .fd-hero-grid{grid-template-columns:1fr 1fr}
   .fd-bias-detail{grid-column:1 / -1}
-  .fd-grid-6,.fd-grid-4,.fd-grid-3,.fd-grid-2,.fd-market-flow{grid-template-columns:1fr 1fr}
+  .fd-grid-6,.fd-grid-4,.fd-grid-3,.fd-grid-2,.fd-market-flow,.fd-focus-grid,.fd-hero-grid-simple{grid-template-columns:1fr 1fr}
+  .fd-market-brief-grid{grid-template-columns:1fr 1fr}
+  .fd-chart-summary{grid-template-columns:1fr}
   .fd-market-flow .fd-panel:first-child{grid-column:1 / -1}
   .fd-table{min-width:560px}
 
@@ -853,7 +886,8 @@ tbody tr:hover .spark-bar{opacity:.9}
   .fd-gauge-track{left:5px;right:5px;bottom:-72px;height:160px}
   .fd-gauge-needle{height:62px;bottom:14px}
   .fd-gauge-hub{bottom:7px}
-  .fd-grid-6,.fd-grid-4,.fd-grid-3,.fd-grid-2,.fd-market-flow{grid-template-columns:1fr}
+  .fd-grid-6,.fd-grid-4,.fd-grid-3,.fd-grid-2,.fd-market-flow,.fd-focus-grid,.fd-hero-grid-simple{grid-template-columns:1fr}
+  .fd-market-brief-grid{grid-template-columns:1fr}
   .fd-market-flow .fd-panel:first-child{grid-column:auto}
   .fd-grid-6{grid-template-columns:1fr 1fr}
   .fd-grid-6 .fd-metric-label{white-space:normal}
