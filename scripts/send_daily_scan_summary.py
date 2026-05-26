@@ -35,6 +35,8 @@ FLEX_MUTED = "#888888"
 FLEX_BG = "#f7f8fa"
 FLEX_TEXT = "#333333"
 FLEX_LIGHT = "#aaaaaa"
+FLEX_GAIN = "#d93025"
+FLEX_LOSS = "#0c6b3e"
 MAX_HOLDINGS = 4
 MAX_FOCUS = 5
 
@@ -70,6 +72,14 @@ def fmt_price(value: Any) -> str:
 def fmt_pct(value: Any) -> str:
     n = num(value)
     return "--" if n is None else f"{n:+.1f}%"
+
+
+def fmt_money(value: Any) -> str:
+    n = num(value)
+    if n is None:
+        return "--"
+    rounded = int(round(n))
+    return f"{rounded:+,}"
 
 
 def flex_text(text: str, size: str = "xs", color: str = FLEX_MUTED, **extra: Any) -> dict:
@@ -111,12 +121,14 @@ def build_holdings() -> list[dict[str, Any]]:
         current = num(prices.get(sid), num(pos.get("current_price"), num(pos.get("entry_price"))))
         cost = num(pos.get("cost_price"), num(pos.get("entry_price")))
         pnl_pct = ((current - cost) / cost * 100) if current is not None and cost else None
+        pnl_amount = (current - cost) * remain if current is not None and cost is not None else None
         holdings.append({
             "stock_id": sid,
             "name": pos.get("name") or "",
             "shares": remain,
             "cost": cost,
             "current": current,
+            "pnl_amount": pnl_amount,
             "pnl_pct": pnl_pct,
             "comment": holding_comment(pnl_pct),
         })
@@ -146,25 +158,49 @@ def section_title(title: str, subtitle: str) -> dict:
 
 def holding_row(item: dict[str, Any]) -> dict:
     pnl = num(item.get("pnl_pct"))
-    pnl_color = FLEX_PRIMARY if pnl is not None and pnl >= 0 else "#d93025"
+    pnl_color = FLEX_GAIN if pnl is not None and pnl >= 0 else FLEX_LOSS
+    pnl_text = f"{fmt_money(item.get('pnl_amount'))} ({fmt_pct(pnl)})" if pnl is not None else "--"
     return {
         "type": "box",
-        "layout": "horizontal",
-        "spacing": "sm",
+        "layout": "vertical",
+        "spacing": "xs",
         "contents": [
             {
                 "type": "box",
-                "layout": "vertical",
-                "flex": 3,
+                "layout": "horizontal",
+                "spacing": "sm",
                 "contents": [
-                    flex_text(f"{item['stock_id']} {item['name']}", "sm", FLEX_TEXT, weight="bold"),
-                    flex_text(f"成本 {fmt_price(item.get('cost'))} / 現價 {fmt_price(item.get('current'))}", "xxs", FLEX_MUTED),
+                    flex_text(
+                        f"{item['stock_id']} {item['name']}  現價 {fmt_price(item.get('current'))}",
+                        "sm",
+                        FLEX_TEXT,
+                        weight="bold",
+                        flex=5,
+                    ),
+                    flex_text(
+                        pnl_text,
+                        "sm",
+                        pnl_color,
+                        weight="bold",
+                        align="end",
+                        flex=4,
+                        wrap=True,
+                        maxLines=2,
+                        adjustMode="shrink-to-fit",
+                    ),
                 ],
             },
-            flex_text(fmt_pct(pnl), "sm", pnl_color, weight="bold", align="end", flex=1),
-            flex_text(f"| {item['comment']}", "xs", FLEX_MUTED, align="end", flex=2),
+            {
+                "type": "box",
+                "layout": "horizontal",
+                "spacing": "sm",
+                "contents": [
+                    flex_text(f"{item['shares']:,}股 / 成本 {fmt_price(item.get('cost'))}", "xs", FLEX_MUTED, flex=5),
+                    flex_text(f"| {item['comment']}", "xs", FLEX_MUTED, align="end", flex=4),
+                ],
+            },
         ],
-        "paddingAll": "4px",
+        "paddingAll": "5px",
     }
 
 

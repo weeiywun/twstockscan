@@ -636,6 +636,7 @@ tbody tr:hover .spark-bar{opacity:.9}
 .fd-panel:not(.fd-bias-detail) > .fd-panel-title{padding:12px 14px 0}
 .fd-panel:not(.fd-bias-detail) > .fd-panel-meta{padding:0 14px 8px}
 .fd-table{min-width:520px}
+.fd-margin-table .fd-table{min-width:500px}
 .fd-market-flow .fd-panel:first-child .fd-table{min-width:460px}
 .fd-market-flow .fd-panel:nth-child(2) .fd-table{min-width:420px}
 .fd-market-flow .fd-panel:nth-child(3) .fd-table{min-width:220px}
@@ -882,13 +883,41 @@ tbody tr:hover .spark-bar{opacity:.9}
   .fd-header{flex-direction:column}
   .fd-hero-grid{grid-template-columns:1fr 1fr}
   .fd-bias-detail{grid-column:1 / -1}
-  .fd-grid-6,.fd-grid-4,.fd-grid-3,.fd-grid-2,.fd-market-flow,.fd-focus-grid,.fd-hero-grid-simple,.fd-top-grid,.fd-core-grid{grid-template-columns:1fr 1fr}
+  .fd-grid-6,.fd-grid-4,.fd-grid-3,.fd-grid-2,.fd-market-flow,.fd-focus-grid,.fd-hero-grid-simple,.fd-top-grid{grid-template-columns:1fr 1fr}
+  .fd-core-grid{grid-template-columns:1fr}
   .fd-market-brief-grid{grid-template-columns:1fr 1fr}
   .fd-market-brief-grid-tw,.fd-market-brief-grid-us{grid-template-columns:1fr 1fr}
   .fd-inline-section{grid-template-columns:1fr}
   .fd-chart-summary{grid-template-columns:1fr}
   .fd-market-flow .fd-panel:first-child{grid-column:1 / -1}
-  .fd-table{min-width:560px}
+  .fd-core-grid .table-scroll{overflow:visible}
+  .fd-core-grid .fd-table{
+    min-width:0;width:100%;border-collapse:separate;border-spacing:0 8px;
+  }
+  .fd-core-grid .fd-table thead{display:none}
+  .fd-core-grid .fd-table tbody,
+  .fd-core-grid .fd-table tr,
+  .fd-core-grid .fd-table td{display:block;width:100%}
+  .fd-core-grid .fd-table tr{
+    padding:8px 10px;border:1px solid var(--border);border-radius:8px;background:var(--bg2);
+  }
+  .fd-core-grid .fd-table td{
+    display:flex;align-items:baseline;justify-content:space-between;gap:14px;
+    padding:5px 0;border-bottom:1px solid var(--border);text-align:right;
+  }
+  .fd-core-grid .fd-table td:last-child{border-bottom:none}
+  .fd-core-grid .fd-table td::before{
+    content:attr(data-label);font-family:var(--sans);font-size:11px;font-weight:600;
+    color:var(--text3);text-align:left;white-space:nowrap;
+  }
+  .fd-core-grid .fd-table td[colspan]{
+    display:block;text-align:center;border-bottom:none;
+  }
+  .fd-core-grid .fd-table td[colspan]::before{content:none}
+  .fd-core-grid .fd-oi-cell{
+    grid-template-columns:auto auto;justify-content:end;
+  }
+  .fd-table{min-width:0}
 
   .summary-row,
   .perf-summary-row{grid-template-columns:1fr 1fr}

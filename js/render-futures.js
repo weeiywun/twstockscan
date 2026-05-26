@@ -116,15 +116,15 @@ function fdFuturesCombinedRows(dayTx, nightTx) {
     const label = key === 'total' ? '合計' : (day.label || night.label || key);
     return `
       <tr>
-        <td>${label}</td>
-        <td class="mono ${fdTone(day.net_lots)}">${fdSigned(day.net_lots)}</td>
-        <td class="mono ${fdTone(day.oi_net_lots)}">
+        <td data-label="法人">${label}</td>
+        <td data-label="日盤買賣超" class="mono ${fdTone(day.net_lots)}">${fdSigned(day.net_lots)}</td>
+        <td data-label="日盤未平倉淨額" class="mono ${fdTone(day.oi_net_lots)}">
           <span class="fd-oi-cell">
             <span class="fd-oi-main">${fdSigned(day.oi_net_lots)}</span>
             ${fdChangeChip(oiChange, '口')}
           </span>
         </td>
-        <td class="mono ${fdTone(night.net_lots)}">${fdSigned(night.net_lots)}</td>
+        <td data-label="夜盤買賣超" class="mono ${fdTone(night.net_lots)}">${fdSigned(night.net_lots)}</td>
       </tr>`;
   }).join('');
 }
@@ -135,11 +135,11 @@ function fdStockRows(stock) {
     const t = row.traders || {};
     return `
       <tr>
-        <td class="mono">${row.date || '—'}</td>
-        <td class="mono ${fdTone(t.foreign?.net_amount)}">${fdSigned((t.foreign?.net_amount || 0) / 100000000, 2)}</td>
-        <td class="mono ${fdTone(t.investment_trust?.net_amount)}">${fdSigned((t.investment_trust?.net_amount || 0) / 100000000, 2)}</td>
-        <td class="mono ${fdTone(t.dealer?.net_amount)}">${fdSigned((t.dealer?.net_amount || 0) / 100000000, 2)}</td>
-        <td class="mono ${fdTone(t.total?.net_amount)}">${fdSigned((t.total?.net_amount || 0) / 100000000, 2)}</td>
+        <td data-label="日期" class="mono">${row.date || '—'}</td>
+        <td data-label="外資" class="mono ${fdTone(t.foreign?.net_amount)}">${fdSigned((t.foreign?.net_amount || 0) / 100000000, 2)}</td>
+        <td data-label="投信" class="mono ${fdTone(t.investment_trust?.net_amount)}">${fdSigned((t.investment_trust?.net_amount || 0) / 100000000, 2)}</td>
+        <td data-label="自營商" class="mono ${fdTone(t.dealer?.net_amount)}">${fdSigned((t.dealer?.net_amount || 0) / 100000000, 2)}</td>
+        <td data-label="合計" class="mono ${fdTone(t.total?.net_amount)}">${fdSigned((t.total?.net_amount || 0) / 100000000, 2)}</td>
       </tr>`;
   }).join('');
 }
@@ -246,57 +246,41 @@ function fdSeriesChart({ title, meta, lines, summary, className = '' }) {
     </section>`;
 }
 
-function fdRetailChart(retailDash) {
-  const mtx = (retailDash?.rows || []).find(row => row.key === 'mtx');
-  const tmf = (retailDash?.rows || []).find(row => row.key === 'tmf');
-  const taiExHistory = DATA.market_index_data?.history?.TAIEX || {};
-  const baseHistory = (mtx?.history || []).slice().reverse();
-  const points = baseHistory.map(item => ({
-    date: item.date,
-    mtx: Number(item.ratio),
-    tmf: Number((tmf?.history || []).find(row => row.date === item.date)?.ratio),
-    taiex: Number(taiExHistory[item.date]),
-  })).filter(item => item.date && !Number.isNaN(item.mtx));
-  const last = points[points.length - 1] || {};
-  const firstIndex = points.map(p => p.taiex).find(v => !Number.isNaN(v));
-  const indexChange = firstIndex && last.taiex ? (last.taiex / firstIndex - 1) * 100 : null;
-  return fdSeriesChart({
-    title: '散戶多空比 × 大盤走勢',
-    meta: points.length ? `${points[0].date} - ${last.date}` : '',
-    lines: [
-      { key: 'retail', label: '小台', points: points.map(p => ({ date: p.date, value: p.mtx })) },
-      { key: 'micro', label: '微台', points: points.map(p => ({ date: p.date, value: p.tmf })) },
-      { key: 'index', label: '大盤', points: points.map(p => ({ date: p.date, value: Number.isNaN(p.taiex) ? null : indexChange == null ? null : (p.taiex / firstIndex - 1) * 100 })) },
-    ],
-    summary: `
-      <div>${mtx?.label || '小台散戶多空比'}：<b class="${fdTone(last.mtx)}">${fdPct(last.mtx)}</b></div>
-      <div>${tmf?.label || '微台散戶多空比'}：<b class="${fdTone(last.tmf)}">${fdPct(last.tmf)}</b></div>
-      <div>大盤區間：<b class="${fdTone(indexChange)}">${fdPct(indexChange)}</b></div>`,
-  });
+function fdMarginRows(marginData) {
+  const rows = (marginData?.history || []).slice(-5).reverse();
+  if (!rows.length) {
+    return '<tr><td colspan="5" style="text-align:center;color:var(--text3)">尚無融資餘額資料</td></tr>';
+  }
+  return rows.map(row => {
+    const twseChange = row.twse?.finance_balance_lots != null && row.twse?.previous_balance_lots != null
+      ? row.twse.finance_balance_lots - row.twse.previous_balance_lots
+      : null;
+    const tpexChange = row.tpex?.finance_balance_lots != null && row.tpex?.previous_balance_lots != null
+      ? row.tpex.finance_balance_lots - row.tpex.previous_balance_lots
+      : null;
+    return `
+      <tr>
+        <td data-label="日期" class="mono">${row.date || '—'}</td>
+        <td data-label="融資餘額" class="mono">${row.total_finance_balance_lots == null ? '—' : fdNum(row.total_finance_balance_lots / 10000, 1)}</td>
+        <td data-label="日增減" class="mono ${fdTone(row.total_change_lots)}">${row.total_change_lots == null ? '—' : fdSigned(row.total_change_lots / 10000, 1)}</td>
+        <td data-label="上市增減" class="mono ${fdTone(twseChange)}">${twseChange == null ? '—' : fdSigned(twseChange / 10000, 1)}</td>
+        <td data-label="上櫃增減" class="mono ${fdTone(tpexChange)}">${tpexChange == null ? '—' : fdSigned(tpexChange / 10000, 1)}</td>
+      </tr>`;
+  }).join('');
 }
 
-function fdMarginChart(marginData) {
-  const history = (marginData?.history || []).slice(-20);
-  const latest = history[history.length - 1] || {};
-  return fdSeriesChart({
-    title: '融資餘額',
-    meta: marginData?.date ? `${marginData.date} · 上市 + 上櫃合計` : '等待更新',
-    className: 'fd-margin-chart',
-    lines: [
-      {
-        key: 'margin',
-        label: '融資餘額',
-        points: history.map(row => ({
-          date: row.date,
-          value: row.total_finance_balance_lots == null ? null : row.total_finance_balance_lots / 10000,
-        })),
-      },
-    ],
-    summary: `
-      <div>餘額：<b>${latest.total_finance_balance_lots == null ? '—' : `${fdNum(latest.total_finance_balance_lots / 10000, 1)}萬張`}</b></div>
-      <div>日增減：<b class="${fdTone(latest.total_change_lots)}">${latest.total_change_lots == null ? '—' : `${fdSigned(latest.total_change_lots / 10000, 1)}萬張`}</b></div>
-      <div>資料日：<b>${latest.date || '—'}</b></div>`,
-  });
+function fdMarginTable(marginData) {
+  const latest = marginData?.summary || {};
+  const summary = latest.date
+    ? `餘額 ${latest.total_finance_balance_lots == null ? '—' : fdNum(latest.total_finance_balance_lots / 10000, 1) + ' 萬張'} · 日增減 ${latest.total_change_lots == null ? '—' : fdSigned(latest.total_change_lots / 10000, 1) + ' 萬張'}`
+    : '等待更新';
+  return fdTable(
+    '融資餘額變化',
+    `${marginData?.date || '等待更新'} · ${summary} · 單位：萬張`,
+    ['日期', '融資餘額', '日增減', '上市增減', '上櫃增減'],
+    fdMarginRows(marginData),
+    'fd-margin-table'
+  );
 }
 
 function renderFutureDashboard(strat, main) {
@@ -359,10 +343,6 @@ function renderFutureDashboard(strat, main) {
         </section>
       </div>
 
-      <div class="fd-grid fd-sentiment-grid">
-        ${fdRetailChart(retailDash)}
-      </div>
-
       <div class="fd-grid fd-core-grid">
         ${fdTable(
           '三大法人現貨買賣超金額',
@@ -370,7 +350,7 @@ function renderFutureDashboard(strat, main) {
           ['日期', '外資', '投信', '自營商', '合計'],
           stock ? fdStockRows(stock) : '<tr><td colspan="5" style="text-align:center;color:var(--text3)">尚無 TWSE 現貨法人金額資料</td></tr>'
         )}
-        ${fdMarginChart(marginData)}
+        ${fdMarginTable(marginData)}
         ${fdTable(
           '台指期法人多空（日 / 夜）',
           `${dayTx?.date || '等待日盤'} / ${nightTx?.date || '等待夜盤'} · TAIFEX`,
