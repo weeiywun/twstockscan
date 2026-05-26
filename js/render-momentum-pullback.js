@@ -1,5 +1,6 @@
 let momentumPullbackSortCol = 'score';
 let momentumPullbackSortAsc = false;
+let momentumPullbackZoneFilter = 'all';
 
 function renderMomentumPullback(strat, main) {
   const model = DATA.momentum_pullback_data || {};
@@ -37,7 +38,10 @@ function renderMomentumPullback(strat, main) {
     return asc ? cmp : -cmp;
   }
 
-  const rowsData = rawRows.slice().sort((a, b) => compareRows(a, b, momentumPullbackSortCol, momentumPullbackSortAsc));
+  const filteredRows = momentumPullbackZoneFilter === 'all'
+    ? rawRows.slice()
+    : rawRows.filter(row => row.fib_zone === momentumPullbackZoneFilter);
+  const rowsData = filteredRows.sort((a, b) => compareRows(a, b, momentumPullbackSortCol, momentumPullbackSortAsc));
   const sortIcon = col => `<span class="sort-icon">${momentumPullbackSortCol === col ? (momentumPullbackSortAsc ? '↑' : '↓') : '·'}</span>`;
   const fmt = (v, digits = 1) => v == null || Number.isNaN(Number(v)) ? '—' : Number(v).toFixed(digits);
   const fmtPct = (v, digits = 1) => v == null || Number.isNaN(Number(v)) ? '—' : `${Number(v) > 0 ? '+' : ''}${Number(v).toFixed(digits)}%`;
@@ -47,6 +51,15 @@ function renderMomentumPullback(strat, main) {
     '38.2%-50%': 'var(--amber)',
     '50%-61.8%': 'var(--red)',
   }[zone] || 'var(--text2)');
+  const zoneButton = (zone, label) => {
+    const count = zone === 'all' ? rawRows.length : countByZone(zone);
+    if (zone !== 'all' && count === 0) return '';
+    const active = momentumPullbackZoneFilter === zone;
+    const activeStyle = active
+      ? 'background:var(--green);border-color:var(--green);color:#fff'
+      : 'background:var(--bg);border-color:var(--border);color:var(--text2)';
+    return `<button onclick="setMomentumPullbackZoneFilter('${zone}')" style="${activeStyle};border-width:1px;border-style:solid;border-radius:6px;padding:6px 10px;font-size:12px;cursor:pointer">${label} ${count}</button>`;
+  };
 
   const body = rowsData.map((row, idx) => {
     const tvSym = getTVSymbol(row);
@@ -67,17 +80,19 @@ function renderMomentumPullback(strat, main) {
         <div class="stock-industry">${row.industry || (row.sources || []).join(' / ')}</div>
       </td>
       <td><span style="font-family:var(--mono);font-weight:700;color:var(--green)">${row.score ?? '—'}</span></td>
+      <td><span style="font-family:var(--mono);font-size:12px;font-weight:700">${fmt(row.close, 1)}</span></td>
+      <td><span style="font-family:var(--mono);font-size:12px;color:var(--text)">${Number(row.volume_lots || 0).toLocaleString()} 張</span></td>
+      <td><span style="font-family:var(--mono);font-size:12px;color:var(--text2)">${Number(row.vol20 || 0).toLocaleString()} 張</span></td>
       <td>
         <span class="tag-badge" style="color:${zoneColor(row.fib_zone)};border-color:rgba(80,90,110,.35)">${row.fib_zone || '—'}</span><br>
         <span style="font-size:11px;color:var(--text3)">回落 ${fmt(row.pullback_from_high_pct, 1)}%</span>
       </td>
       <td>
-        <span style="font-family:var(--mono);font-size:12px">${maText}</span><br>
-        <span style="font-size:11px;color:var(--text3)">收盤 ${fmt(row.close, 1)}</span>
+        <span style="font-family:var(--mono);font-size:12px">${maText}</span>
       </td>
       <td>
         <span style="font-family:var(--mono);font-size:12px;color:var(--text2)">${volText}</span><br>
-        <span style="font-size:11px;color:var(--text3)">${Number(row.volume_lots || 0).toLocaleString()} 張</span>
+        <span style="font-size:11px;color:var(--text3)">點火 ${Number(row.attack_volume_lots || 0).toLocaleString()} 張</span>
       </td>
       <td><span class="tag-badge" style="color:var(--text);border-color:rgba(80,90,110,.35)">${row.reversal_signal || '等待轉強'}</span></td>
       <td>
@@ -86,7 +101,7 @@ function renderMomentumPullback(strat, main) {
       </td>
     </tr>
     <tr class="expand-row" id="expand-mpb-${row.stock_id}" style="display:none">
-      <td colspan="8">
+      <td colspan="11">
         <div class="expand-content">
           <div class="expand-section" style="flex:1;min-width:190px">
             <h4>推升波</h4>
@@ -152,7 +167,13 @@ function renderMomentumPullback(strat, main) {
     <div class="table-wrap">
       <div class="table-toolbar">
         <span class="table-title">動能回測候選</span>
-        <div class="toolbar-right"><span class="updated-tag">更新：${strat.dataUpdated}</span></div>
+        <div class="toolbar-right"><span class="updated-tag">顯示：${rowsData.length} / ${rawRows.length}</span><span class="updated-tag">更新：${strat.dataUpdated}</span></div>
+      </div>
+      <div class="sub-filter-row" style="padding:10px 14px;border-bottom:1px solid var(--border);display:flex;gap:8px;flex-wrap:wrap">
+        ${zoneButton('all', '全部')}
+        ${zoneButton('23.6%-38.2%', '強勢回測')}
+        ${zoneButton('38.2%-50%', '健康回測')}
+        ${zoneButton('50%-61.8%', '深回測')}
       </div>
       <div class="table-scroll ${rowsData.length > 10 ? 'table-vscroll' : ''}">
         <table>
@@ -161,6 +182,9 @@ function renderMomentumPullback(strat, main) {
               <th>#</th>
               <th onclick="momentumPullbackSort('stock_id')" style="cursor:pointer">代號 / 名稱${sortIcon('stock_id')}</th>
               <th onclick="momentumPullbackSort('score')" style="cursor:pointer">分數${sortIcon('score')}</th>
+              <th onclick="momentumPullbackSort('close')" style="cursor:pointer">收盤${sortIcon('close')}</th>
+              <th onclick="momentumPullbackSort('volume_lots')" style="cursor:pointer">成交量${sortIcon('volume_lots')}</th>
+              <th onclick="momentumPullbackSort('vol20')" style="cursor:pointer">20日均量${sortIcon('vol20')}</th>
               <th onclick="momentumPullbackSort('fib_zone')" style="cursor:pointer">回測區${sortIcon('fib_zone')}</th>
               <th onclick="momentumPullbackSort('ma_confluence')" style="cursor:pointer">均線共振${sortIcon('ma_confluence')}</th>
               <th onclick="momentumPullbackSort('volume_cooldown_pct')" style="cursor:pointer">回測量能${sortIcon('volume_cooldown_pct')}</th>
@@ -178,5 +202,10 @@ function renderMomentumPullback(strat, main) {
 function momentumPullbackSort(col) {
   if (momentumPullbackSortCol === col) momentumPullbackSortAsc = !momentumPullbackSortAsc;
   else { momentumPullbackSortCol = col; momentumPullbackSortAsc = col === 'risk_to_support_pct' || col === 'ma_confluence'; }
+  renderStrategy();
+}
+
+function setMomentumPullbackZoneFilter(zone) {
+  momentumPullbackZoneFilter = zone;
   renderStrategy();
 }
