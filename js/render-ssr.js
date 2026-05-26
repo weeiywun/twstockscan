@@ -128,9 +128,15 @@ function buildSSRRows() {
 
 function renderSSR(strat, main) {
   const rows = buildSSRRows();
+  const momentumData = DATA.momentum_candidates_data || {};
+  const focusRows = momentumData.focus_results || [];
+  // DISABLED / BACKUP - DO NOT DELETE:
+  // 10:00 intraday volume alerts are paused. Keep the renderer and data
+  // loading in place so the feature can be restored without rebuilding it.
+  const SHOW_INTRADAY_ALERT_PANEL = false;
   const intraday = DATA.intraday_volume_pullback_data || [];
   const intradayMeta = DATA.intraday_volume_pullback_meta || {};
-  let filter = window._ssrFilter || 'c5_2';
+  let filter = window._ssrFilter || (focusRows.length ? 'focus' : 'c5_2');
   const sortCol = window._ssrSortCol || 'score';
   const sortAsc = window._ssrSortAsc !== undefined ? window._ssrSortAsc : false;
   const intradaySortCol = window._ssrIntradaySortCol || 'intraday_vol_ratio_to_10d';
@@ -157,6 +163,7 @@ function renderSSR(strat, main) {
   window.ssrIntradaySort = ssrIntradaySort;
 
   function matchFilter(row) {
+    if (filter === 'focus') return false;
     if (filter === 'triple') return row.strategy_count >= 3;
     if (filter === 'chips_vcp') return row.chips && row.vcp;
     if (filter === 'chips_breakout') return row.chips && row.breakout;
@@ -184,6 +191,24 @@ function renderSSR(strat, main) {
     return `<span class="sort-icon">${sortCol === col ? (sortAsc ? '↑' : '↓') : '·'}</span>`;
   }
 
+  function focusValue(row, col) {
+    const m = row.metrics || {};
+    if (col === 'primary_metric') return m.ignition_vol_ratio ?? m.today_vol_ratio ?? m.track_vol_ratio ?? 0;
+    if (col === 'track_pnl_pct') return m.track_pnl_pct ?? -999;
+    return row[col] ?? m[col];
+  }
+
+  function compareFocus(a, b) {
+    const va = focusValue(a, sortCol);
+    const vb = focusValue(b, sortCol);
+    const na = Number(va);
+    const nb = Number(vb);
+    const cmp = !Number.isNaN(na) && !Number.isNaN(nb)
+      ? na - nb
+      : String(va ?? '').localeCompare(String(vb ?? ''));
+    return sortAsc ? cmp : -cmp;
+  }
+
   function intradaySortIcon(col) {
     return `<span class="sort-icon">${intradaySortCol === col ? (intradaySortAsc ? '↑' : '↓') : '·'}</span>`;
   }
@@ -198,6 +223,7 @@ function renderSSR(strat, main) {
   const foreignBreakoutCount = rows.filter(r => r.foreign && r.breakout).length;
   const instConfluenceCount = rows.filter(r => r.trust && r.foreign).length;
   const ssrFilterOptions = [
+    { key: 'focus', label: '精選觀察', count: focusRows.length, always: focusRows.length > 0 },
     { key: 'c5_2', label: 'C5取2', count: rows.length, always: true },
     { key: 'triple', label: '三組以上', count: tripleCount },
     { key: 'inst_confluence', label: '投信+外資', count: instConfluenceCount },
@@ -217,6 +243,7 @@ function renderSSR(strat, main) {
   const ssrFilterButtons = visibleSsrFilters.map(opt => `
         <button class="view-btn ${filter === opt.key ? 'active' : ''}" onclick="setSSRFilter('${opt.key}')">${opt.label} ${opt.count}</button>`).join('');
   const filtered = rows.filter(matchFilter).sort(compare);
+  const filteredFocus = focusRows.slice().sort(compareFocus);
   const topIndustry = filtered.reduce((acc, row) => {
     const key = row.industry || '未分類';
     acc[key] = (acc[key] || 0) + 1;
@@ -312,6 +339,86 @@ function renderSSR(strat, main) {
 
   function fmtPct(v, digits = 2) {
     return v == null || Number.isNaN(Number(v)) ? '—' : `${Number(v) >= 0 ? '+' : ''}${Number(v).toFixed(digits)}%`;
+  }
+
+  function focusSourceLabel(src) {
+    return ({
+      chips: '大戶',
+      volume_signal: '量增',
+      right_top_track: '突破追蹤',
+      volume_pullback: '量增回測',
+      stock_analysis: '標的追蹤',
+    }[src] || src);
+  }
+
+  function focusMetricText(row) {
+    const m = row.metrics || {};
+    const parts = [];
+    if (m.week_chg_pct != null) parts.push(`週 ${fmtPct(m.week_chg_pct, 1)}`);
+    if (m.bbw != null) parts.push(`BBW ${fmtNum(m.bbw, 1)}`);
+    if (m.track_pnl_pct != null) parts.push(`追蹤 ${fmtPct(m.track_pnl_pct, 1)}`);
+    return parts.join(' / ') || '—';
+  }
+
+  function renderFocusTable() {
+    const rowsHTML = filteredFocus.map(row => {
+      const m = row.metrics || {};
+      const tvSymbol = getTVSymbol(row);
+      const vol = m.today_vol_ratio ?? m.ignition_vol_ratio ?? m.track_vol_ratio;
+      const track = m.track_pnl_pct;
+      const statusColor = row.status === '再啟動'
+        ? 'var(--green)'
+        : (row.status === '點火首日' ? 'var(--amber)' : 'var(--text)');
+      return `<tr>
+        <td>
+          <a href="https://www.tradingview.com/chart/?symbol=${tvSymbol}"
+             onclick="openTV('${tvSymbol}', event)" style="text-decoration:none;display:inline-block">
+            <div class="stock-code" style="display:flex;align-items:center;gap:5px">
+              ${row.stock_id}<span style="font-size:9px;opacity:.45;font-family:var(--mono)">↗</span>
+            </div>
+            <div class="stock-name">${row.name || '—'}</div>
+          </a>
+          <div class="stock-industry" style="font-size:10px;color:var(--text3)">${row.industry || '—'}</div>
+        </td>
+        <td><span class="tag-badge" style="color:${statusColor};border-color:rgba(80,90,110,.35)">${row.status || '—'}</span></td>
+        <td><span style="font-family:var(--mono);font-weight:700;color:var(--green)">${fmtNum(row.score, 0)}</span></td>
+        <td><span class="price-cell">${fmtNum(row.close, 1)}</span></td>
+        <td><span style="font-family:var(--mono);color:var(--amber);font-weight:700">${vol != null ? Number(vol).toFixed(2) + 'x' : '—'}</span></td>
+        <td><span class="${Number(track || 0) >= 0 ? 'pos' : 'neg'}" style="font-family:var(--mono)">${track != null ? fmtPct(track, 1) : '—'}</span></td>
+        <td>${(row.sources || []).map(s => `<span class="tag-badge" style="color:var(--text2);border-color:rgba(80,90,110,.35)">${focusSourceLabel(s)}</span>`).join('')}</td>
+        <td style="font-size:11px;color:var(--text2);line-height:1.6">${focusMetricText(row)}</td>
+      </tr>`;
+    }).join('');
+
+    return `<div class="table-wrap">
+      <div class="table-toolbar">
+        <span class="table-title">精選觀察</span>
+        <div class="toolbar-right">
+          <span class="updated-tag">顯示 ${filteredFocus.length} / ${momentumData.summary?.total || focusRows.length}</span>
+          <span class="updated-tag">更新：${(momentumData.updated || '').slice(0, 10) || strat.dataUpdated}</span>
+        </div>
+      </div>
+      <div style="padding:10px 14px;border-bottom:1px solid var(--border);font-size:12px;color:var(--text3);line-height:1.7">
+        以 A 級候選為基礎，保留量增回測 / 再啟動，並要求大戶或突破追蹤脈絡；排除過熱與已延伸過遠的標的。
+      </div>
+      <div class="table-scroll ${filteredFocus.length > 10 ? 'table-vscroll' : ''}">
+        <table>
+          <thead>
+            <tr>
+              <th onclick="ssrSort('stock_id')" style="cursor:pointer">代號 / 名稱${sortIcon('stock_id')}</th>
+              <th onclick="ssrSort('status')" style="cursor:pointer">狀態${sortIcon('status')}</th>
+              <th onclick="ssrSort('score')" style="cursor:pointer">分數${sortIcon('score')}</th>
+              <th onclick="ssrSort('close')" style="cursor:pointer">收盤${sortIcon('close')}</th>
+              <th onclick="ssrSort('primary_metric')" style="cursor:pointer">量比${sortIcon('primary_metric')}</th>
+              <th onclick="ssrSort('track_pnl_pct')" style="cursor:pointer">追蹤${sortIcon('track_pnl_pct')}</th>
+              <th>來源</th>
+              <th>備註</th>
+            </tr>
+          </thead>
+          <tbody>${rowsHTML || `<tr><td colspan="8" style="text-align:center;color:var(--text3);padding:28px">目前沒有精選觀察標的</td></tr>`}</tbody>
+        </table>
+      </div>
+    </div>`;
   }
 
   function strategyBadges(row) {
@@ -418,9 +525,9 @@ function renderSSR(strat, main) {
 
       <div class="summary-row">
         <div class="summary-card">
-          <div class="summary-label">10:00 預警</div>
-          <div class="summary-value green">${intraday.length}</div>
-          <div class="summary-sub">盤中量增回測達標</div>
+          <div class="summary-label">精選觀察</div>
+          <div class="summary-value green">${focusRows.length}</div>
+          <div class="summary-sub">A 級 + 回測 / 再啟動</div>
         </div>
         <div class="summary-card">
           <div class="summary-label">C5 取 2</div>
@@ -439,13 +546,13 @@ function renderSSR(strat, main) {
         </div>
       </div>
 
-      ${renderIntradaySSRPanel()}
+      ${SHOW_INTRADAY_ALERT_PANEL ? renderIntradaySSRPanel() : ''}
 
       <div style="display:flex;gap:8px;padding:0 0 10px 0;flex-wrap:wrap">
         ${ssrFilterButtons}
       </div>
 
-      ${filtered.length === 0 ? emptyHTML : `
+      ${filter === 'focus' ? renderFocusTable() : (filtered.length === 0 ? emptyHTML : `
         <div class="table-wrap">
           <div class="table-toolbar">
             <span class="table-title">SSR 共振標的池</span>
@@ -492,6 +599,6 @@ function renderSSR(strat, main) {
               </tbody>
             </table>
           </div>
-        </div>`}
+        </div>`)}
     </div>`;
 }

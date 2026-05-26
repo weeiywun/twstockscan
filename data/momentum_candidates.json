@@ -1,6 +1,6 @@
 {
   "strategy_id": "momentum_candidates",
-  "updated": "2026-05-23T11:34:59+08:00",
+  "updated": "2026-05-26T17:20:25+08:00",
   "model": {
     "sources": [
       "chips_big_holder",
@@ -15,6 +15,24 @@
     ],
     "score_min": 35,
     "max_extended_pct": 15.0,
+    "focus_rules": {
+      "priority_level": "A",
+      "required_any": [
+        "volume_pullback",
+        "pullback_status=reentry"
+      ],
+      "required_context_any": [
+        "right_top_track",
+        "chips"
+      ],
+      "volume_ratio_range": [
+        1.2,
+        5.0
+      ],
+      "week_chg_pct_max": 18.0,
+      "bbw_max": 14.0,
+      "track_pnl_pct_max": 14.0
+    },
     "priority_rules": {
       "A": [
         "rev_score >= 8 and chip_score >= 6",
@@ -28,123 +46,472 @@
     }
   },
   "summary": {
-    "total": 92,
+    "total": 100,
     "top10": 10,
-    "priority_a": 41,
-    "priority_b": 45,
-    "priority_c": 6,
-    "reentry": 38,
-    "ignition": 8,
-    "pullback": 15
+    "priority_a": 27,
+    "priority_b": 70,
+    "priority_c": 3,
+    "focus": 24,
+    "reentry": 18,
+    "ignition": 9,
+    "pullback": 37
   },
-  "results": [
+  "focus_results": [
     {
-      "stock_id": "4306",
-      "name": "炎洲",
-      "industry": "塑膠",
+      "stock_id": "2353",
+      "name": "宏卅卅",
+      "industry": "電腦",
       "market": "TWSE",
-      "close": 14.05,
-      "status": "再啟動",
-      "status_rank": 1,
+      "close": 32.5,
+      "status": "點火首日",
+      "status_rank": 2,
       "sources": [
         "chips",
         "volume_signal",
         "right_top_track",
-        "volume_pullback"
+        "volume_pullback",
+        "stock_analysis"
       ],
       "tags": [
-        "持續成長",
-        "雙軌觸發"
+        "持續成長"
+      ],
+      "score_parts": {
+        "chips": 18,
+        "ignition": 33,
+        "breakout_track": 23,
+        "pullback": 35,
+        "follow": 8
+      },
+      "metrics": {
+        "market_cap": 562.7,
+        "bbw": 8.12,
+        "week_chg_pct": 14.95,
+        "big_pct_1000": 36.02,
+        "big_pct_400": 39.99,
+        "today_vol_ratio": 3.43,
+        "vol_today": 120325,
+        "vol_10d_avg": 35042.0,
+        "track_pnl_pct": 7.95,
+        "track_vol_ratio": 1.16,
+        "entry_price": 29.55,
+        "days_remaining": 9,
+        "pullback_status": "ignition",
+        "pullback_score": 81,
+        "ignition_vol_ratio": 3.43,
+        "pullback_from_ignition_close_pct": 0.0,
+        "days_since_ignition": 0,
+        "support_ok": true,
+        "volume_cools": false,
+        "ai_pnl_pct": 12.85,
+        "rev_score": 10.0,
+        "chip_score": 3.6,
+        "trend_score": 4.3
+      },
+      "score": 135.0,
+      "source_count": 5,
+      "risk_flags": [],
+      "priority_level": "A",
+      "priority_rank": 1,
+      "priority_reason": [
+        "大戶池放量>=3x"
+      ],
+      "focus_candidate": true
+    },
+    {
+      "stock_id": "3708",
+      "name": "上緯投控",
+      "industry": "綠能",
+      "market": "TWSE",
+      "close": 125.0,
+      "status": "點火首日",
+      "status_rank": 2,
+      "sources": [
+        "chips",
+        "volume_signal",
+        "right_top_track",
+        "volume_pullback",
+        "stock_analysis"
+      ],
+      "tags": [
+        "持續成長"
+      ],
+      "score_parts": {
+        "chips": 22,
+        "ignition": 33,
+        "breakout_track": 15,
+        "pullback": 35,
+        "follow": 0.0
+      },
+      "metrics": {
+        "market_cap": 71.3,
+        "bbw": 12.56,
+        "week_chg_pct": 13.85,
+        "big_pct_1000": 43.76,
+        "big_pct_400": 55.16,
+        "today_vol_ratio": 3.53,
+        "vol_today": 4630,
+        "vol_10d_avg": 1311.0,
+        "track_pnl_pct": 0.0,
+        "track_vol_ratio": 0.85,
+        "entry_price": 131.5,
+        "days_remaining": 11,
+        "pullback_status": "ignition",
+        "pullback_score": 81,
+        "ignition_vol_ratio": 3.53,
+        "pullback_from_ignition_close_pct": 0.0,
+        "days_since_ignition": 0,
+        "support_ok": true,
+        "volume_cools": false,
+        "ai_pnl_pct": 2.88,
+        "rev_score": 4.0,
+        "chip_score": 8.9,
+        "trend_score": 9.0
+      },
+      "score": 117.0,
+      "source_count": 5,
+      "risk_flags": [],
+      "priority_level": "A",
+      "priority_rank": 1,
+      "priority_reason": [
+        "大戶池放量>=3x"
+      ],
+      "focus_candidate": true
+    },
+    {
+      "stock_id": "2421",
+      "name": "建準",
+      "industry": "電零",
+      "market": "TWSE",
+      "close": 162.5,
+      "status": "再啟動",
+      "status_rank": 1,
+      "sources": [
+        "chips",
+        "right_top_track",
+        "volume_pullback",
+        "stock_analysis"
+      ],
+      "tags": [
+        "雙軌觸發",
+        "單周增幅"
       ],
       "score_parts": {
         "chips": 26,
-        "ignition": 28,
         "breakout_track": 15,
-        "pullback": 41
+        "pullback": 53,
+        "follow": 0.0
       },
       "metrics": {
-        "market_cap": 64.4,
-        "bbw": 8.43,
-        "week_chg_pct": 5.64,
-        "big_pct_1000": 48.51,
-        "big_pct_400": 54.3,
-        "today_vol_ratio": 1.93,
-        "vol_today": 2841,
-        "vol_10d_avg": 1475.0,
-        "track_pnl_pct": 0.0,
-        "track_vol_ratio": 2.09,
-        "entry_price": 14.05,
-        "days_remaining": 11,
+        "market_cap": 84.8,
+        "bbw": 11.73,
+        "week_chg_pct": 13.79,
+        "big_pct_1000": 43.76,
+        "big_pct_400": 55.77,
+        "track_pnl_pct": 4.1,
+        "track_vol_ratio": 1.9,
+        "entry_price": 158.5,
+        "days_remaining": 9,
         "pullback_status": "reentry",
-        "pullback_score": 95,
-        "ignition_vol_ratio": 2.57,
-        "pullback_from_ignition_close_pct": 3.31,
-        "days_since_ignition": 4,
+        "pullback_score": 106,
+        "ignition_vol_ratio": 3.05,
+        "pullback_from_ignition_close_pct": 4.1,
+        "days_since_ignition": 2,
         "support_ok": true,
-        "volume_cools": false
+        "volume_cools": true,
+        "ai_pnl_pct": 0.0,
+        "rev_score": 6.0,
+        "chip_score": 9.2,
+        "trend_score": 0.0
       },
-      "score": 122.0,
+      "score": 106.0,
       "source_count": 4,
       "risk_flags": [],
       "priority_level": "A",
       "priority_rank": 1,
       "priority_reason": [
         "量增回測再啟動"
-      ]
+      ],
+      "focus_candidate": true
+    },
+    {
+      "stock_id": "2362",
+      "name": "藍天",
+      "industry": "電腦",
+      "market": "TWSE",
+      "close": 42.3,
+      "status": "回穩觀察",
+      "status_rank": 3,
+      "sources": [
+        "chips",
+        "right_top_track",
+        "volume_pullback",
+        "stock_analysis"
+      ],
+      "tags": [
+        "持續成長"
+      ],
+      "score_parts": {
+        "chips": 18,
+        "breakout_track": 15,
+        "pullback": 42,
+        "follow": 0.0
+      },
+      "metrics": {
+        "market_cap": 214.0,
+        "bbw": 6.58,
+        "week_chg_pct": 8.17,
+        "big_pct_1000": 76.52,
+        "big_pct_400": 80.43,
+        "track_pnl_pct": 2.08,
+        "track_vol_ratio": 1.6,
+        "entry_price": 40.85,
+        "days_remaining": 9,
+        "pullback_status": "pullback",
+        "pullback_score": 108,
+        "ignition_vol_ratio": 4.97,
+        "pullback_from_ignition_close_pct": -1.42,
+        "days_since_ignition": 1,
+        "support_ok": true,
+        "volume_cools": true,
+        "ai_pnl_pct": 5.88,
+        "rev_score": 10.0,
+        "chip_score": 2.3,
+        "trend_score": 0.3
+      },
+      "score": 93.0,
+      "source_count": 4,
+      "risk_flags": [],
+      "priority_level": "A",
+      "priority_rank": 1,
+      "priority_reason": [
+        "多策略共振且點火量>=3x"
+      ],
+      "focus_candidate": true
     },
     {
       "stock_id": "2332",
       "name": "友訊",
       "industry": "通信",
       "market": "",
-      "close": 15.45,
-      "status": "點火首日",
-      "status_rank": 2,
+      "close": 15.7,
+      "status": "再啟動",
+      "status_rank": 1,
       "sources": [
         "chips",
-        "volume_signal",
+        "volume_pullback",
+        "stock_analysis"
+      ],
+      "tags": [
+        "雙軌觸發"
+      ],
+      "score_parts": {
+        "chips": 21,
+        "pullback": 53,
+        "follow": 0.0
+      },
+      "metrics": {
+        "market_cap": 82.5,
+        "bbw": 11.1,
+        "week_chg_pct": 11.91,
+        "big_pct_1000": 37.97,
+        "big_pct_400": 44.14,
+        "pullback_status": "reentry",
+        "pullback_score": 109,
+        "ignition_vol_ratio": 3.47,
+        "pullback_from_ignition_close_pct": 0.32,
+        "days_since_ignition": 2,
+        "support_ok": true,
+        "volume_cools": true,
+        "ai_pnl_pct": 0.0,
+        "rev_score": 6.0,
+        "chip_score": 5.3,
+        "trend_score": 5.3
+      },
+      "score": 90.0,
+      "source_count": 3,
+      "risk_flags": [],
+      "priority_level": "A",
+      "priority_rank": 1,
+      "priority_reason": [
+        "量增回測再啟動"
+      ],
+      "focus_candidate": true
+    },
+    {
+      "stock_id": "2420",
+      "name": "新巨",
+      "industry": "電子工業",
+      "market": "TWSE",
+      "close": 62.7,
+      "status": "再啟動",
+      "status_rank": 1,
+      "sources": [
+        "right_top_track",
         "volume_pullback"
+      ],
+      "tags": [],
+      "score_parts": {
+        "breakout_track": 23,
+        "pullback": 53
+      },
+      "metrics": {
+        "track_pnl_pct": 5.38,
+        "track_vol_ratio": 0.88,
+        "entry_price": 59.5,
+        "days_remaining": 5,
+        "pullback_status": "reentry",
+        "pullback_score": 113,
+        "ignition_vol_ratio": 4.23,
+        "pullback_from_ignition_close_pct": 0.32,
+        "days_since_ignition": 3,
+        "support_ok": true,
+        "volume_cools": true
+      },
+      "score": 87.0,
+      "source_count": 2,
+      "risk_flags": [],
+      "priority_level": "A",
+      "priority_rank": 1,
+      "priority_reason": [
+        "量增回測再啟動"
+      ],
+      "focus_candidate": true
+    },
+    {
+      "stock_id": "4923",
+      "name": "力士",
+      "industry": "半導體業",
+      "market": "TPEX",
+      "close": 45.15,
+      "status": "再啟動",
+      "status_rank": 1,
+      "sources": [
+        "right_top_track",
+        "volume_pullback"
+      ],
+      "tags": [],
+      "score_parts": {
+        "breakout_track": 23,
+        "pullback": 53
+      },
+      "metrics": {
+        "track_pnl_pct": 0.0,
+        "track_vol_ratio": 4.75,
+        "entry_price": 45.15,
+        "days_remaining": 11,
+        "pullback_status": "reentry",
+        "pullback_score": 111,
+        "ignition_vol_ratio": 3.87,
+        "pullback_from_ignition_close_pct": 9.99,
+        "days_since_ignition": 1,
+        "support_ok": true,
+        "volume_cools": true
+      },
+      "score": 87.0,
+      "source_count": 2,
+      "risk_flags": [],
+      "priority_level": "A",
+      "priority_rank": 1,
+      "priority_reason": [
+        "量增回測再啟動"
+      ],
+      "focus_candidate": true
+    },
+    {
+      "stock_id": "6127",
+      "name": "九豪",
+      "industry": "電子零組件業",
+      "market": "TPEX",
+      "close": 57.2,
+      "status": "再啟動",
+      "status_rank": 1,
+      "sources": [
+        "right_top_track",
+        "volume_pullback"
+      ],
+      "tags": [],
+      "score_parts": {
+        "breakout_track": 23,
+        "pullback": 53
+      },
+      "metrics": {
+        "track_pnl_pct": 9.79,
+        "track_vol_ratio": 0.84,
+        "entry_price": 52.1,
+        "days_remaining": 7,
+        "pullback_status": "reentry",
+        "pullback_score": 117,
+        "ignition_vol_ratio": 4.86,
+        "pullback_from_ignition_close_pct": 7.92,
+        "days_since_ignition": 3,
+        "support_ok": true,
+        "volume_cools": true
+      },
+      "score": 87.0,
+      "source_count": 2,
+      "risk_flags": [],
+      "priority_level": "A",
+      "priority_rank": 1,
+      "priority_reason": [
+        "量增回測再啟動"
+      ],
+      "focus_candidate": true
+    },
+    {
+      "stock_id": "1709",
+      "name": "和益",
+      "industry": "化學",
+      "market": "",
+      "close": 19.15,
+      "status": "再啟動",
+      "status_rank": 1,
+      "sources": [
+        "chips",
+        "volume_pullback",
+        "stock_analysis"
       ],
       "tags": [
         "持續成長"
       ],
       "score_parts": {
         "chips": 26,
-        "ignition": 33,
-        "pullback": 35
+        "pullback": 46,
+        "follow": 0.0
       },
       "metrics": {
-        "market_cap": 82.5,
-        "bbw": 11.1,
-        "week_chg_pct": 11.96,
-        "big_pct_1000": 37.97,
-        "big_pct_400": 44.14,
-        "today_vol_ratio": 3.47,
-        "vol_today": 12015,
-        "vol_10d_avg": 3465.0,
-        "pullback_status": "ignition",
-        "pullback_score": 81,
-        "ignition_vol_ratio": 3.47,
-        "pullback_from_ignition_close_pct": 0.0,
-        "days_since_ignition": 0,
+        "market_cap": 67.5,
+        "bbw": 6.82,
+        "week_chg_pct": 5.48,
+        "big_pct_1000": 52.3,
+        "big_pct_400": 61.76,
+        "pullback_status": "reentry",
+        "pullback_score": 104,
+        "ignition_vol_ratio": 2.72,
+        "pullback_from_ignition_close_pct": 0.52,
+        "days_since_ignition": 1,
         "support_ok": true,
-        "volume_cools": false
+        "volume_cools": true,
+        "ai_pnl_pct": 0.0,
+        "rev_score": 6.0,
+        "chip_score": 10.0,
+        "trend_score": 0.3
       },
-      "score": 110.0,
+      "score": 82.0,
       "source_count": 3,
       "risk_flags": [],
       "priority_level": "A",
       "priority_rank": 1,
       "priority_reason": [
-        "大戶池放量>=3x"
-      ]
+        "量增回測再啟動"
+      ],
+      "focus_candidate": true
     },
     {
-      "stock_id": "3441",
-      "name": "聯一光",
-      "industry": "光電業",
-      "market": "TPEX",
-      "close": 52.2,
+      "stock_id": "2324",
+      "name": "仁寶",
+      "industry": "電子工業",
+      "market": "TWSE",
+      "close": 33.6,
       "status": "再啟動",
       "status_rank": 1,
       "sources": [
@@ -153,37 +520,38 @@
       ],
       "tags": [],
       "score_parts": {
-        "breakout_track": 31,
+        "breakout_track": 15,
         "pullback": 53
       },
       "metrics": {
-        "track_pnl_pct": 8.41,
-        "track_vol_ratio": 7.6,
-        "entry_price": 48.15,
-        "days_remaining": 9,
+        "track_pnl_pct": 0.0,
+        "track_vol_ratio": 2.51,
+        "entry_price": 33.6,
+        "days_remaining": 11,
         "pullback_status": "reentry",
-        "pullback_score": 106,
-        "ignition_vol_ratio": 3.0,
-        "pullback_from_ignition_close_pct": -1.32,
+        "pullback_score": 107,
+        "ignition_vol_ratio": 3.24,
+        "pullback_from_ignition_close_pct": -3.03,
         "days_since_ignition": 1,
         "support_ok": true,
         "volume_cools": true
       },
-      "score": 95.0,
+      "score": 79.0,
       "source_count": 2,
       "risk_flags": [],
       "priority_level": "A",
       "priority_rank": 1,
       "priority_reason": [
         "量增回測再啟動"
-      ]
+      ],
+      "focus_candidate": true
     },
     {
-      "stock_id": "2355",
-      "name": "敬鵬",
-      "industry": "電子工業",
+      "stock_id": "2495",
+      "name": "普安",
+      "industry": "其他電子業",
       "market": "TWSE",
-      "close": 65.2,
+      "close": 46.05,
       "status": "再啟動",
       "status_rank": 1,
       "sources": [
@@ -192,76 +560,38 @@
       ],
       "tags": [],
       "score_parts": {
-        "breakout_track": 23,
+        "breakout_track": 15,
         "pullback": 53
       },
       "metrics": {
-        "track_pnl_pct": 13.0,
-        "track_vol_ratio": 0.4,
-        "entry_price": 57.7,
-        "days_remaining": 7,
+        "track_pnl_pct": -0.22,
+        "track_vol_ratio": 0.38,
+        "entry_price": 46.15,
+        "days_remaining": 10,
         "pullback_status": "reentry",
-        "pullback_score": 113,
-        "ignition_vol_ratio": 4.12,
-        "pullback_from_ignition_close_pct": 10.32,
+        "pullback_score": 108,
+        "ignition_vol_ratio": 3.32,
+        "pullback_from_ignition_close_pct": 4.19,
         "days_since_ignition": 2,
         "support_ok": true,
         "volume_cools": true
       },
-      "score": 87.0,
+      "score": 79.0,
       "source_count": 2,
       "risk_flags": [],
       "priority_level": "A",
       "priority_rank": 1,
       "priority_reason": [
         "量增回測再啟動"
-      ]
-    },
-    {
-      "stock_id": "2484",
-      "name": "希華",
-      "industry": "電子工業",
-      "market": "TWSE",
-      "close": 49.3,
-      "status": "再啟動",
-      "status_rank": 1,
-      "sources": [
-        "right_top_track",
-        "volume_pullback"
       ],
-      "tags": [],
-      "score_parts": {
-        "breakout_track": 23,
-        "pullback": 53
-      },
-      "metrics": {
-        "track_pnl_pct": 0.0,
-        "track_vol_ratio": 4.61,
-        "entry_price": 49.3,
-        "days_remaining": 11,
-        "pullback_status": "reentry",
-        "pullback_score": 110,
-        "ignition_vol_ratio": 3.69,
-        "pullback_from_ignition_close_pct": 9.92,
-        "days_since_ignition": 1,
-        "support_ok": true,
-        "volume_cools": true
-      },
-      "score": 87.0,
-      "source_count": 2,
-      "risk_flags": [],
-      "priority_level": "A",
-      "priority_rank": 1,
-      "priority_reason": [
-        "量增回測再啟動"
-      ]
+      "focus_candidate": true
     },
     {
-      "stock_id": "2498",
-      "name": "宏達電",
+      "stock_id": "3558",
+      "name": "神準",
       "industry": "通信網路業",
-      "market": "TWSE",
-      "close": 46.4,
+      "market": "TPEX",
+      "close": 135.0,
       "status": "再啟動",
       "status_rank": 1,
       "sources": [
@@ -270,193 +600,38 @@
       ],
       "tags": [],
       "score_parts": {
-        "breakout_track": 23,
-        "pullback": 53
-      },
-      "metrics": {
-        "track_pnl_pct": 2.43,
-        "track_vol_ratio": 3.6,
-        "entry_price": 45.3,
-        "days_remaining": 6,
-        "pullback_status": "reentry",
-        "pullback_score": 106,
-        "ignition_vol_ratio": 3.01,
-        "pullback_from_ignition_close_pct": 4.98,
-        "days_since_ignition": 4,
-        "support_ok": true,
-        "volume_cools": true
-      },
-      "score": 87.0,
-      "source_count": 2,
-      "risk_flags": [],
-      "priority_level": "A",
-      "priority_rank": 1,
-      "priority_reason": [
-        "量增回測再啟動"
-      ]
-    },
-    {
-      "stock_id": "5484",
-      "name": "慧友",
-      "industry": "電子工業",
-      "market": "TWSE",
-      "close": 44.7,
-      "status": "再啟動",
-      "status_rank": 1,
-      "sources": [
-        "right_top_track",
-        "volume_pullback"
-      ],
-      "tags": [],
-      "score_parts": {
-        "breakout_track": 23,
+        "breakout_track": 15,
         "pullback": 53
       },
       "metrics": {
         "track_pnl_pct": 0.0,
-        "track_vol_ratio": 3.01,
-        "entry_price": 44.7,
+        "track_vol_ratio": 1.92,
+        "entry_price": 135.0,
         "days_remaining": 11,
         "pullback_status": "reentry",
-        "pullback_score": 114,
-        "ignition_vol_ratio": 4.38,
-        "pullback_from_ignition_close_pct": 7.97,
-        "days_since_ignition": 4,
-        "support_ok": true,
-        "volume_cools": true
-      },
-      "score": 87.0,
-      "source_count": 2,
-      "risk_flags": [],
-      "priority_level": "A",
-      "priority_rank": 1,
-      "priority_reason": [
-        "量增回測再啟動"
-      ]
-    },
-    {
-      "stock_id": "5488",
-      "name": "松普",
-      "industry": "電子零組件業",
-      "market": "TPEX",
-      "close": 11.55,
-      "status": "再啟動",
-      "status_rank": 1,
-      "sources": [
-        "right_top_track",
-        "volume_pullback"
-      ],
-      "tags": [],
-      "score_parts": {
-        "breakout_track": 23,
-        "pullback": 53
-      },
-      "metrics": {
-        "track_pnl_pct": 7.94,
-        "track_vol_ratio": 0.96,
-        "entry_price": 10.7,
-        "days_remaining": 8,
-        "pullback_status": "reentry",
-        "pullback_score": 107,
-        "ignition_vol_ratio": 3.08,
-        "pullback_from_ignition_close_pct": -2.12,
+        "pullback_score": 115,
+        "ignition_vol_ratio": 4.43,
+        "pullback_from_ignition_close_pct": -2.17,
         "days_since_ignition": 1,
         "support_ok": true,
         "volume_cools": true
       },
-      "score": 87.0,
+      "score": 79.0,
       "source_count": 2,
       "risk_flags": [],
       "priority_level": "A",
       "priority_rank": 1,
       "priority_reason": [
         "量增回測再啟動"
-      ]
-    },
-    {
-      "stock_id": "6209",
-      "name": "今國光",
-      "industry": "光電業",
-      "market": "TWSE",
-      "close": 85.8,
-      "status": "再啟動",
-      "status_rank": 1,
-      "sources": [
-        "right_top_track",
-        "volume_pullback"
       ],
-      "tags": [],
-      "score_parts": {
-        "breakout_track": 23,
-        "pullback": 53
-      },
-      "metrics": {
-        "track_pnl_pct": 8.75,
-        "track_vol_ratio": 1.75,
-        "entry_price": 78.9,
-        "days_remaining": 9,
-        "pullback_status": "reentry",
-        "pullback_score": 108,
-        "ignition_vol_ratio": 3.39,
-        "pullback_from_ignition_close_pct": -1.04,
-        "days_since_ignition": 1,
-        "support_ok": true,
-        "volume_cools": true
-      },
-      "score": 87.0,
-      "source_count": 2,
-      "risk_flags": [],
-      "priority_level": "A",
-      "priority_rank": 1,
-      "priority_reason": [
-        "量增回測再啟動"
-      ]
+      "focus_candidate": true
     },
     {
-      "stock_id": "6215",
-      "name": "和椿",
-      "industry": "其他電子業",
-      "market": "TWSE",
-      "close": 134.5,
-      "status": "再啟動",
-      "status_rank": 1,
-      "sources": [
-        "right_top_track",
-        "volume_pullback"
-      ],
-      "tags": [],
-      "score_parts": {
-        "breakout_track": 23,
-        "pullback": 53
-      },
-      "metrics": {
-        "track_pnl_pct": 13.03,
-        "track_vol_ratio": 1.64,
-        "entry_price": 119.0,
-        "days_remaining": 5,
-        "pullback_status": "reentry",
-        "pullback_score": 112,
-        "ignition_vol_ratio": 4.03,
-        "pullback_from_ignition_close_pct": 5.91,
-        "days_since_ignition": 4,
-        "support_ok": true,
-        "volume_cools": true
-      },
-      "score": 87.0,
-      "source_count": 2,
-      "risk_flags": [],
-      "priority_level": "A",
-      "priority_rank": 1,
-      "priority_reason": [
-        "量增回測再啟動"
-      ]
-    },
-    {
-      "stock_id": "6271",
-      "name": "同欣電",
+      "stock_id": "3702",
+      "name": "大聯大",
       "industry": "電子工業",
       "market": "TWSE",
-      "close": 226.5,
+      "close": 121.5,
       "status": "再啟動",
       "status_rank": 1,
       "sources": [
@@ -465,37 +640,38 @@
       ],
       "tags": [],
       "score_parts": {
-        "breakout_track": 23,
+        "breakout_track": 15,
         "pullback": 53
       },
       "metrics": {
-        "track_pnl_pct": 9.95,
-        "track_vol_ratio": 1.14,
-        "entry_price": 206.0,
+        "track_pnl_pct": -1.62,
+        "track_vol_ratio": 0.22,
+        "entry_price": 123.5,
         "days_remaining": 10,
         "pullback_status": "reentry",
-        "pullback_score": 112,
-        "ignition_vol_ratio": 3.92,
-        "pullback_from_ignition_close_pct": 9.95,
-        "days_since_ignition": 1,
+        "pullback_score": 107,
+        "ignition_vol_ratio": 3.15,
+        "pullback_from_ignition_close_pct": -1.62,
+        "days_since_ignition": 3,
         "support_ok": true,
         "volume_cools": true
       },
-      "score": 87.0,
+      "score": 79.0,
       "source_count": 2,
       "risk_flags": [],
       "priority_level": "A",
       "priority_rank": 1,
       "priority_reason": [
         "量增回測再啟動"
-      ]
+      ],
+      "focus_candidate": true
     },
     {
-      "stock_id": "8163",
-      "name": "達方",
-      "industry": "電子工業",
-      "market": "TWSE",
-      "close": 35.65,
+      "stock_id": "6609",
+      "name": "瀧澤科",
+      "industry": "電機機械",
+      "market": "TPEX",
+      "close": 47.85,
       "status": "再啟動",
       "status_rank": 1,
       "sources": [
@@ -504,35 +680,424 @@
       ],
       "tags": [],
       "score_parts": {
-        "breakout_track": 23,
+        "breakout_track": 15,
         "pullback": 53
       },
       "metrics": {
-        "track_pnl_pct": 10.37,
-        "track_vol_ratio": 1.76,
-        "entry_price": 32.3,
-        "days_remaining": 5,
+        "track_pnl_pct": 3.24,
+        "track_vol_ratio": 2.01,
+        "entry_price": 46.35,
+        "days_remaining": 9,
         "pullback_status": "reentry",
-        "pullback_score": 108,
-        "ignition_vol_ratio": 3.26,
-        "pullback_from_ignition_close_pct": 6.9,
-        "days_since_ignition": 4,
+        "pullback_score": 114,
+        "ignition_vol_ratio": 4.29,
+        "pullback_from_ignition_close_pct": -3.14,
+        "days_since_ignition": 1,
         "support_ok": true,
         "volume_cools": true
       },
-      "score": 87.0,
+      "score": 79.0,
       "source_count": 2,
       "risk_flags": [],
       "priority_level": "A",
       "priority_rank": 1,
       "priority_reason": [
         "量增回測再啟動"
-      ]
+      ],
+      "focus_candidate": true
     },
     {
-      "stock_id": "2359",
-      "name": "所羅門",
-      "industry": "其他電子業",
+      "stock_id": "3372",
+      "name": "典範",
+      "industry": "櫃半導",
+      "market": "",
+      "close": 21.95,
+      "status": "點火首日",
+      "status_rank": 2,
+      "sources": [
+        "chips",
+        "volume_signal",
+        "volume_pullback",
+        "stock_analysis"
+      ],
+      "tags": [
+        "持續成長"
+      ],
+      "score_parts": {
+        "chips": 9,
+        "ignition": 28,
+        "pullback": 28,
+        "follow": 0.0
+      },
+      "metrics": {
+        "market_cap": 14.2,
+        "bbw": 13.92,
+        "week_chg_pct": 16.67,
+        "big_pct_1000": 44.19,
+        "big_pct_400": 48.01,
+        "today_vol_ratio": 2.52,
+        "vol_today": 2773,
+        "vol_10d_avg": 1099.0,
+        "pullback_status": "ignition",
+        "pullback_score": 75,
+        "ignition_vol_ratio": 2.52,
+        "pullback_from_ignition_close_pct": 0.0,
+        "days_since_ignition": 0,
+        "support_ok": true,
+        "volume_cools": false,
+        "ai_pnl_pct": 0.0,
+        "rev_score": 8.0,
+        "chip_score": 9.5,
+        "trend_score": 1.0
+      },
+      "score": 77.0,
+      "source_count": 4,
+      "risk_flags": [],
+      "priority_level": "A",
+      "priority_rank": 1,
+      "priority_reason": [
+        "大戶營收>=8",
+        "籌碼>=6"
+      ],
+      "focus_candidate": true
+    },
+    {
+      "stock_id": "2937",
+      "name": "集雅社",
+      "industry": "貿易百貨",
+      "market": "TPEX",
+      "close": 47.75,
+      "status": "再啟動",
+      "status_rank": 1,
+      "sources": [
+        "right_top_track",
+        "volume_pullback"
+      ],
+      "tags": [],
+      "score_parts": {
+        "breakout_track": 15,
+        "pullback": 53
+      },
+      "metrics": {
+        "track_pnl_pct": 0.53,
+        "track_vol_ratio": 1.24,
+        "entry_price": 47.5,
+        "days_remaining": 8,
+        "pullback_status": "reentry",
+        "pullback_score": 113,
+        "ignition_vol_ratio": 4.22,
+        "pullback_from_ignition_close_pct": 0.53,
+        "days_since_ignition": 3,
+        "support_ok": true,
+        "volume_cools": true
+      },
+      "score": 73.0,
+      "source_count": 2,
+      "risk_flags": [],
+      "priority_level": "A",
+      "priority_rank": 1,
+      "priority_reason": [
+        "量增回測再啟動"
+      ],
+      "focus_candidate": true
+    },
+    {
+      "stock_id": "8473",
+      "name": "山林水",
+      "industry": "其他",
+      "market": "TWSE",
+      "close": 42.1,
+      "status": "再啟動",
+      "status_rank": 1,
+      "sources": [
+        "right_top_track",
+        "volume_pullback"
+      ],
+      "tags": [],
+      "score_parts": {
+        "breakout_track": 15,
+        "pullback": 53
+      },
+      "metrics": {
+        "track_pnl_pct": 3.44,
+        "track_vol_ratio": 2.39,
+        "entry_price": 40.7,
+        "days_remaining": 8,
+        "pullback_status": "reentry",
+        "pullback_score": 115,
+        "ignition_vol_ratio": 4.58,
+        "pullback_from_ignition_close_pct": 3.44,
+        "days_since_ignition": 3,
+        "support_ok": true,
+        "volume_cools": true
+      },
+      "score": 73.0,
+      "source_count": 2,
+      "risk_flags": [],
+      "priority_level": "A",
+      "priority_rank": 1,
+      "priority_reason": [
+        "量增回測再啟動"
+      ],
+      "focus_candidate": true
+    },
+    {
+      "stock_id": "2352",
+      "name": "佳世達",
+      "industry": "電腦及週邊設備業",
+      "market": "TWSE",
+      "close": 28.65,
+      "status": "回穩觀察",
+      "status_rank": 3,
+      "sources": [
+        "right_top_track",
+        "volume_pullback",
+        "stock_analysis"
+      ],
+      "tags": [],
+      "score_parts": {
+        "breakout_track": 15,
+        "pullback": 42,
+        "follow": 0.0
+      },
+      "metrics": {
+        "track_pnl_pct": 3.31,
+        "track_vol_ratio": 1.23,
+        "entry_price": 27.2,
+        "days_remaining": 8,
+        "pullback_status": "pullback",
+        "pullback_score": 103,
+        "ignition_vol_ratio": 4.11,
+        "pullback_from_ignition_close_pct": -2.26,
+        "days_since_ignition": 2,
+        "support_ok": true,
+        "volume_cools": true,
+        "ai_pnl_pct": -0.35,
+        "rev_score": 0.0,
+        "chip_score": 8.5,
+        "trend_score": 0.3
+      },
+      "score": 73.0,
+      "source_count": 3,
+      "risk_flags": [],
+      "priority_level": "A",
+      "priority_rank": 1,
+      "priority_reason": [
+        "多策略共振且點火量>=3x"
+      ],
+      "focus_candidate": true
+    },
+    {
+      "stock_id": "3114",
+      "name": "好德",
+      "industry": "電子零組件業",
+      "market": "TPEX",
+      "close": 27.9,
+      "status": "再啟動",
+      "status_rank": 1,
+      "sources": [
+        "right_top_track",
+        "volume_pullback"
+      ],
+      "tags": [],
+      "score_parts": {
+        "breakout_track": 12,
+        "pullback": 46
+      },
+      "metrics": {
+        "track_pnl_pct": 2.76,
+        "track_vol_ratio": 0.88,
+        "entry_price": 27.15,
+        "days_remaining": 3,
+        "pullback_status": "reentry",
+        "pullback_score": 104,
+        "ignition_vol_ratio": 2.59,
+        "pullback_from_ignition_close_pct": -1.24,
+        "days_since_ignition": 2,
+        "support_ok": true,
+        "volume_cools": true
+      },
+      "score": 69.0,
+      "source_count": 2,
+      "risk_flags": [],
+      "priority_level": "A",
+      "priority_rank": 1,
+      "priority_reason": [
+        "量增回測再啟動"
+      ],
+      "focus_candidate": true
+    },
+    {
+      "stock_id": "2603",
+      "name": "長榮",
+      "industry": "航運業",
+      "market": "TWSE",
+      "close": 214.0,
+      "status": "回穩觀察",
+      "status_rank": 3,
+      "sources": [
+        "right_top_track",
+        "volume_pullback",
+        "stock_analysis"
+      ],
+      "tags": [],
+      "score_parts": {
+        "breakout_track": 15,
+        "pullback": 42,
+        "follow": 0.0
+      },
+      "metrics": {
+        "track_pnl_pct": -3.42,
+        "track_vol_ratio": 2.24,
+        "entry_price": 219.0,
+        "days_remaining": 9,
+        "pullback_status": "pullback",
+        "pullback_score": 100,
+        "ignition_vol_ratio": 3.65,
+        "pullback_from_ignition_close_pct": -0.47,
+        "days_since_ignition": 4,
+        "support_ok": true,
+        "volume_cools": true,
+        "ai_pnl_pct": 0.71,
+        "rev_score": 10.0,
+        "chip_score": 10.0,
+        "trend_score": 4.1
+      },
+      "score": 67.0,
+      "source_count": 3,
+      "risk_flags": [],
+      "priority_level": "A",
+      "priority_rank": 1,
+      "priority_reason": [
+        "大戶營收>=8",
+        "籌碼>=6"
+      ],
+      "focus_candidate": true
+    },
+    {
+      "stock_id": "2233",
+      "name": "宇隆",
+      "industry": "汽車工業",
+      "market": "TWSE",
+      "close": 377.0,
+      "status": "再啟動",
+      "status_rank": 1,
+      "sources": [
+        "right_top_track",
+        "volume_pullback"
+      ],
+      "tags": [],
+      "score_parts": {
+        "breakout_track": 15,
+        "pullback": 46
+      },
+      "metrics": {
+        "track_pnl_pct": -1.18,
+        "track_vol_ratio": 0.42,
+        "entry_price": 381.5,
+        "days_remaining": 10,
+        "pullback_status": "reentry",
+        "pullback_score": 104,
+        "ignition_vol_ratio": 2.69,
+        "pullback_from_ignition_close_pct": 8.65,
+        "days_since_ignition": 2,
+        "support_ok": true,
+        "volume_cools": true
+      },
+      "score": 66.0,
+      "source_count": 2,
+      "risk_flags": [],
+      "priority_level": "A",
+      "priority_rank": 1,
+      "priority_reason": [
+        "量增回測再啟動"
+      ],
+      "focus_candidate": true
+    },
+    {
+      "stock_id": "3444",
+      "name": "利機",
+      "industry": "電子通路業",
+      "market": "TPEX",
+      "close": 107.0,
+      "status": "再啟動",
+      "status_rank": 1,
+      "sources": [
+        "right_top_track",
+        "volume_pullback"
+      ],
+      "tags": [],
+      "score_parts": {
+        "breakout_track": 15,
+        "pullback": 46
+      },
+      "metrics": {
+        "track_pnl_pct": 0.94,
+        "track_vol_ratio": 0.75,
+        "entry_price": 106.0,
+        "days_remaining": 10,
+        "pullback_status": "reentry",
+        "pullback_score": 105,
+        "ignition_vol_ratio": 2.9,
+        "pullback_from_ignition_close_pct": 0.94,
+        "days_since_ignition": 1,
+        "support_ok": true,
+        "volume_cools": true
+      },
+      "score": 66.0,
+      "source_count": 2,
+      "risk_flags": [],
+      "priority_level": "A",
+      "priority_rank": 1,
+      "priority_reason": [
+        "量增回測再啟動"
+      ],
+      "focus_candidate": true
+    },
+    {
+      "stock_id": "4764",
+      "name": "雙鍵",
+      "industry": "化學工業",
+      "market": "TWSE",
+      "close": 338.0,
+      "status": "再啟動",
+      "status_rank": 1,
+      "sources": [
+        "right_top_track",
+        "volume_pullback"
+      ],
+      "tags": [],
+      "score_parts": {
+        "breakout_track": 15,
+        "pullback": 46
+      },
+      "metrics": {
+        "track_pnl_pct": -3.98,
+        "track_vol_ratio": 0.23,
+        "entry_price": 352.0,
+        "days_remaining": 10,
+        "pullback_status": "reentry",
+        "pullback_score": 103,
+        "ignition_vol_ratio": 2.58,
+        "pullback_from_ignition_close_pct": 5.62,
+        "days_since_ignition": 2,
+        "support_ok": true,
+        "volume_cools": true
+      },
+      "score": 66.0,
+      "source_count": 2,
+      "risk_flags": [],
+      "priority_level": "A",
+      "priority_rank": 1,
+      "priority_reason": [
+        "量增回測再啟動"
+      ],
+      "focus_candidate": true
+    },
+    {
+      "stock_id": "6902",
+      "name": "GOGOLOOK-創",
+      "industry": "創新版股票",
       "market": "TWSE",
       "close": 141.0,
       "status": "再啟動",
@@ -544,762 +1109,105 @@
       "tags": [],
       "score_parts": {
         "breakout_track": 15,
-        "pullback": 58
+        "pullback": 46
       },
       "metrics": {
-        "track_pnl_pct": 4.44,
-        "track_vol_ratio": 2.41,
-        "entry_price": 135.0,
-        "days_remaining": 6,
-        "pullback_status": "reentry",
-        "pullback_score": 123,
-        "ignition_vol_ratio": 6.13,
-        "pullback_from_ignition_close_pct": 1.44,
-        "days_since_ignition": 4,
-        "support_ok": true,
-        "volume_cools": true
-      },
-      "score": 84.0,
-      "source_count": 2,
-      "risk_flags": [],
-      "priority_level": "A",
-      "priority_rank": 1,
-      "priority_reason": [
-        "量增回測再啟動"
-      ]
-    },
-    {
-      "stock_id": "3379",
-      "name": "彬台",
-      "industry": "電機機械",
-      "market": "TPEX",
-      "close": 42.8,
-      "status": "再啟動",
-      "status_rank": 1,
-      "sources": [
-        "right_top_track",
-        "volume_pullback"
-      ],
-      "tags": [],
-      "score_parts": {
-        "breakout_track": 15,
-        "pullback": 58
-      },
-      "metrics": {
-        "track_pnl_pct": 3.63,
-        "track_vol_ratio": 1.5,
-        "entry_price": 41.3,
-        "days_remaining": 7,
-        "pullback_status": "reentry",
-        "pullback_score": 123,
-        "ignition_vol_ratio": 9.56,
-        "pullback_from_ignition_close_pct": 0.47,
-        "days_since_ignition": 3,
-        "support_ok": true,
-        "volume_cools": true
-      },
-      "score": 84.0,
-      "source_count": 2,
-      "risk_flags": [],
-      "priority_level": "A",
-      "priority_rank": 1,
-      "priority_reason": [
-        "量增回測再啟動"
-      ]
-    },
-    {
-      "stock_id": "1533",
-      "name": "車王電",
-      "industry": "汽車工業",
-      "market": "TWSE",
-      "close": 38.85,
-      "status": "再啟動",
-      "status_rank": 1,
-      "sources": [
-        "right_top_track",
-        "volume_pullback"
-      ],
-      "tags": [],
-      "score_parts": {
-        "breakout_track": 23,
-        "pullback": 53
-      },
-      "metrics": {
-        "track_pnl_pct": -2.51,
-        "track_vol_ratio": 6.84,
-        "entry_price": 39.85,
+        "track_pnl_pct": 2.17,
+        "track_vol_ratio": 0.71,
+        "entry_price": 138.0,
         "days_remaining": 10,
         "pullback_status": "reentry",
-        "pullback_score": 107,
-        "ignition_vol_ratio": 3.24,
-        "pullback_from_ignition_close_pct": -2.51,
-        "days_since_ignition": 1,
-        "support_ok": true,
-        "volume_cools": true
-      },
-      "score": 81.0,
-      "source_count": 2,
-      "risk_flags": [],
-      "priority_level": "A",
-      "priority_rank": 1,
-      "priority_reason": [
-        "量增回測再啟動"
-      ]
-    },
-    {
-      "stock_id": "3149",
-      "name": "正達",
-      "industry": "光電業",
-      "market": "TWSE",
-      "close": 59.1,
-      "status": "再啟動",
-      "status_rank": 1,
-      "sources": [
-        "right_top_track",
-        "volume_pullback"
-      ],
-      "tags": [],
-      "score_parts": {
-        "breakout_track": 23,
-        "pullback": 46
-      },
-      "metrics": {
-        "track_pnl_pct": 0.0,
-        "track_vol_ratio": 3.01,
-        "entry_price": 59.1,
-        "days_remaining": 11,
-        "pullback_status": "reentry",
         "pullback_score": 104,
-        "ignition_vol_ratio": 2.61,
-        "pullback_from_ignition_close_pct": 0.17,
-        "days_since_ignition": 4,
-        "support_ok": true,
-        "volume_cools": true
-      },
-      "score": 80.0,
-      "source_count": 2,
-      "risk_flags": [],
-      "priority_level": "A",
-      "priority_rank": 1,
-      "priority_reason": [
-        "量增回測再啟動"
-      ]
-    },
-    {
-      "stock_id": "3305",
-      "name": "昇貿",
-      "industry": "其他電子業",
-      "market": "TWSE",
-      "close": 146.0,
-      "status": "再啟動",
-      "status_rank": 1,
-      "sources": [
-        "right_top_track",
-        "volume_pullback"
-      ],
-      "tags": [],
-      "score_parts": {
-        "breakout_track": 23,
-        "pullback": 46
-      },
-      "metrics": {
-        "track_pnl_pct": 5.42,
-        "track_vol_ratio": 1.83,
-        "entry_price": 138.5,
-        "days_remaining": 6,
-        "pullback_status": "reentry",
-        "pullback_score": 105,
-        "ignition_vol_ratio": 2.85,
-        "pullback_from_ignition_close_pct": 5.8,
-        "days_since_ignition": 3,
-        "support_ok": true,
-        "volume_cools": true
-      },
-      "score": 80.0,
-      "source_count": 2,
-      "risk_flags": [],
-      "priority_level": "A",
-      "priority_rank": 1,
-      "priority_reason": [
-        "量增回測再啟動"
-      ]
-    },
-    {
-      "stock_id": "5236",
-      "name": "凌陽創新",
-      "industry": "半導體業",
-      "market": "TPEX",
-      "close": 181.0,
-      "status": "再啟動",
-      "status_rank": 1,
-      "sources": [
-        "right_top_track",
-        "volume_pullback"
-      ],
-      "tags": [],
-      "score_parts": {
-        "breakout_track": 23,
-        "pullback": 46
-      },
-      "metrics": {
-        "track_pnl_pct": 0.0,
-        "track_vol_ratio": 4.47,
-        "entry_price": 181.0,
-        "days_remaining": 11,
-        "pullback_status": "reentry",
-        "pullback_score": 106,
-        "ignition_vol_ratio": 2.92,
-        "pullback_from_ignition_close_pct": 5.23,
-        "days_since_ignition": 2,
-        "support_ok": true,
-        "volume_cools": true
-      },
-      "score": 80.0,
-      "source_count": 2,
-      "risk_flags": [],
-      "priority_level": "A",
-      "priority_rank": 1,
-      "priority_reason": [
-        "量增回測再啟動"
-      ]
-    },
-    {
-      "stock_id": "6174",
-      "name": "安碁",
-      "industry": "電子零組件業",
-      "market": "TPEX",
-      "close": 46.75,
-      "status": "再啟動",
-      "status_rank": 1,
-      "sources": [
-        "right_top_track",
-        "volume_pullback"
-      ],
-      "tags": [],
-      "score_parts": {
-        "breakout_track": 23,
-        "pullback": 46
-      },
-      "metrics": {
-        "track_pnl_pct": 0.0,
-        "track_vol_ratio": 9.63,
-        "entry_price": 46.75,
-        "days_remaining": 11,
-        "pullback_status": "reentry",
-        "pullback_score": 106,
-        "ignition_vol_ratio": 2.99,
-        "pullback_from_ignition_close_pct": 10.0,
-        "days_since_ignition": 1,
-        "support_ok": true,
-        "volume_cools": true
-      },
-      "score": 80.0,
-      "source_count": 2,
-      "risk_flags": [],
-      "priority_level": "A",
-      "priority_rank": 1,
-      "priority_reason": [
-        "量增回測再啟動"
-      ]
-    },
-    {
-      "stock_id": "6175",
-      "name": "立敦",
-      "industry": "電子零組件業",
-      "market": "TPEX",
-      "close": 88.3,
-      "status": "再啟動",
-      "status_rank": 1,
-      "sources": [
-        "right_top_track",
-        "volume_pullback"
-      ],
-      "tags": [],
-      "score_parts": {
-        "breakout_track": 23,
-        "pullback": 46
-      },
-      "metrics": {
-        "track_pnl_pct": 8.34,
-        "track_vol_ratio": 1.53,
-        "entry_price": 81.5,
-        "days_remaining": 9,
-        "pullback_status": "reentry",
-        "pullback_score": 105,
-        "ignition_vol_ratio": 2.79,
-        "pullback_from_ignition_close_pct": 3.64,
-        "days_since_ignition": 1,
-        "support_ok": true,
-        "volume_cools": true
-      },
-      "score": 80.0,
-      "source_count": 2,
-      "risk_flags": [],
-      "priority_level": "A",
-      "priority_rank": 1,
-      "priority_reason": [
-        "量增回測再啟動"
-      ]
-    },
-    {
-      "stock_id": "6558",
-      "name": "興能高",
-      "industry": "其他電子業",
-      "market": "TWSE",
-      "close": 33.0,
-      "status": "再啟動",
-      "status_rank": 1,
-      "sources": [
-        "right_top_track",
-        "volume_pullback"
-      ],
-      "tags": [],
-      "score_parts": {
-        "breakout_track": 23,
-        "pullback": 46
-      },
-      "metrics": {
-        "track_pnl_pct": 5.26,
-        "track_vol_ratio": 1.53,
-        "entry_price": 31.35,
-        "days_remaining": 6,
-        "pullback_status": "reentry",
-        "pullback_score": 103,
         "ignition_vol_ratio": 2.58,
-        "pullback_from_ignition_close_pct": 2.48,
-        "days_since_ignition": 2,
+        "pullback_from_ignition_close_pct": 10.16,
+        "days_since_ignition": 4,
         "support_ok": true,
         "volume_cools": true
       },
-      "score": 80.0,
+      "score": 66.0,
       "source_count": 2,
       "risk_flags": [],
       "priority_level": "A",
       "priority_rank": 1,
       "priority_reason": [
         "量增回測再啟動"
-      ]
-    },
-    {
-      "stock_id": "8043",
-      "name": "蜜望實",
-      "industry": "電子零組件業",
-      "market": "TPEX",
-      "close": 130.5,
-      "status": "再啟動",
-      "status_rank": 1,
-      "sources": [
-        "right_top_track",
-        "volume_pullback"
       ],
-      "tags": [],
-      "score_parts": {
-        "breakout_track": 23,
-        "pullback": 46
-      },
-      "metrics": {
-        "track_pnl_pct": 14.98,
-        "track_vol_ratio": 0.56,
-        "entry_price": 113.5,
-        "days_remaining": 8,
-        "pullback_status": "reentry",
-        "pullback_score": 104,
-        "ignition_vol_ratio": 2.72,
-        "pullback_from_ignition_close_pct": 13.97,
-        "days_since_ignition": 2,
-        "support_ok": true,
-        "volume_cools": true
-      },
-      "score": 80.0,
-      "source_count": 2,
-      "risk_flags": [],
-      "priority_level": "A",
-      "priority_rank": 1,
-      "priority_reason": [
-        "量增回測再啟動"
-      ]
-    },
+      "focus_candidate": true
+    }
+  ],
+  "results": [
     {
-      "stock_id": "8261",
-      "name": "富鼎",
-      "industry": "半導體業",
+      "stock_id": "2353",
+      "name": "宏卅卅",
+      "industry": "電腦",
       "market": "TWSE",
-      "close": 160.0,
-      "status": "再啟動",
-      "status_rank": 1,
-      "sources": [
-        "right_top_track",
-        "volume_pullback"
-      ],
-      "tags": [],
-      "score_parts": {
-        "breakout_track": 23,
-        "pullback": 46
-      },
-      "metrics": {
-        "track_pnl_pct": 7.38,
-        "track_vol_ratio": 1.65,
-        "entry_price": 149.0,
-        "days_remaining": 9,
-        "pullback_status": "reentry",
-        "pullback_score": 103,
-        "ignition_vol_ratio": 2.55,
-        "pullback_from_ignition_close_pct": 6.67,
-        "days_since_ignition": 1,
-        "support_ok": true,
-        "volume_cools": true
-      },
-      "score": 80.0,
-      "source_count": 2,
-      "risk_flags": [],
-      "priority_level": "A",
-      "priority_rank": 1,
-      "priority_reason": [
-        "量增回測再啟動"
-      ]
-    },
-    {
-      "stock_id": "1582",
-      "name": "信錦",
-      "industry": "電子工業",
-      "market": "TWSE",
-      "close": 115.0,
-      "status": "再啟動",
-      "status_rank": 1,
-      "sources": [
-        "right_top_track",
-        "volume_pullback"
-      ],
-      "tags": [],
-      "score_parts": {
-        "breakout_track": 15,
-        "pullback": 53
-      },
-      "metrics": {
-        "track_pnl_pct": -1.71,
-        "track_vol_ratio": 1.67,
-        "entry_price": 117.0,
-        "days_remaining": 8,
-        "pullback_status": "reentry",
-        "pullback_score": 114,
-        "ignition_vol_ratio": 4.4,
-        "pullback_from_ignition_close_pct": 7.48,
-        "days_since_ignition": 2,
-        "support_ok": true,
-        "volume_cools": true
-      },
-      "score": 79.0,
-      "source_count": 2,
-      "risk_flags": [],
-      "priority_level": "A",
-      "priority_rank": 1,
-      "priority_reason": [
-        "量增回測再啟動"
-      ]
-    },
-    {
-      "stock_id": "2455",
-      "name": "全新",
-      "industry": "通信網路業",
-      "market": "TWSE",
-      "close": 425.0,
-      "status": "再啟動",
-      "status_rank": 1,
-      "sources": [
-        "right_top_track",
-        "volume_pullback"
-      ],
-      "tags": [],
-      "score_parts": {
-        "breakout_track": 15,
-        "pullback": 53
-      },
-      "metrics": {
-        "track_pnl_pct": 0.0,
-        "track_vol_ratio": 1.05,
-        "entry_price": 425.0,
-        "days_remaining": 11,
-        "pullback_status": "reentry",
-        "pullback_score": 113,
-        "ignition_vol_ratio": 4.15,
-        "pullback_from_ignition_close_pct": 9.96,
-        "days_since_ignition": 1,
-        "support_ok": true,
-        "volume_cools": true
-      },
-      "score": 79.0,
-      "source_count": 2,
-      "risk_flags": [],
-      "priority_level": "A",
-      "priority_rank": 1,
-      "priority_reason": [
-        "量增回測再啟動"
-      ]
-    },
-    {
-      "stock_id": "3491",
-      "name": "昇達科",
-      "industry": "通信網路業",
-      "market": "TPEX",
-      "close": 1930.0,
-      "status": "再啟動",
-      "status_rank": 1,
-      "sources": [
-        "right_top_track",
-        "volume_pullback"
-      ],
-      "tags": [],
-      "score_parts": {
-        "breakout_track": 15,
-        "pullback": 53
-      },
-      "metrics": {
-        "track_pnl_pct": 4.32,
-        "track_vol_ratio": 1.64,
-        "entry_price": 1850.0,
-        "days_remaining": 10,
-        "pullback_status": "reentry",
-        "pullback_score": 107,
-        "ignition_vol_ratio": 3.16,
-        "pullback_from_ignition_close_pct": 9.35,
-        "days_since_ignition": 3,
-        "support_ok": true,
-        "volume_cools": true
-      },
-      "score": 79.0,
-      "source_count": 2,
-      "risk_flags": [],
-      "priority_level": "A",
-      "priority_rank": 1,
-      "priority_reason": [
-        "量增回測再啟動"
-      ]
-    },
-    {
-      "stock_id": "6127",
-      "name": "九豪",
-      "industry": "電子零組件業",
-      "market": "TPEX",
-      "close": 52.5,
-      "status": "再啟動",
-      "status_rank": 1,
-      "sources": [
-        "right_top_track",
-        "volume_pullback"
-      ],
-      "tags": [],
-      "score_parts": {
-        "breakout_track": 15,
-        "pullback": 53
-      },
-      "metrics": {
-        "track_pnl_pct": 0.77,
-        "track_vol_ratio": 0.84,
-        "entry_price": 52.1,
-        "days_remaining": 9,
-        "pullback_status": "reentry",
-        "pullback_score": 117,
-        "ignition_vol_ratio": 4.86,
-        "pullback_from_ignition_close_pct": -0.94,
-        "days_since_ignition": 1,
-        "support_ok": true,
-        "volume_cools": true
-      },
-      "score": 79.0,
-      "source_count": 2,
-      "risk_flags": [],
-      "priority_level": "A",
-      "priority_rank": 1,
-      "priority_reason": [
-        "量增回測再啟動"
-      ]
-    },
-    {
-      "stock_id": "8091",
-      "name": "翔名",
-      "industry": "電子零組件業",
-      "market": "TPEX",
-      "close": 267.0,
-      "status": "再啟動",
-      "status_rank": 1,
-      "sources": [
-        "right_top_track",
-        "volume_pullback"
-      ],
-      "tags": [],
-      "score_parts": {
-        "breakout_track": 15,
-        "pullback": 53
-      },
-      "metrics": {
-        "track_pnl_pct": 0.0,
-        "track_vol_ratio": 2.31,
-        "entry_price": 267.0,
-        "days_remaining": 11,
-        "pullback_status": "reentry",
-        "pullback_score": 110,
-        "ignition_vol_ratio": 3.65,
-        "pullback_from_ignition_close_pct": 1.33,
-        "days_since_ignition": 3,
-        "support_ok": true,
-        "volume_cools": true
-      },
-      "score": 79.0,
-      "source_count": 2,
-      "risk_flags": [],
-      "priority_level": "A",
-      "priority_rank": 1,
-      "priority_reason": [
-        "量增回測再啟動"
-      ]
-    },
-    {
-      "stock_id": "2603",
-      "name": "長榮",
-      "industry": "航運業",
-      "market": "TWSE",
-      "close": 219,
-      "status": "再啟動",
-      "status_rank": 1,
-      "sources": [
-        "right_top_track",
-        "volume_pullback",
-        "stock_analysis"
-      ],
-      "tags": [],
-      "score_parts": {
-        "breakout_track": 15,
-        "pullback": 53,
-        "follow": 0.0
-      },
-      "metrics": {
-        "track_pnl_pct": 0.0,
-        "track_vol_ratio": 2.24,
-        "entry_price": 219.0,
-        "days_remaining": 11,
-        "pullback_status": "reentry",
-        "pullback_score": 110,
-        "ignition_vol_ratio": 3.65,
-        "pullback_from_ignition_close_pct": 3.06,
-        "days_since_ignition": 2,
-        "support_ok": true,
-        "volume_cools": true,
-        "ai_pnl_pct": 3.06,
-        "rev_score": 10.0,
-        "chip_score": 10.0,
-        "trend_score": 4.1
-      },
-      "score": 78.0,
-      "source_count": 3,
-      "risk_flags": [],
-      "priority_level": "A",
-      "priority_rank": 1,
-      "priority_reason": [
-        "大戶營收>=8",
-        "籌碼>=6"
-      ]
-    },
-    {
-      "stock_id": "2316",
-      "name": "楠梓電",
-      "industry": "電子工業",
-      "market": "TWSE",
-      "close": 153.5,
-      "status": "再啟動",
-      "status_rank": 1,
-      "sources": [
-        "right_top_track",
-        "volume_pullback",
-        "stock_analysis"
-      ],
-      "tags": [],
-      "score_parts": {
-        "breakout_track": 15,
-        "pullback": 46,
-        "follow": 0.0
-      },
-      "metrics": {
-        "track_pnl_pct": 1.66,
-        "track_vol_ratio": 2.01,
-        "entry_price": 151.0,
-        "days_remaining": 10,
-        "pullback_status": "reentry",
-        "pullback_score": 103,
-        "ignition_vol_ratio": 2.57,
-        "pullback_from_ignition_close_pct": 11.64,
-        "days_since_ignition": 2,
-        "support_ok": true,
-        "volume_cools": true,
-        "ai_pnl_pct": 7.72,
-        "rev_score": 10.0,
-        "chip_score": 10.0,
-        "trend_score": 1.3
-      },
-      "score": 77.0,
-      "source_count": 3,
-      "risk_flags": [],
-      "priority_level": "A",
-      "priority_rank": 1,
-      "priority_reason": [
-        "大戶營收>=8",
-        "籌碼>=6"
-      ]
-    },
-    {
-      "stock_id": "2352",
-      "name": "佳世達",
-      "industry": "電腦及週邊設備業",
-      "market": "TWSE",
-      "close": 28.75,
-      "status": "點火",
+      "close": 32.5,
+      "status": "點火首日",
       "status_rank": 2,
       "sources": [
+        "chips",
+        "volume_signal",
         "right_top_track",
         "volume_pullback",
         "stock_analysis"
       ],
-      "tags": [],
+      "tags": [
+        "持續成長"
+      ],
       "score_parts": {
+        "chips": 18,
+        "ignition": 33,
         "breakout_track": 23,
         "pullback": 35,
-        "follow": 0.0
+        "follow": 8
       },
       "metrics": {
-        "track_pnl_pct": 5.7,
-        "track_vol_ratio": 1.23,
-        "entry_price": 27.2,
-        "days_remaining": 10,
+        "market_cap": 562.7,
+        "bbw": 8.12,
+        "week_chg_pct": 14.95,
+        "big_pct_1000": 36.02,
+        "big_pct_400": 39.99,
+        "today_vol_ratio": 3.43,
+        "vol_today": 120325,
+        "vol_10d_avg": 35042.0,
+        "track_pnl_pct": 7.95,
+        "track_vol_ratio": 1.16,
+        "entry_price": 29.55,
+        "days_remaining": 9,
         "pullback_status": "ignition",
-        "pullback_score": 85,
-        "ignition_vol_ratio": 4.11,
+        "pullback_score": 81,
+        "ignition_vol_ratio": 3.43,
         "pullback_from_ignition_close_pct": 0.0,
         "days_since_ignition": 0,
         "support_ok": true,
         "volume_cools": false,
-        "ai_pnl_pct": 0.0,
-        "rev_score": 0.0,
-        "chip_score": 8.5,
-        "trend_score": 0.3
+        "ai_pnl_pct": 12.85,
+        "rev_score": 10.0,
+        "chip_score": 3.6,
+        "trend_score": 4.3
       },
-      "score": 74.0,
-      "source_count": 3,
+      "score": 135.0,
+      "source_count": 5,
       "risk_flags": [],
       "priority_level": "A",
       "priority_rank": 1,
       "priority_reason": [
-        "多策略共振且點火量>=3x"
-      ]
+        "大戶池放量>=3x"
+      ],
+      "focus_candidate": true
     },
     {
       "stock_id": "3708",
       "name": "上緯投控",
       "industry": "綠能",
-      "market": "",
-      "close": 126,
-      "status": "回穩觀察",
-      "status_rank": 3,
+      "market": "TWSE",
+      "close": 125.0,
+      "status": "點火首日",
+      "status_rank": 2,
       "sources": [
         "chips",
+        "volume_signal",
+        "right_top_track",
         "volume_pullback",
         "stock_analysis"
       ],
@@ -1308,531 +1216,716 @@
       ],
       "score_parts": {
         "chips": 22,
-        "pullback": 42,
+        "ignition": 33,
+        "breakout_track": 15,
+        "pullback": 35,
         "follow": 0.0
       },
       "metrics": {
         "market_cap": 71.3,
         "bbw": 12.56,
-        "week_chg_pct": 11.01,
+        "week_chg_pct": 13.85,
         "big_pct_1000": 43.76,
         "big_pct_400": 55.16,
-        "pullback_status": "pullback",
-        "pullback_score": 102,
-        "ignition_vol_ratio": 4.0,
-        "pullback_from_ignition_close_pct": -0.4,
-        "days_since_ignition": 1,
+        "today_vol_ratio": 3.53,
+        "vol_today": 4630,
+        "vol_10d_avg": 1311.0,
+        "track_pnl_pct": 0.0,
+        "track_vol_ratio": 0.85,
+        "entry_price": 131.5,
+        "days_remaining": 11,
+        "pullback_status": "ignition",
+        "pullback_score": 81,
+        "ignition_vol_ratio": 3.53,
+        "pullback_from_ignition_close_pct": 0.0,
+        "days_since_ignition": 0,
         "support_ok": true,
-        "volume_cools": true,
-        "ai_pnl_pct": 3.7,
+        "volume_cools": false,
+        "ai_pnl_pct": 2.88,
         "rev_score": 4.0,
         "chip_score": 8.9,
         "trend_score": 9.0
       },
-      "score": 74.0,
-      "source_count": 3,
+      "score": 117.0,
+      "source_count": 5,
       "risk_flags": [],
       "priority_level": "A",
       "priority_rank": 1,
       "priority_reason": [
-        "多策略共振且點火量>=3x"
-      ]
+        "大戶池放量>=3x"
+      ],
+      "focus_candidate": true
     },
     {
-      "stock_id": "1447",
-      "name": "力鵬",
-      "industry": "紡織纖維",
+      "stock_id": "2421",
+      "name": "建準",
+      "industry": "電零",
       "market": "TWSE",
-      "close": 6.0,
+      "close": 162.5,
       "status": "再啟動",
       "status_rank": 1,
-      "sources": [
-        "right_top_track",
-        "volume_pullback"
-      ],
-      "tags": [],
-      "score_parts": {
-        "breakout_track": 15,
-        "pullback": 53
-      },
-      "metrics": {
-        "track_pnl_pct": 3.45,
-        "track_vol_ratio": 2.19,
-        "entry_price": 5.8,
-        "days_remaining": 8,
-        "pullback_status": "reentry",
-        "pullback_score": 117,
-        "ignition_vol_ratio": 4.79,
-        "pullback_from_ignition_close_pct": 4.17,
-        "days_since_ignition": 4,
-        "support_ok": true,
-        "volume_cools": true
-      },
-      "score": 73.0,
-      "source_count": 2,
-      "risk_flags": [],
-      "priority_level": "A",
-      "priority_rank": 1,
-      "priority_reason": [
-        "量增回測再啟動"
-      ]
-    },
-    {
-      "stock_id": "6189",
-      "name": "豐藝",
-      "industry": "電子通路業",
-      "market": "TWSE",
-      "close": 51.7,
-      "status": "再啟動",
-      "status_rank": 1,
-      "sources": [
-        "right_top_track",
-        "volume_pullback"
-      ],
-      "tags": [],
-      "score_parts": {
-        "breakout_track": 15,
-        "pullback": 53
-      },
-      "metrics": {
-        "track_pnl_pct": 1.17,
-        "track_vol_ratio": 1.06,
-        "entry_price": 51.1,
-        "days_remaining": 9,
-        "pullback_status": "reentry",
-        "pullback_score": 113,
-        "ignition_vol_ratio": 4.12,
-        "pullback_from_ignition_close_pct": 1.17,
-        "days_since_ignition": 2,
-        "support_ok": true,
-        "volume_cools": true
-      },
-      "score": 73.0,
-      "source_count": 2,
-      "risk_flags": [],
-      "priority_level": "A",
-      "priority_rank": 1,
-      "priority_reason": [
-        "量增回測再啟動"
-      ]
-    },
-    {
-      "stock_id": "6491",
-      "name": "晶碩",
-      "industry": "生技醫療業",
-      "market": "TWSE",
-      "close": 308.0,
-      "status": "再啟動",
-      "status_rank": 1,
-      "sources": [
-        "right_top_track",
-        "volume_pullback"
-      ],
-      "tags": [],
-      "score_parts": {
-        "breakout_track": 15,
-        "pullback": 53
-      },
-      "metrics": {
-        "track_pnl_pct": 0.82,
-        "track_vol_ratio": 1.62,
-        "entry_price": 305.5,
-        "days_remaining": 8,
-        "pullback_status": "reentry",
-        "pullback_score": 115,
-        "ignition_vol_ratio": 4.57,
-        "pullback_from_ignition_close_pct": 0.82,
-        "days_since_ignition": 3,
-        "support_ok": true,
-        "volume_cools": true
-      },
-      "score": 73.0,
-      "source_count": 2,
-      "risk_flags": [],
-      "priority_level": "A",
-      "priority_rank": 1,
-      "priority_reason": [
-        "量增回測再啟動"
-      ]
-    },
-    {
-      "stock_id": "2481",
-      "name": "強茂",
-      "industry": "半導體業",
-      "market": "TWSE",
-      "close": 133.5,
-      "status": "再啟動",
-      "status_rank": 1,
-      "sources": [
-        "right_top_track",
-        "volume_pullback"
-      ],
-      "tags": [],
-      "score_parts": {
-        "breakout_track": 15,
-        "pullback": 46
-      },
-      "metrics": {
-        "track_pnl_pct": -1.11,
-        "track_vol_ratio": 1.21,
-        "entry_price": 135.0,
-        "days_remaining": 8,
-        "pullback_status": "reentry",
-        "pullback_score": 104,
-        "ignition_vol_ratio": 2.65,
-        "pullback_from_ignition_close_pct": -1.11,
-        "days_since_ignition": 3,
-        "support_ok": true,
-        "volume_cools": true
-      },
-      "score": 72.0,
-      "source_count": 2,
-      "risk_flags": [],
-      "priority_level": "A",
-      "priority_rank": 1,
-      "priority_reason": [
-        "量增回測再啟動"
-      ]
-    },
-    {
-      "stock_id": "3008",
-      "name": "大立光",
-      "industry": "光電業",
-      "market": "TWSE",
-      "close": 3540.0,
-      "status": "再啟動",
-      "status_rank": 1,
-      "sources": [
-        "right_top_track",
-        "volume_pullback"
-      ],
-      "tags": [],
-      "score_parts": {
-        "breakout_track": 15,
-        "pullback": 46
-      },
-      "metrics": {
-        "track_pnl_pct": 2.31,
-        "track_vol_ratio": 2.44,
-        "entry_price": 3460.0,
-        "days_remaining": 10,
-        "pullback_status": "reentry",
-        "pullback_score": 103,
-        "ignition_vol_ratio": 2.56,
-        "pullback_from_ignition_close_pct": 5.2,
-        "days_since_ignition": 3,
-        "support_ok": true,
-        "volume_cools": true
-      },
-      "score": 72.0,
-      "source_count": 2,
-      "risk_flags": [],
-      "priority_level": "A",
-      "priority_rank": 1,
-      "priority_reason": [
-        "量增回測再啟動"
-      ]
-    },
-    {
-      "stock_id": "3221",
-      "name": "台嘉碩",
-      "industry": "通信網路業",
-      "market": "TPEX",
-      "close": 56.4,
-      "status": "再啟動",
-      "status_rank": 1,
-      "sources": [
-        "right_top_track",
-        "volume_pullback"
-      ],
-      "tags": [],
-      "score_parts": {
-        "breakout_track": 15,
-        "pullback": 46
-      },
-      "metrics": {
-        "track_pnl_pct": 0.0,
-        "track_vol_ratio": 2.49,
-        "entry_price": 56.4,
-        "days_remaining": 11,
-        "pullback_status": "reentry",
-        "pullback_score": 105,
-        "ignition_vol_ratio": 2.83,
-        "pullback_from_ignition_close_pct": 9.94,
-        "days_since_ignition": 1,
-        "support_ok": true,
-        "volume_cools": true
-      },
-      "score": 72.0,
-      "source_count": 2,
-      "risk_flags": [],
-      "priority_level": "A",
-      "priority_rank": 1,
-      "priority_reason": [
-        "量增回測再啟動"
-      ]
-    },
-    {
-      "stock_id": "3580",
-      "name": "友威科",
-      "industry": "其他電子類",
-      "market": "TPEX",
-      "close": 104.0,
-      "status": "再啟動",
-      "status_rank": 1,
-      "sources": [
-        "right_top_track",
-        "volume_pullback"
-      ],
-      "tags": [],
-      "score_parts": {
-        "breakout_track": 15,
-        "pullback": 46
-      },
-      "metrics": {
-        "track_pnl_pct": -6.31,
-        "track_vol_ratio": 1.37,
-        "entry_price": 111.0,
-        "days_remaining": 8,
-        "pullback_status": "reentry",
-        "pullback_score": 103,
-        "ignition_vol_ratio": 2.58,
-        "pullback_from_ignition_close_pct": 4.1,
-        "days_since_ignition": 2,
-        "support_ok": true,
-        "volume_cools": true
-      },
-      "score": 72.0,
-      "source_count": 2,
-      "risk_flags": [],
-      "priority_level": "A",
-      "priority_rank": 1,
-      "priority_reason": [
-        "量增回測再啟動"
-      ]
-    },
-    {
-      "stock_id": "5471",
-      "name": "松翰",
-      "industry": "電子工業",
-      "market": "TWSE",
-      "close": 54.0,
-      "status": "再啟動",
-      "status_rank": 1,
-      "sources": [
-        "right_top_track",
-        "volume_pullback"
-      ],
-      "tags": [],
-      "score_parts": {
-        "breakout_track": 15,
-        "pullback": 46
-      },
-      "metrics": {
-        "track_pnl_pct": 2.86,
-        "track_vol_ratio": 2.98,
-        "entry_price": 52.5,
-        "days_remaining": 10,
-        "pullback_status": "reentry",
-        "pullback_score": 104,
-        "ignition_vol_ratio": 2.71,
-        "pullback_from_ignition_close_pct": 2.86,
-        "days_since_ignition": 1,
-        "support_ok": true,
-        "volume_cools": true
-      },
-      "score": 72.0,
-      "source_count": 2,
-      "risk_flags": [],
-      "priority_level": "A",
-      "priority_rank": 1,
-      "priority_reason": [
-        "量增回測再啟動"
-      ]
-    },
-    {
-      "stock_id": "6668",
-      "name": "中揚光",
-      "industry": "光電業",
-      "market": "TWSE",
-      "close": 39.65,
-      "status": "再啟動",
-      "status_rank": 1,
-      "sources": [
-        "right_top_track",
-        "volume_pullback"
-      ],
-      "tags": [],
-      "score_parts": {
-        "breakout_track": 15,
-        "pullback": 46
-      },
-      "metrics": {
-        "track_pnl_pct": 0.51,
-        "track_vol_ratio": 2.25,
-        "entry_price": 39.45,
-        "days_remaining": 10,
-        "pullback_status": "reentry",
-        "pullback_score": 104,
-        "ignition_vol_ratio": 2.7,
-        "pullback_from_ignition_close_pct": 1.02,
-        "days_since_ignition": 4,
-        "support_ok": true,
-        "volume_cools": true
-      },
-      "score": 72.0,
-      "source_count": 2,
-      "risk_flags": [],
-      "priority_level": "A",
-      "priority_rank": 1,
-      "priority_reason": [
-        "量增回測再啟動"
-      ]
-    },
-    {
-      "stock_id": "2353",
-      "name": "宏卅卅",
-      "industry": "電腦",
-      "market": "TWSE",
-      "close": 29.55,
-      "status": "點火首日",
-      "status_rank": 2,
       "sources": [
         "chips",
-        "volume_signal",
         "right_top_track",
         "volume_pullback",
         "stock_analysis"
       ],
       "tags": [
-        "持續成長",
-        "雙軌觸發"
+        "雙軌觸發",
+        "單周增幅"
       ],
       "score_parts": {
-        "chips": 18,
-        "ignition": 28,
+        "chips": 26,
         "breakout_track": 15,
-        "pullback": 28,
+        "pullback": 53,
         "follow": 0.0
       },
       "metrics": {
-        "market_cap": 562.7,
-        "bbw": 8.12,
-        "week_chg_pct": 6.68,
-        "big_pct_1000": 36.02,
-        "big_pct_400": 39.99,
-        "today_vol_ratio": 2.77,
-        "vol_today": 70184,
-        "vol_10d_avg": 25356.0,
-        "track_pnl_pct": 0.0,
-        "track_vol_ratio": 1.16,
-        "entry_price": 29.55,
-        "days_remaining": 11,
-        "pullback_status": "ignition",
-        "pullback_score": 77,
-        "ignition_vol_ratio": 2.77,
-        "pullback_from_ignition_close_pct": 0.0,
-        "days_since_ignition": 0,
-        "support_ok": true,
-        "volume_cools": false,
-        "ai_pnl_pct": 2.6,
-        "rev_score": 10.0,
-        "chip_score": 3.6,
-        "trend_score": 4.3
-      },
-      "score": 107.0,
-      "source_count": 5,
-      "risk_flags": [],
-      "priority_level": "B",
-      "priority_rank": 2,
-      "priority_reason": [
-        "達觀察條件"
-      ]
-    },
-    {
-      "stock_id": "3694",
-      "name": "海華",
-      "industry": "通信網路業",
-      "market": "TWSE",
-      "close": 70.5,
-      "status": "回穩觀察",
-      "status_rank": 3,
-      "sources": [
-        "right_top_track",
-        "volume_pullback"
-      ],
-      "tags": [],
-      "score_parts": {
-        "breakout_track": 23,
-        "pullback": 47
-      },
-      "metrics": {
-        "track_pnl_pct": 8.8,
-        "track_vol_ratio": 1.61,
-        "entry_price": 64.8,
-        "days_remaining": 8,
-        "pullback_status": "pullback",
-        "pullback_score": 113,
-        "ignition_vol_ratio": 5.94,
-        "pullback_from_ignition_close_pct": -1.81,
-        "days_since_ignition": 1,
-        "support_ok": true,
-        "volume_cools": true
-      },
-      "score": 81.0,
-      "source_count": 2,
-      "risk_flags": [],
-      "priority_level": "B",
-      "priority_rank": 2,
-      "priority_reason": [
-        "達觀察條件"
-      ]
-    },
-    {
-      "stock_id": "5299",
-      "name": "杰力",
-      "industry": "半導體業",
-      "market": "TPEX",
-      "close": 107.0,
-      "status": "回穩觀察",
-      "status_rank": 3,
-      "sources": [
-        "right_top_track",
-        "volume_pullback"
-      ],
-      "tags": [],
-      "score_parts": {
-        "breakout_track": 23,
-        "pullback": 47
-      },
-      "metrics": {
-        "track_pnl_pct": 2.39,
-        "track_vol_ratio": 3.47,
-        "entry_price": 104.5,
+        "market_cap": 84.8,
+        "bbw": 11.73,
+        "week_chg_pct": 13.79,
+        "big_pct_1000": 43.76,
+        "big_pct_400": 55.77,
+        "track_pnl_pct": 4.1,
+        "track_vol_ratio": 1.9,
+        "entry_price": 158.5,
         "days_remaining": 9,
-        "pullback_status": "pullback",
-        "pullback_score": 108,
-        "ignition_vol_ratio": 5.04,
-        "pullback_from_ignition_close_pct": 2.39,
+        "pullback_status": "reentry",
+        "pullback_score": 106,
+        "ignition_vol_ratio": 3.05,
+        "pullback_from_ignition_close_pct": 4.1,
         "days_since_ignition": 2,
         "support_ok": true,
-        "volume_cools": true
+        "volume_cools": true,
+        "ai_pnl_pct": 0.0,
+        "rev_score": 6.0,
+        "chip_score": 9.2,
+        "trend_score": 0.0
       },
-      "score": 81.0,
-      "source_count": 2,
+      "score": 106.0,
+      "source_count": 4,
       "risk_flags": [],
-      "priority_level": "B",
-      "priority_rank": 2,
+      "priority_level": "A",
+      "priority_rank": 1,
       "priority_reason": [
-        "達觀察條件"
-      ]
+        "量增回測再啟動"
+      ],
+      "focus_candidate": true
     },
     {
       "stock_id": "2362",
       "name": "藍天",
       "industry": "電腦",
       "market": "TWSE",
-      "close": 40.85,
+      "close": 42.3,
+      "status": "回穩觀察",
+      "status_rank": 3,
+      "sources": [
+        "chips",
+        "right_top_track",
+        "volume_pullback",
+        "stock_analysis"
+      ],
+      "tags": [
+        "持續成長"
+      ],
+      "score_parts": {
+        "chips": 18,
+        "breakout_track": 15,
+        "pullback": 42,
+        "follow": 0.0
+      },
+      "metrics": {
+        "market_cap": 214.0,
+        "bbw": 6.58,
+        "week_chg_pct": 8.17,
+        "big_pct_1000": 76.52,
+        "big_pct_400": 80.43,
+        "track_pnl_pct": 2.08,
+        "track_vol_ratio": 1.6,
+        "entry_price": 40.85,
+        "days_remaining": 9,
+        "pullback_status": "pullback",
+        "pullback_score": 108,
+        "ignition_vol_ratio": 4.97,
+        "pullback_from_ignition_close_pct": -1.42,
+        "days_since_ignition": 1,
+        "support_ok": true,
+        "volume_cools": true,
+        "ai_pnl_pct": 5.88,
+        "rev_score": 10.0,
+        "chip_score": 2.3,
+        "trend_score": 0.3
+      },
+      "score": 93.0,
+      "source_count": 4,
+      "risk_flags": [],
+      "priority_level": "A",
+      "priority_rank": 1,
+      "priority_reason": [
+        "多策略共振且點火量>=3x"
+      ],
+      "focus_candidate": true
+    },
+    {
+      "stock_id": "2332",
+      "name": "友訊",
+      "industry": "通信",
+      "market": "",
+      "close": 15.7,
+      "status": "再啟動",
+      "status_rank": 1,
+      "sources": [
+        "chips",
+        "volume_pullback",
+        "stock_analysis"
+      ],
+      "tags": [
+        "雙軌觸發"
+      ],
+      "score_parts": {
+        "chips": 21,
+        "pullback": 53,
+        "follow": 0.0
+      },
+      "metrics": {
+        "market_cap": 82.5,
+        "bbw": 11.1,
+        "week_chg_pct": 11.91,
+        "big_pct_1000": 37.97,
+        "big_pct_400": 44.14,
+        "pullback_status": "reentry",
+        "pullback_score": 109,
+        "ignition_vol_ratio": 3.47,
+        "pullback_from_ignition_close_pct": 0.32,
+        "days_since_ignition": 2,
+        "support_ok": true,
+        "volume_cools": true,
+        "ai_pnl_pct": 0.0,
+        "rev_score": 6.0,
+        "chip_score": 5.3,
+        "trend_score": 5.3
+      },
+      "score": 90.0,
+      "source_count": 3,
+      "risk_flags": [],
+      "priority_level": "A",
+      "priority_rank": 1,
+      "priority_reason": [
+        "量增回測再啟動"
+      ],
+      "focus_candidate": true
+    },
+    {
+      "stock_id": "2420",
+      "name": "新巨",
+      "industry": "電子工業",
+      "market": "TWSE",
+      "close": 62.7,
+      "status": "再啟動",
+      "status_rank": 1,
+      "sources": [
+        "right_top_track",
+        "volume_pullback"
+      ],
+      "tags": [],
+      "score_parts": {
+        "breakout_track": 23,
+        "pullback": 53
+      },
+      "metrics": {
+        "track_pnl_pct": 5.38,
+        "track_vol_ratio": 0.88,
+        "entry_price": 59.5,
+        "days_remaining": 5,
+        "pullback_status": "reentry",
+        "pullback_score": 113,
+        "ignition_vol_ratio": 4.23,
+        "pullback_from_ignition_close_pct": 0.32,
+        "days_since_ignition": 3,
+        "support_ok": true,
+        "volume_cools": true
+      },
+      "score": 87.0,
+      "source_count": 2,
+      "risk_flags": [],
+      "priority_level": "A",
+      "priority_rank": 1,
+      "priority_reason": [
+        "量增回測再啟動"
+      ],
+      "focus_candidate": true
+    },
+    {
+      "stock_id": "4923",
+      "name": "力士",
+      "industry": "半導體業",
+      "market": "TPEX",
+      "close": 45.15,
+      "status": "再啟動",
+      "status_rank": 1,
+      "sources": [
+        "right_top_track",
+        "volume_pullback"
+      ],
+      "tags": [],
+      "score_parts": {
+        "breakout_track": 23,
+        "pullback": 53
+      },
+      "metrics": {
+        "track_pnl_pct": 0.0,
+        "track_vol_ratio": 4.75,
+        "entry_price": 45.15,
+        "days_remaining": 11,
+        "pullback_status": "reentry",
+        "pullback_score": 111,
+        "ignition_vol_ratio": 3.87,
+        "pullback_from_ignition_close_pct": 9.99,
+        "days_since_ignition": 1,
+        "support_ok": true,
+        "volume_cools": true
+      },
+      "score": 87.0,
+      "source_count": 2,
+      "risk_flags": [],
+      "priority_level": "A",
+      "priority_rank": 1,
+      "priority_reason": [
+        "量增回測再啟動"
+      ],
+      "focus_candidate": true
+    },
+    {
+      "stock_id": "6127",
+      "name": "九豪",
+      "industry": "電子零組件業",
+      "market": "TPEX",
+      "close": 57.2,
+      "status": "再啟動",
+      "status_rank": 1,
+      "sources": [
+        "right_top_track",
+        "volume_pullback"
+      ],
+      "tags": [],
+      "score_parts": {
+        "breakout_track": 23,
+        "pullback": 53
+      },
+      "metrics": {
+        "track_pnl_pct": 9.79,
+        "track_vol_ratio": 0.84,
+        "entry_price": 52.1,
+        "days_remaining": 7,
+        "pullback_status": "reentry",
+        "pullback_score": 117,
+        "ignition_vol_ratio": 4.86,
+        "pullback_from_ignition_close_pct": 7.92,
+        "days_since_ignition": 3,
+        "support_ok": true,
+        "volume_cools": true
+      },
+      "score": 87.0,
+      "source_count": 2,
+      "risk_flags": [],
+      "priority_level": "A",
+      "priority_rank": 1,
+      "priority_reason": [
+        "量增回測再啟動"
+      ],
+      "focus_candidate": true
+    },
+    {
+      "stock_id": "1709",
+      "name": "和益",
+      "industry": "化學",
+      "market": "",
+      "close": 19.15,
+      "status": "再啟動",
+      "status_rank": 1,
+      "sources": [
+        "chips",
+        "volume_pullback",
+        "stock_analysis"
+      ],
+      "tags": [
+        "持續成長"
+      ],
+      "score_parts": {
+        "chips": 26,
+        "pullback": 46,
+        "follow": 0.0
+      },
+      "metrics": {
+        "market_cap": 67.5,
+        "bbw": 6.82,
+        "week_chg_pct": 5.48,
+        "big_pct_1000": 52.3,
+        "big_pct_400": 61.76,
+        "pullback_status": "reentry",
+        "pullback_score": 104,
+        "ignition_vol_ratio": 2.72,
+        "pullback_from_ignition_close_pct": 0.52,
+        "days_since_ignition": 1,
+        "support_ok": true,
+        "volume_cools": true,
+        "ai_pnl_pct": 0.0,
+        "rev_score": 6.0,
+        "chip_score": 10.0,
+        "trend_score": 0.3
+      },
+      "score": 82.0,
+      "source_count": 3,
+      "risk_flags": [],
+      "priority_level": "A",
+      "priority_rank": 1,
+      "priority_reason": [
+        "量增回測再啟動"
+      ],
+      "focus_candidate": true
+    },
+    {
+      "stock_id": "2324",
+      "name": "仁寶",
+      "industry": "電子工業",
+      "market": "TWSE",
+      "close": 33.6,
+      "status": "再啟動",
+      "status_rank": 1,
+      "sources": [
+        "right_top_track",
+        "volume_pullback"
+      ],
+      "tags": [],
+      "score_parts": {
+        "breakout_track": 15,
+        "pullback": 53
+      },
+      "metrics": {
+        "track_pnl_pct": 0.0,
+        "track_vol_ratio": 2.51,
+        "entry_price": 33.6,
+        "days_remaining": 11,
+        "pullback_status": "reentry",
+        "pullback_score": 107,
+        "ignition_vol_ratio": 3.24,
+        "pullback_from_ignition_close_pct": -3.03,
+        "days_since_ignition": 1,
+        "support_ok": true,
+        "volume_cools": true
+      },
+      "score": 79.0,
+      "source_count": 2,
+      "risk_flags": [],
+      "priority_level": "A",
+      "priority_rank": 1,
+      "priority_reason": [
+        "量增回測再啟動"
+      ],
+      "focus_candidate": true
+    },
+    {
+      "stock_id": "2495",
+      "name": "普安",
+      "industry": "其他電子業",
+      "market": "TWSE",
+      "close": 46.05,
+      "status": "再啟動",
+      "status_rank": 1,
+      "sources": [
+        "right_top_track",
+        "volume_pullback"
+      ],
+      "tags": [],
+      "score_parts": {
+        "breakout_track": 15,
+        "pullback": 53
+      },
+      "metrics": {
+        "track_pnl_pct": -0.22,
+        "track_vol_ratio": 0.38,
+        "entry_price": 46.15,
+        "days_remaining": 10,
+        "pullback_status": "reentry",
+        "pullback_score": 108,
+        "ignition_vol_ratio": 3.32,
+        "pullback_from_ignition_close_pct": 4.19,
+        "days_since_ignition": 2,
+        "support_ok": true,
+        "volume_cools": true
+      },
+      "score": 79.0,
+      "source_count": 2,
+      "risk_flags": [],
+      "priority_level": "A",
+      "priority_rank": 1,
+      "priority_reason": [
+        "量增回測再啟動"
+      ],
+      "focus_candidate": true
+    },
+    {
+      "stock_id": "3558",
+      "name": "神準",
+      "industry": "通信網路業",
+      "market": "TPEX",
+      "close": 135.0,
+      "status": "再啟動",
+      "status_rank": 1,
+      "sources": [
+        "right_top_track",
+        "volume_pullback"
+      ],
+      "tags": [],
+      "score_parts": {
+        "breakout_track": 15,
+        "pullback": 53
+      },
+      "metrics": {
+        "track_pnl_pct": 0.0,
+        "track_vol_ratio": 1.92,
+        "entry_price": 135.0,
+        "days_remaining": 11,
+        "pullback_status": "reentry",
+        "pullback_score": 115,
+        "ignition_vol_ratio": 4.43,
+        "pullback_from_ignition_close_pct": -2.17,
+        "days_since_ignition": 1,
+        "support_ok": true,
+        "volume_cools": true
+      },
+      "score": 79.0,
+      "source_count": 2,
+      "risk_flags": [],
+      "priority_level": "A",
+      "priority_rank": 1,
+      "priority_reason": [
+        "量增回測再啟動"
+      ],
+      "focus_candidate": true
+    },
+    {
+      "stock_id": "3702",
+      "name": "大聯大",
+      "industry": "電子工業",
+      "market": "TWSE",
+      "close": 121.5,
+      "status": "再啟動",
+      "status_rank": 1,
+      "sources": [
+        "right_top_track",
+        "volume_pullback"
+      ],
+      "tags": [],
+      "score_parts": {
+        "breakout_track": 15,
+        "pullback": 53
+      },
+      "metrics": {
+        "track_pnl_pct": -1.62,
+        "track_vol_ratio": 0.22,
+        "entry_price": 123.5,
+        "days_remaining": 10,
+        "pullback_status": "reentry",
+        "pullback_score": 107,
+        "ignition_vol_ratio": 3.15,
+        "pullback_from_ignition_close_pct": -1.62,
+        "days_since_ignition": 3,
+        "support_ok": true,
+        "volume_cools": true
+      },
+      "score": 79.0,
+      "source_count": 2,
+      "risk_flags": [],
+      "priority_level": "A",
+      "priority_rank": 1,
+      "priority_reason": [
+        "量增回測再啟動"
+      ],
+      "focus_candidate": true
+    },
+    {
+      "stock_id": "6609",
+      "name": "瀧澤科",
+      "industry": "電機機械",
+      "market": "TPEX",
+      "close": 47.85,
+      "status": "再啟動",
+      "status_rank": 1,
+      "sources": [
+        "right_top_track",
+        "volume_pullback"
+      ],
+      "tags": [],
+      "score_parts": {
+        "breakout_track": 15,
+        "pullback": 53
+      },
+      "metrics": {
+        "track_pnl_pct": 3.24,
+        "track_vol_ratio": 2.01,
+        "entry_price": 46.35,
+        "days_remaining": 9,
+        "pullback_status": "reentry",
+        "pullback_score": 114,
+        "ignition_vol_ratio": 4.29,
+        "pullback_from_ignition_close_pct": -3.14,
+        "days_since_ignition": 1,
+        "support_ok": true,
+        "volume_cools": true
+      },
+      "score": 79.0,
+      "source_count": 2,
+      "risk_flags": [],
+      "priority_level": "A",
+      "priority_rank": 1,
+      "priority_reason": [
+        "量增回測再啟動"
+      ],
+      "focus_candidate": true
+    },
+    {
+      "stock_id": "3372",
+      "name": "典範",
+      "industry": "櫃半導",
+      "market": "",
+      "close": 21.95,
+      "status": "點火首日",
+      "status_rank": 2,
+      "sources": [
+        "chips",
+        "volume_signal",
+        "volume_pullback",
+        "stock_analysis"
+      ],
+      "tags": [
+        "持續成長"
+      ],
+      "score_parts": {
+        "chips": 9,
+        "ignition": 28,
+        "pullback": 28,
+        "follow": 0.0
+      },
+      "metrics": {
+        "market_cap": 14.2,
+        "bbw": 13.92,
+        "week_chg_pct": 16.67,
+        "big_pct_1000": 44.19,
+        "big_pct_400": 48.01,
+        "today_vol_ratio": 2.52,
+        "vol_today": 2773,
+        "vol_10d_avg": 1099.0,
+        "pullback_status": "ignition",
+        "pullback_score": 75,
+        "ignition_vol_ratio": 2.52,
+        "pullback_from_ignition_close_pct": 0.0,
+        "days_since_ignition": 0,
+        "support_ok": true,
+        "volume_cools": false,
+        "ai_pnl_pct": 0.0,
+        "rev_score": 8.0,
+        "chip_score": 9.5,
+        "trend_score": 1.0
+      },
+      "score": 77.0,
+      "source_count": 4,
+      "risk_flags": [],
+      "priority_level": "A",
+      "priority_rank": 1,
+      "priority_reason": [
+        "大戶營收>=8",
+        "籌碼>=6"
+      ],
+      "focus_candidate": true
+    },
+    {
+      "stock_id": "2937",
+      "name": "集雅社",
+      "industry": "貿易百貨",
+      "market": "TPEX",
+      "close": 47.75,
+      "status": "再啟動",
+      "status_rank": 1,
+      "sources": [
+        "right_top_track",
+        "volume_pullback"
+      ],
+      "tags": [],
+      "score_parts": {
+        "breakout_track": 15,
+        "pullback": 53
+      },
+      "metrics": {
+        "track_pnl_pct": 0.53,
+        "track_vol_ratio": 1.24,
+        "entry_price": 47.5,
+        "days_remaining": 8,
+        "pullback_status": "reentry",
+        "pullback_score": 113,
+        "ignition_vol_ratio": 4.22,
+        "pullback_from_ignition_close_pct": 0.53,
+        "days_since_ignition": 3,
+        "support_ok": true,
+        "volume_cools": true
+      },
+      "score": 73.0,
+      "source_count": 2,
+      "risk_flags": [],
+      "priority_level": "A",
+      "priority_rank": 1,
+      "priority_reason": [
+        "量增回測再啟動"
+      ],
+      "focus_candidate": true
+    },
+    {
+      "stock_id": "8473",
+      "name": "山林水",
+      "industry": "其他",
+      "market": "TWSE",
+      "close": 42.1,
+      "status": "再啟動",
+      "status_rank": 1,
+      "sources": [
+        "right_top_track",
+        "volume_pullback"
+      ],
+      "tags": [],
+      "score_parts": {
+        "breakout_track": 15,
+        "pullback": 53
+      },
+      "metrics": {
+        "track_pnl_pct": 3.44,
+        "track_vol_ratio": 2.39,
+        "entry_price": 40.7,
+        "days_remaining": 8,
+        "pullback_status": "reentry",
+        "pullback_score": 115,
+        "ignition_vol_ratio": 4.58,
+        "pullback_from_ignition_close_pct": 3.44,
+        "days_since_ignition": 3,
+        "support_ok": true,
+        "volume_cools": true
+      },
+      "score": 73.0,
+      "source_count": 2,
+      "risk_flags": [],
+      "priority_level": "A",
+      "priority_rank": 1,
+      "priority_reason": [
+        "量增回測再啟動"
+      ],
+      "focus_candidate": true
+    },
+    {
+      "stock_id": "1409",
+      "name": "新纖",
+      "industry": "紡織",
+      "market": "TWSE",
+      "close": 17.6,
       "status": "點火首日",
       "status_rank": 2,
       "sources": [
@@ -1851,116 +1944,487 @@
         "follow": 0.0
       },
       "metrics": {
-        "market_cap": 214.0,
-        "bbw": 6.58,
-        "week_chg_pct": 5.83,
-        "big_pct_1000": 76.52,
-        "big_pct_400": 80.43,
-        "today_vol_ratio": 2.19,
-        "vol_today": 1602,
-        "vol_10d_avg": 730.0,
-        "track_pnl_pct": 0.0,
-        "track_vol_ratio": 1.6,
-        "entry_price": 40.85,
-        "days_remaining": 11,
-        "ai_pnl_pct": 2.25,
+        "market_cap": 210.4,
+        "bbw": 4.78,
+        "week_chg_pct": 5.69,
+        "big_pct_1000": 62.85,
+        "big_pct_400": 66.22,
+        "today_vol_ratio": 2.07,
+        "vol_today": 15721,
+        "vol_10d_avg": 7610.0,
+        "track_pnl_pct": 0.28,
+        "track_vol_ratio": 0.39,
+        "entry_price": 17.6,
+        "days_remaining": 10,
+        "ai_pnl_pct": 0.0,
         "rev_score": 10.0,
-        "chip_score": 2.3,
-        "trend_score": 0.3
+        "chip_score": 10.0,
+        "trend_score": 0.7
       },
-      "score": 79.0,
+      "score": 73.0,
       "source_count": 4,
       "risk_flags": [],
-      "priority_level": "B",
-      "priority_rank": 2,
+      "priority_level": "A",
+      "priority_rank": 1,
       "priority_reason": [
-        "達觀察條件"
-      ]
+        "大戶營收>=8",
+        "籌碼>=6"
+      ],
+      "focus_candidate": false
     },
     {
-      "stock_id": "2420",
-      "name": "新巨",
-      "industry": "電子工業",
+      "stock_id": "2352",
+      "name": "佳世達",
+      "industry": "電腦及週邊設備業",
       "market": "TWSE",
-      "close": 62.7,
+      "close": 28.65,
       "status": "回穩觀察",
       "status_rank": 3,
       "sources": [
         "right_top_track",
-        "volume_pullback"
+        "volume_pullback",
+        "stock_analysis"
       ],
       "tags": [],
       "score_parts": {
-        "breakout_track": 23,
-        "pullback": 42
+        "breakout_track": 15,
+        "pullback": 42,
+        "follow": 0.0
       },
       "metrics": {
-        "track_pnl_pct": 5.38,
-        "track_vol_ratio": 0.88,
-        "entry_price": 59.5,
-        "days_remaining": 7,
-        "pullback_status": "pullback",
-        "pullback_score": 103,
-        "ignition_vol_ratio": 4.23,
-        "pullback_from_ignition_close_pct": 0.32,
-        "days_since_ignition": 1,
-        "support_ok": true,
-        "volume_cools": true
-      },
-      "score": 76.0,
-      "source_count": 2,
-      "risk_flags": [],
-      "priority_level": "B",
-      "priority_rank": 2,
-      "priority_reason": [
-        "達觀察條件"
-      ]
-    },
-    {
-      "stock_id": "3504",
-      "name": "揚明光",
-      "industry": "光電業",
-      "market": "TWSE",
-      "close": 83.4,
-      "status": "回穩觀察",
-      "status_rank": 3,
-      "sources": [
-        "right_top_track",
-        "volume_pullback"
-      ],
-      "tags": [],
-      "score_parts": {
-        "breakout_track": 23,
-        "pullback": 42
-      },
-      "metrics": {
-        "track_pnl_pct": 6.65,
-        "track_vol_ratio": 2.41,
-        "entry_price": 78.2,
+        "track_pnl_pct": 3.31,
+        "track_vol_ratio": 1.23,
+        "entry_price": 27.2,
         "days_remaining": 8,
         "pullback_status": "pullback",
-        "pullback_score": 101,
-        "ignition_vol_ratio": 3.8,
-        "pullback_from_ignition_close_pct": 1.34,
+        "pullback_score": 103,
+        "ignition_vol_ratio": 4.11,
+        "pullback_from_ignition_close_pct": -2.26,
+        "days_since_ignition": 2,
+        "support_ok": true,
+        "volume_cools": true,
+        "ai_pnl_pct": -0.35,
+        "rev_score": 0.0,
+        "chip_score": 8.5,
+        "trend_score": 0.3
+      },
+      "score": 73.0,
+      "source_count": 3,
+      "risk_flags": [],
+      "priority_level": "A",
+      "priority_rank": 1,
+      "priority_reason": [
+        "多策略共振且點火量>=3x"
+      ],
+      "focus_candidate": true
+    },
+    {
+      "stock_id": "3114",
+      "name": "好德",
+      "industry": "電子零組件業",
+      "market": "TPEX",
+      "close": 27.9,
+      "status": "再啟動",
+      "status_rank": 1,
+      "sources": [
+        "right_top_track",
+        "volume_pullback"
+      ],
+      "tags": [],
+      "score_parts": {
+        "breakout_track": 12,
+        "pullback": 46
+      },
+      "metrics": {
+        "track_pnl_pct": 2.76,
+        "track_vol_ratio": 0.88,
+        "entry_price": 27.15,
+        "days_remaining": 3,
+        "pullback_status": "reentry",
+        "pullback_score": 104,
+        "ignition_vol_ratio": 2.59,
+        "pullback_from_ignition_close_pct": -1.24,
         "days_since_ignition": 2,
         "support_ok": true,
         "volume_cools": true
       },
-      "score": 76.0,
+      "score": 69.0,
       "source_count": 2,
+      "risk_flags": [],
+      "priority_level": "A",
+      "priority_rank": 1,
+      "priority_reason": [
+        "量增回測再啟動"
+      ],
+      "focus_candidate": true
+    },
+    {
+      "stock_id": "2603",
+      "name": "長榮",
+      "industry": "航運業",
+      "market": "TWSE",
+      "close": 214.0,
+      "status": "回穩觀察",
+      "status_rank": 3,
+      "sources": [
+        "right_top_track",
+        "volume_pullback",
+        "stock_analysis"
+      ],
+      "tags": [],
+      "score_parts": {
+        "breakout_track": 15,
+        "pullback": 42,
+        "follow": 0.0
+      },
+      "metrics": {
+        "track_pnl_pct": -3.42,
+        "track_vol_ratio": 2.24,
+        "entry_price": 219.0,
+        "days_remaining": 9,
+        "pullback_status": "pullback",
+        "pullback_score": 100,
+        "ignition_vol_ratio": 3.65,
+        "pullback_from_ignition_close_pct": -0.47,
+        "days_since_ignition": 4,
+        "support_ok": true,
+        "volume_cools": true,
+        "ai_pnl_pct": 0.71,
+        "rev_score": 10.0,
+        "chip_score": 10.0,
+        "trend_score": 4.1
+      },
+      "score": 67.0,
+      "source_count": 3,
+      "risk_flags": [],
+      "priority_level": "A",
+      "priority_rank": 1,
+      "priority_reason": [
+        "大戶營收>=8",
+        "籌碼>=6"
+      ],
+      "focus_candidate": true
+    },
+    {
+      "stock_id": "2233",
+      "name": "宇隆",
+      "industry": "汽車工業",
+      "market": "TWSE",
+      "close": 377.0,
+      "status": "再啟動",
+      "status_rank": 1,
+      "sources": [
+        "right_top_track",
+        "volume_pullback"
+      ],
+      "tags": [],
+      "score_parts": {
+        "breakout_track": 15,
+        "pullback": 46
+      },
+      "metrics": {
+        "track_pnl_pct": -1.18,
+        "track_vol_ratio": 0.42,
+        "entry_price": 381.5,
+        "days_remaining": 10,
+        "pullback_status": "reentry",
+        "pullback_score": 104,
+        "ignition_vol_ratio": 2.69,
+        "pullback_from_ignition_close_pct": 8.65,
+        "days_since_ignition": 2,
+        "support_ok": true,
+        "volume_cools": true
+      },
+      "score": 66.0,
+      "source_count": 2,
+      "risk_flags": [],
+      "priority_level": "A",
+      "priority_rank": 1,
+      "priority_reason": [
+        "量增回測再啟動"
+      ],
+      "focus_candidate": true
+    },
+    {
+      "stock_id": "3444",
+      "name": "利機",
+      "industry": "電子通路業",
+      "market": "TPEX",
+      "close": 107.0,
+      "status": "再啟動",
+      "status_rank": 1,
+      "sources": [
+        "right_top_track",
+        "volume_pullback"
+      ],
+      "tags": [],
+      "score_parts": {
+        "breakout_track": 15,
+        "pullback": 46
+      },
+      "metrics": {
+        "track_pnl_pct": 0.94,
+        "track_vol_ratio": 0.75,
+        "entry_price": 106.0,
+        "days_remaining": 10,
+        "pullback_status": "reentry",
+        "pullback_score": 105,
+        "ignition_vol_ratio": 2.9,
+        "pullback_from_ignition_close_pct": 0.94,
+        "days_since_ignition": 1,
+        "support_ok": true,
+        "volume_cools": true
+      },
+      "score": 66.0,
+      "source_count": 2,
+      "risk_flags": [],
+      "priority_level": "A",
+      "priority_rank": 1,
+      "priority_reason": [
+        "量增回測再啟動"
+      ],
+      "focus_candidate": true
+    },
+    {
+      "stock_id": "4764",
+      "name": "雙鍵",
+      "industry": "化學工業",
+      "market": "TWSE",
+      "close": 338.0,
+      "status": "再啟動",
+      "status_rank": 1,
+      "sources": [
+        "right_top_track",
+        "volume_pullback"
+      ],
+      "tags": [],
+      "score_parts": {
+        "breakout_track": 15,
+        "pullback": 46
+      },
+      "metrics": {
+        "track_pnl_pct": -3.98,
+        "track_vol_ratio": 0.23,
+        "entry_price": 352.0,
+        "days_remaining": 10,
+        "pullback_status": "reentry",
+        "pullback_score": 103,
+        "ignition_vol_ratio": 2.58,
+        "pullback_from_ignition_close_pct": 5.62,
+        "days_since_ignition": 2,
+        "support_ok": true,
+        "volume_cools": true
+      },
+      "score": 66.0,
+      "source_count": 2,
+      "risk_flags": [],
+      "priority_level": "A",
+      "priority_rank": 1,
+      "priority_reason": [
+        "量增回測再啟動"
+      ],
+      "focus_candidate": true
+    },
+    {
+      "stock_id": "6902",
+      "name": "GOGOLOOK-創",
+      "industry": "創新版股票",
+      "market": "TWSE",
+      "close": 141.0,
+      "status": "再啟動",
+      "status_rank": 1,
+      "sources": [
+        "right_top_track",
+        "volume_pullback"
+      ],
+      "tags": [],
+      "score_parts": {
+        "breakout_track": 15,
+        "pullback": 46
+      },
+      "metrics": {
+        "track_pnl_pct": 2.17,
+        "track_vol_ratio": 0.71,
+        "entry_price": 138.0,
+        "days_remaining": 10,
+        "pullback_status": "reentry",
+        "pullback_score": 104,
+        "ignition_vol_ratio": 2.58,
+        "pullback_from_ignition_close_pct": 10.16,
+        "days_since_ignition": 4,
+        "support_ok": true,
+        "volume_cools": true
+      },
+      "score": 66.0,
+      "source_count": 2,
+      "risk_flags": [],
+      "priority_level": "A",
+      "priority_rank": 1,
+      "priority_reason": [
+        "量增回測再啟動"
+      ],
+      "focus_candidate": true
+    },
+    {
+      "stock_id": "2618",
+      "name": "長榮航",
+      "industry": "航運",
+      "market": "",
+      "close": 35.45,
+      "status": "點火首日",
+      "status_rank": 2,
+      "sources": [
+        "chips",
+        "volume_signal",
+        "stock_analysis"
+      ],
+      "tags": [
+        "持續成長"
+      ],
+      "score_parts": {
+        "chips": 18,
+        "ignition": 28,
+        "follow": 0.0
+      },
+      "metrics": {
+        "market_cap": 664.5,
+        "bbw": 8.99,
+        "week_chg_pct": 2.18,
+        "big_pct_1000": 69.25,
+        "big_pct_400": 73.01,
+        "today_vol_ratio": 1.97,
+        "vol_today": 66829,
+        "vol_10d_avg": 33869.0,
+        "ai_pnl_pct": 0.0,
+        "rev_score": 10.0,
+        "chip_score": 7.2,
+        "trend_score": 1.5
+      },
+      "score": 56.0,
+      "source_count": 3,
+      "risk_flags": [],
+      "priority_level": "A",
+      "priority_rank": 1,
+      "priority_reason": [
+        "大戶營收>=8",
+        "籌碼>=6"
+      ],
+      "focus_candidate": false
+    },
+    {
+      "stock_id": "4306",
+      "name": "炎洲",
+      "industry": "塑膠",
+      "market": "TWSE",
+      "close": 14.05,
+      "status": "突破延伸",
+      "status_rank": 4,
+      "sources": [
+        "chips",
+        "right_top_track",
+        "stock_analysis"
+      ],
+      "tags": [
+        "持續成長",
+        "雙軌觸發"
+      ],
+      "score_parts": {
+        "chips": 21,
+        "breakout_track": 15,
+        "follow": 0.0
+      },
+      "metrics": {
+        "market_cap": 64.4,
+        "bbw": 8.43,
+        "week_chg_pct": -1.09,
+        "big_pct_1000": 48.51,
+        "big_pct_400": 54.3,
+        "track_pnl_pct": -2.85,
+        "track_vol_ratio": 2.09,
+        "entry_price": 14.05,
+        "days_remaining": 9,
+        "ai_pnl_pct": 0.0,
+        "rev_score": 10.0,
+        "chip_score": 10.0,
+        "trend_score": 4.3
+      },
+      "score": 46.0,
+      "source_count": 3,
+      "risk_flags": [],
+      "priority_level": "A",
+      "priority_rank": 1,
+      "priority_reason": [
+        "大戶營收>=8",
+        "籌碼>=6"
+      ],
+      "focus_candidate": false
+    },
+    {
+      "stock_id": "2881",
+      "name": "富邦金",
+      "industry": "金融",
+      "market": "TWSE",
+      "close": 97.7,
+      "status": "點火首日",
+      "status_rank": 2,
+      "sources": [
+        "chips",
+        "volume_signal",
+        "right_top_track",
+        "volume_pullback",
+        "stock_analysis"
+      ],
+      "tags": [
+        "持續成長"
+      ],
+      "score_parts": {
+        "chips": 14,
+        "ignition": 28,
+        "breakout_track": 15,
+        "pullback": 28,
+        "follow": 0.0
+      },
+      "metrics": {
+        "market_cap": 4333.9,
+        "bbw": 13.15,
+        "week_chg_pct": 6.48,
+        "big_pct_1000": 83.56,
+        "big_pct_400": 85.66,
+        "today_vol_ratio": 2.67,
+        "vol_today": 103319,
+        "vol_10d_avg": 38719.0,
+        "track_pnl_pct": 0.0,
+        "track_vol_ratio": 1.48,
+        "entry_price": 103.5,
+        "days_remaining": 11,
+        "pullback_status": "ignition",
+        "pullback_score": 76,
+        "ignition_vol_ratio": 2.67,
+        "pullback_from_ignition_close_pct": 0.0,
+        "days_since_ignition": 0,
+        "support_ok": true,
+        "volume_cools": false,
+        "ai_pnl_pct": 1.03,
+        "rev_score": 0.0,
+        "chip_score": 0.0,
+        "trend_score": 1.0
+      },
+      "score": 97.0,
+      "source_count": 5,
       "risk_flags": [],
       "priority_level": "B",
       "priority_rank": 2,
       "priority_reason": [
         "達觀察條件"
-      ]
+      ],
+      "focus_candidate": false
     },
     {
-      "stock_id": "8081",
-      "name": "致新",
-      "industry": "半導體業",
+      "stock_id": "3694",
+      "name": "海華",
+      "industry": "通信網路業",
       "market": "TWSE",
-      "close": 279.5,
+      "close": 70.2,
       "status": "回穩觀察",
       "status_rank": 3,
       "sources": [
@@ -1970,75 +2434,86 @@
       "tags": [],
       "score_parts": {
         "breakout_track": 23,
-        "pullback": 42
+        "pullback": 47
       },
       "metrics": {
-        "track_pnl_pct": 5.87,
-        "track_vol_ratio": 2.06,
-        "entry_price": 264.0,
-        "days_remaining": 8,
+        "track_pnl_pct": 8.33,
+        "track_vol_ratio": 1.61,
+        "entry_price": 64.8,
+        "days_remaining": 6,
         "pullback_status": "pullback",
-        "pullback_score": 100,
-        "ignition_vol_ratio": 3.65,
-        "pullback_from_ignition_close_pct": 5.87,
+        "pullback_score": 113,
+        "ignition_vol_ratio": 5.94,
+        "pullback_from_ignition_close_pct": -2.23,
         "days_since_ignition": 3,
         "support_ok": true,
         "volume_cools": true
       },
-      "score": 76.0,
+      "score": 81.0,
       "source_count": 2,
       "risk_flags": [],
       "priority_level": "B",
       "priority_rank": 2,
       "priority_reason": [
         "達觀察條件"
-      ]
+      ],
+      "focus_candidate": false
     },
     {
-      "stock_id": "6411",
-      "name": "晶焱",
-      "industry": "半導體業",
-      "market": "TPEX",
-      "close": 94.9,
-      "status": "點火",
-      "status_rank": 2,
+      "stock_id": "6214",
+      "name": "精誠",
+      "industry": "資服",
+      "market": "TWSE",
+      "close": 129.5,
+      "status": "回穩觀察",
+      "status_rank": 3,
       "sources": [
+        "chips",
         "right_top_track",
         "volume_pullback"
       ],
-      "tags": [],
+      "tags": [
+        "持續成長"
+      ],
       "score_parts": {
-        "breakout_track": 23,
-        "pullback": 40
+        "chips": 18,
+        "breakout_track": 15,
+        "pullback": 35
       },
       "metrics": {
-        "track_pnl_pct": 11.52,
-        "track_vol_ratio": 1.68,
-        "entry_price": 85.1,
-        "days_remaining": 5,
-        "pullback_status": "ignition",
+        "market_cap": 193.7,
+        "bbw": 8.96,
+        "week_chg_pct": 4.86,
+        "big_pct_1000": 46.01,
+        "big_pct_400": 55.57,
+        "track_pnl_pct": -0.38,
+        "track_vol_ratio": 1.48,
+        "entry_price": 130.0,
+        "days_remaining": 9,
+        "pullback_status": "pullback",
         "pullback_score": 95,
-        "ignition_vol_ratio": 6.24,
-        "pullback_from_ignition_close_pct": 0.0,
-        "days_since_ignition": 0,
+        "ignition_vol_ratio": 2.78,
+        "pullback_from_ignition_close_pct": -0.38,
+        "days_since_ignition": 2,
         "support_ok": true,
-        "volume_cools": false
+        "volume_cools": true
       },
-      "score": 74.0,
-      "source_count": 2,
+      "score": 78.0,
+      "source_count": 3,
       "risk_flags": [],
       "priority_level": "B",
       "priority_rank": 2,
       "priority_reason": [
         "達觀察條件"
-      ]
+      ],
+      "focus_candidate": false
     },
     {
-      "stock_id": "2061",
-      "name": "風青",
-      "industry": "電器電纜",
-      "market": "TPEX",
-      "close": 26.65,
+      "stock_id": "5484",
+      "name": "慧友",
+      "industry": "電子工業",
+      "market": "TWSE",
+      "close": 51.3,
       "status": "點火",
       "status_rank": 2,
       "sources": [
@@ -2051,79 +2526,76 @@
         "pullback": 35
       },
       "metrics": {
-        "track_pnl_pct": 8.78,
-        "track_vol_ratio": 4.8,
-        "entry_price": 24.5,
-        "days_remaining": 10,
+        "track_pnl_pct": 14.77,
+        "track_vol_ratio": 3.01,
+        "entry_price": 44.7,
+        "days_remaining": 9,
         "pullback_status": "ignition",
         "pullback_score": 84,
-        "ignition_vol_ratio": 4.0,
+        "ignition_vol_ratio": 4.05,
         "pullback_from_ignition_close_pct": 0.0,
         "days_since_ignition": 0,
         "support_ok": true,
         "volume_cools": false
       },
-      "score": 71.0,
+      "score": 77.0,
       "source_count": 2,
       "risk_flags": [],
       "priority_level": "B",
       "priority_rank": 2,
       "priority_reason": [
         "達觀察條件"
-      ]
+      ],
+      "focus_candidate": false
     },
     {
-      "stock_id": "6118",
-      "name": "建達",
-      "industry": "櫃通路",
-      "market": "TPEX",
-      "close": 19.3,
-      "status": "點火首日",
-      "status_rank": 2,
+      "stock_id": "2355",
+      "name": "敬鵬",
+      "industry": "電子工業",
+      "market": "TWSE",
+      "close": 65.1,
+      "status": "回穩觀察",
+      "status_rank": 3,
       "sources": [
-        "chips",
-        "volume_signal",
-        "right_top_track"
+        "right_top_track",
+        "volume_pullback"
       ],
-      "tags": [
-        "持續成長"
-      ],
+      "tags": [],
       "score_parts": {
-        "chips": 18,
-        "ignition": 28,
-        "breakout_track": 15
+        "breakout_track": 23,
+        "pullback": 42
       },
       "metrics": {
-        "market_cap": 8.9,
-        "bbw": 11.73,
-        "week_chg_pct": 10.29,
-        "big_pct_1000": 51.7,
-        "big_pct_400": 57.87,
-        "today_vol_ratio": 2.24,
-        "vol_today": 2664,
-        "vol_10d_avg": 1190.0,
-        "track_pnl_pct": 0.0,
-        "track_vol_ratio": 2.3,
-        "entry_price": 19.3,
-        "days_remaining": 11
+        "track_pnl_pct": 12.82,
+        "track_vol_ratio": 0.4,
+        "entry_price": 57.7,
+        "days_remaining": 5,
+        "pullback_status": "pullback",
+        "pullback_score": 103,
+        "ignition_vol_ratio": 4.12,
+        "pullback_from_ignition_close_pct": 10.15,
+        "days_since_ignition": 4,
+        "support_ok": true,
+        "volume_cools": true
       },
-      "score": 71.0,
-      "source_count": 3,
+      "score": 76.0,
+      "source_count": 2,
       "risk_flags": [],
       "priority_level": "B",
       "priority_rank": 2,
       "priority_reason": [
         "達觀察條件"
-      ]
+      ],
+      "focus_candidate": false
     },
     {
       "stock_id": "2401",
       "name": "凌陽",
       "industry": "半導體業",
       "market": "TWSE",
-      "close": 30.75,
-      "status": "點火",
-      "status_rank": 2,
+      "close": 30.1,
+      "status": "回穩觀察",
+      "status_rank": 3,
       "sources": [
         "right_top_track",
         "volume_pullback"
@@ -2131,38 +2603,119 @@
       "tags": [],
       "score_parts": {
         "breakout_track": 23,
-        "pullback": 35
+        "pullback": 42
       },
       "metrics": {
-        "track_pnl_pct": 4.06,
+        "track_pnl_pct": 1.86,
         "track_vol_ratio": 4.23,
         "entry_price": 29.55,
-        "days_remaining": 10,
-        "pullback_status": "ignition",
-        "pullback_score": 86,
+        "days_remaining": 8,
+        "pullback_status": "pullback",
+        "pullback_score": 104,
         "ignition_vol_ratio": 4.3,
-        "pullback_from_ignition_close_pct": 0.0,
-        "days_since_ignition": 0,
+        "pullback_from_ignition_close_pct": -2.11,
+        "days_since_ignition": 2,
         "support_ok": true,
-        "volume_cools": false
+        "volume_cools": true
       },
-      "score": 69.0,
+      "score": 76.0,
       "source_count": 2,
       "risk_flags": [],
       "priority_level": "B",
       "priority_rank": 2,
       "priority_reason": [
         "達觀察條件"
-      ]
+      ],
+      "focus_candidate": false
+    },
+    {
+      "stock_id": "3490",
+      "name": "單井",
+      "industry": "光電業",
+      "market": "TPEX",
+      "close": 41.7,
+      "status": "回穩觀察",
+      "status_rank": 3,
+      "sources": [
+        "right_top_track",
+        "volume_pullback"
+      ],
+      "tags": [],
+      "score_parts": {
+        "breakout_track": 23,
+        "pullback": 42
+      },
+      "metrics": {
+        "track_pnl_pct": 10.32,
+        "track_vol_ratio": 0.87,
+        "entry_price": 37.8,
+        "days_remaining": 6,
+        "pullback_status": "pullback",
+        "pullback_score": 98,
+        "ignition_vol_ratio": 3.31,
+        "pullback_from_ignition_close_pct": -4.14,
+        "days_since_ignition": 2,
+        "support_ok": true,
+        "volume_cools": true
+      },
+      "score": 76.0,
+      "source_count": 2,
+      "risk_flags": [],
+      "priority_level": "B",
+      "priority_rank": 2,
+      "priority_reason": [
+        "達觀察條件"
+      ],
+      "focus_candidate": false
+    },
+    {
+      "stock_id": "5488",
+      "name": "松普",
+      "industry": "電子零組件業",
+      "market": "TPEX",
+      "close": 11.85,
+      "status": "回穩觀察",
+      "status_rank": 3,
+      "sources": [
+        "right_top_track",
+        "volume_pullback"
+      ],
+      "tags": [],
+      "score_parts": {
+        "breakout_track": 23,
+        "pullback": 42
+      },
+      "metrics": {
+        "track_pnl_pct": 10.75,
+        "track_vol_ratio": 0.96,
+        "entry_price": 10.7,
+        "days_remaining": 6,
+        "pullback_status": "pullback",
+        "pullback_score": 97,
+        "ignition_vol_ratio": 3.08,
+        "pullback_from_ignition_close_pct": 0.42,
+        "days_since_ignition": 3,
+        "support_ok": true,
+        "volume_cools": true
+      },
+      "score": 76.0,
+      "source_count": 2,
+      "risk_flags": [],
+      "priority_level": "B",
+      "priority_rank": 2,
+      "priority_reason": [
+        "達觀察條件"
+      ],
+      "focus_candidate": false
     },
     {
       "stock_id": "6155",
       "name": "鈞寶",
       "industry": "電子工業",
       "market": "TWSE",
-      "close": 61.2,
-      "status": "點火",
-      "status_rank": 2,
+      "close": 59.4,
+      "status": "回穩觀察",
+      "status_rank": 3,
       "sources": [
         "right_top_track",
         "volume_pullback"
@@ -2170,192 +2723,37 @@
       "tags": [],
       "score_parts": {
         "breakout_track": 23,
-        "pullback": 35
+        "pullback": 42
       },
       "metrics": {
-        "track_pnl_pct": 9.48,
+        "track_pnl_pct": 6.26,
         "track_vol_ratio": 0.82,
         "entry_price": 55.9,
-        "days_remaining": 9,
-        "pullback_status": "ignition",
-        "pullback_score": 78,
+        "days_remaining": 7,
+        "pullback_status": "pullback",
+        "pullback_score": 96,
         "ignition_vol_ratio": 3.05,
-        "pullback_from_ignition_close_pct": 0.0,
-        "days_since_ignition": 0,
-        "support_ok": true,
-        "volume_cools": false
-      },
-      "score": 69.0,
-      "source_count": 2,
-      "risk_flags": [],
-      "priority_level": "B",
-      "priority_rank": 2,
-      "priority_reason": [
-        "達觀察條件"
-      ]
-    },
-    {
-      "stock_id": "6284",
-      "name": "佳邦",
-      "industry": "電子零組件業",
-      "market": "TPEX",
-      "close": 102.5,
-      "status": "點火",
-      "status_rank": 2,
-      "sources": [
-        "right_top_track",
-        "volume_pullback"
-      ],
-      "tags": [],
-      "score_parts": {
-        "breakout_track": 23,
-        "pullback": 35
-      },
-      "metrics": {
-        "track_pnl_pct": 9.74,
-        "track_vol_ratio": 2.01,
-        "entry_price": 93.4,
-        "days_remaining": 10,
-        "pullback_status": "ignition",
-        "pullback_score": 80,
-        "ignition_vol_ratio": 3.39,
-        "pullback_from_ignition_close_pct": 0.0,
-        "days_since_ignition": 0,
-        "support_ok": true,
-        "volume_cools": false
-      },
-      "score": 69.0,
-      "source_count": 2,
-      "risk_flags": [],
-      "priority_level": "B",
-      "priority_rank": 2,
-      "priority_reason": [
-        "達觀察條件"
-      ]
-    },
-    {
-      "stock_id": "3675",
-      "name": "德微",
-      "industry": "半導體業",
-      "market": "TPEX",
-      "close": 319.5,
-      "status": "回穩觀察",
-      "status_rank": 3,
-      "sources": [
-        "right_top_track",
-        "volume_pullback"
-      ],
-      "tags": [],
-      "score_parts": {
-        "breakout_track": 23,
-        "pullback": 35
-      },
-      "metrics": {
-        "track_pnl_pct": 12.7,
-        "track_vol_ratio": 0.59,
-        "entry_price": 283.5,
-        "days_remaining": 8,
-        "pullback_status": "pullback",
-        "pullback_score": 94,
-        "ignition_vol_ratio": 2.59,
-        "pullback_from_ignition_close_pct": 0.95,
-        "days_since_ignition": 1,
+        "pullback_from_ignition_close_pct": -2.94,
+        "days_since_ignition": 2,
         "support_ok": true,
         "volume_cools": true
       },
-      "score": 69.0,
+      "score": 76.0,
       "source_count": 2,
       "risk_flags": [],
       "priority_level": "B",
       "priority_rank": 2,
       "priority_reason": [
         "達觀察條件"
-      ]
-    },
-    {
-      "stock_id": "6432",
-      "name": "今展科",
-      "industry": "電子零組件業",
-      "market": "TPEX",
-      "close": 55.7,
-      "status": "回穩觀察",
-      "status_rank": 3,
-      "sources": [
-        "right_top_track",
-        "volume_pullback"
       ],
-      "tags": [],
-      "score_parts": {
-        "breakout_track": 23,
-        "pullback": 35
-      },
-      "metrics": {
-        "track_pnl_pct": 5.69,
-        "track_vol_ratio": 1.85,
-        "entry_price": 52.7,
-        "days_remaining": 9,
-        "pullback_status": "pullback",
-        "pullback_score": 93,
-        "ignition_vol_ratio": 2.55,
-        "pullback_from_ignition_close_pct": -2.11,
-        "days_since_ignition": 1,
-        "support_ok": true,
-        "volume_cools": true
-      },
-      "score": 69.0,
-      "source_count": 2,
-      "risk_flags": [],
-      "priority_level": "B",
-      "priority_rank": 2,
-      "priority_reason": [
-        "達觀察條件"
-      ]
+      "focus_candidate": false
     },
     {
-      "stock_id": "9105",
-      "name": "泰金寶-DR",
-      "industry": "存託憑證",
+      "stock_id": "6491",
+      "name": "晶碩",
+      "industry": "生技",
       "market": "TWSE",
-      "close": 6.75,
-      "status": "點火",
-      "status_rank": 2,
-      "sources": [
-        "right_top_track",
-        "volume_pullback"
-      ],
-      "tags": [],
-      "score_parts": {
-        "breakout_track": 23,
-        "pullback": 40
-      },
-      "metrics": {
-        "track_pnl_pct": 9.93,
-        "track_vol_ratio": 1.0,
-        "entry_price": 6.14,
-        "days_remaining": 10,
-        "pullback_status": "ignition",
-        "pullback_score": 95,
-        "ignition_vol_ratio": 7.03,
-        "pullback_from_ignition_close_pct": 0.0,
-        "days_since_ignition": 0,
-        "support_ok": true,
-        "volume_cools": false
-      },
-      "score": 68.0,
-      "source_count": 2,
-      "risk_flags": [],
-      "priority_level": "B",
-      "priority_rank": 2,
-      "priority_reason": [
-        "達觀察條件"
-      ]
-    },
-    {
-      "stock_id": "2615",
-      "name": "萬海",
-      "industry": "航運",
-      "market": "TWSE",
-      "close": 84.3,
+      "close": 325.0,
       "status": "點火首日",
       "status_rank": 2,
       "sources": [
@@ -2369,37 +2767,78 @@
       "score_parts": {
         "chips": 14,
         "ignition": 28,
-        "breakout_track": 15
+        "breakout_track": 23
       },
       "metrics": {
-        "market_cap": 483.6,
-        "bbw": 14.72,
-        "week_chg_pct": 13.61,
-        "big_pct_1000": 82.12,
-        "big_pct_400": 84.45,
-        "today_vol_ratio": 1.89,
-        "vol_today": 23283,
-        "vol_10d_avg": 12340.0,
-        "track_pnl_pct": 0.0,
-        "track_vol_ratio": 1.75,
-        "entry_price": 84.3,
-        "days_remaining": 11
+        "market_cap": null,
+        "bbw": 13.12,
+        "week_chg_pct": 6.38,
+        "big_pct_1000": 53.63,
+        "big_pct_400": 57.69,
+        "today_vol_ratio": 2.24,
+        "vol_today": 1502,
+        "vol_10d_avg": 672.0,
+        "track_pnl_pct": 6.38,
+        "track_vol_ratio": 1.62,
+        "entry_price": 305.5,
+        "days_remaining": 6
       },
-      "score": 67.0,
+      "score": 75.0,
       "source_count": 3,
       "risk_flags": [],
       "priority_level": "B",
       "priority_rank": 2,
       "priority_reason": [
         "達觀察條件"
-      ]
+      ],
+      "focus_candidate": false
     },
     {
-      "stock_id": "3546",
-      "name": "宇峻",
-      "industry": "文化創意業",
+      "stock_id": "3025",
+      "name": "星通",
+      "industry": "通信網路業",
+      "market": "TWSE",
+      "close": 78.8,
+      "status": "點火",
+      "status_rank": 2,
+      "sources": [
+        "right_top_track",
+        "volume_pullback"
+      ],
+      "tags": [],
+      "score_parts": {
+        "breakout_track": 23,
+        "pullback": 40
+      },
+      "metrics": {
+        "track_pnl_pct": 10.99,
+        "track_vol_ratio": 0.79,
+        "entry_price": 71.0,
+        "days_remaining": 9,
+        "pullback_status": "ignition",
+        "pullback_score": 95,
+        "ignition_vol_ratio": 7.54,
+        "pullback_from_ignition_close_pct": 0.0,
+        "days_since_ignition": 0,
+        "support_ok": true,
+        "volume_cools": false
+      },
+      "score": 74.0,
+      "source_count": 2,
+      "risk_flags": [],
+      "priority_level": "B",
+      "priority_rank": 2,
+      "priority_reason": [
+        "達觀察條件"
+      ],
+      "focus_candidate": false
+    },
+    {
+      "stock_id": "6194",
+      "name": "育富",
+      "industry": "電子零組件業",
       "market": "TPEX",
-      "close": 81.3,
+      "close": 35.3,
       "status": "回穩觀察",
       "status_rank": 3,
       "sources": [
@@ -2412,33 +2851,114 @@
         "pullback": 47
       },
       "metrics": {
-        "track_pnl_pct": 3.3,
-        "track_vol_ratio": 1.52,
-        "entry_price": 78.7,
-        "days_remaining": 6,
+        "track_pnl_pct": 3.98,
+        "track_vol_ratio": 2.42,
+        "entry_price": 33.95,
+        "days_remaining": 9,
         "pullback_status": "pullback",
         "pullback_score": 113,
-        "ignition_vol_ratio": 9.14,
-        "pullback_from_ignition_close_pct": 2.78,
-        "days_since_ignition": 4,
+        "ignition_vol_ratio": 11.57,
+        "pullback_from_ignition_close_pct": 3.98,
+        "days_since_ignition": 2,
         "support_ok": true,
         "volume_cools": true
       },
-      "score": 67.0,
+      "score": 73.0,
       "source_count": 2,
       "risk_flags": [],
       "priority_level": "B",
       "priority_rank": 2,
       "priority_reason": [
         "達觀察條件"
-      ]
+      ],
+      "focus_candidate": false
     },
     {
-      "stock_id": "3564",
-      "name": "其陽",
+      "stock_id": "1533",
+      "name": "車王電",
+      "industry": "汽車工業",
+      "market": "TWSE",
+      "close": 38.65,
+      "status": "回穩觀察",
+      "status_rank": 3,
+      "sources": [
+        "right_top_track",
+        "volume_pullback"
+      ],
+      "tags": [],
+      "score_parts": {
+        "breakout_track": 23,
+        "pullback": 42
+      },
+      "metrics": {
+        "track_pnl_pct": -3.01,
+        "track_vol_ratio": 6.84,
+        "entry_price": 39.85,
+        "days_remaining": 8,
+        "pullback_status": "pullback",
+        "pullback_score": 97,
+        "ignition_vol_ratio": 3.24,
+        "pullback_from_ignition_close_pct": -3.01,
+        "days_since_ignition": 3,
+        "support_ok": true,
+        "volume_cools": true
+      },
+      "score": 70.0,
+      "source_count": 2,
+      "risk_flags": [],
+      "priority_level": "B",
+      "priority_rank": 2,
+      "priority_reason": [
+        "達觀察條件"
+      ],
+      "focus_candidate": false
+    },
+    {
+      "stock_id": "4555",
+      "name": "氣立",
+      "industry": "電機機械",
+      "market": "TWSE",
+      "close": 56.2,
+      "status": "點火",
+      "status_rank": 2,
+      "sources": [
+        "right_top_track",
+        "volume_pullback"
+      ],
+      "tags": [],
+      "score_parts": {
+        "breakout_track": 23,
+        "pullback": 35
+      },
+      "metrics": {
+        "track_pnl_pct": 5.64,
+        "track_vol_ratio": 2.34,
+        "entry_price": 53.2,
+        "days_remaining": 10,
+        "pullback_status": "ignition",
+        "pullback_score": 84,
+        "ignition_vol_ratio": 3.97,
+        "pullback_from_ignition_close_pct": 0.0,
+        "days_since_ignition": 0,
+        "support_ok": true,
+        "volume_cools": false
+      },
+      "score": 69.0,
+      "source_count": 2,
+      "risk_flags": [],
+      "priority_level": "B",
+      "priority_rank": 2,
+      "priority_reason": [
+        "達觀察條件"
+      ],
+      "focus_candidate": false
+    },
+    {
+      "stock_id": "4908",
+      "name": "前鼎",
       "industry": "通信網路業",
       "market": "TPEX",
-      "close": 45.3,
+      "close": 286.5,
       "status": "點火",
       "status_rank": 2,
       "sources": [
@@ -2447,37 +2967,38 @@
       ],
       "tags": [],
       "score_parts": {
-        "breakout_track": 15,
-        "pullback": 40
+        "breakout_track": 23,
+        "pullback": 35
       },
       "metrics": {
-        "track_pnl_pct": 0.0,
-        "track_vol_ratio": 1.54,
-        "entry_price": 45.3,
-        "days_remaining": 11,
+        "track_pnl_pct": 7.3,
+        "track_vol_ratio": 0.78,
+        "entry_price": 267.0,
+        "days_remaining": 9,
         "pullback_status": "ignition",
-        "pullback_score": 92,
-        "ignition_vol_ratio": 5.41,
+        "pullback_score": 81,
+        "ignition_vol_ratio": 3.54,
         "pullback_from_ignition_close_pct": 0.0,
         "days_since_ignition": 0,
         "support_ok": true,
         "volume_cools": false
       },
-      "score": 66.0,
+      "score": 69.0,
       "source_count": 2,
       "risk_flags": [],
       "priority_level": "B",
       "priority_rank": 2,
       "priority_reason": [
         "達觀察條件"
-      ]
+      ],
+      "focus_candidate": false
     },
     {
-      "stock_id": "6194",
-      "name": "育富",
-      "industry": "電子零組件業",
-      "market": "TPEX",
-      "close": 33.95,
+      "stock_id": "6695",
+      "name": "芯鼎",
+      "industry": "電子工業",
+      "market": "TWSE",
+      "close": 64.0,
       "status": "點火",
       "status_rank": 2,
       "sources": [
@@ -2486,37 +3007,118 @@
       ],
       "tags": [],
       "score_parts": {
-        "breakout_track": 15,
-        "pullback": 40
+        "breakout_track": 23,
+        "pullback": 35
       },
       "metrics": {
         "track_pnl_pct": 0.0,
-        "track_vol_ratio": 2.42,
-        "entry_price": 33.95,
+        "track_vol_ratio": 3.08,
+        "entry_price": 64.0,
         "days_remaining": 11,
         "pullback_status": "ignition",
-        "pullback_score": 95,
-        "ignition_vol_ratio": 11.57,
+        "pullback_score": 83,
+        "ignition_vol_ratio": 3.92,
         "pullback_from_ignition_close_pct": 0.0,
         "days_since_ignition": 0,
         "support_ok": true,
         "volume_cools": false
       },
-      "score": 66.0,
+      "score": 69.0,
       "source_count": 2,
       "risk_flags": [],
       "priority_level": "B",
       "priority_rank": 2,
       "priority_reason": [
         "達觀察條件"
-      ]
+      ],
+      "focus_candidate": false
     },
     {
-      "stock_id": "8044",
-      "name": "網家",
-      "industry": "電子商務業",
+      "stock_id": "8050",
+      "name": "廣積",
+      "industry": "電腦及週邊設備業",
       "market": "TPEX",
-      "close": 28.9,
+      "close": 60.1,
+      "status": "點火",
+      "status_rank": 2,
+      "sources": [
+        "right_top_track",
+        "volume_pullback"
+      ],
+      "tags": [],
+      "score_parts": {
+        "breakout_track": 23,
+        "pullback": 35
+      },
+      "metrics": {
+        "track_pnl_pct": 0.0,
+        "track_vol_ratio": 3.44,
+        "entry_price": 60.1,
+        "days_remaining": 11,
+        "pullback_status": "ignition",
+        "pullback_score": 78,
+        "ignition_vol_ratio": 3.04,
+        "pullback_from_ignition_close_pct": 0.0,
+        "days_since_ignition": 0,
+        "support_ok": true,
+        "volume_cools": false
+      },
+      "score": 69.0,
+      "source_count": 2,
+      "risk_flags": [],
+      "priority_level": "B",
+      "priority_rank": 2,
+      "priority_reason": [
+        "達觀察條件"
+      ],
+      "focus_candidate": false
+    },
+    {
+      "stock_id": "8249",
+      "name": "菱光",
+      "industry": "電子工業",
+      "market": "TWSE",
+      "close": 58.3,
+      "status": "點火",
+      "status_rank": 2,
+      "sources": [
+        "right_top_track",
+        "volume_pullback"
+      ],
+      "tags": [],
+      "score_parts": {
+        "breakout_track": 23,
+        "pullback": 35
+      },
+      "metrics": {
+        "track_pnl_pct": 14.31,
+        "track_vol_ratio": 1.72,
+        "entry_price": 51.0,
+        "days_remaining": 7,
+        "pullback_status": "ignition",
+        "pullback_score": 87,
+        "ignition_vol_ratio": 4.54,
+        "pullback_from_ignition_close_pct": 0.0,
+        "days_since_ignition": 0,
+        "support_ok": true,
+        "volume_cools": false
+      },
+      "score": 69.0,
+      "source_count": 2,
+      "risk_flags": [],
+      "priority_level": "B",
+      "priority_rank": 2,
+      "priority_reason": [
+        "達觀察條件"
+      ],
+      "focus_candidate": false
+    },
+    {
+      "stock_id": "2397",
+      "name": "友通",
+      "industry": "電子工業",
+      "market": "TWSE",
+      "close": 63.9,
       "status": "回穩觀察",
       "status_rank": 3,
       "sources": [
@@ -2529,33 +3131,314 @@
         "pullback": 35
       },
       "metrics": {
-        "track_pnl_pct": -0.34,
-        "track_vol_ratio": 3.0,
-        "entry_price": 29.0,
-        "days_remaining": 9,
+        "track_pnl_pct": 5.27,
+        "track_vol_ratio": 1.57,
+        "entry_price": 60.7,
+        "days_remaining": 8,
         "pullback_status": "pullback",
-        "pullback_score": 96,
-        "ignition_vol_ratio": 2.96,
-        "pullback_from_ignition_close_pct": 0.35,
+        "pullback_score": 95,
+        "ignition_vol_ratio": 2.76,
+        "pullback_from_ignition_close_pct": -1.54,
         "days_since_ignition": 1,
         "support_ok": true,
         "volume_cools": true
       },
-      "score": 63.0,
+      "score": 69.0,
       "source_count": 2,
       "risk_flags": [],
       "priority_level": "B",
       "priority_rank": 2,
       "priority_reason": [
         "達觀察條件"
-      ]
+      ],
+      "focus_candidate": false
+    },
+    {
+      "stock_id": "3663",
+      "name": "鑫科",
+      "industry": "其他電子類",
+      "market": "TPEX",
+      "close": 91.4,
+      "status": "回穩觀察",
+      "status_rank": 3,
+      "sources": [
+        "right_top_track",
+        "volume_pullback"
+      ],
+      "tags": [],
+      "score_parts": {
+        "breakout_track": 23,
+        "pullback": 35
+      },
+      "metrics": {
+        "track_pnl_pct": 9.2,
+        "track_vol_ratio": 2.12,
+        "entry_price": 83.7,
+        "days_remaining": 8,
+        "pullback_status": "pullback",
+        "pullback_score": 94,
+        "ignition_vol_ratio": 2.71,
+        "pullback_from_ignition_close_pct": 5.18,
+        "days_since_ignition": 2,
+        "support_ok": true,
+        "volume_cools": true
+      },
+      "score": 69.0,
+      "source_count": 2,
+      "risk_flags": [],
+      "priority_level": "B",
+      "priority_rank": 2,
+      "priority_reason": [
+        "達觀察條件"
+      ],
+      "focus_candidate": false
+    },
+    {
+      "stock_id": "5236",
+      "name": "凌陽創新",
+      "industry": "半導體業",
+      "market": "TPEX",
+      "close": 185.5,
+      "status": "回穩觀察",
+      "status_rank": 3,
+      "sources": [
+        "right_top_track",
+        "volume_pullback"
+      ],
+      "tags": [],
+      "score_parts": {
+        "breakout_track": 23,
+        "pullback": 35
+      },
+      "metrics": {
+        "track_pnl_pct": 2.49,
+        "track_vol_ratio": 4.47,
+        "entry_price": 181.0,
+        "days_remaining": 9,
+        "pullback_status": "pullback",
+        "pullback_score": 96,
+        "ignition_vol_ratio": 2.92,
+        "pullback_from_ignition_close_pct": 7.85,
+        "days_since_ignition": 4,
+        "support_ok": true,
+        "volume_cools": true
+      },
+      "score": 69.0,
+      "source_count": 2,
+      "risk_flags": [],
+      "priority_level": "B",
+      "priority_rank": 2,
+      "priority_reason": [
+        "達觀察條件"
+      ],
+      "focus_candidate": false
     },
     {
       "stock_id": "5328",
       "name": "華容",
       "industry": "電子零組件業",
       "market": "TPEX",
-      "close": 35.5,
+      "close": 35.3,
+      "status": "回穩觀察",
+      "status_rank": 3,
+      "sources": [
+        "right_top_track",
+        "volume_pullback"
+      ],
+      "tags": [],
+      "score_parts": {
+        "breakout_track": 23,
+        "pullback": 35
+      },
+      "metrics": {
+        "track_pnl_pct": 14.24,
+        "track_vol_ratio": 0.92,
+        "entry_price": 30.9,
+        "days_remaining": 7,
+        "pullback_status": "pullback",
+        "pullback_score": 94,
+        "ignition_vol_ratio": 2.71,
+        "pullback_from_ignition_close_pct": -0.56,
+        "days_since_ignition": 2,
+        "support_ok": true,
+        "volume_cools": true
+      },
+      "score": 69.0,
+      "source_count": 2,
+      "risk_flags": [],
+      "priority_level": "B",
+      "priority_rank": 2,
+      "priority_reason": [
+        "達觀察條件"
+      ],
+      "focus_candidate": false
+    },
+    {
+      "stock_id": "6174",
+      "name": "安碁",
+      "industry": "電子零組件業",
+      "market": "TPEX",
+      "close": 47.2,
+      "status": "回穩觀察",
+      "status_rank": 3,
+      "sources": [
+        "right_top_track",
+        "volume_pullback"
+      ],
+      "tags": [],
+      "score_parts": {
+        "breakout_track": 23,
+        "pullback": 35
+      },
+      "metrics": {
+        "track_pnl_pct": 0.96,
+        "track_vol_ratio": 9.63,
+        "entry_price": 46.75,
+        "days_remaining": 9,
+        "pullback_status": "pullback",
+        "pullback_score": 96,
+        "ignition_vol_ratio": 2.99,
+        "pullback_from_ignition_close_pct": 11.06,
+        "days_since_ignition": 3,
+        "support_ok": true,
+        "volume_cools": true
+      },
+      "score": 69.0,
+      "source_count": 2,
+      "risk_flags": [],
+      "priority_level": "B",
+      "priority_rank": 2,
+      "priority_reason": [
+        "達觀察條件"
+      ],
+      "focus_candidate": false
+    },
+    {
+      "stock_id": "6175",
+      "name": "立敦",
+      "industry": "電子零組件業",
+      "market": "TPEX",
+      "close": 92.7,
+      "status": "回穩觀察",
+      "status_rank": 3,
+      "sources": [
+        "right_top_track",
+        "volume_pullback"
+      ],
+      "tags": [],
+      "score_parts": {
+        "breakout_track": 23,
+        "pullback": 35
+      },
+      "metrics": {
+        "track_pnl_pct": 13.74,
+        "track_vol_ratio": 1.53,
+        "entry_price": 81.5,
+        "days_remaining": 7,
+        "pullback_status": "pullback",
+        "pullback_score": 95,
+        "ignition_vol_ratio": 2.79,
+        "pullback_from_ignition_close_pct": 8.8,
+        "days_since_ignition": 3,
+        "support_ok": true,
+        "volume_cools": true
+      },
+      "score": 69.0,
+      "source_count": 2,
+      "risk_flags": [],
+      "priority_level": "B",
+      "priority_rank": 2,
+      "priority_reason": [
+        "達觀察條件"
+      ],
+      "focus_candidate": false
+    },
+    {
+      "stock_id": "6432",
+      "name": "今展科",
+      "industry": "電子零組件業",
+      "market": "TPEX",
+      "close": 59.3,
+      "status": "回穩觀察",
+      "status_rank": 3,
+      "sources": [
+        "right_top_track",
+        "volume_pullback"
+      ],
+      "tags": [],
+      "score_parts": {
+        "breakout_track": 23,
+        "pullback": 35
+      },
+      "metrics": {
+        "track_pnl_pct": 12.52,
+        "track_vol_ratio": 1.85,
+        "entry_price": 52.7,
+        "days_remaining": 7,
+        "pullback_status": "pullback",
+        "pullback_score": 93,
+        "ignition_vol_ratio": 2.55,
+        "pullback_from_ignition_close_pct": 4.22,
+        "days_since_ignition": 3,
+        "support_ok": true,
+        "volume_cools": true
+      },
+      "score": 69.0,
+      "source_count": 2,
+      "risk_flags": [],
+      "priority_level": "B",
+      "priority_rank": 2,
+      "priority_reason": [
+        "達觀察條件"
+      ],
+      "focus_candidate": false
+    },
+    {
+      "stock_id": "8043",
+      "name": "蜜望實",
+      "industry": "電子零組件業",
+      "market": "TPEX",
+      "close": 121.0,
+      "status": "回穩觀察",
+      "status_rank": 3,
+      "sources": [
+        "right_top_track",
+        "volume_pullback"
+      ],
+      "tags": [],
+      "score_parts": {
+        "breakout_track": 23,
+        "pullback": 35
+      },
+      "metrics": {
+        "track_pnl_pct": 6.61,
+        "track_vol_ratio": 0.56,
+        "entry_price": 113.5,
+        "days_remaining": 6,
+        "pullback_status": "pullback",
+        "pullback_score": 94,
+        "ignition_vol_ratio": 2.72,
+        "pullback_from_ignition_close_pct": 5.68,
+        "days_since_ignition": 4,
+        "support_ok": true,
+        "volume_cools": true
+      },
+      "score": 69.0,
+      "source_count": 2,
+      "risk_flags": [],
+      "priority_level": "B",
+      "priority_rank": 2,
+      "priority_reason": [
+        "達觀察條件"
+      ],
+      "focus_candidate": false
+    },
+    {
+      "stock_id": "2453",
+      "name": "凌群",
+      "industry": "資訊服務業",
+      "market": "TWSE",
+      "close": 61.6,
       "status": "點火",
       "status_rank": 2,
       "sources": [
@@ -2565,75 +3448,77 @@
       "tags": [],
       "score_parts": {
         "breakout_track": 23,
-        "pullback": 28
+        "pullback": 40
       },
       "metrics": {
-        "track_pnl_pct": 14.89,
-        "track_vol_ratio": 0.92,
-        "entry_price": 30.9,
+        "track_pnl_pct": 7.69,
+        "track_vol_ratio": 0.99,
+        "entry_price": 57.2,
         "days_remaining": 9,
         "pullback_status": "ignition",
-        "pullback_score": 76,
-        "ignition_vol_ratio": 2.71,
+        "pullback_score": 95,
+        "ignition_vol_ratio": 8.98,
         "pullback_from_ignition_close_pct": 0.0,
         "days_since_ignition": 0,
         "support_ok": true,
         "volume_cools": false
       },
-      "score": 62.0,
+      "score": 68.0,
       "source_count": 2,
       "risk_flags": [],
       "priority_level": "B",
       "priority_rank": 2,
       "priority_reason": [
         "達觀察條件"
-      ]
+      ],
+      "focus_candidate": false
     },
     {
-      "stock_id": "2937",
-      "name": "集雅社",
-      "industry": "貿易百貨",
+      "stock_id": "5011",
+      "name": "久陽",
+      "industry": "鋼鐵工業",
       "market": "TPEX",
-      "close": 47.5,
-      "status": "回穩觀察",
-      "status_rank": 3,
+      "close": 19.45,
+      "status": "點火",
+      "status_rank": 2,
       "sources": [
         "right_top_track",
         "volume_pullback"
       ],
       "tags": [],
       "score_parts": {
-        "breakout_track": 15,
-        "pullback": 42
+        "breakout_track": 23,
+        "pullback": 40
       },
       "metrics": {
-        "track_pnl_pct": 0.0,
-        "track_vol_ratio": 1.24,
-        "entry_price": 47.5,
+        "track_pnl_pct": 9.89,
+        "track_vol_ratio": 0.8,
+        "entry_price": 17.7,
         "days_remaining": 10,
-        "pullback_status": "pullback",
-        "pullback_score": 103,
-        "ignition_vol_ratio": 4.22,
+        "pullback_status": "ignition",
+        "pullback_score": 93,
+        "ignition_vol_ratio": 5.44,
         "pullback_from_ignition_close_pct": 0.0,
-        "days_since_ignition": 1,
+        "days_since_ignition": 0,
         "support_ok": true,
-        "volume_cools": true
+        "volume_cools": false
       },
-      "score": 62.0,
+      "score": 68.0,
       "source_count": 2,
       "risk_flags": [],
       "priority_level": "B",
       "priority_rank": 2,
       "priority_reason": [
         "達觀察條件"
-      ]
+      ],
+      "focus_candidate": false
     },
     {
-      "stock_id": "4771",
-      "name": "望隼",
-      "industry": "化學生技醫療",
+      "stock_id": "1582",
+      "name": "信錦",
+      "industry": "電子工業",
       "market": "TWSE",
-      "close": 192.5,
+      "close": 111.5,
       "status": "回穩觀察",
       "status_rank": 3,
       "sources": [
@@ -2646,33 +3531,34 @@
         "pullback": 42
       },
       "metrics": {
-        "track_pnl_pct": -3.02,
-        "track_vol_ratio": 1.82,
-        "entry_price": 198.5,
-        "days_remaining": 8,
+        "track_pnl_pct": -4.7,
+        "track_vol_ratio": 1.67,
+        "entry_price": 117.0,
+        "days_remaining": 6,
         "pullback_status": "pullback",
-        "pullback_score": 107,
-        "ignition_vol_ratio": 4.81,
-        "pullback_from_ignition_close_pct": -3.02,
-        "days_since_ignition": 3,
+        "pullback_score": 104,
+        "ignition_vol_ratio": 4.4,
+        "pullback_from_ignition_close_pct": 4.21,
+        "days_since_ignition": 4,
         "support_ok": true,
         "volume_cools": true
       },
-      "score": 62.0,
+      "score": 68.0,
       "source_count": 2,
       "risk_flags": [],
       "priority_level": "B",
       "priority_rank": 2,
       "priority_reason": [
         "達觀察條件"
-      ]
+      ],
+      "focus_candidate": false
     },
     {
-      "stock_id": "8473",
-      "name": "山林水",
-      "industry": "其他",
+      "stock_id": "2488",
+      "name": "漢平",
+      "industry": "其他電子業",
       "market": "TWSE",
-      "close": 39.8,
+      "close": 53.2,
       "status": "回穩觀察",
       "status_rank": 3,
       "sources": [
@@ -2686,14 +3572,544 @@
       },
       "metrics": {
         "track_pnl_pct": -2.21,
-        "track_vol_ratio": 2.39,
-        "entry_price": 40.7,
-        "days_remaining": 10,
+        "track_vol_ratio": 1.22,
+        "entry_price": 54.4,
+        "days_remaining": 9,
         "pullback_status": "pullback",
-        "pullback_score": 105,
-        "ignition_vol_ratio": 4.58,
+        "pullback_score": 100,
+        "ignition_vol_ratio": 3.73,
         "pullback_from_ignition_close_pct": -2.21,
+        "days_since_ignition": 2,
+        "support_ok": true,
+        "volume_cools": true
+      },
+      "score": 68.0,
+      "source_count": 2,
+      "risk_flags": [],
+      "priority_level": "B",
+      "priority_rank": 2,
+      "priority_reason": [
+        "達觀察條件"
+      ],
+      "focus_candidate": false
+    },
+    {
+      "stock_id": "3041",
+      "name": "揚智",
+      "industry": "半導體業",
+      "market": "TWSE",
+      "close": 26.4,
+      "status": "回穩觀察",
+      "status_rank": 3,
+      "sources": [
+        "right_top_track",
+        "volume_pullback"
+      ],
+      "tags": [],
+      "score_parts": {
+        "breakout_track": 15,
+        "pullback": 42
+      },
+      "metrics": {
+        "track_pnl_pct": -2.76,
+        "track_vol_ratio": 1.76,
+        "entry_price": 27.15,
+        "days_remaining": 9,
+        "pullback_status": "pullback",
+        "pullback_score": 97,
+        "ignition_vol_ratio": 3.23,
+        "pullback_from_ignition_close_pct": -2.76,
+        "days_since_ignition": 2,
+        "support_ok": true,
+        "volume_cools": true
+      },
+      "score": 68.0,
+      "source_count": 2,
+      "risk_flags": [],
+      "priority_level": "B",
+      "priority_rank": 2,
+      "priority_reason": [
+        "達觀察條件"
+      ],
+      "focus_candidate": false
+    },
+    {
+      "stock_id": "3714",
+      "name": "富采",
+      "industry": "光電業",
+      "market": "TWSE",
+      "close": 79.4,
+      "status": "回穩觀察",
+      "status_rank": 3,
+      "sources": [
+        "right_top_track",
+        "volume_pullback"
+      ],
+      "tags": [],
+      "score_parts": {
+        "breakout_track": 15,
+        "pullback": 42
+      },
+      "metrics": {
+        "track_pnl_pct": -2.46,
+        "track_vol_ratio": 1.98,
+        "entry_price": 81.4,
+        "days_remaining": 9,
+        "pullback_status": "pullback",
+        "pullback_score": 97,
+        "ignition_vol_ratio": 3.11,
+        "pullback_from_ignition_close_pct": -0.38,
         "days_since_ignition": 1,
+        "support_ok": true,
+        "volume_cools": true
+      },
+      "score": 68.0,
+      "source_count": 2,
+      "risk_flags": [],
+      "priority_level": "B",
+      "priority_rank": 2,
+      "priority_reason": [
+        "達觀察條件"
+      ],
+      "focus_candidate": false
+    },
+    {
+      "stock_id": "6209",
+      "name": "今國光",
+      "industry": "光電業",
+      "market": "TWSE",
+      "close": 81.0,
+      "status": "回穩觀察",
+      "status_rank": 3,
+      "sources": [
+        "right_top_track",
+        "volume_pullback"
+      ],
+      "tags": [],
+      "score_parts": {
+        "breakout_track": 15,
+        "pullback": 42
+      },
+      "metrics": {
+        "track_pnl_pct": 2.66,
+        "track_vol_ratio": 1.75,
+        "entry_price": 78.9,
+        "days_remaining": 7,
+        "pullback_status": "pullback",
+        "pullback_score": 98,
+        "ignition_vol_ratio": 3.39,
+        "pullback_from_ignition_close_pct": -6.57,
+        "days_since_ignition": 3,
+        "support_ok": true,
+        "volume_cools": true
+      },
+      "score": 68.0,
+      "source_count": 2,
+      "risk_flags": [],
+      "priority_level": "B",
+      "priority_rank": 2,
+      "priority_reason": [
+        "達觀察條件"
+      ],
+      "focus_candidate": false
+    },
+    {
+      "stock_id": "2369",
+      "name": "菱生",
+      "industry": "電子工業",
+      "market": "TWSE",
+      "close": 37.7,
+      "status": "點火",
+      "status_rank": 2,
+      "sources": [
+        "right_top_track",
+        "volume_pullback"
+      ],
+      "tags": [],
+      "score_parts": {
+        "breakout_track": 15,
+        "pullback": 40
+      },
+      "metrics": {
+        "track_pnl_pct": 0.0,
+        "track_vol_ratio": 0.95,
+        "entry_price": 37.7,
+        "days_remaining": 11,
+        "pullback_status": "ignition",
+        "pullback_score": 90,
+        "ignition_vol_ratio": 5.04,
+        "pullback_from_ignition_close_pct": 0.0,
+        "days_since_ignition": 0,
+        "support_ok": true,
+        "volume_cools": false
+      },
+      "score": 66.0,
+      "source_count": 2,
+      "risk_flags": [],
+      "priority_level": "B",
+      "priority_rank": 2,
+      "priority_reason": [
+        "達觀察條件"
+      ],
+      "focus_candidate": false
+    },
+    {
+      "stock_id": "3257",
+      "name": "虹冠電",
+      "industry": "半導體業",
+      "market": "TWSE",
+      "close": 59.8,
+      "status": "點火",
+      "status_rank": 2,
+      "sources": [
+        "right_top_track",
+        "volume_pullback"
+      ],
+      "tags": [],
+      "score_parts": {
+        "breakout_track": 15,
+        "pullback": 40
+      },
+      "metrics": {
+        "track_pnl_pct": 0.0,
+        "track_vol_ratio": 1.77,
+        "entry_price": 59.8,
+        "days_remaining": 11,
+        "pullback_status": "ignition",
+        "pullback_score": 90,
+        "ignition_vol_ratio": 5.06,
+        "pullback_from_ignition_close_pct": 0.0,
+        "days_since_ignition": 0,
+        "support_ok": true,
+        "volume_cools": false
+      },
+      "score": 66.0,
+      "source_count": 2,
+      "risk_flags": [],
+      "priority_level": "B",
+      "priority_rank": 2,
+      "priority_reason": [
+        "達觀察條件"
+      ],
+      "focus_candidate": false
+    },
+    {
+      "stock_id": "5220",
+      "name": "萬達光電",
+      "industry": "光電業",
+      "market": "TPEX",
+      "close": 23.5,
+      "status": "點火",
+      "status_rank": 2,
+      "sources": [
+        "right_top_track",
+        "volume_pullback"
+      ],
+      "tags": [],
+      "score_parts": {
+        "breakout_track": 20,
+        "pullback": 35
+      },
+      "metrics": {
+        "track_pnl_pct": 9.3,
+        "track_vol_ratio": 0.71,
+        "entry_price": 21.5,
+        "days_remaining": 2,
+        "pullback_status": "ignition",
+        "pullback_score": 82,
+        "ignition_vol_ratio": 3.71,
+        "pullback_from_ignition_close_pct": 0.0,
+        "days_since_ignition": 0,
+        "support_ok": true,
+        "volume_cools": false
+      },
+      "score": 66.0,
+      "source_count": 2,
+      "risk_flags": [],
+      "priority_level": "B",
+      "priority_rank": 2,
+      "priority_reason": [
+        "達觀察條件"
+      ],
+      "focus_candidate": false
+    },
+    {
+      "stock_id": "6552",
+      "name": "易華電",
+      "industry": "半導體業",
+      "market": "TWSE",
+      "close": 36.9,
+      "status": "點火",
+      "status_rank": 2,
+      "sources": [
+        "right_top_track",
+        "volume_pullback"
+      ],
+      "tags": [],
+      "score_parts": {
+        "breakout_track": 15,
+        "pullback": 40
+      },
+      "metrics": {
+        "track_pnl_pct": 0.0,
+        "track_vol_ratio": 2.84,
+        "entry_price": 36.9,
+        "days_remaining": 11,
+        "pullback_status": "ignition",
+        "pullback_score": 93,
+        "ignition_vol_ratio": 5.45,
+        "pullback_from_ignition_close_pct": 0.0,
+        "days_since_ignition": 0,
+        "support_ok": true,
+        "volume_cools": false
+      },
+      "score": 66.0,
+      "source_count": 2,
+      "risk_flags": [],
+      "priority_level": "B",
+      "priority_rank": 2,
+      "priority_reason": [
+        "達觀察條件"
+      ],
+      "focus_candidate": false
+    },
+    {
+      "stock_id": "1568",
+      "name": "倉佑",
+      "industry": "汽車工業",
+      "market": "TWSE",
+      "close": 35.1,
+      "status": "點火",
+      "status_rank": 2,
+      "sources": [
+        "right_top_track",
+        "volume_pullback"
+      ],
+      "tags": [],
+      "score_parts": {
+        "breakout_track": 23,
+        "pullback": 35
+      },
+      "metrics": {
+        "track_pnl_pct": 9.86,
+        "track_vol_ratio": 1.45,
+        "entry_price": 31.95,
+        "days_remaining": 10,
+        "pullback_status": "ignition",
+        "pullback_score": 84,
+        "ignition_vol_ratio": 3.96,
+        "pullback_from_ignition_close_pct": 0.0,
+        "days_since_ignition": 0,
+        "support_ok": true,
+        "volume_cools": false
+      },
+      "score": 63.0,
+      "source_count": 2,
+      "risk_flags": [],
+      "priority_level": "B",
+      "priority_rank": 2,
+      "priority_reason": [
+        "達觀察條件"
+      ],
+      "focus_candidate": false
+    },
+    {
+      "stock_id": "3376",
+      "name": "新日興",
+      "industry": "電零",
+      "market": "",
+      "close": 220.5,
+      "status": "回穩觀察",
+      "status_rank": 3,
+      "sources": [
+        "chips",
+        "volume_pullback",
+        "stock_analysis"
+      ],
+      "tags": [
+        "雙軌觸發",
+        "單周增幅"
+      ],
+      "score_parts": {
+        "chips": 18,
+        "pullback": 35,
+        "follow": 0.0
+      },
+      "metrics": {
+        "market_cap": 216.9,
+        "bbw": 9.77,
+        "week_chg_pct": 7.09,
+        "big_pct_1000": 40.9,
+        "big_pct_400": 51.23,
+        "pullback_status": "pullback",
+        "pullback_score": 94,
+        "ignition_vol_ratio": 2.68,
+        "pullback_from_ignition_close_pct": -0.68,
+        "days_since_ignition": 1,
+        "support_ok": true,
+        "volume_cools": true,
+        "ai_pnl_pct": 0.0,
+        "rev_score": 4.0,
+        "chip_score": 7.3,
+        "trend_score": 0.0
+      },
+      "score": 63.0,
+      "source_count": 3,
+      "risk_flags": [],
+      "priority_level": "B",
+      "priority_rank": 2,
+      "priority_reason": [
+        "達觀察條件"
+      ],
+      "focus_candidate": false
+    },
+    {
+      "stock_id": "5434",
+      "name": "崇越",
+      "industry": "電子通路業",
+      "market": "TWSE",
+      "close": 481.0,
+      "status": "回穩觀察",
+      "status_rank": 3,
+      "sources": [
+        "right_top_track",
+        "volume_pullback"
+      ],
+      "tags": [],
+      "score_parts": {
+        "breakout_track": 23,
+        "pullback": 35
+      },
+      "metrics": {
+        "track_pnl_pct": 7.01,
+        "track_vol_ratio": 1.47,
+        "entry_price": 449.5,
+        "days_remaining": 9,
+        "pullback_status": "pullback",
+        "pullback_score": 95,
+        "ignition_vol_ratio": 2.85,
+        "pullback_from_ignition_close_pct": 7.01,
+        "days_since_ignition": 2,
+        "support_ok": true,
+        "volume_cools": true
+      },
+      "score": 63.0,
+      "source_count": 2,
+      "risk_flags": [],
+      "priority_level": "B",
+      "priority_rank": 2,
+      "priority_reason": [
+        "達觀察條件"
+      ],
+      "focus_candidate": false
+    },
+    {
+      "stock_id": "6277",
+      "name": "宏正",
+      "industry": "電子工業",
+      "market": "TWSE",
+      "close": 78.0,
+      "status": "點火",
+      "status_rank": 2,
+      "sources": [
+        "right_top_track",
+        "volume_pullback"
+      ],
+      "tags": [],
+      "score_parts": {
+        "breakout_track": 23,
+        "pullback": 28
+      },
+      "metrics": {
+        "track_pnl_pct": 5.98,
+        "track_vol_ratio": 0.5,
+        "entry_price": 73.6,
+        "days_remaining": 5,
+        "pullback_status": "ignition",
+        "pullback_score": 77,
+        "ignition_vol_ratio": 2.76,
+        "pullback_from_ignition_close_pct": 0.0,
+        "days_since_ignition": 0,
+        "support_ok": true,
+        "volume_cools": false
+      },
+      "score": 62.0,
+      "source_count": 2,
+      "risk_flags": [],
+      "priority_level": "B",
+      "priority_rank": 2,
+      "priority_reason": [
+        "達觀察條件"
+      ],
+      "focus_candidate": false
+    },
+    {
+      "stock_id": "6719",
+      "name": "力智",
+      "industry": "半導體業",
+      "market": "TWSE",
+      "close": 273.5,
+      "status": "點火",
+      "status_rank": 2,
+      "sources": [
+        "right_top_track",
+        "volume_pullback"
+      ],
+      "tags": [],
+      "score_parts": {
+        "breakout_track": 23,
+        "pullback": 28
+      },
+      "metrics": {
+        "track_pnl_pct": 7.25,
+        "track_vol_ratio": 1.21,
+        "entry_price": 255.0,
+        "days_remaining": 10,
+        "pullback_status": "ignition",
+        "pullback_score": 76,
+        "ignition_vol_ratio": 2.61,
+        "pullback_from_ignition_close_pct": 0.0,
+        "days_since_ignition": 0,
+        "support_ok": true,
+        "volume_cools": false
+      },
+      "score": 62.0,
+      "source_count": 2,
+      "risk_flags": [],
+      "priority_level": "B",
+      "priority_rank": 2,
+      "priority_reason": [
+        "達觀察條件"
+      ],
+      "focus_candidate": false
+    },
+    {
+      "stock_id": "6113",
+      "name": "亞矽",
+      "industry": "電子通路業",
+      "market": "TPEX",
+      "close": 26.6,
+      "status": "回穩觀察",
+      "status_rank": 3,
+      "sources": [
+        "right_top_track",
+        "volume_pullback"
+      ],
+      "tags": [],
+      "score_parts": {
+        "breakout_track": 15,
+        "pullback": 42
+      },
+      "metrics": {
+        "track_pnl_pct": -3.62,
+        "track_vol_ratio": 1.49,
+        "entry_price": 27.6,
+        "days_remaining": 9,
+        "pullback_status": "pullback",
+        "pullback_score": 98,
+        "ignition_vol_ratio": 3.38,
+        "pullback_from_ignition_close_pct": -3.62,
+        "days_since_ignition": 2,
         "support_ok": true,
         "volume_cools": true
       },
@@ -2704,14 +4120,175 @@
       "priority_rank": 2,
       "priority_reason": [
         "達觀察條件"
-      ]
+      ],
+      "focus_candidate": false
     },
     {
-      "stock_id": "2421",
-      "name": "建準",
+      "stock_id": "6189",
+      "name": "豐藝",
+      "industry": "電子通路業",
+      "market": "TWSE",
+      "close": 51.8,
+      "status": "回穩觀察",
+      "status_rank": 3,
+      "sources": [
+        "right_top_track",
+        "volume_pullback"
+      ],
+      "tags": [],
+      "score_parts": {
+        "breakout_track": 15,
+        "pullback": 42
+      },
+      "metrics": {
+        "track_pnl_pct": 1.37,
+        "track_vol_ratio": 1.06,
+        "entry_price": 51.1,
+        "days_remaining": 7,
+        "pullback_status": "pullback",
+        "pullback_score": 103,
+        "ignition_vol_ratio": 4.12,
+        "pullback_from_ignition_close_pct": 1.37,
+        "days_since_ignition": 4,
+        "support_ok": true,
+        "volume_cools": true
+      },
+      "score": 62.0,
+      "source_count": 2,
+      "risk_flags": [],
+      "priority_level": "B",
+      "priority_rank": 2,
+      "priority_reason": [
+        "達觀察條件"
+      ],
+      "focus_candidate": false
+    },
+    {
+      "stock_id": "7805",
+      "name": "威聯通",
+      "industry": "數位雲端類",
+      "market": "TPEX",
+      "close": 784.0,
+      "status": "回穩觀察",
+      "status_rank": 3,
+      "sources": [
+        "right_top_track",
+        "volume_pullback"
+      ],
+      "tags": [],
+      "score_parts": {
+        "breakout_track": 15,
+        "pullback": 42
+      },
+      "metrics": {
+        "track_pnl_pct": 2.62,
+        "track_vol_ratio": 1.01,
+        "entry_price": 764.0,
+        "days_remaining": 9,
+        "pullback_status": "pullback",
+        "pullback_score": 103,
+        "ignition_vol_ratio": 4.09,
+        "pullback_from_ignition_close_pct": 2.62,
+        "days_since_ignition": 2,
+        "support_ok": true,
+        "volume_cools": true
+      },
+      "score": 62.0,
+      "source_count": 2,
+      "risk_flags": [],
+      "priority_level": "B",
+      "priority_rank": 2,
+      "priority_reason": [
+        "達觀察條件"
+      ],
+      "focus_candidate": false
+    },
+    {
+      "stock_id": "2305",
+      "name": "全友",
       "industry": "電子工業",
       "market": "TWSE",
-      "close": 158.5,
+      "close": 20.8,
+      "status": "點火",
+      "status_rank": 2,
+      "sources": [
+        "right_top_track",
+        "volume_pullback"
+      ],
+      "tags": [],
+      "score_parts": {
+        "breakout_track": 15,
+        "pullback": 35
+      },
+      "metrics": {
+        "track_pnl_pct": 0.73,
+        "track_vol_ratio": 0.2,
+        "entry_price": 20.65,
+        "days_remaining": 10,
+        "pullback_status": "ignition",
+        "pullback_score": 84,
+        "ignition_vol_ratio": 4.0,
+        "pullback_from_ignition_close_pct": 0.0,
+        "days_since_ignition": 0,
+        "support_ok": true,
+        "volume_cools": false
+      },
+      "score": 61.0,
+      "source_count": 2,
+      "risk_flags": [],
+      "priority_level": "B",
+      "priority_rank": 2,
+      "priority_reason": [
+        "達觀察條件"
+      ],
+      "focus_candidate": false
+    },
+    {
+      "stock_id": "2489",
+      "name": "瑞軒",
+      "industry": "光電業",
+      "market": "TWSE",
+      "close": 51.7,
+      "status": "點火",
+      "status_rank": 2,
+      "sources": [
+        "right_top_track",
+        "volume_pullback"
+      ],
+      "tags": [],
+      "score_parts": {
+        "breakout_track": 15,
+        "pullback": 35
+      },
+      "metrics": {
+        "track_pnl_pct": 0.58,
+        "track_vol_ratio": 1.71,
+        "entry_price": 51.4,
+        "days_remaining": 9,
+        "pullback_status": "ignition",
+        "pullback_score": 82,
+        "ignition_vol_ratio": 3.65,
+        "pullback_from_ignition_close_pct": 0.0,
+        "days_since_ignition": 0,
+        "support_ok": true,
+        "volume_cools": false
+      },
+      "score": 61.0,
+      "source_count": 2,
+      "risk_flags": [],
+      "priority_level": "B",
+      "priority_rank": 2,
+      "priority_reason": [
+        "達觀察條件"
+      ],
+      "focus_candidate": false
+    },
+    {
+      "stock_id": "2493",
+      "name": "揚博",
+      "industry": "電子工業",
+      "market": "TWSE",
+      "close": 163.5,
       "status": "點火",
       "status_rank": 2,
       "sources": [
@@ -2725,12 +4302,12 @@
       },
       "metrics": {
         "track_pnl_pct": 0.0,
-        "track_vol_ratio": 1.9,
-        "entry_price": 158.5,
+        "track_vol_ratio": 1.82,
+        "entry_price": 163.5,
         "days_remaining": 11,
         "pullback_status": "ignition",
-        "pullback_score": 78,
-        "ignition_vol_ratio": 3.05,
+        "pullback_score": 84,
+        "ignition_vol_ratio": 3.93,
         "pullback_from_ignition_close_pct": 0.0,
         "days_since_ignition": 0,
         "support_ok": true,
@@ -2743,14 +4320,95 @@
       "priority_rank": 2,
       "priority_reason": [
         "達觀察條件"
-      ]
+      ],
+      "focus_candidate": false
     },
     {
-      "stock_id": "2488",
-      "name": "漢平",
-      "industry": "其他電子業",
+      "stock_id": "3013",
+      "name": "晟銘電",
+      "industry": "電子工業",
       "market": "TWSE",
-      "close": 54.4,
+      "close": 124.0,
+      "status": "點火",
+      "status_rank": 2,
+      "sources": [
+        "right_top_track",
+        "volume_pullback"
+      ],
+      "tags": [],
+      "score_parts": {
+        "breakout_track": 15,
+        "pullback": 35
+      },
+      "metrics": {
+        "track_pnl_pct": 0.0,
+        "track_vol_ratio": 2.2,
+        "entry_price": 124.0,
+        "days_remaining": 11,
+        "pullback_status": "ignition",
+        "pullback_score": 78,
+        "ignition_vol_ratio": 3.02,
+        "pullback_from_ignition_close_pct": 0.0,
+        "days_since_ignition": 0,
+        "support_ok": true,
+        "volume_cools": false
+      },
+      "score": 61.0,
+      "source_count": 2,
+      "risk_flags": [],
+      "priority_level": "B",
+      "priority_rank": 2,
+      "priority_reason": [
+        "達觀察條件"
+      ],
+      "focus_candidate": false
+    },
+    {
+      "stock_id": "3652",
+      "name": "精聯",
+      "industry": "電腦及週邊設備業",
+      "market": "TWSE",
+      "close": 32.8,
+      "status": "點火",
+      "status_rank": 2,
+      "sources": [
+        "right_top_track",
+        "volume_pullback"
+      ],
+      "tags": [],
+      "score_parts": {
+        "breakout_track": 15,
+        "pullback": 35
+      },
+      "metrics": {
+        "track_pnl_pct": 0.0,
+        "track_vol_ratio": 1.8,
+        "entry_price": 32.8,
+        "days_remaining": 11,
+        "pullback_status": "ignition",
+        "pullback_score": 83,
+        "ignition_vol_ratio": 3.91,
+        "pullback_from_ignition_close_pct": 0.0,
+        "days_since_ignition": 0,
+        "support_ok": true,
+        "volume_cools": false
+      },
+      "score": 61.0,
+      "source_count": 2,
+      "risk_flags": [],
+      "priority_level": "B",
+      "priority_rank": 2,
+      "priority_reason": [
+        "達觀察條件"
+      ],
+      "focus_candidate": false
+    },
+    {
+      "stock_id": "4510",
+      "name": "高鋒",
+      "industry": "電機機械",
+      "market": "TPEX",
+      "close": 51.9,
       "status": "點火",
       "status_rank": 2,
       "sources": [
@@ -2765,167 +4423,11 @@
       "metrics": {
         "track_pnl_pct": 0.0,
         "track_vol_ratio": 1.22,
-        "entry_price": 54.4,
-        "days_remaining": 11,
-        "pullback_status": "ignition",
-        "pullback_score": 82,
-        "ignition_vol_ratio": 3.73,
-        "pullback_from_ignition_close_pct": 0.0,
-        "days_since_ignition": 0,
-        "support_ok": true,
-        "volume_cools": false
-      },
-      "score": 61.0,
-      "source_count": 2,
-      "risk_flags": [],
-      "priority_level": "B",
-      "priority_rank": 2,
-      "priority_reason": [
-        "達觀察條件"
-      ]
-    },
-    {
-      "stock_id": "3025",
-      "name": "星通",
-      "industry": "通信網路業",
-      "market": "TWSE",
-      "close": 71.0,
-      "status": "點火",
-      "status_rank": 2,
-      "sources": [
-        "right_top_track",
-        "volume_pullback"
-      ],
-      "tags": [],
-      "score_parts": {
-        "breakout_track": 15,
-        "pullback": 35
-      },
-      "metrics": {
-        "track_pnl_pct": 0.0,
-        "track_vol_ratio": 0.79,
-        "entry_price": 71.0,
-        "days_remaining": 11,
-        "pullback_status": "ignition",
-        "pullback_score": 83,
-        "ignition_vol_ratio": 3.86,
-        "pullback_from_ignition_close_pct": 0.0,
-        "days_since_ignition": 0,
-        "support_ok": true,
-        "volume_cools": false
-      },
-      "score": 61.0,
-      "source_count": 2,
-      "risk_flags": [],
-      "priority_level": "B",
-      "priority_rank": 2,
-      "priority_reason": [
-        "達觀察條件"
-      ]
-    },
-    {
-      "stock_id": "3041",
-      "name": "揚智",
-      "industry": "半導體業",
-      "market": "TWSE",
-      "close": 27.15,
-      "status": "點火",
-      "status_rank": 2,
-      "sources": [
-        "right_top_track",
-        "volume_pullback"
-      ],
-      "tags": [],
-      "score_parts": {
-        "breakout_track": 15,
-        "pullback": 35
-      },
-      "metrics": {
-        "track_pnl_pct": 0.0,
-        "track_vol_ratio": 1.76,
-        "entry_price": 27.15,
-        "days_remaining": 11,
-        "pullback_status": "ignition",
-        "pullback_score": 79,
-        "ignition_vol_ratio": 3.23,
-        "pullback_from_ignition_close_pct": 0.0,
-        "days_since_ignition": 0,
-        "support_ok": true,
-        "volume_cools": false
-      },
-      "score": 61.0,
-      "source_count": 2,
-      "risk_flags": [],
-      "priority_level": "B",
-      "priority_rank": 2,
-      "priority_reason": [
-        "達觀察條件"
-      ]
-    },
-    {
-      "stock_id": "4908",
-      "name": "前鼎",
-      "industry": "通信網路業",
-      "market": "TPEX",
-      "close": 267.0,
-      "status": "點火",
-      "status_rank": 2,
-      "sources": [
-        "right_top_track",
-        "volume_pullback"
-      ],
-      "tags": [],
-      "score_parts": {
-        "breakout_track": 15,
-        "pullback": 35
-      },
-      "metrics": {
-        "track_pnl_pct": 0.0,
-        "track_vol_ratio": 0.78,
-        "entry_price": 267.0,
-        "days_remaining": 11,
-        "pullback_status": "ignition",
-        "pullback_score": 82,
-        "ignition_vol_ratio": 3.66,
-        "pullback_from_ignition_close_pct": 0.0,
-        "days_since_ignition": 0,
-        "support_ok": true,
-        "volume_cools": false
-      },
-      "score": 61.0,
-      "source_count": 2,
-      "risk_flags": [],
-      "priority_level": "B",
-      "priority_rank": 2,
-      "priority_reason": [
-        "達觀察條件"
-      ]
-    },
-    {
-      "stock_id": "6609",
-      "name": "瀧澤科",
-      "industry": "電機機械",
-      "market": "TPEX",
-      "close": 46.35,
-      "status": "點火",
-      "status_rank": 2,
-      "sources": [
-        "right_top_track",
-        "volume_pullback"
-      ],
-      "tags": [],
-      "score_parts": {
-        "breakout_track": 15,
-        "pullback": 35
-      },
-      "metrics": {
-        "track_pnl_pct": 0.0,
-        "track_vol_ratio": 2.01,
-        "entry_price": 46.35,
+        "entry_price": 51.9,
         "days_remaining": 11,
         "pullback_status": "ignition",
         "pullback_score": 85,
-        "ignition_vol_ratio": 4.25,
+        "ignition_vol_ratio": 4.22,
         "pullback_from_ignition_close_pct": 0.0,
         "days_since_ignition": 0,
         "support_ok": true,
@@ -2938,14 +4440,135 @@
       "priority_rank": 2,
       "priority_reason": [
         "達觀察條件"
-      ]
+      ],
+      "focus_candidate": false
     },
     {
-      "stock_id": "5425",
-      "name": "台半",
-      "industry": "半導體業",
+      "stock_id": "6125",
+      "name": "廣運",
+      "industry": "光電業",
       "market": "TPEX",
-      "close": 87.1,
+      "close": 68.4,
+      "status": "點火",
+      "status_rank": 2,
+      "sources": [
+        "right_top_track",
+        "volume_pullback"
+      ],
+      "tags": [],
+      "score_parts": {
+        "breakout_track": 15,
+        "pullback": 35
+      },
+      "metrics": {
+        "track_pnl_pct": 0.0,
+        "track_vol_ratio": 1.56,
+        "entry_price": 68.4,
+        "days_remaining": 11,
+        "pullback_status": "ignition",
+        "pullback_score": 80,
+        "ignition_vol_ratio": 3.39,
+        "pullback_from_ignition_close_pct": 0.0,
+        "days_since_ignition": 0,
+        "support_ok": true,
+        "volume_cools": false
+      },
+      "score": 61.0,
+      "source_count": 2,
+      "risk_flags": [],
+      "priority_level": "B",
+      "priority_rank": 2,
+      "priority_reason": [
+        "達觀察條件"
+      ],
+      "focus_candidate": false
+    },
+    {
+      "stock_id": "6799",
+      "name": "來頡",
+      "industry": "半導體業",
+      "market": "TWSE",
+      "close": 111.0,
+      "status": "點火",
+      "status_rank": 2,
+      "sources": [
+        "right_top_track",
+        "volume_pullback"
+      ],
+      "tags": [],
+      "score_parts": {
+        "breakout_track": 15,
+        "pullback": 35
+      },
+      "metrics": {
+        "track_pnl_pct": 0.0,
+        "track_vol_ratio": 2.77,
+        "entry_price": 111.0,
+        "days_remaining": 11,
+        "pullback_status": "ignition",
+        "pullback_score": 86,
+        "ignition_vol_ratio": 4.38,
+        "pullback_from_ignition_close_pct": 0.0,
+        "days_since_ignition": 0,
+        "support_ok": true,
+        "volume_cools": false
+      },
+      "score": 61.0,
+      "source_count": 2,
+      "risk_flags": [],
+      "priority_level": "B",
+      "priority_rank": 2,
+      "priority_reason": [
+        "達觀察條件"
+      ],
+      "focus_candidate": false
+    },
+    {
+      "stock_id": "8182",
+      "name": "加高",
+      "industry": "電子零組件業",
+      "market": "TPEX",
+      "close": 45.65,
+      "status": "點火",
+      "status_rank": 2,
+      "sources": [
+        "right_top_track",
+        "volume_pullback"
+      ],
+      "tags": [],
+      "score_parts": {
+        "breakout_track": 15,
+        "pullback": 35
+      },
+      "metrics": {
+        "track_pnl_pct": 0.44,
+        "track_vol_ratio": 1.37,
+        "entry_price": 45.45,
+        "days_remaining": 10,
+        "pullback_status": "ignition",
+        "pullback_score": 80,
+        "ignition_vol_ratio": 3.26,
+        "pullback_from_ignition_close_pct": 0.0,
+        "days_since_ignition": 0,
+        "support_ok": true,
+        "volume_cools": false
+      },
+      "score": 61.0,
+      "source_count": 2,
+      "risk_flags": [],
+      "priority_level": "B",
+      "priority_rank": 2,
+      "priority_reason": [
+        "達觀察條件"
+      ],
+      "focus_candidate": false
+    },
+    {
+      "stock_id": "2455",
+      "name": "全新",
+      "industry": "通信網路業",
+      "market": "TWSE",
+      "close": 423.5,
       "status": "回穩觀察",
       "status_rank": 3,
       "sources": [
@@ -2958,15 +4581,15 @@
         "pullback": 35
       },
       "metrics": {
-        "track_pnl_pct": 1.75,
-        "track_vol_ratio": 0.71,
-        "entry_price": 85.6,
-        "days_remaining": 8,
+        "track_pnl_pct": -0.35,
+        "track_vol_ratio": 1.05,
+        "entry_price": 425.0,
+        "days_remaining": 9,
         "pullback_status": "pullback",
-        "pullback_score": 95,
-        "ignition_vol_ratio": 2.85,
-        "pullback_from_ignition_close_pct": 0.23,
-        "days_since_ignition": 2,
+        "pullback_score": 93,
+        "ignition_vol_ratio": 2.58,
+        "pullback_from_ignition_close_pct": -4.62,
+        "days_since_ignition": 1,
         "support_ok": true,
         "volume_cools": true
       },
@@ -2977,14 +4600,15 @@
       "priority_rank": 2,
       "priority_reason": [
         "達觀察條件"
-      ]
+      ],
+      "focus_candidate": false
     },
     {
-      "stock_id": "8255",
-      "name": "朋程",
+      "stock_id": "3167",
+      "name": "大量",
       "industry": "電機機械",
-      "market": "TPEX",
-      "close": 157.0,
+      "market": "TWSE",
+      "close": 831.0,
       "status": "回穩觀察",
       "status_rank": 3,
       "sources": [
@@ -2997,15 +4621,175 @@
         "pullback": 35
       },
       "metrics": {
-        "track_pnl_pct": 1.95,
-        "track_vol_ratio": 2.12,
-        "entry_price": 154.0,
+        "track_pnl_pct": -5.46,
+        "track_vol_ratio": 0.36,
+        "entry_price": 879.0,
+        "days_remaining": 10,
+        "pullback_status": "pullback",
+        "pullback_score": 94,
+        "ignition_vol_ratio": 2.71,
+        "pullback_from_ignition_close_pct": 9.92,
+        "days_since_ignition": 3,
+        "support_ok": true,
+        "volume_cools": true
+      },
+      "score": 61.0,
+      "source_count": 2,
+      "risk_flags": [],
+      "priority_level": "B",
+      "priority_rank": 2,
+      "priority_reason": [
+        "達觀察條件"
+      ],
+      "focus_candidate": false
+    },
+    {
+      "stock_id": "3564",
+      "name": "其陽",
+      "industry": "通信網路業",
+      "market": "TPEX",
+      "close": 46.8,
+      "status": "回穩觀察",
+      "status_rank": 3,
+      "sources": [
+        "right_top_track",
+        "volume_pullback"
+      ],
+      "tags": [],
+      "score_parts": {
+        "breakout_track": 15,
+        "pullback": 35
+      },
+      "metrics": {
+        "track_pnl_pct": 3.31,
+        "track_vol_ratio": 1.54,
+        "entry_price": 45.3,
+        "days_remaining": 9,
+        "pullback_status": "pullback",
+        "pullback_score": 93,
+        "ignition_vol_ratio": 2.55,
+        "pullback_from_ignition_close_pct": 2.63,
+        "days_since_ignition": 1,
+        "support_ok": true,
+        "volume_cools": true
+      },
+      "score": 61.0,
+      "source_count": 2,
+      "risk_flags": [],
+      "priority_level": "B",
+      "priority_rank": 2,
+      "priority_reason": [
+        "達觀察條件"
+      ],
+      "focus_candidate": false
+    },
+    {
+      "stock_id": "3580",
+      "name": "友威科",
+      "industry": "其他電子類",
+      "market": "TPEX",
+      "close": 113.0,
+      "status": "回穩觀察",
+      "status_rank": 3,
+      "sources": [
+        "right_top_track",
+        "volume_pullback"
+      ],
+      "tags": [],
+      "score_parts": {
+        "breakout_track": 15,
+        "pullback": 35
+      },
+      "metrics": {
+        "track_pnl_pct": 1.8,
+        "track_vol_ratio": 1.37,
+        "entry_price": 111.0,
+        "days_remaining": 6,
+        "pullback_status": "pullback",
+        "pullback_score": 93,
+        "ignition_vol_ratio": 2.58,
+        "pullback_from_ignition_close_pct": 13.11,
+        "days_since_ignition": 4,
+        "support_ok": true,
+        "volume_cools": true
+      },
+      "score": 61.0,
+      "source_count": 2,
+      "risk_flags": [],
+      "priority_level": "B",
+      "priority_rank": 2,
+      "priority_reason": [
+        "達觀察條件"
+      ],
+      "focus_candidate": false
+    },
+    {
+      "stock_id": "3592",
+      "name": "瑞鼎",
+      "industry": "半導體業",
+      "market": "TWSE",
+      "close": 284.5,
+      "status": "回穩觀察",
+      "status_rank": 3,
+      "sources": [
+        "right_top_track",
+        "volume_pullback"
+      ],
+      "tags": [],
+      "score_parts": {
+        "breakout_track": 15,
+        "pullback": 35
+      },
+      "metrics": {
+        "track_pnl_pct": 0.0,
+        "track_vol_ratio": 1.37,
+        "entry_price": 284.5,
+        "days_remaining": 11,
+        "pullback_status": "pullback",
+        "pullback_score": 94,
+        "ignition_vol_ratio": 2.65,
+        "pullback_from_ignition_close_pct": 0.0,
+        "days_since_ignition": 1,
+        "support_ok": true,
+        "volume_cools": true
+      },
+      "score": 61.0,
+      "source_count": 2,
+      "risk_flags": [],
+      "priority_level": "B",
+      "priority_rank": 2,
+      "priority_reason": [
+        "達觀察條件"
+      ],
+      "focus_candidate": false
+    },
+    {
+      "stock_id": "5471",
+      "name": "松翰",
+      "industry": "電子工業",
+      "market": "TWSE",
+      "close": 52.2,
+      "status": "回穩觀察",
+      "status_rank": 3,
+      "sources": [
+        "right_top_track",
+        "volume_pullback"
+      ],
+      "tags": [],
+      "score_parts": {
+        "breakout_track": 15,
+        "pullback": 35
+      },
+      "metrics": {
+        "track_pnl_pct": -0.57,
+        "track_vol_ratio": 2.98,
+        "entry_price": 52.5,
         "days_remaining": 8,
         "pullback_status": "pullback",
         "pullback_score": 94,
         "ignition_vol_ratio": 2.71,
-        "pullback_from_ignition_close_pct": 0.64,
-        "days_since_ignition": 2,
+        "pullback_from_ignition_close_pct": -0.57,
+        "days_since_ignition": 3,
         "support_ok": true,
         "volume_cools": true
       },
@@ -3016,90 +4800,15 @@
       "priority_rank": 2,
       "priority_reason": [
         "達觀察條件"
-      ]
+      ],
+      "focus_candidate": false
     },
     {
-      "stock_id": "2390",
-      "name": "云辰",
-      "industry": "他電",
-      "market": "",
-      "close": 10.6,
-      "status": "點火首日",
-      "status_rank": 2,
-      "sources": [
-        "chips",
-        "volume_signal"
-      ],
-      "tags": [
-        "持續成長"
-      ],
-      "score_parts": {
-        "chips": 26,
-        "ignition": 28
-      },
-      "metrics": {
-        "market_cap": 24.7,
-        "bbw": 11.86,
-        "week_chg_pct": 8.83,
-        "big_pct_1000": 33.46,
-        "big_pct_400": 37.05,
-        "today_vol_ratio": 1.65,
-        "vol_today": 1688,
-        "vol_10d_avg": 1024.0
-      },
-      "score": 59.0,
-      "source_count": 2,
-      "risk_flags": [],
-      "priority_level": "B",
-      "priority_rank": 2,
-      "priority_reason": [
-        "達觀察條件"
-      ]
-    },
-    {
-      "stock_id": "2461",
-      "name": "光群雷",
-      "industry": "他電",
-      "market": "",
-      "close": 16.75,
-      "status": "點火首日",
-      "status_rank": 2,
-      "sources": [
-        "chips",
-        "volume_signal"
-      ],
-      "tags": [
-        "持續成長"
-      ],
-      "score_parts": {
-        "chips": 22,
-        "ignition": 28
-      },
-      "metrics": {
-        "market_cap": 33.1,
-        "bbw": 12.72,
-        "week_chg_pct": 8.06,
-        "big_pct_1000": 38.03,
-        "big_pct_400": 47.53,
-        "today_vol_ratio": 2.21,
-        "vol_today": 1281,
-        "vol_10d_avg": 580.0
-      },
-      "score": 55.0,
-      "source_count": 2,
-      "risk_flags": [],
-      "priority_level": "B",
-      "priority_rank": 2,
-      "priority_reason": [
-        "達觀察條件"
-      ]
-    },
-    {
-      "stock_id": "3176",
-      "name": "基亞",
-      "industry": "生技醫療業",
-      "market": "TPEX",
-      "close": 37.25,
+      "stock_id": "4770",
+      "name": "上品",
+      "industry": "化學生技醫療",
+      "market": "TWSE",
+      "close": 266.0,
       "status": "點火",
       "status_rank": 2,
       "sources": [
@@ -3109,114 +4818,77 @@
       "tags": [],
       "score_parts": {
         "breakout_track": 15,
-        "pullback": 35
-      },
-      "metrics": {
-        "track_pnl_pct": 4.93,
-        "track_vol_ratio": 0.94,
-        "entry_price": 35.5,
-        "days_remaining": 8,
-        "pullback_status": "ignition",
-        "pullback_score": 86,
-        "ignition_vol_ratio": 4.34,
-        "pullback_from_ignition_close_pct": 0.0,
-        "days_since_ignition": 0,
-        "support_ok": true,
-        "volume_cools": false
-      },
-      "score": 55.0,
-      "source_count": 2,
-      "risk_flags": [],
-      "priority_level": "B",
-      "priority_rank": 2,
-      "priority_reason": [
-        "達觀察條件"
-      ]
-    },
-    {
-      "stock_id": "6113",
-      "name": "亞矽",
-      "industry": "電子通路業",
-      "market": "TPEX",
-      "close": 27.6,
-      "status": "點火",
-      "status_rank": 2,
-      "sources": [
-        "right_top_track",
-        "volume_pullback"
-      ],
-      "tags": [],
-      "score_parts": {
-        "breakout_track": 15,
-        "pullback": 35
+        "pullback": 40
       },
       "metrics": {
         "track_pnl_pct": 0.0,
-        "track_vol_ratio": 1.49,
-        "entry_price": 27.6,
+        "track_vol_ratio": 1.62,
+        "entry_price": 266.0,
         "days_remaining": 11,
         "pullback_status": "ignition",
-        "pullback_score": 80,
-        "ignition_vol_ratio": 3.38,
+        "pullback_score": 92,
+        "ignition_vol_ratio": 5.26,
         "pullback_from_ignition_close_pct": 0.0,
         "days_since_ignition": 0,
         "support_ok": true,
         "volume_cools": false
       },
-      "score": 55.0,
+      "score": 60.0,
       "source_count": 2,
       "risk_flags": [],
       "priority_level": "B",
       "priority_rank": 2,
       "priority_reason": [
         "達觀察條件"
-      ]
+      ],
+      "focus_candidate": false
     },
     {
-      "stock_id": "7805",
-      "name": "威聯通",
-      "industry": "數位雲端類",
-      "market": "TPEX",
-      "close": 764.0,
-      "status": "點火",
-      "status_rank": 2,
+      "stock_id": "6558",
+      "name": "興能高",
+      "industry": "其他電子業",
+      "market": "TWSE",
+      "close": 32.65,
+      "status": "回穩觀察",
+      "status_rank": 3,
       "sources": [
         "right_top_track",
         "volume_pullback"
       ],
       "tags": [],
       "score_parts": {
-        "breakout_track": 15,
+        "breakout_track": 12,
         "pullback": 35
       },
       "metrics": {
-        "track_pnl_pct": 0.0,
-        "track_vol_ratio": 1.01,
-        "entry_price": 764.0,
-        "days_remaining": 11,
-        "pullback_status": "ignition",
-        "pullback_score": 85,
-        "ignition_vol_ratio": 4.09,
-        "pullback_from_ignition_close_pct": 0.0,
-        "days_since_ignition": 0,
+        "track_pnl_pct": 4.15,
+        "track_vol_ratio": 1.53,
+        "entry_price": 31.35,
+        "days_remaining": 4,
+        "pullback_status": "pullback",
+        "pullback_score": 93,
+        "ignition_vol_ratio": 2.58,
+        "pullback_from_ignition_close_pct": 1.4,
+        "days_since_ignition": 4,
         "support_ok": true,
-        "volume_cools": false
+        "volume_cools": true
       },
-      "score": 55.0,
+      "score": 58.0,
       "source_count": 2,
       "risk_flags": [],
       "priority_level": "B",
       "priority_rank": 2,
       "priority_reason": [
         "達觀察條件"
-      ]
+      ],
+      "focus_candidate": false
     },
     {
-      "stock_id": "3114",
-      "name": "好德",
-      "industry": "電子零組件業",
+      "stock_id": "6101",
+      "name": "寬魚國際",
+      "industry": "文化創意業",
       "market": "TPEX",
-      "close": 28.25,
+      "close": 41.5,
       "status": "點火",
       "status_rank": 2,
       "sources": [
@@ -3225,76 +4897,86 @@
       ],
       "tags": [],
       "score_parts": {
-        "breakout_track": 15,
+        "breakout_track": 23,
         "pullback": 28
       },
       "metrics": {
-        "track_pnl_pct": 4.05,
-        "track_vol_ratio": 0.88,
-        "entry_price": 27.15,
-        "days_remaining": 5,
-        "pullback_status": "ignition",
-        "pullback_score": 76,
-        "ignition_vol_ratio": 2.59,
-        "pullback_from_ignition_close_pct": 0.0,
-        "days_since_ignition": 0,
-        "support_ok": true,
-        "volume_cools": false
-      },
-      "score": 54.0,
-      "source_count": 2,
-      "risk_flags": [],
-      "priority_level": "B",
-      "priority_rank": 2,
-      "priority_reason": [
-        "達觀察條件"
-      ]
-    },
-    {
-      "stock_id": "3663",
-      "name": "鑫科",
-      "industry": "其他電子類",
-      "market": "TPEX",
-      "close": 86.9,
-      "status": "點火",
-      "status_rank": 2,
-      "sources": [
-        "right_top_track",
-        "volume_pullback"
-      ],
-      "tags": [],
-      "score_parts": {
-        "breakout_track": 15,
-        "pullback": 28
-      },
-      "metrics": {
-        "track_pnl_pct": 3.82,
-        "track_vol_ratio": 2.12,
-        "entry_price": 83.7,
+        "track_pnl_pct": -0.84,
+        "track_vol_ratio": 6.1,
+        "entry_price": 41.85,
         "days_remaining": 10,
         "pullback_status": "ignition",
-        "pullback_score": 76,
-        "ignition_vol_ratio": 2.71,
+        "pullback_score": 75,
+        "ignition_vol_ratio": 2.58,
         "pullback_from_ignition_close_pct": 0.0,
         "days_since_ignition": 0,
         "support_ok": true,
         "volume_cools": false
       },
-      "score": 54.0,
+      "score": 56.0,
       "source_count": 2,
       "risk_flags": [],
       "priority_level": "B",
       "priority_rank": 2,
       "priority_reason": [
         "達觀察條件"
-      ]
+      ],
+      "focus_candidate": false
     },
     {
-      "stock_id": "3714",
-      "name": "富采",
-      "industry": "光電業",
+      "stock_id": "3413",
+      "name": "京鼎",
+      "industry": "半導",
       "market": "TWSE",
-      "close": 81.4,
+      "close": 349.0,
+      "status": "突破延伸",
+      "status_rank": 4,
+      "sources": [
+        "chips",
+        "right_top_track",
+        "stock_analysis"
+      ],
+      "tags": [
+        "持續成長",
+        "雙軌觸發",
+        "單周增幅"
+      ],
+      "score_parts": {
+        "chips": 31,
+        "breakout_track": 15,
+        "follow": 0.0
+      },
+      "metrics": {
+        "market_cap": 95.1,
+        "bbw": 9.24,
+        "week_chg_pct": 10.02,
+        "big_pct_1000": 39.47,
+        "big_pct_400": 47.41,
+        "track_pnl_pct": -0.86,
+        "track_vol_ratio": 0.54,
+        "entry_price": 349.0,
+        "days_remaining": 10,
+        "ai_pnl_pct": 8.72,
+        "rev_score": 6.0,
+        "chip_score": 2.6,
+        "trend_score": 9.6
+      },
+      "score": 56.0,
+      "source_count": 3,
+      "risk_flags": [],
+      "priority_level": "B",
+      "priority_rank": 2,
+      "priority_reason": [
+        "達觀察條件"
+      ],
+      "focus_candidate": false
+    },
+    {
+      "stock_id": "8070",
+      "name": "長華*",
+      "industry": "電子通路業",
+      "market": "TWSE",
+      "close": 49.55,
       "status": "點火",
       "status_rank": 2,
       "sources": [
@@ -3304,16 +4986,56 @@
       "tags": [],
       "score_parts": {
         "breakout_track": 15,
-        "pullback": 28
+        "pullback": 35
       },
       "metrics": {
         "track_pnl_pct": 0.0,
-        "track_vol_ratio": 1.98,
-        "entry_price": 81.4,
+        "track_vol_ratio": 0.87,
+        "entry_price": 49.55,
         "days_remaining": 11,
         "pullback_status": "ignition",
-        "pullback_score": 76,
-        "ignition_vol_ratio": 2.68,
+        "pullback_score": 81,
+        "ignition_vol_ratio": 3.49,
+        "pullback_from_ignition_close_pct": 0.0,
+        "days_since_ignition": 0,
+        "support_ok": true,
+        "volume_cools": false
+      },
+      "score": 55.0,
+      "source_count": 2,
+      "risk_flags": [],
+      "priority_level": "B",
+      "priority_rank": 2,
+      "priority_reason": [
+        "達觀察條件"
+      ],
+      "focus_candidate": false
+    },
+    {
+      "stock_id": "4527",
+      "name": "方土霖",
+      "industry": "電機機械",
+      "market": "TPEX",
+      "close": 44.2,
+      "status": "點火",
+      "status_rank": 2,
+      "sources": [
+        "right_top_track",
+        "volume_pullback"
+      ],
+      "tags": [],
+      "score_parts": {
+        "breakout_track": 15,
+        "pullback": 28
+      },
+      "metrics": {
+        "track_pnl_pct": -1.01,
+        "track_vol_ratio": 0.52,
+        "entry_price": 44.65,
+        "days_remaining": 10,
+        "pullback_status": "ignition",
+        "pullback_score": 75,
+        "ignition_vol_ratio": 2.53,
         "pullback_from_ignition_close_pct": 0.0,
         "days_since_ignition": 0,
         "support_ok": true,
@@ -3326,14 +5048,15 @@
       "priority_rank": 2,
       "priority_reason": [
         "達觀察條件"
-      ]
+      ],
+      "focus_candidate": false
     },
     {
-      "stock_id": "6214",
-      "name": "精誠",
-      "industry": "電子工業",
+      "stock_id": "6525",
+      "name": "捷敏-KY",
+      "industry": "半導體業",
       "market": "TWSE",
-      "close": 130.0,
+      "close": 134.0,
       "status": "點火",
       "status_rank": 2,
       "sources": [
@@ -3347,9 +5070,49 @@
       },
       "metrics": {
         "track_pnl_pct": 0.0,
-        "track_vol_ratio": 1.48,
-        "entry_price": 130.0,
+        "track_vol_ratio": 2.91,
+        "entry_price": 134.0,
         "days_remaining": 11,
+        "pullback_status": "ignition",
+        "pullback_score": 75,
+        "ignition_vol_ratio": 2.57,
+        "pullback_from_ignition_close_pct": 0.0,
+        "days_since_ignition": 0,
+        "support_ok": true,
+        "volume_cools": false
+      },
+      "score": 54.0,
+      "source_count": 2,
+      "risk_flags": [],
+      "priority_level": "B",
+      "priority_rank": 2,
+      "priority_reason": [
+        "達觀察條件"
+      ],
+      "focus_candidate": false
+    },
+    {
+      "stock_id": "6668",
+      "name": "中揚光",
+      "industry": "光電業",
+      "market": "TWSE",
+      "close": 41.05,
+      "status": "點火",
+      "status_rank": 2,
+      "sources": [
+        "right_top_track",
+        "volume_pullback"
+      ],
+      "tags": [],
+      "score_parts": {
+        "breakout_track": 15,
+        "pullback": 28
+      },
+      "metrics": {
+        "track_pnl_pct": 4.06,
+        "track_vol_ratio": 2.25,
+        "entry_price": 39.45,
+        "days_remaining": 8,
         "pullback_status": "ignition",
         "pullback_score": 77,
         "ignition_vol_ratio": 2.78,
@@ -3365,92 +5128,15 @@
       "priority_rank": 2,
       "priority_reason": [
         "達觀察條件"
-      ]
-    },
-    {
-      "stock_id": "2453",
-      "name": "凌群",
-      "industry": "資訊服務業",
-      "market": "TWSE",
-      "close": 57.2,
-      "status": "點火",
-      "status_rank": 2,
-      "sources": [
-        "right_top_track",
-        "volume_pullback"
       ],
-      "tags": [],
-      "score_parts": {
-        "breakout_track": 15,
-        "pullback": 28
-      },
-      "metrics": {
-        "track_pnl_pct": 0.0,
-        "track_vol_ratio": 0.99,
-        "entry_price": 57.2,
-        "days_remaining": 11,
-        "pullback_status": "ignition",
-        "pullback_score": 76,
-        "ignition_vol_ratio": 2.67,
-        "pullback_from_ignition_close_pct": 0.0,
-        "days_since_ignition": 0,
-        "support_ok": true,
-        "volume_cools": false
-      },
-      "score": 48.0,
-      "source_count": 2,
-      "risk_flags": [],
-      "priority_level": "B",
-      "priority_rank": 2,
-      "priority_reason": [
-        "達觀察條件"
-      ]
+      "focus_candidate": false
     },
     {
-      "stock_id": "5434",
-      "name": "崇越",
-      "industry": "電子通路業",
-      "market": "TWSE",
-      "close": 449.5,
-      "status": "點火",
-      "status_rank": 2,
-      "sources": [
-        "right_top_track",
-        "volume_pullback"
-      ],
-      "tags": [],
-      "score_parts": {
-        "breakout_track": 15,
-        "pullback": 28
-      },
-      "metrics": {
-        "track_pnl_pct": 0.0,
-        "track_vol_ratio": 1.47,
-        "entry_price": 449.5,
-        "days_remaining": 11,
-        "pullback_status": "ignition",
-        "pullback_score": 77,
-        "ignition_vol_ratio": 2.85,
-        "pullback_from_ignition_close_pct": 0.0,
-        "days_since_ignition": 0,
-        "support_ok": true,
-        "volume_cools": false
-      },
-      "score": 48.0,
-      "source_count": 2,
-      "risk_flags": [],
-      "priority_level": "B",
-      "priority_rank": 2,
-      "priority_reason": [
-        "達觀察條件"
-      ]
-    },
-    {
-      "stock_id": "3372",
-      "name": "典範",
-      "industry": "櫃半導",
+      "stock_id": "2606",
+      "name": "裕民",
+      "industry": "航運",
       "market": "",
-      "close": 20.25,
+      "close": 70.0,
       "status": "點火首日",
       "status_rank": 2,
       "sources": [
@@ -3458,76 +5144,77 @@
         "volume_signal"
       ],
       "tags": [
-        "單周增幅"
+        "持續成長"
       ],
       "score_parts": {
-        "chips": 14,
-        "ignition": 23
+        "chips": 18,
+        "ignition": 28
       },
       "metrics": {
-        "market_cap": 14.2,
-        "bbw": 13.92,
-        "week_chg_pct": 4.65,
-        "big_pct_1000": 44.19,
-        "big_pct_400": 48.01,
-        "today_vol_ratio": 1.84,
-        "vol_today": 1437,
-        "vol_10d_avg": 781.0
+        "market_cap": 285.6,
+        "bbw": 11.07,
+        "week_chg_pct": 10.24,
+        "big_pct_1000": 72.35,
+        "big_pct_400": 74.94,
+        "today_vol_ratio": 1.73,
+        "vol_today": 12488,
+        "vol_10d_avg": 7236.0
       },
-      "score": 42.0,
+      "score": 51.0,
       "source_count": 2,
       "risk_flags": [],
       "priority_level": "B",
       "priority_rank": 2,
       "priority_reason": [
         "達觀察條件"
-      ]
+      ],
+      "focus_candidate": false
     },
     {
-      "stock_id": "1612",
-      "name": "宏泰",
-      "industry": "電器",
-      "market": "TWSE",
-      "close": 36.6,
-      "status": "突破延伸",
-      "status_rank": 4,
+      "stock_id": "1215",
+      "name": "卜蜂",
+      "industry": "食品",
+      "market": "",
+      "close": 142.5,
+      "status": "點火首日",
+      "status_rank": 2,
       "sources": [
         "chips",
-        "right_top_track"
+        "volume_signal"
       ],
       "tags": [
-        "持續成長"
+        "雙軌觸發"
       ],
       "score_parts": {
-        "chips": 26,
-        "breakout_track": 12
+        "chips": 13,
+        "ignition": 23
       },
       "metrics": {
-        "market_cap": 30.4,
-        "bbw": 7.33,
-        "week_chg_pct": 2.23,
-        "big_pct_1000": 56.84,
-        "big_pct_400": 62.47,
-        "track_pnl_pct": -0.27,
-        "track_vol_ratio": 1.64,
-        "entry_price": 36.7,
-        "days_remaining": 1
+        "market_cap": 198.3,
+        "bbw": 8.16,
+        "week_chg_pct": 0.71,
+        "big_pct_1000": 61.56,
+        "big_pct_400": 65.9,
+        "today_vol_ratio": 1.66,
+        "vol_today": 2725,
+        "vol_10d_avg": 1638.0
       },
-      "score": 43.0,
+      "score": 41.0,
       "source_count": 2,
       "risk_flags": [],
-      "priority_level": "C",
-      "priority_rank": 3,
+      "priority_level": "B",
+      "priority_rank": 2,
       "priority_reason": [
-        "低優先觀察"
-      ]
+        "達觀察條件"
+      ],
+      "focus_candidate": false
     },
     {
-      "stock_id": "8213",
-      "name": "志超",
-      "industry": "電零",
+      "stock_id": "2412",
+      "name": "中華電",
+      "industry": "通信",
       "market": "TWSE",
-      "close": 38.55,
+      "close": 136.0,
       "status": "突破延伸",
       "status_rank": 4,
       "sources": [
@@ -3538,19 +5225,19 @@
         "持續成長"
       ],
       "score_parts": {
-        "chips": 22,
-        "breakout_track": 12
+        "chips": 13,
+        "breakout_track": 15
       },
       "metrics": {
-        "market_cap": 100.4,
-        "bbw": 12.48,
-        "week_chg_pct": 3.21,
-        "big_pct_1000": 40.54,
-        "big_pct_400": 51.12,
-        "track_pnl_pct": -7.78,
-        "track_vol_ratio": 1.73,
-        "entry_price": 41.8,
-        "days_remaining": 2
+        "market_cap": 8300.5,
+        "bbw": 4.59,
+        "week_chg_pct": -4.56,
+        "big_pct_1000": 77.84,
+        "big_pct_400": 79.6,
+        "track_pnl_pct": -4.56,
+        "track_vol_ratio": 1.29,
+        "entry_price": 142.5,
+        "days_remaining": 6
       },
       "score": 39.0,
       "source_count": 2,
@@ -3559,14 +5246,46 @@
       "priority_rank": 3,
       "priority_reason": [
         "低優先觀察"
-      ]
+      ],
+      "focus_candidate": false
     },
     {
-      "stock_id": "1460",
-      "name": "宏遠",
-      "industry": "紡織",
+      "stock_id": "6579",
+      "name": "研揚",
+      "industry": "電子工業",
       "market": "TWSE",
-      "close": 6.98,
+      "close": 174.5,
+      "status": "突破延伸",
+      "status_rank": 4,
+      "sources": [
+        "right_top_track"
+      ],
+      "tags": [],
+      "score_parts": {
+        "breakout_track": 31
+      },
+      "metrics": {
+        "track_pnl_pct": 14.43,
+        "track_vol_ratio": 3.17,
+        "entry_price": 152.5,
+        "days_remaining": 8
+      },
+      "score": 37.0,
+      "source_count": 1,
+      "risk_flags": [],
+      "priority_level": "C",
+      "priority_rank": 3,
+      "priority_reason": [
+        "低優先觀察"
+      ],
+      "focus_candidate": false
+    },
+    {
+      "stock_id": "3045",
+      "name": "台灣大",
+      "industry": "通信",
+      "market": "TWSE",
+      "close": 110.5,
       "status": "突破延伸",
       "status_rank": 4,
       "sources": [
@@ -3577,118 +5296,29 @@
         "持續成長"
       ],
       "score_parts": {
-        "chips": 21,
+        "chips": 13,
         "breakout_track": 12
       },
       "metrics": {
-        "market_cap": 56.7,
-        "bbw": 7.26,
-        "week_chg_pct": -0.85,
-        "big_pct_1000": 64.68,
-        "big_pct_400": 71.62,
-        "track_pnl_pct": -4.12,
-        "track_vol_ratio": 1.08,
-        "entry_price": 7.28,
-        "days_remaining": 1
+        "market_cap": 3799.9,
+        "bbw": 6.63,
+        "week_chg_pct": -5.15,
+        "big_pct_1000": 89.8,
+        "big_pct_400": 91.95,
+        "track_pnl_pct": -3.91,
+        "track_vol_ratio": 1.19,
+        "entry_price": 115.0,
+        "days_remaining": 3
       },
-      "score": 38.0,
+      "score": 36.0,
       "source_count": 2,
       "risk_flags": [],
       "priority_level": "C",
       "priority_rank": 3,
       "priority_reason": [
         "低優先觀察"
-      ]
-    },
-    {
-      "stock_id": "3032",
-      "name": "偉訓",
-      "industry": "電子工業",
-      "market": "TWSE",
-      "close": 87.2,
-      "status": "突破延伸",
-      "status_rank": 4,
-      "sources": [
-        "right_top_track"
       ],
-      "tags": [],
-      "score_parts": {
-        "breakout_track": 31
-      },
-      "metrics": {
-        "track_pnl_pct": 8.86,
-        "track_vol_ratio": 3.53,
-        "entry_price": 80.1,
-        "days_remaining": 5
-      },
-      "score": 37.0,
-      "source_count": 1,
-      "risk_flags": [],
-      "priority_level": "C",
-      "priority_rank": 3,
-      "priority_reason": [
-        "低優先觀察"
-      ]
-    },
-    {
-      "stock_id": "6116",
-      "name": "彩晶",
-      "industry": "光電業",
-      "market": "TWSE",
-      "close": 11.85,
-      "status": "突破延伸",
-      "status_rank": 4,
-      "sources": [
-        "right_top_track"
-      ],
-      "tags": [],
-      "score_parts": {
-        "breakout_track": 31
-      },
-      "metrics": {
-        "track_pnl_pct": 13.94,
-        "track_vol_ratio": 5.51,
-        "entry_price": 10.4,
-        "days_remaining": 5
-      },
-      "score": 37.0,
-      "source_count": 1,
-      "risk_flags": [],
-      "priority_level": "C",
-      "priority_rank": 3,
-      "priority_reason": [
-        "低優先觀察"
-      ]
-    },
-    {
-      "stock_id": "8071",
-      "name": "能率網通",
-      "industry": "電子零組件業",
-      "market": "TPEX",
-      "close": 20.05,
-      "status": "突破延伸",
-      "status_rank": 4,
-      "sources": [
-        "right_top_track"
-      ],
-      "tags": [],
-      "score_parts": {
-        "breakout_track": 31
-      },
-      "metrics": {
-        "track_pnl_pct": 9.56,
-        "track_vol_ratio": 4.16,
-        "entry_price": 18.3,
-        "days_remaining": 5
-      },
-      "score": 37.0,
-      "source_count": 1,
-      "risk_flags": [],
-      "priority_level": "C",
-      "priority_rank": 3,
-      "priority_reason": [
-        "低優先觀察"
-      ]
+      "focus_candidate": false
     }
   ]
 }

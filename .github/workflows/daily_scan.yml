@@ -63,11 +63,14 @@ jobs:
           FINMIND_TOKEN: ${{ secrets.FINMIND_API_TOKEN }}
         run: python scripts/update_futures_dashboard.py
 
+      - name: 更新融資餘額快取
+        run: python scripts/update_margin_balance.py
+
       - name: Commit 價格快取
         run: |
           git config user.name  "github-actions[bot]"
           git config user.email "github-actions[bot]@users.noreply.github.com"
-          git add data/price_cache.parquet data/stock_list_cache.json data/market_index.json data/futures_dashboard.json
+          git add data/price_cache.parquet data/stock_list_cache.json data/market_index.json data/futures_dashboard.json data/margin_balance.json
           if ! git diff --staged --quiet; then
             git commit -m "data: price cache update $(date -u +%Y-%m-%d)"
             for i in {1..4}; do
@@ -111,6 +114,9 @@ jobs:
       - name: 量增回測模型
         run: python scripts/scan_volume_pullback.py
 
+      - name: 動能回測模型
+        run: python scripts/scan_momentum_pullback.py
+
       - name: 更新前端現價快照
         env:
           FINMIND_TOKEN: ${{ secrets.FINMIND_API_TOKEN }}
@@ -126,7 +132,7 @@ jobs:
         run: |
           git config user.name  "github-actions[bot]"
           git config user.email "github-actions[bot]@users.noreply.github.com"
-          git add data/right_top.json data/right_top_track.json data/volume_signal.json data/volume_pullback.json data/momentum_candidates.json data/performance.json data/chips_big_holder.json data/current_prices.json assets/line/performance-latest.png
+          git add data/right_top.json data/right_top_track.json data/volume_signal.json data/volume_pullback.json data/momentum_pullback.json data/momentum_candidates.json data/performance.json data/chips_big_holder.json data/current_prices.json assets/line/performance-latest.png
           if ! git diff --staged --quiet; then
             git commit -m "data: daily scan update $(date -u +%Y-%m-%d)"
             for i in {1..4}; do

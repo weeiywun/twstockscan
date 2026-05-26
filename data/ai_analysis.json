@@ -1,275 +1,27 @@
 {
-  "last_updated": "2026-05-22",
+  "last_updated": "2026-05-26",
   "active": [
-    {
-      "ticker": "6121",
-      "name": "新普",
-      "industry": "櫃電腦",
-      "trigger_date": "2026-05-08",
-      "expire_date": "2026-05-22",
-      "days_remaining": 1,
-      "entry_price": 390,
-      "current_price": 380,
-      "pnl_pct": -2.56,
-      "rev_grade": "A",
-      "quant_scores": {
-        "trend_score": 2.8,
-        "chip_score": 10,
-        "rev_score": 8
-      },
-      "pinned": false
-    },
-    {
-      "ticker": "4961",
-      "name": "天鈺",
-      "industry": "半導",
-      "trigger_date": "2026-05-08",
-      "expire_date": "2026-05-22",
-      "days_remaining": 1,
-      "entry_price": 170,
-      "current_price": 175.5,
-      "pnl_pct": 3.24,
-      "rev_grade": "D",
-      "quant_scores": {
-        "trend_score": 6.4,
-        "chip_score": 1.6,
-        "rev_score": 0
-      },
-      "pinned": false
-    },
-    {
-      "ticker": "8390",
-      "name": "金益鼎",
-      "industry": "綠能",
-      "trigger_date": "2026-05-11",
-      "expire_date": "2026-05-25",
-      "days_remaining": 2,
-      "entry_price": 103.5,
-      "current_price": 120,
-      "pnl_pct": 15.94,
-      "rev_grade": "A",
-      "quant_scores": {
-        "trend_score": 0.2,
-        "chip_score": 6.1,
-        "rev_score": 8
-      },
-      "pinned": false
-    },
-    {
-      "ticker": "2425",
-      "name": "承啟",
-      "industry": "電腦",
-      "trigger_date": "2026-05-11",
-      "expire_date": "2026-05-25",
-      "days_remaining": 2,
-      "entry_price": 32.9,
-      "current_price": 34.7,
-      "pnl_pct": 5.47,
-      "rev_grade": "S",
-      "quant_scores": {
-        "trend_score": 1.7,
-        "chip_score": 5.5,
-        "rev_score": 10
-      },
-      "pinned": false
-    },
-    {
-      "ticker": "4729",
-      "name": "熒茂",
-      "industry": "櫃光電",
-      "trigger_date": "2026-05-11",
-      "expire_date": "2026-05-25",
-      "days_remaining": 2,
-      "entry_price": 21,
-      "current_price": 25.6,
-      "pnl_pct": 21.9,
-      "rev_grade": "S",
-      "quant_scores": {
-        "trend_score": 0,
-        "chip_score": 10,
-        "rev_score": 10
-      },
-      "pinned": false
-    },
-    {
-      "ticker": "6446",
-      "name": "藥華藥",
-      "industry": "生技",
-      "trigger_date": "2026-05-11",
-      "expire_date": "2026-05-25",
-      "days_remaining": 2,
-      "entry_price": 706,
-      "current_price": 810,
-      "pnl_pct": 14.73,
-      "rev_grade": "S",
-      "quant_scores": {
-        "trend_score": 0,
-        "chip_score": 7.6,
-        "rev_score": 10
-      },
-      "pinned": false
-    },
-    {
-      "ticker": "2353",
-      "name": "宏卅卅",
-      "industry": "電腦",
-      "trigger_date": "2026-05-11",
-      "expire_date": "2026-05-25",
-      "days_remaining": 2,
-      "entry_price": 28.8,
-      "current_price": 29.55,
-      "pnl_pct": 2.6,
-      "rev_grade": "S",
-      "quant_scores": {
-        "trend_score": 4.3,
-        "chip_score": 3.6,
-        "rev_score": 10
-      },
-      "pinned": false
-    },
-    {
-      "ticker": "2881",
-      "name": "富邦金",
-      "industry": "金融",
-      "trigger_date": "2026-05-11",
-      "expire_date": "2026-05-25",
-      "days_remaining": 2,
-      "entry_price": 96.7,
-      "current_price": 95.1,
-      "pnl_pct": -1.65,
-      "rev_grade": "D",
-      "quant_scores": {
-        "trend_score": 1,
-        "chip_score": 0,
-        "rev_score": 0
-      },
-      "pinned": false
-    },
-    {
-      "ticker": "2302",
-      "name": "麗正",
-      "industry": "半導",
-      "trigger_date": "2026-05-11",
-      "expire_date": "2026-05-25",
-      "days_remaining": 2,
-      "entry_price": 20.15,
-      "current_price": 28.1,
-      "pnl_pct": 39.45,
-      "rev_grade": "S",
-      "quant_scores": {
-        "trend_score": 0.1,
-        "chip_score": 10,
-        "rev_score": 10
-      },
-      "pinned": true
-    },
-    {
-      "ticker": "2897",
-      "name": "王道銀行",
-      "industry": "金融",
-      "trigger_date": "2026-05-11",
-      "expire_date": "2026-05-25",
-      "days_remaining": 2,
-      "entry_price": 10.25,
-      "current_price": 10,
-      "pnl_pct": -2.44,
-      "rev_grade": "S",
-      "quant_scores": {
-        "trend_score": 0.5,
-        "chip_score": 0,
-        "rev_score": 10
-      },
-      "pinned": false
-    },
-    {
-      "ticker": "2362",
-      "name": "藍天",
-      "industry": "電腦",
-      "trigger_date": "2026-05-11",
-      "expire_date": "2026-05-25",
-      "days_remaining": 2,
-      "entry_price": 39.95,
-      "current_price": 40.85,
-      "pnl_pct": 2.25,
-      "rev_grade": "S",
-      "quant_scores": {
-        "trend_score": 0.3,
-        "chip_score": 2.3,
-        "rev_score": 10
-      },
-      "pinned": false
-    },
-    {
-      "ticker": "1723",
-      "name": "中碳",
-      "industry": "化學",
-      "trigger_date": "2026-05-11",
-      "expire_date": "2026-05-25",
-      "days_remaining": 2,
-      "entry_price": 80.8,
-      "current_price": 81.7,
-      "pnl_pct": 1.11,
-      "rev_grade": "S",
-      "quant_scores": {
-        "trend_score": 0,
-        "chip_score": 10,
-        "rev_score": 10
-      },
-      "pinned": false
-    },
-    {
-      "ticker": "5607",
-      "name": "遠雄港",
-      "industry": "航運",
-      "trigger_date": "2026-05-11",
-      "expire_date": "2026-05-25",
-      "days_remaining": 2,
-      "entry_price": 50.6,
-      "current_price": 50.1,
-      "pnl_pct": -0.99,
-      "rev_grade": "A",
-      "quant_scores": {
-        "trend_score": 0,
-        "chip_score": 8.1,
-        "rev_score": 8
-      },
-      "pinned": false
-    },
-    {
-      "ticker": "3708",
-      "name": "上緯投控",
-      "industry": "綠能",
-      "trigger_date": "2026-05-11",
-      "expire_date": "2026-05-25",
-      "days_remaining": 2,
-      "entry_price": 121.5,
-      "current_price": 126,
-      "pnl_pct": 3.7,
-      "rev_grade": "C",
-      "quant_scores": {
-        "trend_score": 9,
-        "chip_score": 8.9,
-        "rev_score": 4
-      },
-      "pinned": false
-    },
     {
       "ticker": "8105",
       "name": "凌巨",
       "industry": "光電",
       "trigger_date": "2026-05-12",
       "expire_date": "2026-05-26",
-      "days_remaining": 3,
+      "days_remaining": 1,
       "entry_price": 14.75,
-      "current_price": 17.4,
-      "pnl_pct": 17.97,
+      "current_price": 16.6,
+      "pnl_pct": 12.54,
       "rev_grade": "D",
       "quant_scores": {
         "trend_score": 2.8,
         "chip_score": 10,
         "rev_score": 0
       },
-      "pinned": false
+      "pinned": false,
+      "priority_level": "B",
+      "priority_reason": [
+        "籌碼分數>=6"
+      ]
     },
     {
       "ticker": "2385",
@@ -277,17 +29,21 @@
       "industry": "電零",
       "trigger_date": "2026-05-12",
       "expire_date": "2026-05-26",
-      "days_remaining": 3,
+      "days_remaining": 1,
       "entry_price": 135,
-      "current_price": 131.5,
-      "pnl_pct": -2.59,
+      "current_price": 133.0,
+      "pnl_pct": -1.48,
       "rev_grade": "D",
       "quant_scores": {
         "trend_score": 2.1,
         "chip_score": 6.2,
         "rev_score": 0
       },
-      "pinned": false
+      "pinned": false,
+      "priority_level": "B",
+      "priority_reason": [
+        "籌碼分數>=6"
+      ]
     },
     {
       "ticker": "2316",
@@ -295,17 +51,22 @@
       "industry": "電零",
       "trigger_date": "2026-05-13",
       "expire_date": "2026-05-27",
-      "days_remaining": 4,
+      "days_remaining": 2,
       "entry_price": 142.5,
-      "current_price": 153.5,
-      "pnl_pct": 7.72,
+      "current_price": 171.5,
+      "pnl_pct": 20.35,
       "rev_grade": "S",
       "quant_scores": {
         "trend_score": 1.3,
         "chip_score": 10,
         "rev_score": 10
       },
-      "pinned": false
+      "pinned": false,
+      "priority_level": "A",
+      "priority_reason": [
+        "營收分數>=8",
+        "籌碼分數>=6"
+      ]
     },
     {
       "ticker": "3479",
@@ -313,17 +74,21 @@
       "industry": "櫃電腦",
       "trigger_date": "2026-05-14",
       "expire_date": "2026-05-28",
-      "days_remaining": 5,
+      "days_remaining": 3,
       "entry_price": 104,
-      "current_price": 125.5,
-      "pnl_pct": 20.67,
+      "current_price": 134.0,
+      "pnl_pct": 28.85,
       "rev_grade": "B",
       "quant_scores": {
         "trend_score": 0,
         "chip_score": 2.5,
         "rev_score": 6
       },
-      "pinned": true
+      "pinned": true,
+      "priority_level": "B",
+      "priority_reason": [
+        "單一品質條件達標"
+      ]
     },
     {
       "ticker": "3290",
@@ -331,17 +96,23 @@
       "industry": "櫃電零",
       "trigger_date": "2026-05-14",
       "expire_date": "2026-05-28",
-      "days_remaining": 5,
+      "days_remaining": 3,
       "entry_price": 48.4,
-      "current_price": 48.25,
-      "pnl_pct": -0.31,
+      "current_price": 48.45,
+      "pnl_pct": 0.1,
       "rev_grade": "S",
       "quant_scores": {
         "trend_score": 5.5,
         "chip_score": 10,
         "rev_score": 10
       },
-      "pinned": false
+      "pinned": false,
+      "priority_level": "A",
+      "priority_reason": [
+        "營收分數>=8",
+        "籌碼分數>=6",
+        "趨勢分數>=4"
+      ]
     },
     {
       "ticker": "2027",
@@ -349,17 +120,23 @@
       "industry": "鋼鐵",
       "trigger_date": "2026-05-14",
       "expire_date": "2026-05-28",
-      "days_remaining": 5,
+      "days_remaining": 3,
       "entry_price": 39.8,
-      "current_price": 41.95,
-      "pnl_pct": 5.4,
+      "current_price": 41.35,
+      "pnl_pct": 3.89,
       "rev_grade": "S",
       "quant_scores": {
         "trend_score": 5.4,
         "chip_score": 10,
         "rev_score": 10
       },
-      "pinned": false
+      "pinned": false,
+      "priority_level": "A",
+      "priority_reason": [
+        "營收分數>=8",
+        "籌碼分數>=6",
+        "趨勢分數>=4"
+      ]
     },
     {
       "ticker": "1563",
@@ -367,17 +144,21 @@
       "industry": "汽車",
       "trigger_date": "2026-05-14",
       "expire_date": "2026-05-28",
-      "days_remaining": 5,
+      "days_remaining": 3,
       "entry_price": 45.4,
-      "current_price": 46.05,
-      "pnl_pct": 1.43,
+      "current_price": 50.6,
+      "pnl_pct": 11.45,
       "rev_grade": "B",
       "quant_scores": {
         "trend_score": 0,
         "chip_score": 0.1,
         "rev_score": 6
       },
-      "pinned": false
+      "pinned": false,
+      "priority_level": "B",
+      "priority_reason": [
+        "單一品質條件達標"
+      ]
     },
     {
       "ticker": "3413",
@@ -385,17 +166,21 @@
       "industry": "半導",
       "trigger_date": "2026-05-14",
       "expire_date": "2026-05-28",
-      "days_remaining": 5,
+      "days_remaining": 3,
       "entry_price": 321,
-      "current_price": 325,
-      "pnl_pct": 1.25,
+      "current_price": 346.0,
+      "pnl_pct": 7.79,
       "rev_grade": "B",
       "quant_scores": {
         "trend_score": 9.6,
         "chip_score": 2.6,
         "rev_score": 6
       },
-      "pinned": false
+      "pinned": false,
+      "priority_level": "B",
+      "priority_reason": [
+        "趨勢分數>=4"
+      ]
     },
     {
       "ticker": "3704",
@@ -403,17 +188,22 @@
       "industry": "通信",
       "trigger_date": "2026-05-14",
       "expire_date": "2026-05-28",
-      "days_remaining": 5,
+      "days_remaining": 3,
       "entry_price": 36.7,
-      "current_price": 44,
-      "pnl_pct": 19.89,
+      "current_price": 45.25,
+      "pnl_pct": 23.3,
       "rev_grade": "S",
       "quant_scores": {
         "trend_score": 0.9,
         "chip_score": 10,
         "rev_score": 10
       },
-      "pinned": true
+      "pinned": true,
+      "priority_level": "A",
+      "priority_reason": [
+        "營收分數>=8",
+        "籌碼分數>=6"
+      ]
     },
     {
       "ticker": "2882",
@@ -421,17 +211,21 @@
       "industry": "金融",
       "trigger_date": "2026-05-15",
       "expire_date": "2026-05-29",
-      "days_remaining": 6,
+      "days_remaining": 4,
       "entry_price": 77.9,
-      "current_price": 79.7,
-      "pnl_pct": 2.31,
+      "current_price": 83.1,
+      "pnl_pct": 6.68,
       "rev_grade": "S",
       "quant_scores": {
         "trend_score": 0.6,
         "chip_score": 0,
         "rev_score": 10
       },
-      "pinned": false
+      "pinned": false,
+      "priority_level": "B",
+      "priority_reason": [
+        "營收分數>=8"
+      ]
     },
     {
       "ticker": "3004",
@@ -439,17 +233,22 @@
       "industry": "鋼鐵",
       "trigger_date": "2026-05-15",
       "expire_date": "2026-05-29",
-      "days_remaining": 6,
+      "days_remaining": 4,
       "entry_price": 121,
-      "current_price": 130.5,
-      "pnl_pct": 7.85,
+      "current_price": 137.5,
+      "pnl_pct": 13.64,
       "rev_grade": "B",
       "quant_scores": {
         "trend_score": 7.1,
         "chip_score": 10,
         "rev_score": 6
       },
-      "pinned": false
+      "pinned": false,
+      "priority_level": "B",
+      "priority_reason": [
+        "籌碼分數>=6",
+        "趨勢分數>=4"
+      ]
     },
     {
       "ticker": "2603",
@@ -457,17 +256,23 @@
       "industry": "航運",
       "trigger_date": "2026-05-20",
       "expire_date": "2026-06-03",
-      "days_remaining": 9,
+      "days_remaining": 7,
       "entry_price": 212.5,
-      "current_price": 219,
-      "pnl_pct": 3.06,
+      "current_price": 211.5,
+      "pnl_pct": -0.47,
       "rev_grade": "S",
       "quant_scores": {
         "trend_score": 4.1,
         "chip_score": 10,
         "rev_score": 10
       },
-      "pinned": false
+      "pinned": false,
+      "priority_level": "A",
+      "priority_reason": [
+        "營收分數>=8",
+        "籌碼分數>=6",
+        "趨勢分數>=4"
+      ]
     },
     {
       "ticker": "2645",
@@ -475,17 +280,21 @@
       "industry": "航運",
       "trigger_date": "2026-05-21",
       "expire_date": "2026-06-04",
-      "days_remaining": 10,
+      "days_remaining": 8,
       "entry_price": 162.5,
-      "current_price": 160.5,
-      "pnl_pct": -1.23,
+      "current_price": 158.5,
+      "pnl_pct": -2.46,
       "rev_grade": "A",
       "quant_scores": {
         "trend_score": 1.2,
         "chip_score": 0.6,
         "rev_score": 8
       },
-      "pinned": false
+      "pinned": false,
+      "priority_level": "B",
+      "priority_reason": [
+        "營收分數>=8"
+      ]
     },
     {
       "ticker": "2352",
@@ -493,17 +302,21 @@
       "industry": "電腦",
       "trigger_date": "2026-05-22",
       "expire_date": "2026-06-05",
-      "days_remaining": 11,
+      "days_remaining": 9,
       "entry_price": 28.75,
-      "current_price": 28.75,
-      "pnl_pct": 0,
+      "current_price": 28.1,
+      "pnl_pct": -2.26,
       "rev_grade": "D",
       "quant_scores": {
         "trend_score": 0.3,
         "chip_score": 8.5,
         "rev_score": 0
       },
-      "pinned": true
+      "pinned": true,
+      "priority_level": "B",
+      "priority_reason": [
+        "籌碼分數>=6"
+      ]
     },
     {
       "ticker": "3231",
@@ -511,17 +324,293 @@
       "industry": "電腦",
       "trigger_date": "2026-05-22",
       "expire_date": "2026-06-05",
-      "days_remaining": 11,
+      "days_remaining": 9,
       "entry_price": 144.5,
-      "current_price": 144.5,
-      "pnl_pct": 0,
+      "current_price": 146.0,
+      "pnl_pct": 1.04,
       "rev_grade": "B",
       "quant_scores": {
         "trend_score": 10,
         "chip_score": 10,
         "rev_score": 6
       },
-      "pinned": false
+      "pinned": false,
+      "priority_level": "B",
+      "priority_reason": [
+        "籌碼分數>=6",
+        "趨勢分數>=4"
+      ]
+    },
+    {
+      "ticker": "3372",
+      "name": "典範",
+      "industry": "櫃半導",
+      "trigger_date": "2026-05-25",
+      "expire_date": "2026-06-08",
+      "days_remaining": 10,
+      "entry_price": 21.95,
+      "current_price": 22.05,
+      "pnl_pct": 0.46,
+      "rev_grade": "A",
+      "quant_scores": {
+        "trend_score": 1.0,
+        "chip_score": 9.5,
+        "rev_score": 8.0
+      },
+      "pinned": false,
+      "priority_level": "A",
+      "priority_reason": [
+        "營收分數>=8",
+        "籌碼分數>=6"
+      ]
+    },
+    {
+      "ticker": "1709",
+      "name": "和益",
+      "industry": "化學",
+      "trigger_date": "2026-05-25",
+      "expire_date": "2026-06-08",
+      "days_remaining": 10,
+      "entry_price": 19.15,
+      "current_price": 19.25,
+      "pnl_pct": 0.52,
+      "rev_grade": "B",
+      "quant_scores": {
+        "trend_score": 0.3,
+        "chip_score": 10.0,
+        "rev_score": 6.0
+      },
+      "pinned": false,
+      "priority_level": "B",
+      "priority_reason": [
+        "籌碼分數>=6"
+      ]
+    },
+    {
+      "ticker": "3376",
+      "name": "新日興",
+      "industry": "電零",
+      "trigger_date": "2026-05-25",
+      "expire_date": "2026-06-08",
+      "days_remaining": 10,
+      "entry_price": 220.5,
+      "current_price": 219.0,
+      "pnl_pct": -0.68,
+      "rev_grade": "C",
+      "quant_scores": {
+        "trend_score": 0.0,
+        "chip_score": 7.3,
+        "rev_score": 4.0
+      },
+      "pinned": false,
+      "priority_level": "B",
+      "priority_reason": [
+        "籌碼分數>=6"
+      ]
+    },
+    {
+      "ticker": "2421",
+      "name": "建準",
+      "industry": "電零",
+      "trigger_date": "2026-05-25",
+      "expire_date": "2026-06-08",
+      "days_remaining": 10,
+      "entry_price": 162.5,
+      "current_price": 165.0,
+      "pnl_pct": 1.54,
+      "rev_grade": "B",
+      "quant_scores": {
+        "trend_score": 0.0,
+        "chip_score": 9.2,
+        "rev_score": 6.0
+      },
+      "pinned": false,
+      "priority_level": "B",
+      "priority_reason": [
+        "籌碼分數>=6"
+      ]
+    },
+    {
+      "ticker": "2618",
+      "name": "長榮航",
+      "industry": "航運",
+      "trigger_date": "2026-05-25",
+      "expire_date": "2026-06-08",
+      "days_remaining": 10,
+      "entry_price": 35.45,
+      "current_price": 35.2,
+      "pnl_pct": -0.71,
+      "rev_grade": "S",
+      "quant_scores": {
+        "trend_score": 1.5,
+        "chip_score": 7.2,
+        "rev_score": 10.0
+      },
+      "pinned": false,
+      "priority_level": "A",
+      "priority_reason": [
+        "營收分數>=8",
+        "籌碼分數>=6"
+      ]
+    },
+    {
+      "ticker": "2332",
+      "name": "友訊",
+      "industry": "通信",
+      "trigger_date": "2026-05-25",
+      "expire_date": "2026-06-08",
+      "days_remaining": 10,
+      "entry_price": 15.7,
+      "current_price": 15.5,
+      "pnl_pct": -1.27,
+      "rev_grade": "B",
+      "quant_scores": {
+        "trend_score": 5.3,
+        "chip_score": 5.3,
+        "rev_score": 6.0
+      },
+      "pinned": false,
+      "priority_level": "B",
+      "priority_reason": [
+        "趨勢分數>=4"
+      ]
+    },
+    {
+      "ticker": "2461",
+      "name": "光群雷",
+      "industry": "他電",
+      "trigger_date": "2026-05-25",
+      "expire_date": "2026-06-08",
+      "days_remaining": 10,
+      "entry_price": 16.65,
+      "current_price": 16.1,
+      "pnl_pct": -3.3,
+      "rev_grade": "S",
+      "quant_scores": {
+        "trend_score": 3.7,
+        "chip_score": 5.4,
+        "rev_score": 10.0
+      },
+      "pinned": false,
+      "priority_level": "B",
+      "priority_reason": [
+        "營收分數>=8"
+      ]
+    },
+    {
+      "ticker": "1409",
+      "name": "新纖",
+      "industry": "紡織",
+      "trigger_date": "2026-05-25",
+      "expire_date": "2026-06-08",
+      "days_remaining": 10,
+      "entry_price": 17.6,
+      "current_price": 17.65,
+      "pnl_pct": 0.28,
+      "rev_grade": "S",
+      "quant_scores": {
+        "trend_score": 0.7,
+        "chip_score": 10.0,
+        "rev_score": 10.0
+      },
+      "pinned": false,
+      "priority_level": "A",
+      "priority_reason": [
+        "營收分數>=8",
+        "籌碼分數>=6"
+      ]
+    },
+    {
+      "ticker": "4306",
+      "name": "炎洲",
+      "industry": "塑膠",
+      "trigger_date": "2026-05-25",
+      "expire_date": "2026-06-08",
+      "days_remaining": 10,
+      "entry_price": 14.05,
+      "current_price": 13.65,
+      "pnl_pct": -2.85,
+      "rev_grade": "S",
+      "quant_scores": {
+        "trend_score": 4.3,
+        "chip_score": 10.0,
+        "rev_score": 10.0
+      },
+      "pinned": false,
+      "priority_level": "A",
+      "priority_reason": [
+        "營收分數>=8",
+        "籌碼分數>=6",
+        "趨勢分數>=4"
+      ]
+    },
+    {
+      "ticker": "6491",
+      "name": "晶碩",
+      "industry": "生技",
+      "trigger_date": "2026-05-26",
+      "expire_date": "2026-06-09",
+      "days_remaining": 11,
+      "entry_price": 325.0,
+      "current_price": 325.0,
+      "pnl_pct": 0.0,
+      "rev_grade": "S",
+      "quant_scores": {
+        "trend_score": 0.0,
+        "chip_score": 10.0,
+        "rev_score": 10.0
+      },
+      "pinned": false,
+      "priority_level": "A",
+      "priority_reason": [
+        "營收分數>=8",
+        "籌碼分數>=6"
+      ]
+    },
+    {
+      "ticker": "2606",
+      "name": "裕民",
+      "industry": "航運",
+      "trigger_date": "2026-05-26",
+      "expire_date": "2026-06-09",
+      "days_remaining": 11,
+      "entry_price": 70.0,
+      "current_price": 70.0,
+      "pnl_pct": 0.0,
+      "rev_grade": "S",
+      "quant_scores": {
+        "trend_score": 4.8,
+        "chip_score": 5.1,
+        "rev_score": 10.0
+      },
+      "pinned": false,
+      "priority_level": "B",
+      "priority_reason": [
+        "營收分數>=8",
+        "趨勢分數>=4"
+      ]
+    },
+    {
+      "ticker": "1215",
+      "name": "卜蜂",
+      "industry": "食品",
+      "trigger_date": "2026-05-26",
+      "expire_date": "2026-06-09",
+      "days_remaining": 11,
+      "entry_price": 142.5,
+      "current_price": 142.5,
+      "pnl_pct": 0.0,
+      "rev_grade": "D",
+      "quant_scores": {
+        "trend_score": 2.2,
+        "chip_score": 10.0,
+        "rev_score": 0.0
+      },
+      "pinned": false,
+      "priority_level": "B",
+      "priority_reason": [
+        "籌碼分數>=6"
+      ]
     }
   ],
   "expired": [
@@ -530,8 +619,8 @@
       "name": "茂矽",
       "entry_date": "2026-04-19",
       "entry_price": 30.5,
-      "current_price": 41.4,
-      "pnl_pct": 35.74,
+      "current_price": 43.35,
+      "pnl_pct": 42.13,
       "composite_score": 29,
       "recommendation": "avoid",
       "repeat": false,
@@ -544,8 +633,8 @@
       "name": "川湖",
       "entry_date": "2026-04-19",
       "entry_price": 3640,
-      "current_price": 5090,
-      "pnl_pct": 39.84,
+      "current_price": 5035.0,
+      "pnl_pct": 38.32,
       "composite_score": 71,
       "recommendation": "buy",
       "repeat": false,
@@ -558,8 +647,8 @@
       "name": "嘉晶",
       "entry_date": "2026-04-19",
       "entry_price": 63.1,
-      "current_price": 121,
-      "pnl_pct": 91.76,
+      "current_price": 126.0,
+      "pnl_pct": 99.68,
       "composite_score": 68,
       "recommendation": "watch",
       "repeat": false,
@@ -572,8 +661,8 @@
       "name": "宇隆",
       "entry_date": "2026-04-20",
       "entry_price": 244.5,
-      "current_price": 347,
-      "pnl_pct": 41.92,
+      "current_price": 377.0,
+      "pnl_pct": 54.19,
       "composite_score": 47,
       "recommendation": "avoid",
       "repeat": false,
@@ -586,8 +675,8 @@
       "name": "緯創",
       "entry_date": "2026-04-20",
       "entry_price": 140.5,
-      "current_price": 144.5,
-      "pnl_pct": 2.85,
+      "current_price": 146.0,
+      "pnl_pct": 3.91,
       "composite_score": 80,
       "recommendation": "buy",
       "repeat": false,
@@ -603,8 +692,8 @@
       "expire_date": "2026-05-07",
       "days_remaining": 0,
       "entry_price": 126,
-      "current_price": 131.5,
-      "pnl_pct": 4.37,
+      "current_price": 133.0,
+      "pnl_pct": 5.56,
       "repeat": false,
       "repeat_count": 1,
       "ai_analysis_date": "2026-04-23",
@@ -637,8 +726,8 @@
       "expire_date": "2026-05-11",
       "days_remaining": 0,
       "entry_price": 295,
-      "current_price": 366.5,
-      "pnl_pct": 24.24,
+      "current_price": 377.0,
+      "pnl_pct": 27.8,
       "repeat": false,
       "repeat_count": 1,
       "ai_analysis_date": "2026-04-27",
@@ -671,8 +760,8 @@
       "expire_date": "2026-05-11",
       "days_remaining": 0,
       "entry_price": 14,
-      "current_price": 15.65,
-      "pnl_pct": 11.79,
+      "current_price": 16.35,
+      "pnl_pct": 16.79,
       "repeat": false,
       "repeat_count": 1,
       "ai_analysis_date": "2026-04-27",
@@ -698,40 +787,6 @@
       "remove_date": "2026-05-19"
     },
     {
-      "ticker": "1760",
-      "name": "寶齡富錦",
-      "industry": "生技",
-      "trigger_date": "2026-05-02",
-      "expire_date": "2026-05-15",
-      "days_remaining": 0,
-      "entry_price": 68.2,
-      "current_price": 61.8,
-      "pnl_pct": -9.38,
-      "repeat": false,
-      "repeat_count": 1,
-      "ai_analysis_date": "2026-05-02",
-      "composite_score": 63,
-      "recommendation": "watch",
-      "base_score": 63.3,
-      "multiplier": 1,
-      "action_log": "基礎計分",
-      "rev_grade": "B",
-      "quant_scores": {
-        "trend_score": 7.3,
-        "chip_score": 2.4,
-        "rev_score": 6
-      },
-      "ai_scores": {
-        "ai_news_score": 8,
-        "ai_industry_score": 8
-      },
-      "summary": "腎病新藥獲中國核准上市，打開118萬透析患者市場，營收YoY成長17.1%顯示動能",
-      "risk": "月營收MoM下滑35.6%，新藥上市初期銷售轉化風險，中國政策變動風險",
-      "entry_date": "2026-05-02",
-      "remove_date": "2026-05-25",
-      "pinned": false
-    },
-    {
       "ticker": "8926",
       "name": "台汽電",
       "industry": "油電",
@@ -739,8 +794,8 @@
       "expire_date": "2026-05-18",
       "days_remaining": 0,
       "entry_price": 45.9,
-      "current_price": 60.9,
-      "pnl_pct": 32.68,
+      "current_price": 68.7,
+      "pnl_pct": 49.67,
       "repeat": false,
       "repeat_count": 1,
       "ai_analysis_date": "2026-05-04",
@@ -773,8 +828,8 @@
       "expire_date": "2026-05-18",
       "days_remaining": 0,
       "entry_price": 66.8,
-      "current_price": 64.7,
-      "pnl_pct": -3.14,
+      "current_price": 66.6,
+      "pnl_pct": -0.3,
       "repeat": false,
       "repeat_count": 1,
       "ai_analysis_date": "2026-05-04",
@@ -807,8 +862,8 @@
       "expire_date": "2026-05-18",
       "days_remaining": 0,
       "entry_price": 50.5,
-      "current_price": 52.8,
-      "pnl_pct": 4.55,
+      "current_price": 58.3,
+      "pnl_pct": 15.45,
       "repeat": false,
       "repeat_count": 1,
       "ai_analysis_date": "2026-05-04",
@@ -841,8 +896,8 @@
       "expire_date": "2026-05-19",
       "days_remaining": 0,
       "entry_price": 34,
-      "current_price": 35.8,
-      "pnl_pct": 5.29,
+      "current_price": 34.9,
+      "pnl_pct": 2.65,
       "repeat": false,
       "repeat_count": 1,
       "ai_analysis_date": "2026-05-05",
@@ -875,8 +930,8 @@
       "expire_date": "2026-05-19",
       "days_remaining": 0,
       "entry_price": 84.1,
-      "current_price": 87.8,
-      "pnl_pct": 4.4,
+      "current_price": 87.4,
+      "pnl_pct": 3.92,
       "rev_grade": "S",
       "quant_scores": {
         "trend_score": 7.8,
@@ -895,8 +950,8 @@
       "expire_date": "2026-05-19",
       "days_remaining": 0,
       "entry_price": 142.5,
-      "current_price": 155.5,
-      "pnl_pct": 9.12,
+      "current_price": 156.0,
+      "pnl_pct": 9.47,
       "rev_grade": "S",
       "quant_scores": {
         "trend_score": 0,
@@ -915,8 +970,8 @@
       "expire_date": "2026-05-20",
       "days_remaining": 0,
       "entry_price": 25.85,
-      "current_price": 28.75,
-      "pnl_pct": 11.22,
+      "current_price": 28.1,
+      "pnl_pct": 8.7,
       "rev_grade": "S",
       "quant_scores": {
         "trend_score": 1,
@@ -935,8 +990,8 @@
       "expire_date": "2026-05-20",
       "days_remaining": 0,
       "entry_price": 31.3,
-      "current_price": 34.8,
-      "pnl_pct": 11.18,
+      "current_price": 35.15,
+      "pnl_pct": 12.3,
       "rev_grade": "D",
       "quant_scores": {
         "trend_score": 0.2,
@@ -955,8 +1010,8 @@
       "expire_date": "2026-05-20",
       "days_remaining": 0,
       "entry_price": 441.5,
-      "current_price": 485.5,
-      "pnl_pct": 9.97,
+      "current_price": 491.5,
+      "pnl_pct": 11.33,
       "rev_grade": "C",
       "quant_scores": {
         "trend_score": 4.4,
@@ -975,8 +1030,8 @@
       "expire_date": "2026-05-20",
       "days_remaining": 0,
       "entry_price": 25.05,
-      "current_price": 24.1,
-      "pnl_pct": -3.79,
+      "current_price": 23.95,
+      "pnl_pct": -4.39,
       "rev_grade": "C",
       "quant_scores": {
         "trend_score": 0.5,
@@ -995,8 +1050,8 @@
       "expire_date": "2026-05-20",
       "days_remaining": 0,
       "entry_price": 7.12,
-      "current_price": 6.98,
-      "pnl_pct": -1.97,
+      "current_price": 6.95,
+      "pnl_pct": -2.39,
       "rev_grade": "C",
       "quant_scores": {
         "trend_score": 3.2,
@@ -1015,8 +1070,8 @@
       "expire_date": "2026-05-20",
       "days_remaining": 0,
       "entry_price": 125,
-      "current_price": 123.5,
-      "pnl_pct": -1.2,
+      "current_price": 121.0,
+      "pnl_pct": -3.2,
       "rev_grade": "S",
       "quant_scores": {
         "trend_score": 0,
@@ -1035,8 +1090,8 @@
       "expire_date": "2026-05-20",
       "days_remaining": 0,
       "entry_price": 35.1,
-      "current_price": 35.6,
-      "pnl_pct": 1.42,
+      "current_price": 35.8,
+      "pnl_pct": 1.99,
       "rev_grade": "C",
       "quant_scores": {
         "trend_score": 1.8,
@@ -1055,8 +1110,8 @@
       "expire_date": "2026-05-21",
       "days_remaining": 0,
       "entry_price": 54.2,
-      "current_price": 54.8,
-      "pnl_pct": 1.11,
+      "current_price": 54.5,
+      "pnl_pct": 0.55,
       "rev_grade": "C",
       "quant_scores": {
         "trend_score": 0.7,
@@ -1075,8 +1130,8 @@
       "expire_date": "2026-05-21",
       "days_remaining": 0,
       "entry_price": 114,
-      "current_price": 125,
-      "pnl_pct": 9.65,
+      "current_price": 141.0,
+      "pnl_pct": 23.68,
       "rev_grade": "S",
       "quant_scores": {
         "trend_score": 1.3,
@@ -1095,8 +1150,8 @@
       "expire_date": "2026-05-21",
       "days_remaining": 0,
       "entry_price": 7.81,
-      "current_price": 7.63,
-      "pnl_pct": -2.3,
+      "current_price": 7.58,
+      "pnl_pct": -2.94,
       "rev_grade": "D",
       "quant_scores": {
         "trend_score": 2.3,
@@ -1115,8 +1170,8 @@
       "expire_date": "2026-05-21",
       "days_remaining": 0,
       "entry_price": 16.4,
-      "current_price": 17.1,
-      "pnl_pct": 4.27,
+      "current_price": 17.95,
+      "pnl_pct": 9.45,
       "rev_grade": "S",
       "quant_scores": {
         "trend_score": 4.2,
@@ -1126,6 +1181,351 @@
       "pinned": false,
       "entry_date": "2026-05-07",
       "remove_date": "2026-05-29"
+    },
+    {
+      "ticker": "6121",
+      "name": "新普",
+      "industry": "櫃電腦",
+      "trigger_date": "2026-05-08",
+      "expire_date": "2026-05-22",
+      "days_remaining": 0,
+      "entry_price": 390,
+      "current_price": 394.5,
+      "pnl_pct": 1.15,
+      "rev_grade": "A",
+      "quant_scores": {
+        "trend_score": 2.8,
+        "chip_score": 10,
+        "rev_score": 8
+      },
+      "pinned": false,
+      "priority_level": "A",
+      "priority_reason": [
+        "營收分數>=8",
+        "籌碼分數>=6"
+      ],
+      "entry_date": "2026-05-08",
+      "remove_date": "2026-06-01"
+    },
+    {
+      "ticker": "4961",
+      "name": "天鈺",
+      "industry": "半導",
+      "trigger_date": "2026-05-08",
+      "expire_date": "2026-05-22",
+      "days_remaining": 0,
+      "entry_price": 170,
+      "current_price": 174.5,
+      "pnl_pct": 2.65,
+      "rev_grade": "D",
+      "quant_scores": {
+        "trend_score": 6.4,
+        "chip_score": 1.6,
+        "rev_score": 0
+      },
+      "pinned": false,
+      "priority_level": "C",
+      "priority_reason": [
+        "趨勢分數>=4"
+      ],
+      "entry_date": "2026-05-08",
+      "remove_date": "2026-06-01"
+    },
+    {
+      "ticker": "8390",
+      "name": "金益鼎",
+      "industry": "綠能",
+      "trigger_date": "2026-05-11",
+      "expire_date": "2026-05-25",
+      "days_remaining": 0,
+      "entry_price": 103.5,
+      "current_price": 120.5,
+      "pnl_pct": 16.43,
+      "rev_grade": "A",
+      "quant_scores": {
+        "trend_score": 0.2,
+        "chip_score": 6.1,
+        "rev_score": 8
+      },
+      "pinned": false,
+      "priority_level": "A",
+      "priority_reason": [
+        "營收分數>=8",
+        "籌碼分數>=6"
+      ],
+      "entry_date": "2026-05-11",
+      "remove_date": "2026-06-02"
+    },
+    {
+      "ticker": "2425",
+      "name": "承啟",
+      "industry": "電腦",
+      "trigger_date": "2026-05-11",
+      "expire_date": "2026-05-25",
+      "days_remaining": 0,
+      "entry_price": 32.9,
+      "current_price": 34.9,
+      "pnl_pct": 6.08,
+      "rev_grade": "S",
+      "quant_scores": {
+        "trend_score": 1.7,
+        "chip_score": 5.5,
+        "rev_score": 10
+      },
+      "pinned": false,
+      "priority_level": "B",
+      "priority_reason": [
+        "營收分數>=8"
+      ],
+      "entry_date": "2026-05-11",
+      "remove_date": "2026-06-02"
+    },
+    {
+      "ticker": "4729",
+      "name": "熒茂",
+      "industry": "櫃光電",
+      "trigger_date": "2026-05-11",
+      "expire_date": "2026-05-25",
+      "days_remaining": 0,
+      "entry_price": 21,
+      "current_price": 23.95,
+      "pnl_pct": 14.05,
+      "rev_grade": "S",
+      "quant_scores": {
+        "trend_score": 0,
+        "chip_score": 10,
+        "rev_score": 10
+      },
+      "pinned": false,
+      "priority_level": "A",
+      "priority_reason": [
+        "營收分數>=8",
+        "籌碼分數>=6"
+      ],
+      "entry_date": "2026-05-11",
+      "remove_date": "2026-06-02"
+    },
+    {
+      "ticker": "6446",
+      "name": "藥華藥",
+      "industry": "生技",
+      "trigger_date": "2026-05-11",
+      "expire_date": "2026-05-25",
+      "days_remaining": 0,
+      "entry_price": 706,
+      "current_price": 878.0,
+      "pnl_pct": 24.36,
+      "rev_grade": "S",
+      "quant_scores": {
+        "trend_score": 0,
+        "chip_score": 7.6,
+        "rev_score": 10
+      },
+      "pinned": false,
+      "priority_level": "A",
+      "priority_reason": [
+        "營收分數>=8",
+        "籌碼分數>=6"
+      ],
+      "entry_date": "2026-05-11",
+      "remove_date": "2026-06-02"
+    },
+    {
+      "ticker": "2353",
+      "name": "宏卅卅",
+      "industry": "電腦",
+      "trigger_date": "2026-05-11",
+      "expire_date": "2026-05-25",
+      "days_remaining": 0,
+      "entry_price": 28.8,
+      "current_price": 31.9,
+      "pnl_pct": 10.76,
+      "rev_grade": "S",
+      "quant_scores": {
+        "trend_score": 4.3,
+        "chip_score": 3.6,
+        "rev_score": 10
+      },
+      "pinned": false,
+      "priority_level": "B",
+      "priority_reason": [
+        "營收分數>=8",
+        "趨勢分數>=4"
+      ],
+      "entry_date": "2026-05-11",
+      "remove_date": "2026-06-02"
+    },
+    {
+      "ticker": "2881",
+      "name": "富邦金",
+      "industry": "金融",
+      "trigger_date": "2026-05-11",
+      "expire_date": "2026-05-25",
+      "days_remaining": 0,
+      "entry_price": 96.7,
+      "current_price": 103.5,
+      "pnl_pct": 7.03,
+      "rev_grade": "D",
+      "quant_scores": {
+        "trend_score": 1,
+        "chip_score": 0,
+        "rev_score": 0
+      },
+      "pinned": false,
+      "priority_level": "C",
+      "priority_reason": [
+        "品質條件待觀察"
+      ],
+      "entry_date": "2026-05-11",
+      "remove_date": "2026-06-02"
+    },
+    {
+      "ticker": "2302",
+      "name": "麗正",
+      "industry": "半導",
+      "trigger_date": "2026-05-11",
+      "expire_date": "2026-05-25",
+      "days_remaining": 0,
+      "entry_price": 20.15,
+      "current_price": 33.95,
+      "pnl_pct": 68.49,
+      "rev_grade": "S",
+      "quant_scores": {
+        "trend_score": 0.1,
+        "chip_score": 10,
+        "rev_score": 10
+      },
+      "pinned": true,
+      "priority_level": "A",
+      "priority_reason": [
+        "營收分數>=8",
+        "籌碼分數>=6"
+      ],
+      "entry_date": "2026-05-11",
+      "remove_date": "2026-06-02"
+    },
+    {
+      "ticker": "2897",
+      "name": "王道銀行",
+      "industry": "金融",
+      "trigger_date": "2026-05-11",
+      "expire_date": "2026-05-25",
+      "days_remaining": 0,
+      "entry_price": 10.25,
+      "current_price": 9.98,
+      "pnl_pct": -2.63,
+      "rev_grade": "S",
+      "quant_scores": {
+        "trend_score": 0.5,
+        "chip_score": 0,
+        "rev_score": 10
+      },
+      "pinned": false,
+      "priority_level": "B",
+      "priority_reason": [
+        "營收分數>=8"
+      ],
+      "entry_date": "2026-05-11",
+      "remove_date": "2026-06-02"
+    },
+    {
+      "ticker": "2362",
+      "name": "藍天",
+      "industry": "電腦",
+      "trigger_date": "2026-05-11",
+      "expire_date": "2026-05-25",
+      "days_remaining": 0,
+      "entry_price": 39.95,
+      "current_price": 41.7,
+      "pnl_pct": 4.38,
+      "rev_grade": "S",
+      "quant_scores": {
+        "trend_score": 0.3,
+        "chip_score": 2.3,
+        "rev_score": 10
+      },
+      "pinned": false,
+      "priority_level": "B",
+      "priority_reason": [
+        "營收分數>=8"
+      ],
+      "entry_date": "2026-05-11",
+      "remove_date": "2026-06-02"
+    },
+    {
+      "ticker": "1723",
+      "name": "中碳",
+      "industry": "化學",
+      "trigger_date": "2026-05-11",
+      "expire_date": "2026-05-25",
+      "days_remaining": 0,
+      "entry_price": 80.8,
+      "current_price": 82.0,
+      "pnl_pct": 1.49,
+      "rev_grade": "S",
+      "quant_scores": {
+        "trend_score": 0,
+        "chip_score": 10,
+        "rev_score": 10
+      },
+      "pinned": false,
+      "priority_level": "A",
+      "priority_reason": [
+        "營收分數>=8",
+        "籌碼分數>=6"
+      ],
+      "entry_date": "2026-05-11",
+      "remove_date": "2026-06-02"
+    },
+    {
+      "ticker": "5607",
+      "name": "遠雄港",
+      "industry": "航運",
+      "trigger_date": "2026-05-11",
+      "expire_date": "2026-05-25",
+      "days_remaining": 0,
+      "entry_price": 50.6,
+      "current_price": 50.3,
+      "pnl_pct": -0.59,
+      "rev_grade": "A",
+      "quant_scores": {
+        "trend_score": 0,
+        "chip_score": 8.1,
+        "rev_score": 8
+      },
+      "pinned": false,
+      "priority_level": "A",
+      "priority_reason": [
+        "營收分數>=8",
+        "籌碼分數>=6"
+      ],
+      "entry_date": "2026-05-11",
+      "remove_date": "2026-06-02"
+    },
+    {
+      "ticker": "3708",
+      "name": "上緯投控",
+      "industry": "綠能",
+      "trigger_date": "2026-05-11",
+      "expire_date": "2026-05-25",
+      "days_remaining": 0,
+      "entry_price": 121.5,
+      "current_price": 131.5,
+      "pnl_pct": 8.23,
+      "rev_grade": "C",
+      "quant_scores": {
+        "trend_score": 9,
+        "chip_score": 8.9,
+        "rev_score": 4
+      },
+      "pinned": false,
+      "priority_level": "B",
+      "priority_reason": [
+        "籌碼分數>=6",
+        "趨勢分數>=4"
+      ],
+      "entry_date": "2026-05-11",
+      "remove_date": "2026-06-02"
     }
   ]
 }

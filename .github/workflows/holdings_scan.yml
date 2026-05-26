@@ -96,6 +96,9 @@ jobs:
       - name: Refresh volume pullback model
         run: python scripts/scan_volume_pullback.py
 
+      - name: Refresh momentum pullback model
+        run: python scripts/scan_momentum_pullback.py
+
       - name: Refresh frontend current prices
         env:
           FINMIND_TOKEN: ${{ secrets.FINMIND_API_TOKEN }}
@@ -111,7 +114,7 @@ jobs:
         run: |
           git config user.name  "github-actions[bot]"
           git config user.email "github-actions[bot]@users.noreply.github.com"
-          git add data/volume_signal.json data/volume_pullback.json data/momentum_candidates.json data/performance.json data/chips_big_holder.json data/current_prices.json assets/line/performance-latest.png
+          git add data/volume_signal.json data/volume_pullback.json data/momentum_pullback.json data/momentum_candidates.json data/performance.json data/chips_big_holder.json data/current_prices.json assets/line/performance-latest.png
 
           if ! git diff --staged --quiet; then
             git commit -m "data: post-holdings scan refresh $(date -u +%Y-%m-%d)"

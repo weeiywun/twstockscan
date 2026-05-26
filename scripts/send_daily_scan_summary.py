@@ -1,22 +1,28 @@
 #!/usr/bin/env python3
 """
-每日選股掃描完成通知
-- 讀取 volume_signal.json / right_top.json / trust_momentum.json
-- 統計今日入選標的數量
-- 以 LINE Flex Message 推播摘要
+每日選股掃描完成通知。
+
+維持既有 LINE Flex Message 卡片骨架：
+- Header：日期與摘要
+- Hero：績效追蹤折線圖
+- Body：目前持倉摘要 + 精選觀察 Top 5
+- Footer：回到前端績效頁
 """
+
+from __future__ import annotations
 
 import json
 import os
 import urllib.error
 import urllib.request
 from datetime import datetime, timedelta, timezone
+from typing import Any
 
 SCRIPT_DIR = os.path.dirname(os.path.abspath(__file__))
 DATA_DIR = os.path.join(SCRIPT_DIR, "..", "data")
-VOLUME_PATH = os.path.join(DATA_DIR, "volume_signal.json")
-RIGHT_TOP_PATH = os.path.join(DATA_DIR, "right_top.json")
-TRUST_PATH = os.path.join(DATA_DIR, "trust_momentum.json")
+PERFORMANCE_PATH = os.path.join(DATA_DIR, "performance.json")
+CURRENT_PRICES_PATH = os.path.join(DATA_DIR, "current_prices.json")
+MOMENTUM_CANDIDATES_PATH = os.path.join(DATA_DIR, "momentum_candidates.json")
 
 TW_TZ = timezone(timedelta(hours=8))
 TODAY = datetime.now(TW_TZ).strftime("%Y-%m-%d")
@@ -27,7 +33,12 @@ FLEX_PRIMARY = "#0c6b3e"
 FLEX_ACCENT = "#f0883e"
 FLEX_MUTED = "#888888"
 FLEX_BG = "#f7f8fa"
-MAX_PREVIEW = 5
+FLEX_TEXT = "#333333"
+FLEX_LIGHT = "#aaaaaa"
+FLEX_GAIN = "#d93025"
+FLEX_LOSS = "#0c6b3e"
+MAX_HOLDINGS = 4
+MAX_FOCUS = 5
 
 
 def performance_image_url() -> str:
@@ -36,47 +47,119 @@ def performance_image_url() -> str:
     return f"{base_url}{sep}v={TODAY.replace('-', '')}"
 
 
-def load_results(path: str) -> list[dict]:
-    return load_section(path, "results")
-
-
-def load_section(path: str, key: str) -> list[dict]:
+def load_json(path: str) -> dict[str, Any]:
     if not os.path.exists(path):
         print(f"[summary] 找不到 {path}")
-        return []
+        return {}
     with open(path, encoding="utf-8") as f:
-        data = json.load(f)
-    return data.get(key, [])
+        return json.load(f)
 
 
-def today_unique_results(results: list[dict]) -> list[dict]:
-    seen = set()
-    unique = []
-    for item in results:
-        if item.get("signal_date") != TODAY:
+def num(value: Any, default: float | None = None) -> float | None:
+    try:
+        if value is None:
+            return default
+        return float(value)
+    except (TypeError, ValueError):
+        return default
+
+
+def fmt_price(value: Any) -> str:
+    n = num(value)
+    return "--" if n is None else f"{n:.1f}"
+
+
+def fmt_pct(value: Any) -> str:
+    n = num(value)
+    return "--" if n is None else f"{n:+.1f}%"
+
+
+def fmt_money(value: Any) -> str:
+    n = num(value)
+    if n is None:
+        return "--"
+    rounded = int(round(n))
+    return f"{rounded:+,}"
+
+
+def flex_text(text: str, size: str = "xs", color: str = FLEX_MUTED, **extra: Any) -> dict:
+    return {"type": "text", "text": text, "size": size, "color": color, **extra}
+
+
+def remaining_shares(position: dict[str, Any]) -> int:
+    shares = int(num(position.get("shares"), 0) or 0)
+    exits = position.get("exits") or []
+    sold = sum(int(num(exit_row.get("shares"), 0) or 0) for exit_row in exits)
+    if position.get("exit_price") is not None and not exits:
+        sold = shares
+    return max(0, shares - sold)
+
+
+def holding_comment(pnl_pct: float | None) -> str:
+    if pnl_pct is None:
+        return "等待現價"
+    if pnl_pct >= 10:
+        return "守移動停利"
+    if pnl_pct >= 5:
+        return "續抱觀察"
+    if pnl_pct >= 0:
+        return "接近成本"
+    if pnl_pct >= -3:
+        return "留意支撐"
+    return "檢查停損"
+
+
+def build_holdings() -> list[dict[str, Any]]:
+    perf = load_json(PERFORMANCE_PATH)
+    prices = load_json(CURRENT_PRICES_PATH).get("prices", {})
+    holdings: list[dict[str, Any]] = []
+    for pos in perf.get("positions", []):
+        remain = remaining_shares(pos)
+        if remain <= 0:
             continue
-        sid = item.get("stock_id")
-        if not sid or sid in seen:
-            continue
-        seen.add(sid)
-        unique.append(item)
-    return unique
+        sid = str(pos.get("stock_id") or "")
+        current = num(prices.get(sid), num(pos.get("current_price"), num(pos.get("entry_price"))))
+        cost = num(pos.get("cost_price"), num(pos.get("entry_price")))
+        pnl_pct = ((current - cost) / cost * 100) if current is not None and cost else None
+        pnl_amount = (current - cost) * remain if current is not None and cost is not None else None
+        holdings.append({
+            "stock_id": sid,
+            "name": pos.get("name") or "",
+            "shares": remain,
+            "cost": cost,
+            "current": current,
+            "pnl_amount": pnl_amount,
+            "pnl_pct": pnl_pct,
+            "comment": holding_comment(pnl_pct),
+        })
+    holdings.sort(key=lambda row: row["pnl_pct"] if row["pnl_pct"] is not None else -999, reverse=True)
+    return holdings
 
 
-def stock_preview(items: list[dict], metric_key: str, metric_suffix: str) -> str:
-    if not items:
-        return "今日無入選標的"
-    parts = []
-    for item in items[:MAX_PREVIEW]:
-        metric = item.get(metric_key)
-        metric_text = f" {metric:.2f}{metric_suffix}" if isinstance(metric, (int, float)) else ""
-        parts.append(f"{item.get('stock_id', '')} {item.get('name', '')}{metric_text}".strip())
-    if len(items) > MAX_PREVIEW:
-        parts.append(f"+{len(items) - MAX_PREVIEW}")
-    return "、".join(parts)
+def build_focus_items() -> list[dict[str, Any]]:
+    data = load_json(MOMENTUM_CANDIDATES_PATH)
+    rows = data.get("focus_results") or [
+        row for row in data.get("results", []) if row.get("focus_candidate")
+    ]
+    rows.sort(key=lambda row: (row.get("priority_rank", 9), -(num(row.get("score"), 0) or 0), row.get("stock_id", "")))
+    return rows[:MAX_FOCUS]
 
 
-def summary_row(label: str, count: int, color: str, preview: str) -> dict:
+def section_title(title: str, subtitle: str) -> dict:
+    return {
+        "type": "box",
+        "layout": "horizontal",
+        "contents": [
+            flex_text(title, "sm", FLEX_TEXT, weight="bold", flex=3),
+            flex_text(subtitle, "xs", FLEX_LIGHT, align="end", flex=2),
+        ],
+    }
+
+
+def holding_row(item: dict[str, Any]) -> dict:
+    pnl = num(item.get("pnl_pct"))
+    pnl_color = FLEX_GAIN if pnl is not None and pnl >= 0 else FLEX_LOSS
+    pnl_text = f"{fmt_money(item.get('pnl_amount'))} ({fmt_pct(pnl)})" if pnl is not None else "--"
     return {
         "type": "box",
         "layout": "vertical",
@@ -85,31 +168,110 @@ def summary_row(label: str, count: int, color: str, preview: str) -> dict:
             {
                 "type": "box",
                 "layout": "horizontal",
+                "spacing": "sm",
                 "contents": [
-                    {"type": "text", "text": label, "size": "sm", "color": "#333333", "weight": "bold", "flex": 4},
-                    {"type": "text", "text": f"{count} 支", "size": "lg", "color": color, "weight": "bold", "align": "end", "flex": 2},
+                    flex_text(
+                        f"{item['stock_id']} {item['name']}  現價 {fmt_price(item.get('current'))}",
+                        "sm",
+                        FLEX_TEXT,
+                        weight="bold",
+                        flex=5,
+                    ),
+                    flex_text(
+                        pnl_text,
+                        "sm",
+                        pnl_color,
+                        weight="bold",
+                        align="end",
+                        flex=4,
+                        wrap=True,
+                        maxLines=2,
+                        adjustMode="shrink-to-fit",
+                    ),
                 ],
             },
-            {"type": "text", "text": preview, "size": "xs", "color": FLEX_MUTED, "wrap": True},
+            {
+                "type": "box",
+                "layout": "horizontal",
+                "spacing": "sm",
+                "contents": [
+                    flex_text(f"{item['shares']:,}股 / 成本 {fmt_price(item.get('cost'))}", "xs", FLEX_MUTED, flex=5),
+                    flex_text(f"| {item['comment']}", "xs", FLEX_MUTED, align="end", flex=4),
+                ],
+            },
         ],
-        "paddingAll": "12px",
-        "backgroundColor": "#ffffff",
-        "cornerRadius": "6px",
+        "paddingAll": "5px",
     }
 
 
-def build_flex_message(
-    volume_items: list[dict],
-    right_top_items: list[dict],
-    trust_items: list[dict],
-    foreign_items: list[dict],
-    confluence_items: list[dict],
-) -> dict:
-    volume_preview = stock_preview(volume_items, "vol_ratio", "x")
-    right_top_preview = stock_preview(right_top_items, "vol_ratio", "x")
-    inst_preview = stock_preview(confluence_items or trust_items or foreign_items, "inst_net_5d", "張")
-    inst_count = len(trust_items) + len(foreign_items) + len(confluence_items)
-    total_count = len(volume_items) + len(right_top_items) + inst_count
+def focus_row(item: dict[str, Any]) -> dict:
+    metrics = item.get("metrics", {})
+    vol_ratio = metrics.get("today_vol_ratio") or metrics.get("ignition_vol_ratio") or metrics.get("track_vol_ratio")
+    track = metrics.get("track_pnl_pct")
+    status = item.get("status") or "觀察"
+    return {
+        "type": "box",
+        "layout": "horizontal",
+        "spacing": "sm",
+        "contents": [
+            {
+                "type": "box",
+                "layout": "vertical",
+                "flex": 3,
+                "contents": [
+                    flex_text(f"{item.get('stock_id', '')} {item.get('name', '')}", "sm", FLEX_TEXT, weight="bold"),
+                    flex_text(status, "xxs", FLEX_ACCENT),
+                ],
+            },
+            {
+                "type": "box",
+                "layout": "vertical",
+                "flex": 2,
+                "contents": [
+                    flex_text(fmt_price(item.get("close")), "sm", FLEX_TEXT, weight="bold", align="center"),
+                    flex_text("收盤", "xxs", FLEX_LIGHT, align="center"),
+                ],
+            },
+            {
+                "type": "box",
+                "layout": "vertical",
+                "flex": 2,
+                "contents": [
+                    flex_text(f"{num(vol_ratio, 0):.2f}x" if vol_ratio is not None else "--", "sm", FLEX_PRIMARY, weight="bold", align="center"),
+                    flex_text(f"追蹤 {fmt_pct(track)}", "xxs", FLEX_MUTED, align="center"),
+                ],
+            },
+        ],
+        "paddingAll": "4px",
+    }
+
+
+def empty_row(text: str) -> dict:
+    return flex_text(text, "xs", FLEX_MUTED, wrap=True, align="center")
+
+
+def card_section(contents: list[dict]) -> dict:
+    return {
+        "type": "box",
+        "layout": "vertical",
+        "spacing": "sm",
+        "paddingAll": "12px",
+        "backgroundColor": "#ffffff",
+        "cornerRadius": "6px",
+        "contents": contents,
+    }
+
+
+def build_flex_message(holdings: list[dict[str, Any]], focus_items: list[dict[str, Any]]) -> dict:
+    holdings_content = [section_title("目前持倉", f"{len(holdings)} 檔")]
+    holdings_content.extend([holding_row(item) for item in holdings[:MAX_HOLDINGS]])
+    if not holdings:
+        holdings_content.append(empty_row("目前沒有持倉資料"))
+
+    focus_content = [section_title("精選觀察 Top 5", f"{len(focus_items)} 檔")]
+    focus_content.extend([focus_row(item) for item in focus_items[:MAX_FOCUS]])
+    if not focus_items:
+        focus_content.append(empty_row("今日沒有符合精選觀察的標的"))
 
     bubble = {
         "type": "bubble",
@@ -120,20 +282,14 @@ def build_flex_message(
             "paddingAll": "20px",
             "backgroundColor": FLEX_BG,
             "contents": [
-                {"type": "text", "text": "每日選股掃描完成", "weight": "bold", "size": "lg", "color": FLEX_PRIMARY},
+                flex_text("每日選股掃描完成", "lg", FLEX_PRIMARY, weight="bold"),
                 {
                     "type": "box",
                     "layout": "horizontal",
                     "margin": "md",
                     "contents": [
-                        {"type": "text", "text": f"日期 {TODAY}", "size": "xs", "color": "#aaaaaa"},
-                        {
-                            "type": "text",
-                            "text": f"共 {total_count} 支",
-                            "size": "xs",
-                            "color": FLEX_ACCENT,
-                            "align": "end",
-                        },
+                        flex_text(f"日期 {TODAY}", "xs", FLEX_LIGHT),
+                        flex_text(f"精選 {len(focus_items)} 檔", "xs", FLEX_ACCENT, align="end"),
                     ],
                 },
             ],
@@ -152,14 +308,8 @@ def build_flex_message(
             "spacing": "md",
             "backgroundColor": FLEX_BG,
             "contents": [
-                summary_row("量增訊號", len(volume_items), FLEX_PRIMARY, volume_preview),
-                summary_row("右上角", len(right_top_items), FLEX_ACCENT, right_top_preview),
-                summary_row(
-                    "法人動能",
-                    inst_count,
-                    "#0f766e",
-                    f"投信 {len(trust_items)} / 外資 {len(foreign_items)} / 共振 {len(confluence_items)}｜{inst_preview}",
-                ),
+                card_section(holdings_content),
+                card_section(focus_content),
             ],
         },
         "footer": {
@@ -179,10 +329,7 @@ def build_flex_message(
     }
     return {
         "type": "flex",
-        "altText": (
-            f"每日選股掃描 {TODAY}：量增訊號 {len(volume_items)} 支 / "
-            f"右上角 {len(right_top_items)} 支 / 法人動能 {inst_count} 支"
-        ),
+        "altText": f"每日選股掃描 {TODAY}：精選觀察 {len(focus_items)} 檔",
         "contents": bubble,
     }
 
@@ -194,12 +341,12 @@ def send_line_message(message: dict) -> bool:
         print("[LINE] 未設定 LINE_CHANNEL_ACCESS_TOKEN 或 LINE_USER_IDS，略過成功通知")
         return True
 
-    user_ids = [u.strip() for u in raw_ids.split(",") if u.strip()]
+    user_ids = [user_id.strip() for user_id in raw_ids.split(",") if user_id.strip()]
     if not user_ids:
         print("[LINE] LINE_USER_IDS 為空，略過成功通知")
         return True
 
-    payload = json.dumps({"to": user_ids, "messages": [message]}).encode("utf-8")
+    payload = json.dumps({"to": user_ids, "messages": [message]}, ensure_ascii=False).encode("utf-8")
     req = urllib.request.Request(
         "https://api.line.me/v2/bot/message/multicast",
         data=payload,
@@ -224,17 +371,10 @@ def send_line_message(message: dict) -> bool:
 
 
 def main() -> int:
-    volume_items = today_unique_results(load_results(VOLUME_PATH))
-    right_top_items = today_unique_results(load_results(RIGHT_TOP_PATH))
-    trust_items = today_unique_results(load_section(TRUST_PATH, "trust_results"))
-    foreign_items = today_unique_results(load_section(TRUST_PATH, "foreign_results"))
-    confluence_items = today_unique_results(load_section(TRUST_PATH, "confluence_results"))
-    print(
-        f"[summary] 量增訊號 {len(volume_items)} 支 / 右上角 {len(right_top_items)} 支 / "
-        f"法人動能 投信 {len(trust_items)} 支 外資 {len(foreign_items)} 支 共振 {len(confluence_items)} 支"
-    )
-
-    message = build_flex_message(volume_items, right_top_items, trust_items, foreign_items, confluence_items)
+    holdings = build_holdings()
+    focus_items = build_focus_items()
+    print(f"[summary] 持倉 {len(holdings)} 檔 / 精選觀察 {len(focus_items)} 檔")
+    message = build_flex_message(holdings, focus_items)
     return 0 if send_line_message(message) else 1
 
 

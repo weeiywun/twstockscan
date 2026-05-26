@@ -39,6 +39,11 @@ HOT_INDUSTRY_KEYWORDS = (
 )
 MAX_EXTENDED_PCT = 15.0
 PRIORITY_RANK = {"A": 1, "B": 2, "C": 3}
+FOCUS_VOL_MIN = 1.2
+FOCUS_VOL_MAX = 5.0
+FOCUS_WEEK_CHG_MAX = 18.0
+FOCUS_BBW_MAX = 14.0
+FOCUS_TRACK_PNL_MAX = 14.0
 
 
 def load_json(path: str) -> dict[str, Any]:
@@ -146,6 +151,40 @@ def set_priority(row: dict[str, Any]) -> None:
     row["priority_level"] = level
     row["priority_rank"] = PRIORITY_RANK.get(level, 9)
     row["priority_reason"] = reasons
+
+
+def is_focus_candidate(row: dict[str, Any]) -> bool:
+    """精選觀察：用既有候選再收斂，避免每日決策清單過寬。"""
+    metrics = row.get("metrics", {})
+    sources = set(row.get("sources", []))
+    if row.get("priority_level") != "A":
+        return False
+    if not ("volume_pullback" in sources or metrics.get("pullback_status") == "reentry"):
+        return False
+    if not ("right_top_track" in sources or "chips" in sources):
+        return False
+
+    volume_ratio = (
+        round_or_none(metrics.get("today_vol_ratio"))
+        or round_or_none(metrics.get("ignition_vol_ratio"))
+        or round_or_none(metrics.get("track_vol_ratio"))
+    )
+    if volume_ratio is not None and not (FOCUS_VOL_MIN <= volume_ratio <= FOCUS_VOL_MAX):
+        return False
+
+    week_chg = round_or_none(metrics.get("week_chg_pct"))
+    if week_chg is not None and week_chg > FOCUS_WEEK_CHG_MAX:
+        return False
+
+    bbw = round_or_none(metrics.get("bbw"))
+    if bbw is not None and bbw > FOCUS_BBW_MAX:
+        return False
+
+    track_pnl = round_or_none(metrics.get("track_pnl_pct"))
+    if track_pnl is not None and track_pnl > FOCUS_TRACK_PNL_MAX:
+        return False
+
+    return True
 
 
 def scan() -> dict[str, Any]:
@@ -321,6 +360,12 @@ def scan() -> dict[str, Any]:
         candidates.append(row)
 
     candidates.sort(key=lambda r: (r.get("priority_rank", 9), -num(r["score"]), r.get("status_rank", 9), r["stock_id"]))
+    focus_results = []
+    for row in candidates:
+        row["focus_candidate"] = is_focus_candidate(row)
+        if row["focus_candidate"]:
+            focus_results.append(row)
+
     return {
         "strategy_id": "momentum_candidates",
         "updated": now_tw(),
@@ -335,6 +380,15 @@ def scan() -> dict[str, Any]:
             "disabled_sources": ["vcp", "trust_momentum"],
             "score_min": 35,
             "max_extended_pct": MAX_EXTENDED_PCT,
+            "focus_rules": {
+                "priority_level": "A",
+                "required_any": ["volume_pullback", "pullback_status=reentry"],
+                "required_context_any": ["right_top_track", "chips"],
+                "volume_ratio_range": [FOCUS_VOL_MIN, FOCUS_VOL_MAX],
+                "week_chg_pct_max": FOCUS_WEEK_CHG_MAX,
+                "bbw_max": FOCUS_BBW_MAX,
+                "track_pnl_pct_max": FOCUS_TRACK_PNL_MAX,
+            },
             "priority_rules": {
                 "A": [
                     "rev_score >= 8 and chip_score >= 6",
@@ -351,10 +405,12 @@ def scan() -> dict[str, Any]:
             "priority_a": sum(1 for r in candidates if r.get("priority_level") == "A"),
             "priority_b": sum(1 for r in candidates if r.get("priority_level") == "B"),
             "priority_c": sum(1 for r in candidates if r.get("priority_level") == "C"),
+            "focus": len(focus_results),
             "reentry": sum(1 for r in candidates if r.get("status") == "再啟動"),
             "ignition": sum(1 for r in candidates if r.get("status") == "點火首日"),
             "pullback": sum(1 for r in candidates if r.get("status") == "回穩觀察"),
         },
+        "focus_results": focus_results,
         "results": candidates,
     }
 
