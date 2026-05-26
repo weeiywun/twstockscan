@@ -64,7 +64,7 @@ scripts/
   update_institutional_tags.py← 三大法人標籤更新
   call_ai_ranking.py          ← AI 選股排名（Gemini）
   generate_line_performance_chart.py ← 產生 LINE 卡片用績效折線圖（覆蓋 latest）
-  send_daily_scan_summary.py  ← 每日掃描完成 LINE 推播摘要
+  send_daily_scan_summary.py  ← 每日掃描完成 LINE 推播摘要（績效圖 + 持倉 + 精選觀察）
   finmind_client.py           ← FinMind API 封裝
   requirements.txt            ← Python 相依套件
 .github/workflows/
@@ -90,6 +90,8 @@ scripts/
 
 ### SSR 交集雷達
 彙整籌碼集中、VCP、突破策略、投信動能、外資動能五組核心選股，單獨列出同時符合 2 組以上策略的標的，支援 C5 取 2、三組以上、投信 + 外資、大戶 + VCP、投信 + VCP、外資 + 突破等視角。
+
+前台預設新增「精選觀察」視角，從 `momentum_candidates.json` 的 A 級候選再收斂，要求命中量增回測或再啟動，並具備大戶或價格突破追蹤脈絡；同時用量比、週漲幅、BBW 與追蹤漲幅過濾過熱標的。這一層用於每日決策與 LINE Top 5 推播，原始策略清單仍保留供回查。
 
 ### 量增訊號
 每日盤後針對籌碼集中入池標的掃描量能突破訊號（當日量 ≥ 10 日均量 × 1.5，收盤 > EMA5），捕捉主力啟動時機，觸發時透過 LINE 推播。
