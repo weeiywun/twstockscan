@@ -15,6 +15,7 @@ js/
   render-chips.js             ← 籌碼集中渲染
   render-volume.js            ← 量增訊號渲染
   render-volume-pullback.js   ← 量增回測渲染
+  render-momentum-pullback.js ← 動能回測渲染
   render-analysis.js          ← 量增訊號標的追蹤渲染
   render-vcp.js               ← VCP / 潛在 VCP 渲染
   render-right-top.js         ← 突破策略渲染
@@ -29,6 +30,7 @@ data/
   chips_big_holder.json       ← 籌碼集中掃描結果
   volume_signal.json          ← 量增訊號掃描結果
   volume_pullback.json        ← 量增回測候選池
+  momentum_pullback.json      ← 動能回測候選池
   intraday_volume_pullback.json ← 10:00 盤中量增回測預警（停用備用）
   vcp.json                    ← VCP / 潛在 VCP 掃描結果
   right_top.json              ← 突破策略掃描結果
@@ -53,6 +55,7 @@ scripts/
   scan_trust_momentum.py      ← 法人動能掃描（投信 / 外資，不逐檔查 FinMind）
   scan_volume_signal.py       ← 量增訊號掃描（含 LINE 推播）
   scan_volume_pullback.py     ← 量增回測模型
+  scan_momentum_pullback.py   ← 動能回測模型
   scan_intraday_volume_pullback.py ← 10:00 盤中量增回測預警（停用備用）
   realtime_quote.py           ← TWSE MIS 即時行情小批量查詢（停用備用）
   stock_analysis.py           ← 量增訊號標的追蹤 + 營收評級
@@ -94,6 +97,9 @@ scripts/
 ### 量增回測
 從籌碼集中、價格突破追蹤與既有量增訊號合併候選池，尋找「放量突破 → 回測支撐 → 再啟動」結構。盤後模型保留為主要使用流程；10:00 盤中預警功能目前停用備用，避免盤中監看分散注意力。
 
+### 動能回測
+尋找已經被市場資金推升、近期出現 60 日高點後回測到 Fib 23.6%~61.8% 的強勢股候選。模型要求 Close > EMA60、EMA20 > EMA60 > EMA120，並標註回測區、均線共振、回測量能、轉強訊號與防守價，方便人工進一步看圖複查；排序偏向風險距離小、回前高空間足、且有既有策略標籤共振的標的。
+
 ### 突破策略
 整合盤整突破（週線突破前 10 週高點）、動能突破（日線 Close > MA20 > MA60，突破前 60 日高）與價格突破（Close > EMA20 ≥ EMA60 ≥ EMA120，創前 60 日高且量能續航），區分低波動打底後發動、日線啟動與強勢股續創新高。
 
@@ -114,7 +120,7 @@ scripts/
 
 | 時間 | 觸發方式 | Workflow | 內容 |
 |------|----------|----------|------|
-| 每個交易日 17:00 | Google Apps Script → repository_dispatch | `daily_scan.yml` | 價格快取、大盤指數、期貨儀錶板、VCP、突破策略、法人動能、量增訊號、量增回測 |
+| 每個交易日 17:00 | Google Apps Script → repository_dispatch | `daily_scan.yml` | 價格快取、大盤指數、期貨儀錶板、VCP、突破策略、法人動能、量增訊號、量增回測、動能回測 |
 | daily_scan 成功後 | workflow_run | `stock_analysis.yml` | 量增訊號標的追蹤、營收評級、AI 排名 |
 | 每週六或手動 | Google Apps Script → repository_dispatch / workflow_dispatch | `holdings_scan.yml` | TDCC 股權分散、籌碼集中掃描 |
 | 手動執行 | workflow_dispatch | `institutional_tags.yml` | 三大法人標籤 |
