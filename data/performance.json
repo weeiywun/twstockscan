@@ -622,7 +622,18 @@
       "exit_price": null,
       "exit_date": null,
       "exit_net": null,
-      "confirmed": false
+      "confirmed": true,
+      "exits": [
+        {
+          "id": "e1779846744941",
+          "date": "2026-05-27",
+          "shares": 3000,
+          "exit_price": 45.85,
+          "exit_net": 137021,
+          "sell_fee": 117,
+          "sell_tax": 412
+        }
+      ]
     }
   ],
   "price_history": {
