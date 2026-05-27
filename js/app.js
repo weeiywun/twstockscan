@@ -133,7 +133,7 @@ const STRATEGIES = [
     name: "動能回測",
     shortName: "動能回測",
     icon: "◉",
-    group: "ssr",
+    group: "source",
     available: true,
     description: "找出已經被市場資金推升、目前回測到 Fib / 均線共振區，且風險距離可控的強勢股候選，方便人工看圖複查。",
     conditions: [
@@ -150,10 +150,10 @@ const STRATEGIES = [
   },
   {
     id: "stock_analysis",
-    name: "量增訊號標的追蹤",
-    shortName: "標的追蹤",
+    name: "籌碼標的",
+    shortName: "籌碼標的",
     icon: "◎",
-    group: "decision",
+    group: "track",
     available: true,
     description: "籌碼集中入池標的首次觸發量增訊號後，維護月營收評級、現價損益與 10 個交易日觀察期。",
     conditions: [],
@@ -204,10 +204,10 @@ const STRATEGIES = [
   },
   {
     id: "right_top_track",
-    name: "標的追蹤",
-    shortName: "標的追蹤",
+    name: "突破標的",
+    shortName: "突破標的",
     icon: "◉",
-    group: "decision",
+    group: "track",
     available: true,
     description: "突破策略觸發標的的後續追蹤，記錄入選收盤、現價、損益，觀察期 10 個交易日。",
     conditions: [],
@@ -389,8 +389,9 @@ function trendBars(trend, label, colorClass) {
 //  RENDER STRATEGY TABS
 // ════════════════════════════════════════════════════
 const NAV_GROUP_LABELS = {
-  decision:  '每日決策',
-  source:    '策略來源',
+  decision:  '決策',
+  source:    '策略',
+  track:     '追蹤',
   backup:    '備用觀察',
   ssr:       'SSR',
   chips:     '籌碼選股',
