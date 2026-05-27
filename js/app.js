@@ -28,6 +28,24 @@ const STRATEGIES = [
     conditions: [],
   },
   {
+    id: "theme_heat",
+    name: "資金主線",
+    shortName: "資金主線",
+    icon: "◆",
+    group: "ssr",
+    available: true,
+    description: "用既有策略結果統計題材熱度，預設排除金融、食品與低動能傳產雜訊，協助每天先判斷熱錢集中在哪些領域。",
+    conditions: [
+      "資料來源：既有大戶、價格突破、量增、量增回測、動能回測與精選候選結果",
+      "不額外呼叫 FinMind 或即時行情 API",
+      "金融、食品、部分傳產預設降噪；若未來成為主線可再加入題材表",
+      "每個主線只列代表標的，方便人工看圖決策",
+    ],
+    dataUpdated: "載入中...",
+    dataSource: "theme_config + 現有策略輸出",
+    dataKey: "theme_heat_data",
+  },
+  {
     id: "ssr",
     name: "SSR 交集雷達",
     shortName: "SSR",
@@ -217,6 +235,7 @@ const STRATEGIES = [
 //  DATA
 // ════════════════════════════════════════════════════
 const DATA = {
+  theme_heat_data:        null,
   chips_big_holder_data:  [],
   volume_signal_data:     [],
   volume_pullback_data:    null,
@@ -373,6 +392,7 @@ function _navBadge(s) {
   if (!s.available) return '—';
   if (s.id === 'future_dashboard') return DATA.futures_dashboard_data?.us_sentiment?.fear_greed?.score ?? '—';
   if (s.id === 'performance') return (DATA.performance_data?.positions || []).filter(p => !p.confirmed).length;
+  if (s.id === 'theme_heat') return DATA.theme_heat_data?.themes?.slice(0, 5).length ?? '—';
   if (s.id === 'ssr') return typeof buildSSRRows === 'function' ? buildSSRRows().length : '—';
   if (s.id === 'stock_analysis') return DATA.stock_analysis_data?.active?.length ?? '—';
   if (s.id === 'volume_pullback') return DATA.volume_pullback_data?.active?.length ?? '—';
@@ -463,6 +483,7 @@ function renderStrategy() {
 
   if (strat.id !== 'performance' && typeof setPerfSidebarMode === 'function') setPerfSidebarMode(false);
   if (strat.id === 'future_dashboard') { renderFutureDashboard(strat, main); return; }
+  if (strat.id === 'theme_heat')       { renderThemeHeat(strat, main);       return; }
   if (strat.id === 'ssr')              { renderSSR(strat, main);             return; }
   if (strat.id === 'chips_big_holder') { renderChipsHolder(strat, main);    return; }
   if (strat.id === 'volume_signal')    { renderVolumeSignal(strat, main);   return; }
@@ -616,7 +637,8 @@ async function loadData() {
   const timestamp = new Date().getTime();
 
   try {
-    const [chipsRes, vsRes, vpbRes, mpbRes, ivpbRes, mcRes, aiRes, saRes, perfRes, miRes, fdRes, mbRes, vcpRes, rtRes, rttRes, tmRes] = await Promise.all([
+    const [themeRes, chipsRes, vsRes, vpbRes, mpbRes, ivpbRes, mcRes, aiRes, saRes, perfRes, miRes, fdRes, mbRes, vcpRes, rtRes, rttRes, tmRes] = await Promise.all([
+      fetch(`data/theme_heat.json?t=${timestamp}`,          { cache: 'no-store' }).then(r => r.ok ? r.json() : null).catch(() => null),
       fetch(`data/chips_big_holder.json?t=${timestamp}`,   { cache: 'no-store' }).then(r => r.ok ? r.json() : null).catch(() => null),
       fetch(`data/volume_signal.json?t=${timestamp}`,      { cache: 'no-store' }).then(r => r.ok ? r.json() : null).catch(() => null),
       fetch(`data/volume_pullback.json?t=${timestamp}`,     { cache: 'no-store' }).then(r => r.ok ? r.json() : null).catch(() => null),
@@ -636,6 +658,12 @@ async function loadData() {
       // DISABLED / BACKUP - DO NOT DELETE: institutional momentum data loading is paused; tag workflow remains active.
       Promise.resolve(null),
     ]);
+
+    if (themeRes && themeRes.themes) {
+      DATA.theme_heat_data = themeRes;
+      const strat = STRATEGIES.find(s => s.id === 'theme_heat');
+      if (strat) strat.dataUpdated = (themeRes.source_date || themeRes.updated || '').slice(0, 10) || strat.dataUpdated;
+    }
 
     if (chipsRes && chipsRes.results) {
       DATA.chips_big_holder_data = chipsRes.results.map(d => {

@@ -1,5 +1,9 @@
 # TW Stock Scan
 
+## 資金主線 / 題材熱度
+
+`scripts/build_theme_heat.py` 會在每日掃描後讀取既有策略輸出，不額外呼叫 FinMind 或即時行情 API，依 `data/theme_config.json` 將標的歸入交易題材並輸出 `data/theme_heat.json`。前端 `js/render-theme-heat.js` 會顯示 Top 主線、代表標的與量比/週漲幅/來源策略，預設把金融、食品與低動能傳產降噪，讓每日觀察先聚焦在市場熱錢集中的領域。
+
 台股選股工具，以 GitHub Pages 為前端、GitHub Actions 為排程引擎，每日自動掃描選股策略並透過 LINE 推播結果。
 
 ---
