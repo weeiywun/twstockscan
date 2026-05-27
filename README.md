@@ -6,6 +6,16 @@
 
 台股選股工具，以 GitHub Pages 為前端、GitHub Actions 為排程引擎，每日自動掃描選股策略並透過 LINE 推播結果。
 
+## 統一分數模型
+
+`scripts/unified_scoring.py` 是目前所有策略共用的 0-100 分數模型，權重集中在 `data/unified_score_config.json`。每日掃描與週六大戶掃描完成後，會執行 `scripts/apply_unified_scores.py`，替 `chips_big_holder`、`right_top`、`volume_signal`、`volume_pullback`、`momentum_pullback`、`momentum_candidates`、`performance` 等資料補上：
+
+- `score` / `unified_score`：統一後的總分，上限 100。
+- `legacy_score`：調整前各策略自己的原始分數，方便回頭比較。
+- `score_breakdown`：籌碼、動能、量能、結構、主線五個子分數，以及交叉命中倍率。
+
+目前權重為籌碼 25%、動能 25%、量能 20%、結構 20%、主線 10%；交叉命中只做有限倍率加成，最高 x1.15，避免舊版分數因來源數量無上限累加。
+
 ---
 
 ## 系統架構

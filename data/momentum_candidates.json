@@ -101,7 +101,7 @@
         "support_ok": true,
         "volume_cools": false
       },
-      "score": 127.0,
+      "score": 70.1,
       "source_count": 4,
       "risk_flags": [],
       "priority_level": "A",
@@ -109,7 +109,49 @@
       "priority_reason": [
         "大戶池放量>=3x"
       ],
-      "focus_candidate": true
+      "focus_candidate": true,
+      "legacy_score": 127.0,
+      "unified_score": 70.1,
+      "unified_score_grade": "B",
+      "score_breakdown": {
+        "version": "unified_score_v1",
+        "total": 70.1,
+        "grade": "B",
+        "base": 60.9,
+        "components": {
+          "chip": 58.4,
+          "momentum": 70.8,
+          "volume": 65.1,
+          "structure": 78.0,
+          "theme": 0.0
+        },
+        "source_count": 5,
+        "source_multiplier": 1.15,
+        "sources": [
+          "chips",
+          "momentum_candidates",
+          "right_top_track",
+          "volume_pullback",
+          "volume_signal"
+        ],
+        "reasons": {
+          "chip": [
+            "大戶占比 36.0%",
+            "籌碼標籤加分"
+          ],
+          "momentum": [
+            "週漲 +14.9%",
+            "追蹤 +8.0%"
+          ],
+          "volume": [
+            "量比 3.43x"
+          ],
+          "structure": [
+            "點火首日"
+          ],
+          "theme": []
+        }
+      }
     },
     {
       "stock_id": "3708",
@@ -155,7 +197,7 @@
         "support_ok": true,
         "volume_cools": false
       },
-      "score": 117.0,
+      "score": 69.6,
       "source_count": 4,
       "risk_flags": [],
       "priority_level": "A",
@@ -163,7 +205,48 @@
       "priority_reason": [
         "大戶池放量>=3x"
       ],
-      "focus_candidate": true
+      "focus_candidate": true,
+      "legacy_score": 117.0,
+      "unified_score": 69.6,
+      "unified_score_grade": "B",
+      "score_breakdown": {
+        "version": "unified_score_v1",
+        "total": 69.6,
+        "grade": "B",
+        "base": 60.5,
+        "components": {
+          "chip": 71.9,
+          "momentum": 54.1,
+          "volume": 67.0,
+          "structure": 78.0,
+          "theme": 0.0
+        },
+        "source_count": 5,
+        "source_multiplier": 1.15,
+        "sources": [
+          "chips",
+          "momentum_candidates",
+          "right_top_track",
+          "volume_pullback",
+          "volume_signal"
+        ],
+        "reasons": {
+          "chip": [
+            "大戶占比 43.8%",
+            "籌碼標籤加分"
+          ],
+          "momentum": [
+            "週漲 +13.8%"
+          ],
+          "volume": [
+            "量比 3.53x"
+          ],
+          "structure": [
+            "點火首日"
+          ],
+          "theme": []
+        }
+      }
     },
     {
       "stock_id": "2421",
@@ -211,7 +294,7 @@
         "chip_score": 9.2,
         "trend_score": 0.0
       },
-      "score": 106.0,
+      "score": 82.3,
       "source_count": 4,
       "risk_flags": [],
       "priority_level": "A",
@@ -219,7 +302,51 @@
       "priority_reason": [
         "量增回測再啟動"
       ],
-      "focus_candidate": true
+      "focus_candidate": true,
+      "legacy_score": 106.0,
+      "unified_score": 82.3,
+      "unified_score_grade": "A",
+      "score_breakdown": {
+        "version": "unified_score_v1",
+        "total": 82.3,
+        "grade": "A",
+        "base": 71.6,
+        "components": {
+          "chip": 72.2,
+          "momentum": 61.5,
+          "volume": 57.9,
+          "structure": 82.8,
+          "theme": 100.0
+        },
+        "source_count": 5,
+        "source_multiplier": 1.15,
+        "sources": [
+          "chips",
+          "momentum_candidates",
+          "right_top_track",
+          "stock_analysis",
+          "volume_pullback"
+        ],
+        "reasons": {
+          "chip": [
+            "大戶占比 43.8%",
+            "籌碼標籤加分"
+          ],
+          "momentum": [
+            "週漲 +13.8%",
+            "追蹤 +4.1%"
+          ],
+          "volume": [
+            "量比 3.05x"
+          ],
+          "structure": [
+            "再啟動"
+          ],
+          "theme": [
+            "散熱 100.0"
+          ]
+        }
+      }
     },
     {
       "stock_id": "2362",
@@ -260,7 +387,7 @@
         "support_ok": true,
         "volume_cools": true
       },
-      "score": 91.0,
+      "score": 79.0,
       "source_count": 3,
       "risk_flags": [],
       "priority_level": "A",
@@ -268,7 +395,48 @@
       "priority_reason": [
         "多策略共振且點火量>=3x"
       ],
-      "focus_candidate": true
+      "focus_candidate": true,
+      "legacy_score": 91.0,
+      "unified_score": 79.0,
+      "unified_score_grade": "A",
+      "score_breakdown": {
+        "version": "unified_score_v1",
+        "total": 79.0,
+        "grade": "A",
+        "base": 68.7,
+        "components": {
+          "chip": 87.3,
+          "momentum": 47.4,
+          "volume": 94.4,
+          "structure": 80.5,
+          "theme": 0.0
+        },
+        "source_count": 4,
+        "source_multiplier": 1.15,
+        "sources": [
+          "chips",
+          "momentum_candidates",
+          "right_top_track",
+          "volume_pullback"
+        ],
+        "reasons": {
+          "chip": [
+            "大戶占比 76.5%",
+            "籌碼標籤加分"
+          ],
+          "momentum": [
+            "週漲 +8.2%",
+            "追蹤 +2.1%"
+          ],
+          "volume": [
+            "量比 4.97x"
+          ],
+          "structure": [
+            "回穩觀察"
+          ],
+          "theme": []
+        }
+      }
     },
     {
       "stock_id": "2332",
@@ -309,7 +477,7 @@
         "chip_score": 5.3,
         "trend_score": 5.3
       },
-      "score": 90.0,
+      "score": 85.7,
       "source_count": 3,
       "risk_flags": [],
       "priority_level": "A",
@@ -317,7 +485,49 @@
       "priority_reason": [
         "量增回測再啟動"
       ],
-      "focus_candidate": true
+      "focus_candidate": true,
+      "legacy_score": 90.0,
+      "unified_score": 85.7,
+      "unified_score_grade": "A+",
+      "score_breakdown": {
+        "version": "unified_score_v1",
+        "total": 85.7,
+        "grade": "A+",
+        "base": 74.5,
+        "components": {
+          "chip": 62.0,
+          "momentum": 72.5,
+          "volume": 65.9,
+          "structure": 89.4,
+          "theme": 98.0
+        },
+        "source_count": 4,
+        "source_multiplier": 1.15,
+        "sources": [
+          "chips",
+          "momentum_candidates",
+          "stock_analysis",
+          "volume_pullback"
+        ],
+        "reasons": {
+          "chip": [
+            "大戶占比 38.0%",
+            "籌碼標籤加分"
+          ],
+          "momentum": [
+            "週漲 +11.9%"
+          ],
+          "volume": [
+            "量比 3.47x"
+          ],
+          "structure": [
+            "再啟動"
+          ],
+          "theme": [
+            "網通 98.0"
+          ]
+        }
+      }
     },
     {
       "stock_id": "2420",
@@ -349,7 +559,7 @@
         "support_ok": true,
         "volume_cools": true
       },
-      "score": 87.0,
+      "score": 50.6,
       "source_count": 2,
       "risk_flags": [],
       "priority_level": "A",
@@ -357,7 +567,43 @@
       "priority_reason": [
         "量增回測再啟動"
       ],
-      "focus_candidate": true
+      "focus_candidate": true,
+      "legacy_score": 87.0,
+      "unified_score": 50.6,
+      "unified_score_grade": "C",
+      "score_breakdown": {
+        "version": "unified_score_v1",
+        "total": 50.6,
+        "grade": "C",
+        "base": 46.0,
+        "components": {
+          "chip": 0.0,
+          "momentum": 48.4,
+          "volume": 80.3,
+          "structure": 89.4,
+          "theme": 0.0
+        },
+        "source_count": 3,
+        "source_multiplier": 1.1,
+        "sources": [
+          "momentum_candidates",
+          "right_top_track",
+          "volume_pullback"
+        ],
+        "reasons": {
+          "chip": [],
+          "momentum": [
+            "追蹤 +5.4%"
+          ],
+          "volume": [
+            "量比 4.23x"
+          ],
+          "structure": [
+            "再啟動"
+          ],
+          "theme": []
+        }
+      }
     },
     {
       "stock_id": "4923",
@@ -389,7 +635,7 @@
         "support_ok": true,
         "volume_cools": true
       },
-      "score": 87.0,
+      "score": 50.7,
       "source_count": 2,
       "risk_flags": [],
       "priority_level": "A",
@@ -397,7 +643,43 @@
       "priority_reason": [
         "量增回測再啟動"
       ],
-      "focus_candidate": true
+      "focus_candidate": true,
+      "legacy_score": 87.0,
+      "unified_score": 50.7,
+      "unified_score_grade": "C",
+      "score_breakdown": {
+        "version": "unified_score_v1",
+        "total": 50.7,
+        "grade": "C",
+        "base": 46.1,
+        "components": {
+          "chip": 0.0,
+          "momentum": 28.5,
+          "volume": 73.5,
+          "structure": 72.5,
+          "theme": 98.1
+        },
+        "source_count": 3,
+        "source_multiplier": 1.1,
+        "sources": [
+          "momentum_candidates",
+          "right_top_track",
+          "volume_pullback"
+        ],
+        "reasons": {
+          "chip": [],
+          "momentum": [],
+          "volume": [
+            "量比 3.87x"
+          ],
+          "structure": [
+            "再啟動"
+          ],
+          "theme": [
+            "功率元件 98.1"
+          ]
+        }
+      }
     },
     {
       "stock_id": "6127",
@@ -429,7 +711,7 @@
         "support_ok": true,
         "volume_cools": true
       },
-      "score": 87.0,
+      "score": 65.7,
       "source_count": 2,
       "risk_flags": [],
       "priority_level": "A",
@@ -437,7 +719,45 @@
       "priority_reason": [
         "量增回測再啟動"
       ],
-      "focus_candidate": true
+      "focus_candidate": true,
+      "legacy_score": 87.0,
+      "unified_score": 65.7,
+      "unified_score_grade": "B",
+      "score_breakdown": {
+        "version": "unified_score_v1",
+        "total": 65.7,
+        "grade": "B",
+        "base": 59.7,
+        "components": {
+          "chip": 0.0,
+          "momentum": 64.7,
+          "volume": 92.3,
+          "structure": 76.1,
+          "theme": 98.6
+        },
+        "source_count": 3,
+        "source_multiplier": 1.1,
+        "sources": [
+          "momentum_candidates",
+          "right_top_track",
+          "volume_pullback"
+        ],
+        "reasons": {
+          "chip": [],
+          "momentum": [
+            "追蹤 +9.8%"
+          ],
+          "volume": [
+            "量比 4.86x"
+          ],
+          "structure": [
+            "再啟動"
+          ],
+          "theme": [
+            "電子零組件 98.6"
+          ]
+        }
+      }
     },
     {
       "stock_id": "1709",
@@ -478,7 +798,7 @@
         "chip_score": 10.0,
         "trend_score": 0.3
       },
-      "score": 82.0,
+      "score": 69.6,
       "source_count": 3,
       "risk_flags": [],
       "priority_level": "A",
@@ -486,7 +806,47 @@
       "priority_reason": [
         "量增回測再啟動"
       ],
-      "focus_candidate": true
+      "focus_candidate": true,
+      "legacy_score": 82.0,
+      "unified_score": 69.6,
+      "unified_score_grade": "B",
+      "score_breakdown": {
+        "version": "unified_score_v1",
+        "total": 69.6,
+        "grade": "B",
+        "base": 60.6,
+        "components": {
+          "chip": 81.0,
+          "momentum": 48.7,
+          "volume": 51.6,
+          "structure": 89.1,
+          "theme": 0.0
+        },
+        "source_count": 4,
+        "source_multiplier": 1.15,
+        "sources": [
+          "chips",
+          "momentum_candidates",
+          "stock_analysis",
+          "volume_pullback"
+        ],
+        "reasons": {
+          "chip": [
+            "大戶占比 52.3%",
+            "籌碼標籤加分"
+          ],
+          "momentum": [
+            "週漲 +5.5%"
+          ],
+          "volume": [
+            "量比 2.72x"
+          ],
+          "structure": [
+            "再啟動"
+          ],
+          "theme": []
+        }
+      }
     },
     {
       "stock_id": "2324",
@@ -518,7 +878,7 @@
         "support_ok": true,
         "volume_cools": true
       },
-      "score": 79.0,
+      "score": 40.0,
       "source_count": 2,
       "risk_flags": [],
       "priority_level": "A",
@@ -526,7 +886,41 @@
       "priority_reason": [
         "量增回測再啟動"
       ],
-      "focus_candidate": true
+      "focus_candidate": true,
+      "legacy_score": 79.0,
+      "unified_score": 40.0,
+      "unified_score_grade": "D",
+      "score_breakdown": {
+        "version": "unified_score_v1",
+        "total": 40.0,
+        "grade": "D",
+        "base": 36.4,
+        "components": {
+          "chip": 0.0,
+          "momentum": 28.5,
+          "volume": 61.5,
+          "structure": 84.7,
+          "theme": 0.0
+        },
+        "source_count": 3,
+        "source_multiplier": 1.1,
+        "sources": [
+          "momentum_candidates",
+          "right_top_track",
+          "volume_pullback"
+        ],
+        "reasons": {
+          "chip": [],
+          "momentum": [],
+          "volume": [
+            "量比 3.24x"
+          ],
+          "structure": [
+            "再啟動"
+          ],
+          "theme": []
+        }
+      }
     },
     {
       "stock_id": "2495",
@@ -558,7 +952,7 @@
         "support_ok": true,
         "volume_cools": true
       },
-      "score": 79.0,
+      "score": 39.7,
       "source_count": 2,
       "risk_flags": [],
       "priority_level": "A",
@@ -566,7 +960,41 @@
       "priority_reason": [
         "量增回測再啟動"
       ],
-      "focus_candidate": true
+      "focus_candidate": true,
+      "legacy_score": 79.0,
+      "unified_score": 39.7,
+      "unified_score_grade": "D",
+      "score_breakdown": {
+        "version": "unified_score_v1",
+        "total": 39.7,
+        "grade": "D",
+        "base": 36.1,
+        "components": {
+          "chip": 0.0,
+          "momentum": 27.7,
+          "volume": 63.0,
+          "structure": 82.7,
+          "theme": 0.0
+        },
+        "source_count": 3,
+        "source_multiplier": 1.1,
+        "sources": [
+          "momentum_candidates",
+          "right_top_track",
+          "volume_pullback"
+        ],
+        "reasons": {
+          "chip": [],
+          "momentum": [],
+          "volume": [
+            "量比 3.32x"
+          ],
+          "structure": [
+            "再啟動"
+          ],
+          "theme": []
+        }
+      }
     },
     {
       "stock_id": "3558",
@@ -598,7 +1026,7 @@
         "support_ok": true,
         "volume_cools": true
       },
-      "score": 79.0,
+      "score": 55.6,
       "source_count": 2,
       "risk_flags": [],
       "priority_level": "A",
@@ -606,7 +1034,43 @@
       "priority_reason": [
         "量增回測再啟動"
       ],
-      "focus_candidate": true
+      "focus_candidate": true,
+      "legacy_score": 79.0,
+      "unified_score": 55.6,
+      "unified_score_grade": "C",
+      "score_breakdown": {
+        "version": "unified_score_v1",
+        "total": 55.6,
+        "grade": "C",
+        "base": 50.5,
+        "components": {
+          "chip": 0.0,
+          "momentum": 28.5,
+          "volume": 84.1,
+          "structure": 86.2,
+          "theme": 93.3
+        },
+        "source_count": 3,
+        "source_multiplier": 1.1,
+        "sources": [
+          "momentum_candidates",
+          "right_top_track",
+          "volume_pullback"
+        ],
+        "reasons": {
+          "chip": [],
+          "momentum": [],
+          "volume": [
+            "量比 4.43x"
+          ],
+          "structure": [
+            "再啟動"
+          ],
+          "theme": [
+            "網通 93.3"
+          ]
+        }
+      }
     },
     {
       "stock_id": "3702",
@@ -638,7 +1102,7 @@
         "support_ok": true,
         "volume_cools": true
       },
-      "score": 79.0,
+      "score": 38.5,
       "source_count": 2,
       "risk_flags": [],
       "priority_level": "A",
@@ -646,7 +1110,41 @@
       "priority_reason": [
         "量增回測再啟動"
       ],
-      "focus_candidate": true
+      "focus_candidate": true,
+      "legacy_score": 79.0,
+      "unified_score": 38.5,
+      "unified_score_grade": "D",
+      "score_breakdown": {
+        "version": "unified_score_v1",
+        "total": 38.5,
+        "grade": "D",
+        "base": 35.0,
+        "components": {
+          "chip": 0.0,
+          "momentum": 22.5,
+          "volume": 59.8,
+          "structure": 87.2,
+          "theme": 0.0
+        },
+        "source_count": 3,
+        "source_multiplier": 1.1,
+        "sources": [
+          "momentum_candidates",
+          "right_top_track",
+          "volume_pullback"
+        ],
+        "reasons": {
+          "chip": [],
+          "momentum": [],
+          "volume": [
+            "量比 3.15x"
+          ],
+          "structure": [
+            "再啟動"
+          ],
+          "theme": []
+        }
+      }
     },
     {
       "stock_id": "6609",
@@ -678,7 +1176,7 @@
         "support_ok": true,
         "volume_cools": true
       },
-      "score": 79.0,
+      "score": 47.7,
       "source_count": 2,
       "risk_flags": [],
       "priority_level": "A",
@@ -686,7 +1184,43 @@
       "priority_reason": [
         "量增回測再啟動"
       ],
-      "focus_candidate": true
+      "focus_candidate": true,
+      "legacy_score": 79.0,
+      "unified_score": 47.7,
+      "unified_score_grade": "D",
+      "score_breakdown": {
+        "version": "unified_score_v1",
+        "total": 47.7,
+        "grade": "D",
+        "base": 43.3,
+        "components": {
+          "chip": 0.0,
+          "momentum": 40.5,
+          "volume": 81.5,
+          "structure": 84.5,
+          "theme": 0.0
+        },
+        "source_count": 3,
+        "source_multiplier": 1.1,
+        "sources": [
+          "momentum_candidates",
+          "right_top_track",
+          "volume_pullback"
+        ],
+        "reasons": {
+          "chip": [],
+          "momentum": [
+            "追蹤 +3.2%"
+          ],
+          "volume": [
+            "量比 4.29x"
+          ],
+          "structure": [
+            "再啟動"
+          ],
+          "theme": []
+        }
+      }
     },
     {
       "stock_id": "3372",
@@ -732,7 +1266,7 @@
         "chip_score": 9.5,
         "trend_score": 1.0
       },
-      "score": 77.0,
+      "score": 74.4,
       "source_count": 4,
       "risk_flags": [],
       "priority_level": "A",
@@ -741,7 +1275,48 @@
         "大戶營收>=8",
         "籌碼>=6"
       ],
-      "focus_candidate": true
+      "focus_candidate": true,
+      "legacy_score": 77.0,
+      "unified_score": 74.4,
+      "unified_score_grade": "B",
+      "score_breakdown": {
+        "version": "unified_score_v1",
+        "total": 74.4,
+        "grade": "B",
+        "base": 64.7,
+        "components": {
+          "chip": 68.1,
+          "momentum": 90.1,
+          "volume": 47.8,
+          "structure": 78.0,
+          "theme": 0.0
+        },
+        "source_count": 5,
+        "source_multiplier": 1.15,
+        "sources": [
+          "chips",
+          "momentum_candidates",
+          "stock_analysis",
+          "volume_pullback",
+          "volume_signal"
+        ],
+        "reasons": {
+          "chip": [
+            "大戶占比 44.2%",
+            "籌碼標籤加分"
+          ],
+          "momentum": [
+            "週漲 +16.7%"
+          ],
+          "volume": [
+            "量比 2.52x"
+          ],
+          "structure": [
+            "點火首日"
+          ],
+          "theme": []
+        }
+      }
     },
     {
       "stock_id": "2937",
@@ -773,7 +1348,7 @@
         "support_ok": true,
         "volume_cools": true
       },
-      "score": 73.0,
+      "score": 45.6,
       "source_count": 2,
       "risk_flags": [],
       "priority_level": "A",
@@ -781,7 +1356,43 @@
       "priority_reason": [
         "量增回測再啟動"
       ],
-      "focus_candidate": true
+      "focus_candidate": true,
+      "legacy_score": 73.0,
+      "unified_score": 45.6,
+      "unified_score_grade": "D",
+      "score_breakdown": {
+        "version": "unified_score_v1",
+        "total": 45.6,
+        "grade": "D",
+        "base": 41.4,
+        "components": {
+          "chip": 0.0,
+          "momentum": 30.4,
+          "volume": 80.1,
+          "structure": 89.1,
+          "theme": 0.0
+        },
+        "source_count": 3,
+        "source_multiplier": 1.1,
+        "sources": [
+          "momentum_candidates",
+          "right_top_track",
+          "volume_pullback"
+        ],
+        "reasons": {
+          "chip": [],
+          "momentum": [
+            "追蹤 +0.5%"
+          ],
+          "volume": [
+            "量比 4.22x"
+          ],
+          "structure": [
+            "再啟動"
+          ],
+          "theme": []
+        }
+      }
     },
     {
       "stock_id": "8473",
@@ -813,7 +1424,7 @@
         "support_ok": true,
         "volume_cools": true
       },
-      "score": 73.0,
+      "score": 49.0,
       "source_count": 2,
       "risk_flags": [],
       "priority_level": "A",
@@ -821,7 +1432,43 @@
       "priority_reason": [
         "量增回測再啟動"
       ],
-      "focus_candidate": true
+      "focus_candidate": true,
+      "legacy_score": 73.0,
+      "unified_score": 49.0,
+      "unified_score_grade": "D",
+      "score_breakdown": {
+        "version": "unified_score_v1",
+        "total": 49.0,
+        "grade": "D",
+        "base": 44.5,
+        "components": {
+          "chip": 0.0,
+          "momentum": 41.2,
+          "volume": 87.0,
+          "structure": 84.0,
+          "theme": 0.0
+        },
+        "source_count": 3,
+        "source_multiplier": 1.1,
+        "sources": [
+          "momentum_candidates",
+          "right_top_track",
+          "volume_pullback"
+        ],
+        "reasons": {
+          "chip": [],
+          "momentum": [
+            "追蹤 +3.4%"
+          ],
+          "volume": [
+            "量比 4.58x"
+          ],
+          "structure": [
+            "再啟動"
+          ],
+          "theme": []
+        }
+      }
     },
     {
       "stock_id": "2352",
@@ -859,7 +1506,7 @@
         "chip_score": 8.5,
         "trend_score": 0.3
       },
-      "score": 73.0,
+      "score": 72.2,
       "source_count": 3,
       "risk_flags": [],
       "priority_level": "A",
@@ -867,7 +1514,44 @@
       "priority_reason": [
         "多策略共振且點火量>=3x"
       ],
-      "focus_candidate": true
+      "focus_candidate": true,
+      "legacy_score": 73.0,
+      "unified_score": 72.2,
+      "unified_score_grade": "B",
+      "score_breakdown": {
+        "version": "unified_score_v1",
+        "total": 72.2,
+        "grade": "B",
+        "base": 62.8,
+        "components": {
+          "chip": 85.0,
+          "momentum": 40.7,
+          "volume": 78.0,
+          "structure": 79.0,
+          "theme": 0.0
+        },
+        "source_count": 4,
+        "source_multiplier": 1.15,
+        "sources": [
+          "momentum_candidates",
+          "right_top_track",
+          "stock_analysis",
+          "volume_pullback"
+        ],
+        "reasons": {
+          "chip": [],
+          "momentum": [
+            "追蹤 +3.3%"
+          ],
+          "volume": [
+            "量比 4.11x"
+          ],
+          "structure": [
+            "回穩觀察"
+          ],
+          "theme": []
+        }
+      }
     },
     {
       "stock_id": "3114",
@@ -899,7 +1583,7 @@
         "support_ok": true,
         "volume_cools": true
       },
-      "score": 69.0,
+      "score": 47.7,
       "source_count": 2,
       "risk_flags": [],
       "priority_level": "A",
@@ -907,7 +1591,45 @@
       "priority_reason": [
         "量增回測再啟動"
       ],
-      "focus_candidate": true
+      "focus_candidate": true,
+      "legacy_score": 69.0,
+      "unified_score": 47.7,
+      "unified_score_grade": "D",
+      "score_breakdown": {
+        "version": "unified_score_v1",
+        "total": 47.7,
+        "grade": "D",
+        "base": 43.3,
+        "components": {
+          "chip": 0.0,
+          "momentum": 38.7,
+          "volume": 49.1,
+          "structure": 87.8,
+          "theme": 62.8
+        },
+        "source_count": 3,
+        "source_multiplier": 1.1,
+        "sources": [
+          "momentum_candidates",
+          "right_top_track",
+          "volume_pullback"
+        ],
+        "reasons": {
+          "chip": [],
+          "momentum": [
+            "追蹤 +2.8%"
+          ],
+          "volume": [
+            "量比 2.59x"
+          ],
+          "structure": [
+            "再啟動"
+          ],
+          "theme": [
+            "電子零組件 62.8"
+          ]
+        }
+      }
     },
     {
       "stock_id": "2603",
@@ -945,7 +1667,7 @@
         "chip_score": 10.0,
         "trend_score": 4.1
       },
-      "score": 67.0,
+      "score": 68.1,
       "source_count": 3,
       "risk_flags": [],
       "priority_level": "A",
@@ -954,7 +1676,42 @@
         "大戶營收>=8",
         "籌碼>=6"
       ],
-      "focus_candidate": true
+      "focus_candidate": true,
+      "legacy_score": 67.0,
+      "unified_score": 68.1,
+      "unified_score_grade": "B",
+      "score_breakdown": {
+        "version": "unified_score_v1",
+        "total": 68.1,
+        "grade": "B",
+        "base": 59.2,
+        "components": {
+          "chip": 100.0,
+          "momentum": 15.8,
+          "volume": 69.3,
+          "structure": 82.2,
+          "theme": 0.0
+        },
+        "source_count": 4,
+        "source_multiplier": 1.15,
+        "sources": [
+          "momentum_candidates",
+          "right_top_track",
+          "stock_analysis",
+          "volume_pullback"
+        ],
+        "reasons": {
+          "chip": [],
+          "momentum": [],
+          "volume": [
+            "量比 3.65x"
+          ],
+          "structure": [
+            "回穩觀察"
+          ],
+          "theme": []
+        }
+      }
     },
     {
       "stock_id": "2233",
@@ -986,7 +1743,7 @@
         "support_ok": true,
         "volume_cools": true
       },
-      "score": 66.0,
+      "score": 34.3,
       "source_count": 2,
       "risk_flags": [],
       "priority_level": "A",
@@ -994,7 +1751,41 @@
       "priority_reason": [
         "量增回測再啟動"
       ],
-      "focus_candidate": true
+      "focus_candidate": true,
+      "legacy_score": 66.0,
+      "unified_score": 34.3,
+      "unified_score_grade": "D",
+      "score_breakdown": {
+        "version": "unified_score_v1",
+        "total": 34.3,
+        "grade": "D",
+        "base": 31.2,
+        "components": {
+          "chip": 0.0,
+          "momentum": 24.1,
+          "volume": 51.0,
+          "structure": 74.9,
+          "theme": 0.0
+        },
+        "source_count": 3,
+        "source_multiplier": 1.1,
+        "sources": [
+          "momentum_candidates",
+          "right_top_track",
+          "volume_pullback"
+        ],
+        "reasons": {
+          "chip": [],
+          "momentum": [],
+          "volume": [
+            "量比 2.69x"
+          ],
+          "structure": [
+            "再啟動"
+          ],
+          "theme": []
+        }
+      }
     },
     {
       "stock_id": "3444",
@@ -1026,7 +1817,7 @@
         "support_ok": true,
         "volume_cools": true
       },
-      "score": 66.0,
+      "score": 40.3,
       "source_count": 2,
       "risk_flags": [],
       "priority_level": "A",
@@ -1034,7 +1825,43 @@
       "priority_reason": [
         "量增回測再啟動"
       ],
-      "focus_candidate": true
+      "focus_candidate": true,
+      "legacy_score": 66.0,
+      "unified_score": 40.3,
+      "unified_score_grade": "D",
+      "score_breakdown": {
+        "version": "unified_score_v1",
+        "total": 40.3,
+        "grade": "D",
+        "base": 36.7,
+        "components": {
+          "chip": 0.0,
+          "momentum": 32.0,
+          "volume": 55.0,
+          "structure": 88.4,
+          "theme": 0.0
+        },
+        "source_count": 3,
+        "source_multiplier": 1.1,
+        "sources": [
+          "momentum_candidates",
+          "right_top_track",
+          "volume_pullback"
+        ],
+        "reasons": {
+          "chip": [],
+          "momentum": [
+            "追蹤 +0.9%"
+          ],
+          "volume": [
+            "量比 2.90x"
+          ],
+          "structure": [
+            "再啟動"
+          ],
+          "theme": []
+        }
+      }
     },
     {
       "stock_id": "4764",
@@ -1066,7 +1893,7 @@
         "support_ok": true,
         "volume_cools": true
       },
-      "score": 66.0,
+      "score": 32.2,
       "source_count": 2,
       "risk_flags": [],
       "priority_level": "A",
@@ -1074,7 +1901,41 @@
       "priority_reason": [
         "量增回測再啟動"
       ],
-      "focus_candidate": true
+      "focus_candidate": true,
+      "legacy_score": 66.0,
+      "unified_score": 32.2,
+      "unified_score_grade": "D",
+      "score_breakdown": {
+        "version": "unified_score_v1",
+        "total": 32.2,
+        "grade": "D",
+        "base": 29.3,
+        "components": {
+          "chip": 0.0,
+          "momentum": 13.8,
+          "volume": 48.9,
+          "structure": 80.2,
+          "theme": 0.0
+        },
+        "source_count": 3,
+        "source_multiplier": 1.1,
+        "sources": [
+          "momentum_candidates",
+          "right_top_track",
+          "volume_pullback"
+        ],
+        "reasons": {
+          "chip": [],
+          "momentum": [],
+          "volume": [
+            "量比 2.58x"
+          ],
+          "structure": [
+            "再啟動"
+          ],
+          "theme": []
+        }
+      }
     },
     {
       "stock_id": "6902",
@@ -1106,7 +1967,7 @@
         "support_ok": true,
         "volume_cools": true
       },
-      "score": 66.0,
+      "score": 36.7,
       "source_count": 2,
       "risk_flags": [],
       "priority_level": "A",
@@ -1114,7 +1975,43 @@
       "priority_reason": [
         "量增回測再啟動"
       ],
-      "focus_candidate": true
+      "focus_candidate": true,
+      "legacy_score": 66.0,
+      "unified_score": 36.7,
+      "unified_score_grade": "D",
+      "score_breakdown": {
+        "version": "unified_score_v1",
+        "total": 36.7,
+        "grade": "D",
+        "base": 33.3,
+        "components": {
+          "chip": 0.0,
+          "momentum": 36.5,
+          "volume": 48.9,
+          "structure": 72.2,
+          "theme": 0.0
+        },
+        "source_count": 3,
+        "source_multiplier": 1.1,
+        "sources": [
+          "momentum_candidates",
+          "right_top_track",
+          "volume_pullback"
+        ],
+        "reasons": {
+          "chip": [],
+          "momentum": [
+            "追蹤 +2.2%"
+          ],
+          "volume": [
+            "量比 2.58x"
+          ],
+          "structure": [
+            "再啟動"
+          ],
+          "theme": []
+        }
+      }
     }
   ],
   "results": [
@@ -1162,7 +2059,7 @@
         "support_ok": true,
         "volume_cools": false
       },
-      "score": 127.0,
+      "score": 70.1,
       "source_count": 4,
       "risk_flags": [],
       "priority_level": "A",
@@ -1170,7 +2067,49 @@
       "priority_reason": [
         "大戶池放量>=3x"
       ],
-      "focus_candidate": true
+      "focus_candidate": true,
+      "legacy_score": 127.0,
+      "unified_score": 70.1,
+      "unified_score_grade": "B",
+      "score_breakdown": {
+        "version": "unified_score_v1",
+        "total": 70.1,
+        "grade": "B",
+        "base": 60.9,
+        "components": {
+          "chip": 58.4,
+          "momentum": 70.8,
+          "volume": 65.1,
+          "structure": 78.0,
+          "theme": 0.0
+        },
+        "source_count": 5,
+        "source_multiplier": 1.15,
+        "sources": [
+          "chips",
+          "momentum_candidates",
+          "right_top_track",
+          "volume_pullback",
+          "volume_signal"
+        ],
+        "reasons": {
+          "chip": [
+            "大戶占比 36.0%",
+            "籌碼標籤加分"
+          ],
+          "momentum": [
+            "週漲 +14.9%",
+            "追蹤 +8.0%"
+          ],
+          "volume": [
+            "量比 3.43x"
+          ],
+          "structure": [
+            "點火首日"
+          ],
+          "theme": []
+        }
+      }
     },
     {
       "stock_id": "3708",
@@ -1216,7 +2155,7 @@
         "support_ok": true,
         "volume_cools": false
       },
-      "score": 117.0,
+      "score": 69.6,
       "source_count": 4,
       "risk_flags": [],
       "priority_level": "A",
@@ -1224,7 +2163,48 @@
       "priority_reason": [
         "大戶池放量>=3x"
       ],
-      "focus_candidate": true
+      "focus_candidate": true,
+      "legacy_score": 117.0,
+      "unified_score": 69.6,
+      "unified_score_grade": "B",
+      "score_breakdown": {
+        "version": "unified_score_v1",
+        "total": 69.6,
+        "grade": "B",
+        "base": 60.5,
+        "components": {
+          "chip": 71.9,
+          "momentum": 54.1,
+          "volume": 67.0,
+          "structure": 78.0,
+          "theme": 0.0
+        },
+        "source_count": 5,
+        "source_multiplier": 1.15,
+        "sources": [
+          "chips",
+          "momentum_candidates",
+          "right_top_track",
+          "volume_pullback",
+          "volume_signal"
+        ],
+        "reasons": {
+          "chip": [
+            "大戶占比 43.8%",
+            "籌碼標籤加分"
+          ],
+          "momentum": [
+            "週漲 +13.8%"
+          ],
+          "volume": [
+            "量比 3.53x"
+          ],
+          "structure": [
+            "點火首日"
+          ],
+          "theme": []
+        }
+      }
     },
     {
       "stock_id": "2421",
@@ -1272,7 +2252,7 @@
         "chip_score": 9.2,
         "trend_score": 0.0
       },
-      "score": 106.0,
+      "score": 82.3,
       "source_count": 4,
       "risk_flags": [],
       "priority_level": "A",
@@ -1280,7 +2260,51 @@
       "priority_reason": [
         "量增回測再啟動"
       ],
-      "focus_candidate": true
+      "focus_candidate": true,
+      "legacy_score": 106.0,
+      "unified_score": 82.3,
+      "unified_score_grade": "A",
+      "score_breakdown": {
+        "version": "unified_score_v1",
+        "total": 82.3,
+        "grade": "A",
+        "base": 71.6,
+        "components": {
+          "chip": 72.2,
+          "momentum": 61.5,
+          "volume": 57.9,
+          "structure": 82.8,
+          "theme": 100.0
+        },
+        "source_count": 5,
+        "source_multiplier": 1.15,
+        "sources": [
+          "chips",
+          "momentum_candidates",
+          "right_top_track",
+          "stock_analysis",
+          "volume_pullback"
+        ],
+        "reasons": {
+          "chip": [
+            "大戶占比 43.8%",
+            "籌碼標籤加分"
+          ],
+          "momentum": [
+            "週漲 +13.8%",
+            "追蹤 +4.1%"
+          ],
+          "volume": [
+            "量比 3.05x"
+          ],
+          "structure": [
+            "再啟動"
+          ],
+          "theme": [
+            "散熱 100.0"
+          ]
+        }
+      }
     },
     {
       "stock_id": "2362",
@@ -1321,7 +2345,7 @@
         "support_ok": true,
         "volume_cools": true
       },
-      "score": 91.0,
+      "score": 79.0,
       "source_count": 3,
       "risk_flags": [],
       "priority_level": "A",
@@ -1329,7 +2353,48 @@
       "priority_reason": [
         "多策略共振且點火量>=3x"
       ],
-      "focus_candidate": true
+      "focus_candidate": true,
+      "legacy_score": 91.0,
+      "unified_score": 79.0,
+      "unified_score_grade": "A",
+      "score_breakdown": {
+        "version": "unified_score_v1",
+        "total": 79.0,
+        "grade": "A",
+        "base": 68.7,
+        "components": {
+          "chip": 87.3,
+          "momentum": 47.4,
+          "volume": 94.4,
+          "structure": 80.5,
+          "theme": 0.0
+        },
+        "source_count": 4,
+        "source_multiplier": 1.15,
+        "sources": [
+          "chips",
+          "momentum_candidates",
+          "right_top_track",
+          "volume_pullback"
+        ],
+        "reasons": {
+          "chip": [
+            "大戶占比 76.5%",
+            "籌碼標籤加分"
+          ],
+          "momentum": [
+            "週漲 +8.2%",
+            "追蹤 +2.1%"
+          ],
+          "volume": [
+            "量比 4.97x"
+          ],
+          "structure": [
+            "回穩觀察"
+          ],
+          "theme": []
+        }
+      }
     },
     {
       "stock_id": "2332",
@@ -1370,7 +2435,7 @@
         "chip_score": 5.3,
         "trend_score": 5.3
       },
-      "score": 90.0,
+      "score": 85.7,
       "source_count": 3,
       "risk_flags": [],
       "priority_level": "A",
@@ -1378,7 +2443,49 @@
       "priority_reason": [
         "量增回測再啟動"
       ],
-      "focus_candidate": true
+      "focus_candidate": true,
+      "legacy_score": 90.0,
+      "unified_score": 85.7,
+      "unified_score_grade": "A+",
+      "score_breakdown": {
+        "version": "unified_score_v1",
+        "total": 85.7,
+        "grade": "A+",
+        "base": 74.5,
+        "components": {
+          "chip": 62.0,
+          "momentum": 72.5,
+          "volume": 65.9,
+          "structure": 89.4,
+          "theme": 98.0
+        },
+        "source_count": 4,
+        "source_multiplier": 1.15,
+        "sources": [
+          "chips",
+          "momentum_candidates",
+          "stock_analysis",
+          "volume_pullback"
+        ],
+        "reasons": {
+          "chip": [
+            "大戶占比 38.0%",
+            "籌碼標籤加分"
+          ],
+          "momentum": [
+            "週漲 +11.9%"
+          ],
+          "volume": [
+            "量比 3.47x"
+          ],
+          "structure": [
+            "再啟動"
+          ],
+          "theme": [
+            "網通 98.0"
+          ]
+        }
+      }
     },
     {
       "stock_id": "2420",
@@ -1410,7 +2517,7 @@
         "support_ok": true,
         "volume_cools": true
       },
-      "score": 87.0,
+      "score": 50.6,
       "source_count": 2,
       "risk_flags": [],
       "priority_level": "A",
@@ -1418,7 +2525,43 @@
       "priority_reason": [
         "量增回測再啟動"
       ],
-      "focus_candidate": true
+      "focus_candidate": true,
+      "legacy_score": 87.0,
+      "unified_score": 50.6,
+      "unified_score_grade": "C",
+      "score_breakdown": {
+        "version": "unified_score_v1",
+        "total": 50.6,
+        "grade": "C",
+        "base": 46.0,
+        "components": {
+          "chip": 0.0,
+          "momentum": 48.4,
+          "volume": 80.3,
+          "structure": 89.4,
+          "theme": 0.0
+        },
+        "source_count": 3,
+        "source_multiplier": 1.1,
+        "sources": [
+          "momentum_candidates",
+          "right_top_track",
+          "volume_pullback"
+        ],
+        "reasons": {
+          "chip": [],
+          "momentum": [
+            "追蹤 +5.4%"
+          ],
+          "volume": [
+            "量比 4.23x"
+          ],
+          "structure": [
+            "再啟動"
+          ],
+          "theme": []
+        }
+      }
     },
     {
       "stock_id": "4923",
@@ -1450,7 +2593,7 @@
         "support_ok": true,
         "volume_cools": true
       },
-      "score": 87.0,
+      "score": 50.7,
       "source_count": 2,
       "risk_flags": [],
       "priority_level": "A",
@@ -1458,7 +2601,43 @@
       "priority_reason": [
         "量增回測再啟動"
       ],
-      "focus_candidate": true
+      "focus_candidate": true,
+      "legacy_score": 87.0,
+      "unified_score": 50.7,
+      "unified_score_grade": "C",
+      "score_breakdown": {
+        "version": "unified_score_v1",
+        "total": 50.7,
+        "grade": "C",
+        "base": 46.1,
+        "components": {
+          "chip": 0.0,
+          "momentum": 28.5,
+          "volume": 73.5,
+          "structure": 72.5,
+          "theme": 98.1
+        },
+        "source_count": 3,
+        "source_multiplier": 1.1,
+        "sources": [
+          "momentum_candidates",
+          "right_top_track",
+          "volume_pullback"
+        ],
+        "reasons": {
+          "chip": [],
+          "momentum": [],
+          "volume": [
+            "量比 3.87x"
+          ],
+          "structure": [
+            "再啟動"
+          ],
+          "theme": [
+            "功率元件 98.1"
+          ]
+        }
+      }
     },
     {
       "stock_id": "6127",
@@ -1490,7 +2669,7 @@
         "support_ok": true,
         "volume_cools": true
       },
-      "score": 87.0,
+      "score": 65.7,
       "source_count": 2,
       "risk_flags": [],
       "priority_level": "A",
@@ -1498,7 +2677,45 @@
       "priority_reason": [
         "量增回測再啟動"
       ],
-      "focus_candidate": true
+      "focus_candidate": true,
+      "legacy_score": 87.0,
+      "unified_score": 65.7,
+      "unified_score_grade": "B",
+      "score_breakdown": {
+        "version": "unified_score_v1",
+        "total": 65.7,
+        "grade": "B",
+        "base": 59.7,
+        "components": {
+          "chip": 0.0,
+          "momentum": 64.7,
+          "volume": 92.3,
+          "structure": 76.1,
+          "theme": 98.6
+        },
+        "source_count": 3,
+        "source_multiplier": 1.1,
+        "sources": [
+          "momentum_candidates",
+          "right_top_track",
+          "volume_pullback"
+        ],
+        "reasons": {
+          "chip": [],
+          "momentum": [
+            "追蹤 +9.8%"
+          ],
+          "volume": [
+            "量比 4.86x"
+          ],
+          "structure": [
+            "再啟動"
+          ],
+          "theme": [
+            "電子零組件 98.6"
+          ]
+        }
+      }
     },
     {
       "stock_id": "1709",
@@ -1539,7 +2756,7 @@
         "chip_score": 10.0,
         "trend_score": 0.3
       },
-      "score": 82.0,
+      "score": 69.6,
       "source_count": 3,
       "risk_flags": [],
       "priority_level": "A",
@@ -1547,7 +2764,47 @@
       "priority_reason": [
         "量增回測再啟動"
       ],
-      "focus_candidate": true
+      "focus_candidate": true,
+      "legacy_score": 82.0,
+      "unified_score": 69.6,
+      "unified_score_grade": "B",
+      "score_breakdown": {
+        "version": "unified_score_v1",
+        "total": 69.6,
+        "grade": "B",
+        "base": 60.6,
+        "components": {
+          "chip": 81.0,
+          "momentum": 48.7,
+          "volume": 51.6,
+          "structure": 89.1,
+          "theme": 0.0
+        },
+        "source_count": 4,
+        "source_multiplier": 1.15,
+        "sources": [
+          "chips",
+          "momentum_candidates",
+          "stock_analysis",
+          "volume_pullback"
+        ],
+        "reasons": {
+          "chip": [
+            "大戶占比 52.3%",
+            "籌碼標籤加分"
+          ],
+          "momentum": [
+            "週漲 +5.5%"
+          ],
+          "volume": [
+            "量比 2.72x"
+          ],
+          "structure": [
+            "再啟動"
+          ],
+          "theme": []
+        }
+      }
     },
     {
       "stock_id": "2324",
@@ -1579,7 +2836,7 @@
         "support_ok": true,
         "volume_cools": true
       },
-      "score": 79.0,
+      "score": 40.0,
       "source_count": 2,
       "risk_flags": [],
       "priority_level": "A",
@@ -1587,7 +2844,41 @@
       "priority_reason": [
         "量增回測再啟動"
       ],
-      "focus_candidate": true
+      "focus_candidate": true,
+      "legacy_score": 79.0,
+      "unified_score": 40.0,
+      "unified_score_grade": "D",
+      "score_breakdown": {
+        "version": "unified_score_v1",
+        "total": 40.0,
+        "grade": "D",
+        "base": 36.4,
+        "components": {
+          "chip": 0.0,
+          "momentum": 28.5,
+          "volume": 61.5,
+          "structure": 84.7,
+          "theme": 0.0
+        },
+        "source_count": 3,
+        "source_multiplier": 1.1,
+        "sources": [
+          "momentum_candidates",
+          "right_top_track",
+          "volume_pullback"
+        ],
+        "reasons": {
+          "chip": [],
+          "momentum": [],
+          "volume": [
+            "量比 3.24x"
+          ],
+          "structure": [
+            "再啟動"
+          ],
+          "theme": []
+        }
+      }
     },
     {
       "stock_id": "2495",
@@ -1619,7 +2910,7 @@
         "support_ok": true,
         "volume_cools": true
       },
-      "score": 79.0,
+      "score": 39.7,
       "source_count": 2,
       "risk_flags": [],
       "priority_level": "A",
@@ -1627,7 +2918,41 @@
       "priority_reason": [
         "量增回測再啟動"
       ],
-      "focus_candidate": true
+      "focus_candidate": true,
+      "legacy_score": 79.0,
+      "unified_score": 39.7,
+      "unified_score_grade": "D",
+      "score_breakdown": {
+        "version": "unified_score_v1",
+        "total": 39.7,
+        "grade": "D",
+        "base": 36.1,
+        "components": {
+          "chip": 0.0,
+          "momentum": 27.7,
+          "volume": 63.0,
+          "structure": 82.7,
+          "theme": 0.0
+        },
+        "source_count": 3,
+        "source_multiplier": 1.1,
+        "sources": [
+          "momentum_candidates",
+          "right_top_track",
+          "volume_pullback"
+        ],
+        "reasons": {
+          "chip": [],
+          "momentum": [],
+          "volume": [
+            "量比 3.32x"
+          ],
+          "structure": [
+            "再啟動"
+          ],
+          "theme": []
+        }
+      }
     },
     {
       "stock_id": "3558",
@@ -1659,7 +2984,7 @@
         "support_ok": true,
         "volume_cools": true
       },
-      "score": 79.0,
+      "score": 55.6,
       "source_count": 2,
       "risk_flags": [],
       "priority_level": "A",
@@ -1667,7 +2992,43 @@
       "priority_reason": [
         "量增回測再啟動"
       ],
-      "focus_candidate": true
+      "focus_candidate": true,
+      "legacy_score": 79.0,
+      "unified_score": 55.6,
+      "unified_score_grade": "C",
+      "score_breakdown": {
+        "version": "unified_score_v1",
+        "total": 55.6,
+        "grade": "C",
+        "base": 50.5,
+        "components": {
+          "chip": 0.0,
+          "momentum": 28.5,
+          "volume": 84.1,
+          "structure": 86.2,
+          "theme": 93.3
+        },
+        "source_count": 3,
+        "source_multiplier": 1.1,
+        "sources": [
+          "momentum_candidates",
+          "right_top_track",
+          "volume_pullback"
+        ],
+        "reasons": {
+          "chip": [],
+          "momentum": [],
+          "volume": [
+            "量比 4.43x"
+          ],
+          "structure": [
+            "再啟動"
+          ],
+          "theme": [
+            "網通 93.3"
+          ]
+        }
+      }
     },
     {
       "stock_id": "3702",
@@ -1699,7 +3060,7 @@
         "support_ok": true,
         "volume_cools": true
       },
-      "score": 79.0,
+      "score": 38.5,
       "source_count": 2,
       "risk_flags": [],
       "priority_level": "A",
@@ -1707,7 +3068,41 @@
       "priority_reason": [
         "量增回測再啟動"
       ],
-      "focus_candidate": true
+      "focus_candidate": true,
+      "legacy_score": 79.0,
+      "unified_score": 38.5,
+      "unified_score_grade": "D",
+      "score_breakdown": {
+        "version": "unified_score_v1",
+        "total": 38.5,
+        "grade": "D",
+        "base": 35.0,
+        "components": {
+          "chip": 0.0,
+          "momentum": 22.5,
+          "volume": 59.8,
+          "structure": 87.2,
+          "theme": 0.0
+        },
+        "source_count": 3,
+        "source_multiplier": 1.1,
+        "sources": [
+          "momentum_candidates",
+          "right_top_track",
+          "volume_pullback"
+        ],
+        "reasons": {
+          "chip": [],
+          "momentum": [],
+          "volume": [
+            "量比 3.15x"
+          ],
+          "structure": [
+            "再啟動"
+          ],
+          "theme": []
+        }
+      }
     },
     {
       "stock_id": "6609",
@@ -1739,7 +3134,7 @@
         "support_ok": true,
         "volume_cools": true
       },
-      "score": 79.0,
+      "score": 47.7,
       "source_count": 2,
       "risk_flags": [],
       "priority_level": "A",
@@ -1747,7 +3142,43 @@
       "priority_reason": [
         "量增回測再啟動"
       ],
-      "focus_candidate": true
+      "focus_candidate": true,
+      "legacy_score": 79.0,
+      "unified_score": 47.7,
+      "unified_score_grade": "D",
+      "score_breakdown": {
+        "version": "unified_score_v1",
+        "total": 47.7,
+        "grade": "D",
+        "base": 43.3,
+        "components": {
+          "chip": 0.0,
+          "momentum": 40.5,
+          "volume": 81.5,
+          "structure": 84.5,
+          "theme": 0.0
+        },
+        "source_count": 3,
+        "source_multiplier": 1.1,
+        "sources": [
+          "momentum_candidates",
+          "right_top_track",
+          "volume_pullback"
+        ],
+        "reasons": {
+          "chip": [],
+          "momentum": [
+            "追蹤 +3.2%"
+          ],
+          "volume": [
+            "量比 4.29x"
+          ],
+          "structure": [
+            "再啟動"
+          ],
+          "theme": []
+        }
+      }
     },
     {
       "stock_id": "3372",
@@ -1793,7 +3224,7 @@
         "chip_score": 9.5,
         "trend_score": 1.0
       },
-      "score": 77.0,
+      "score": 74.4,
       "source_count": 4,
       "risk_flags": [],
       "priority_level": "A",
@@ -1802,7 +3233,48 @@
         "大戶營收>=8",
         "籌碼>=6"
       ],
-      "focus_candidate": true
+      "focus_candidate": true,
+      "legacy_score": 77.0,
+      "unified_score": 74.4,
+      "unified_score_grade": "B",
+      "score_breakdown": {
+        "version": "unified_score_v1",
+        "total": 74.4,
+        "grade": "B",
+        "base": 64.7,
+        "components": {
+          "chip": 68.1,
+          "momentum": 90.1,
+          "volume": 47.8,
+          "structure": 78.0,
+          "theme": 0.0
+        },
+        "source_count": 5,
+        "source_multiplier": 1.15,
+        "sources": [
+          "chips",
+          "momentum_candidates",
+          "stock_analysis",
+          "volume_pullback",
+          "volume_signal"
+        ],
+        "reasons": {
+          "chip": [
+            "大戶占比 44.2%",
+            "籌碼標籤加分"
+          ],
+          "momentum": [
+            "週漲 +16.7%"
+          ],
+          "volume": [
+            "量比 2.52x"
+          ],
+          "structure": [
+            "點火首日"
+          ],
+          "theme": []
+        }
+      }
     },
     {
       "stock_id": "6491",
@@ -1845,7 +3317,7 @@
         "chip_score": 10.0,
         "trend_score": 0.0
       },
-      "score": 77.0,
+      "score": 63.2,
       "source_count": 4,
       "risk_flags": [],
       "priority_level": "A",
@@ -1854,7 +3326,49 @@
         "大戶營收>=8",
         "籌碼>=6"
       ],
-      "focus_candidate": false
+      "focus_candidate": false,
+      "legacy_score": 77.0,
+      "unified_score": 63.2,
+      "unified_score_grade": "C",
+      "score_breakdown": {
+        "version": "unified_score_v1",
+        "total": 63.2,
+        "grade": "C",
+        "base": 55.0,
+        "components": {
+          "chip": 79.5,
+          "momentum": 52.1,
+          "volume": 42.4,
+          "structure": 68.0,
+          "theme": 0.0
+        },
+        "source_count": 5,
+        "source_multiplier": 1.15,
+        "sources": [
+          "chips",
+          "momentum_candidates",
+          "right_top_track",
+          "stock_analysis",
+          "volume_signal"
+        ],
+        "reasons": {
+          "chip": [
+            "大戶占比 53.6%",
+            "籌碼標籤加分"
+          ],
+          "momentum": [
+            "週漲 +6.4%",
+            "追蹤 +6.4%"
+          ],
+          "volume": [
+            "量比 2.24x"
+          ],
+          "structure": [
+            "點火首日"
+          ],
+          "theme": []
+        }
+      }
     },
     {
       "stock_id": "2937",
@@ -1886,7 +3400,7 @@
         "support_ok": true,
         "volume_cools": true
       },
-      "score": 73.0,
+      "score": 45.6,
       "source_count": 2,
       "risk_flags": [],
       "priority_level": "A",
@@ -1894,7 +3408,43 @@
       "priority_reason": [
         "量增回測再啟動"
       ],
-      "focus_candidate": true
+      "focus_candidate": true,
+      "legacy_score": 73.0,
+      "unified_score": 45.6,
+      "unified_score_grade": "D",
+      "score_breakdown": {
+        "version": "unified_score_v1",
+        "total": 45.6,
+        "grade": "D",
+        "base": 41.4,
+        "components": {
+          "chip": 0.0,
+          "momentum": 30.4,
+          "volume": 80.1,
+          "structure": 89.1,
+          "theme": 0.0
+        },
+        "source_count": 3,
+        "source_multiplier": 1.1,
+        "sources": [
+          "momentum_candidates",
+          "right_top_track",
+          "volume_pullback"
+        ],
+        "reasons": {
+          "chip": [],
+          "momentum": [
+            "追蹤 +0.5%"
+          ],
+          "volume": [
+            "量比 4.22x"
+          ],
+          "structure": [
+            "再啟動"
+          ],
+          "theme": []
+        }
+      }
     },
     {
       "stock_id": "8473",
@@ -1926,7 +3476,7 @@
         "support_ok": true,
         "volume_cools": true
       },
-      "score": 73.0,
+      "score": 49.0,
       "source_count": 2,
       "risk_flags": [],
       "priority_level": "A",
@@ -1934,7 +3484,43 @@
       "priority_reason": [
         "量增回測再啟動"
       ],
-      "focus_candidate": true
+      "focus_candidate": true,
+      "legacy_score": 73.0,
+      "unified_score": 49.0,
+      "unified_score_grade": "D",
+      "score_breakdown": {
+        "version": "unified_score_v1",
+        "total": 49.0,
+        "grade": "D",
+        "base": 44.5,
+        "components": {
+          "chip": 0.0,
+          "momentum": 41.2,
+          "volume": 87.0,
+          "structure": 84.0,
+          "theme": 0.0
+        },
+        "source_count": 3,
+        "source_multiplier": 1.1,
+        "sources": [
+          "momentum_candidates",
+          "right_top_track",
+          "volume_pullback"
+        ],
+        "reasons": {
+          "chip": [],
+          "momentum": [
+            "追蹤 +3.4%"
+          ],
+          "volume": [
+            "量比 4.58x"
+          ],
+          "structure": [
+            "再啟動"
+          ],
+          "theme": []
+        }
+      }
     },
     {
       "stock_id": "1409",
@@ -1977,7 +3563,7 @@
         "chip_score": 10.0,
         "trend_score": 0.7
       },
-      "score": 73.0,
+      "score": 60.5,
       "source_count": 4,
       "risk_flags": [],
       "priority_level": "A",
@@ -1986,7 +3572,49 @@
         "大戶營收>=8",
         "籌碼>=6"
       ],
-      "focus_candidate": false
+      "focus_candidate": false,
+      "legacy_score": 73.0,
+      "unified_score": 60.5,
+      "unified_score_grade": "C",
+      "score_breakdown": {
+        "version": "unified_score_v1",
+        "total": 60.5,
+        "grade": "C",
+        "base": 52.6,
+        "components": {
+          "chip": 85.2,
+          "momentum": 39.5,
+          "volume": 39.2,
+          "structure": 68.0,
+          "theme": 0.0
+        },
+        "source_count": 5,
+        "source_multiplier": 1.15,
+        "sources": [
+          "chips",
+          "momentum_candidates",
+          "right_top_track",
+          "stock_analysis",
+          "volume_signal"
+        ],
+        "reasons": {
+          "chip": [
+            "大戶占比 62.9%",
+            "籌碼標籤加分"
+          ],
+          "momentum": [
+            "週漲 +5.7%",
+            "追蹤 +0.3%"
+          ],
+          "volume": [
+            "量比 2.07x"
+          ],
+          "structure": [
+            "點火首日"
+          ],
+          "theme": []
+        }
+      }
     },
     {
       "stock_id": "2352",
@@ -2024,7 +3652,7 @@
         "chip_score": 8.5,
         "trend_score": 0.3
       },
-      "score": 73.0,
+      "score": 72.2,
       "source_count": 3,
       "risk_flags": [],
       "priority_level": "A",
@@ -2032,7 +3660,44 @@
       "priority_reason": [
         "多策略共振且點火量>=3x"
       ],
-      "focus_candidate": true
+      "focus_candidate": true,
+      "legacy_score": 73.0,
+      "unified_score": 72.2,
+      "unified_score_grade": "B",
+      "score_breakdown": {
+        "version": "unified_score_v1",
+        "total": 72.2,
+        "grade": "B",
+        "base": 62.8,
+        "components": {
+          "chip": 85.0,
+          "momentum": 40.7,
+          "volume": 78.0,
+          "structure": 79.0,
+          "theme": 0.0
+        },
+        "source_count": 4,
+        "source_multiplier": 1.15,
+        "sources": [
+          "momentum_candidates",
+          "right_top_track",
+          "stock_analysis",
+          "volume_pullback"
+        ],
+        "reasons": {
+          "chip": [],
+          "momentum": [
+            "追蹤 +3.3%"
+          ],
+          "volume": [
+            "量比 4.11x"
+          ],
+          "structure": [
+            "回穩觀察"
+          ],
+          "theme": []
+        }
+      }
     },
     {
       "stock_id": "3114",
@@ -2064,7 +3729,7 @@
         "support_ok": true,
         "volume_cools": true
       },
-      "score": 69.0,
+      "score": 47.7,
       "source_count": 2,
       "risk_flags": [],
       "priority_level": "A",
@@ -2072,7 +3737,45 @@
       "priority_reason": [
         "量增回測再啟動"
       ],
-      "focus_candidate": true
+      "focus_candidate": true,
+      "legacy_score": 69.0,
+      "unified_score": 47.7,
+      "unified_score_grade": "D",
+      "score_breakdown": {
+        "version": "unified_score_v1",
+        "total": 47.7,
+        "grade": "D",
+        "base": 43.3,
+        "components": {
+          "chip": 0.0,
+          "momentum": 38.7,
+          "volume": 49.1,
+          "structure": 87.8,
+          "theme": 62.8
+        },
+        "source_count": 3,
+        "source_multiplier": 1.1,
+        "sources": [
+          "momentum_candidates",
+          "right_top_track",
+          "volume_pullback"
+        ],
+        "reasons": {
+          "chip": [],
+          "momentum": [
+            "追蹤 +2.8%"
+          ],
+          "volume": [
+            "量比 2.59x"
+          ],
+          "structure": [
+            "再啟動"
+          ],
+          "theme": [
+            "電子零組件 62.8"
+          ]
+        }
+      }
     },
     {
       "stock_id": "2603",
@@ -2110,7 +3813,7 @@
         "chip_score": 10.0,
         "trend_score": 4.1
       },
-      "score": 67.0,
+      "score": 68.1,
       "source_count": 3,
       "risk_flags": [],
       "priority_level": "A",
@@ -2119,7 +3822,42 @@
         "大戶營收>=8",
         "籌碼>=6"
       ],
-      "focus_candidate": true
+      "focus_candidate": true,
+      "legacy_score": 67.0,
+      "unified_score": 68.1,
+      "unified_score_grade": "B",
+      "score_breakdown": {
+        "version": "unified_score_v1",
+        "total": 68.1,
+        "grade": "B",
+        "base": 59.2,
+        "components": {
+          "chip": 100.0,
+          "momentum": 15.8,
+          "volume": 69.3,
+          "structure": 82.2,
+          "theme": 0.0
+        },
+        "source_count": 4,
+        "source_multiplier": 1.15,
+        "sources": [
+          "momentum_candidates",
+          "right_top_track",
+          "stock_analysis",
+          "volume_pullback"
+        ],
+        "reasons": {
+          "chip": [],
+          "momentum": [],
+          "volume": [
+            "量比 3.65x"
+          ],
+          "structure": [
+            "回穩觀察"
+          ],
+          "theme": []
+        }
+      }
     },
     {
       "stock_id": "2233",
@@ -2151,7 +3889,7 @@
         "support_ok": true,
         "volume_cools": true
       },
-      "score": 66.0,
+      "score": 34.3,
       "source_count": 2,
       "risk_flags": [],
       "priority_level": "A",
@@ -2159,7 +3897,41 @@
       "priority_reason": [
         "量增回測再啟動"
       ],
-      "focus_candidate": true
+      "focus_candidate": true,
+      "legacy_score": 66.0,
+      "unified_score": 34.3,
+      "unified_score_grade": "D",
+      "score_breakdown": {
+        "version": "unified_score_v1",
+        "total": 34.3,
+        "grade": "D",
+        "base": 31.2,
+        "components": {
+          "chip": 0.0,
+          "momentum": 24.1,
+          "volume": 51.0,
+          "structure": 74.9,
+          "theme": 0.0
+        },
+        "source_count": 3,
+        "source_multiplier": 1.1,
+        "sources": [
+          "momentum_candidates",
+          "right_top_track",
+          "volume_pullback"
+        ],
+        "reasons": {
+          "chip": [],
+          "momentum": [],
+          "volume": [
+            "量比 2.69x"
+          ],
+          "structure": [
+            "再啟動"
+          ],
+          "theme": []
+        }
+      }
     },
     {
       "stock_id": "3444",
@@ -2191,7 +3963,7 @@
         "support_ok": true,
         "volume_cools": true
       },
-      "score": 66.0,
+      "score": 40.3,
       "source_count": 2,
       "risk_flags": [],
       "priority_level": "A",
@@ -2199,7 +3971,43 @@
       "priority_reason": [
         "量增回測再啟動"
       ],
-      "focus_candidate": true
+      "focus_candidate": true,
+      "legacy_score": 66.0,
+      "unified_score": 40.3,
+      "unified_score_grade": "D",
+      "score_breakdown": {
+        "version": "unified_score_v1",
+        "total": 40.3,
+        "grade": "D",
+        "base": 36.7,
+        "components": {
+          "chip": 0.0,
+          "momentum": 32.0,
+          "volume": 55.0,
+          "structure": 88.4,
+          "theme": 0.0
+        },
+        "source_count": 3,
+        "source_multiplier": 1.1,
+        "sources": [
+          "momentum_candidates",
+          "right_top_track",
+          "volume_pullback"
+        ],
+        "reasons": {
+          "chip": [],
+          "momentum": [
+            "追蹤 +0.9%"
+          ],
+          "volume": [
+            "量比 2.90x"
+          ],
+          "structure": [
+            "再啟動"
+          ],
+          "theme": []
+        }
+      }
     },
     {
       "stock_id": "4764",
@@ -2231,7 +4039,7 @@
         "support_ok": true,
         "volume_cools": true
       },
-      "score": 66.0,
+      "score": 32.2,
       "source_count": 2,
       "risk_flags": [],
       "priority_level": "A",
@@ -2239,7 +4047,41 @@
       "priority_reason": [
         "量增回測再啟動"
       ],
-      "focus_candidate": true
+      "focus_candidate": true,
+      "legacy_score": 66.0,
+      "unified_score": 32.2,
+      "unified_score_grade": "D",
+      "score_breakdown": {
+        "version": "unified_score_v1",
+        "total": 32.2,
+        "grade": "D",
+        "base": 29.3,
+        "components": {
+          "chip": 0.0,
+          "momentum": 13.8,
+          "volume": 48.9,
+          "structure": 80.2,
+          "theme": 0.0
+        },
+        "source_count": 3,
+        "source_multiplier": 1.1,
+        "sources": [
+          "momentum_candidates",
+          "right_top_track",
+          "volume_pullback"
+        ],
+        "reasons": {
+          "chip": [],
+          "momentum": [],
+          "volume": [
+            "量比 2.58x"
+          ],
+          "structure": [
+            "再啟動"
+          ],
+          "theme": []
+        }
+      }
     },
     {
       "stock_id": "6902",
@@ -2271,7 +4113,7 @@
         "support_ok": true,
         "volume_cools": true
       },
-      "score": 66.0,
+      "score": 36.7,
       "source_count": 2,
       "risk_flags": [],
       "priority_level": "A",
@@ -2279,7 +4121,43 @@
       "priority_reason": [
         "量增回測再啟動"
       ],
-      "focus_candidate": true
+      "focus_candidate": true,
+      "legacy_score": 66.0,
+      "unified_score": 36.7,
+      "unified_score_grade": "D",
+      "score_breakdown": {
+        "version": "unified_score_v1",
+        "total": 36.7,
+        "grade": "D",
+        "base": 33.3,
+        "components": {
+          "chip": 0.0,
+          "momentum": 36.5,
+          "volume": 48.9,
+          "structure": 72.2,
+          "theme": 0.0
+        },
+        "source_count": 3,
+        "source_multiplier": 1.1,
+        "sources": [
+          "momentum_candidates",
+          "right_top_track",
+          "volume_pullback"
+        ],
+        "reasons": {
+          "chip": [],
+          "momentum": [
+            "追蹤 +2.2%"
+          ],
+          "volume": [
+            "量比 2.58x"
+          ],
+          "structure": [
+            "再啟動"
+          ],
+          "theme": []
+        }
+      }
     },
     {
       "stock_id": "2618",
@@ -2316,7 +4194,7 @@
         "chip_score": 7.2,
         "trend_score": 1.5
       },
-      "score": 56.0,
+      "score": 59.8,
       "source_count": 3,
       "risk_flags": [],
       "priority_level": "A",
@@ -2325,7 +4203,47 @@
         "大戶營收>=8",
         "籌碼>=6"
       ],
-      "focus_candidate": false
+      "focus_candidate": false,
+      "legacy_score": 56.0,
+      "unified_score": 59.8,
+      "unified_score_grade": "C",
+      "score_breakdown": {
+        "version": "unified_score_v1",
+        "total": 59.8,
+        "grade": "C",
+        "base": 52.0,
+        "components": {
+          "chip": 87.3,
+          "momentum": 36.5,
+          "volume": 37.3,
+          "structure": 68.0,
+          "theme": 0.0
+        },
+        "source_count": 4,
+        "source_multiplier": 1.15,
+        "sources": [
+          "chips",
+          "momentum_candidates",
+          "stock_analysis",
+          "volume_signal"
+        ],
+        "reasons": {
+          "chip": [
+            "大戶占比 69.2%",
+            "籌碼標籤加分"
+          ],
+          "momentum": [
+            "週漲 +2.2%"
+          ],
+          "volume": [
+            "量比 1.97x"
+          ],
+          "structure": [
+            "點火首日"
+          ],
+          "theme": []
+        }
+      }
     },
     {
       "stock_id": "4306",
@@ -2364,7 +4282,7 @@
         "chip_score": 10.0,
         "trend_score": 4.3
       },
-      "score": 46.0,
+      "score": 36.6,
       "source_count": 3,
       "risk_flags": [],
       "priority_level": "A",
@@ -2373,7 +4291,43 @@
         "大戶營收>=8",
         "籌碼>=6"
       ],
-      "focus_candidate": false
+      "focus_candidate": false,
+      "legacy_score": 46.0,
+      "unified_score": 36.6,
+      "unified_score_grade": "D",
+      "score_breakdown": {
+        "version": "unified_score_v1",
+        "total": 36.6,
+        "grade": "D",
+        "base": 31.8,
+        "components": {
+          "chip": 74.3,
+          "momentum": 21.2,
+          "volume": 39.6,
+          "structure": 0.0,
+          "theme": 0.0
+        },
+        "source_count": 4,
+        "source_multiplier": 1.15,
+        "sources": [
+          "chips",
+          "momentum_candidates",
+          "right_top_track",
+          "stock_analysis"
+        ],
+        "reasons": {
+          "chip": [
+            "大戶占比 48.5%",
+            "籌碼標籤加分"
+          ],
+          "momentum": [],
+          "volume": [
+            "量比 2.09x"
+          ],
+          "structure": [],
+          "theme": []
+        }
+      }
     },
     {
       "stock_id": "2881",
@@ -2419,7 +4373,7 @@
         "support_ok": true,
         "volume_cools": false
       },
-      "score": 97.0,
+      "score": 66.3,
       "source_count": 4,
       "risk_flags": [],
       "priority_level": "B",
@@ -2427,7 +4381,48 @@
       "priority_reason": [
         "達觀察條件"
       ],
-      "focus_candidate": false
+      "focus_candidate": false,
+      "legacy_score": 97.0,
+      "unified_score": 66.3,
+      "unified_score_grade": "B",
+      "score_breakdown": {
+        "version": "unified_score_v1",
+        "total": 66.3,
+        "grade": "B",
+        "base": 57.7,
+        "components": {
+          "chip": 87.3,
+          "momentum": 40.5,
+          "volume": 50.6,
+          "structure": 78.0,
+          "theme": 0.0
+        },
+        "source_count": 5,
+        "source_multiplier": 1.15,
+        "sources": [
+          "chips",
+          "momentum_candidates",
+          "right_top_track",
+          "volume_pullback",
+          "volume_signal"
+        ],
+        "reasons": {
+          "chip": [
+            "大戶占比 83.6%",
+            "籌碼標籤加分"
+          ],
+          "momentum": [
+            "週漲 +6.5%"
+          ],
+          "volume": [
+            "量比 2.67x"
+          ],
+          "structure": [
+            "點火首日"
+          ],
+          "theme": []
+        }
+      }
     },
     {
       "stock_id": "3694",
@@ -2459,7 +4454,7 @@
         "support_ok": true,
         "volume_cools": true
       },
-      "score": 81.0,
+      "score": 62.0,
       "source_count": 2,
       "risk_flags": [],
       "priority_level": "B",
@@ -2467,7 +4462,45 @@
       "priority_reason": [
         "達觀察條件"
       ],
-      "focus_candidate": false
+      "focus_candidate": false,
+      "legacy_score": 81.0,
+      "unified_score": 62.0,
+      "unified_score_grade": "C",
+      "score_breakdown": {
+        "version": "unified_score_v1",
+        "total": 62.0,
+        "grade": "C",
+        "base": 56.3,
+        "components": {
+          "chip": 0.0,
+          "momentum": 59.3,
+          "volume": 95.0,
+          "structure": 79.1,
+          "theme": 67.0
+        },
+        "source_count": 3,
+        "source_multiplier": 1.1,
+        "sources": [
+          "momentum_candidates",
+          "right_top_track",
+          "volume_pullback"
+        ],
+        "reasons": {
+          "chip": [],
+          "momentum": [
+            "追蹤 +8.3%"
+          ],
+          "volume": [
+            "量比 5.94x"
+          ],
+          "structure": [
+            "回穩觀察"
+          ],
+          "theme": [
+            "網通 67.0"
+          ]
+        }
+      }
     },
     {
       "stock_id": "6214",
@@ -2508,7 +4541,7 @@
         "support_ok": true,
         "volume_cools": true
       },
-      "score": 78.0,
+      "score": 62.8,
       "source_count": 3,
       "risk_flags": [],
       "priority_level": "B",
@@ -2516,7 +4549,47 @@
       "priority_reason": [
         "達觀察條件"
       ],
-      "focus_candidate": false
+      "focus_candidate": false,
+      "legacy_score": 78.0,
+      "unified_score": 62.8,
+      "unified_score_grade": "C",
+      "score_breakdown": {
+        "version": "unified_score_v1",
+        "total": 62.8,
+        "grade": "C",
+        "base": 54.6,
+        "components": {
+          "chip": 73.5,
+          "momentum": 36.8,
+          "volume": 52.7,
+          "structure": 82.3,
+          "theme": 0.0
+        },
+        "source_count": 4,
+        "source_multiplier": 1.15,
+        "sources": [
+          "chips",
+          "momentum_candidates",
+          "right_top_track",
+          "volume_pullback"
+        ],
+        "reasons": {
+          "chip": [
+            "大戶占比 46.0%",
+            "籌碼標籤加分"
+          ],
+          "momentum": [
+            "週漲 +4.9%"
+          ],
+          "volume": [
+            "量比 2.78x"
+          ],
+          "structure": [
+            "回穩觀察"
+          ],
+          "theme": []
+        }
+      }
     },
     {
       "stock_id": "5484",
@@ -2548,7 +4621,7 @@
         "support_ok": true,
         "volume_cools": false
       },
-      "score": 77.0,
+      "score": 59.1,
       "source_count": 2,
       "risk_flags": [],
       "priority_level": "B",
@@ -2556,7 +4629,41 @@
       "priority_reason": [
         "達觀察條件"
       ],
-      "focus_candidate": false
+      "focus_candidate": false,
+      "legacy_score": 77.0,
+      "unified_score": 59.1,
+      "unified_score_grade": "C",
+      "score_breakdown": {
+        "version": "unified_score_v1",
+        "total": 59.1,
+        "grade": "C",
+        "base": 53.8,
+        "components": {
+          "chip": 0.0,
+          "momentum": 83.1,
+          "volume": 76.9,
+          "structure": 88.0,
+          "theme": 0.0
+        },
+        "source_count": 3,
+        "source_multiplier": 1.1,
+        "sources": [
+          "momentum_candidates",
+          "right_top_track",
+          "volume_pullback"
+        ],
+        "reasons": {
+          "chip": [],
+          "momentum": [
+            "追蹤 +14.8%"
+          ],
+          "volume": [
+            "量比 4.05x"
+          ],
+          "structure": [],
+          "theme": []
+        }
+      }
     },
     {
       "stock_id": "2355",
@@ -2588,7 +4695,7 @@
         "support_ok": true,
         "volume_cools": true
       },
-      "score": 76.0,
+      "score": 52.4,
       "source_count": 2,
       "risk_flags": [],
       "priority_level": "B",
@@ -2596,7 +4703,43 @@
       "priority_reason": [
         "達觀察條件"
       ],
-      "focus_candidate": false
+      "focus_candidate": false,
+      "legacy_score": 76.0,
+      "unified_score": 52.4,
+      "unified_score_grade": "C",
+      "score_breakdown": {
+        "version": "unified_score_v1",
+        "total": 52.4,
+        "grade": "C",
+        "base": 47.7,
+        "components": {
+          "chip": 0.0,
+          "momentum": 75.9,
+          "volume": 78.2,
+          "structure": 65.2,
+          "theme": 0.0
+        },
+        "source_count": 3,
+        "source_multiplier": 1.1,
+        "sources": [
+          "momentum_candidates",
+          "right_top_track",
+          "volume_pullback"
+        ],
+        "reasons": {
+          "chip": [],
+          "momentum": [
+            "追蹤 +12.8%"
+          ],
+          "volume": [
+            "量比 4.12x"
+          ],
+          "structure": [
+            "回穩觀察"
+          ],
+          "theme": []
+        }
+      }
     },
     {
       "stock_id": "2401",
@@ -2628,7 +4771,7 @@
         "support_ok": true,
         "volume_cools": true
       },
-      "score": 76.0,
+      "score": 45.2,
       "source_count": 2,
       "risk_flags": [],
       "priority_level": "B",
@@ -2636,7 +4779,43 @@
       "priority_reason": [
         "達觀察條件"
       ],
-      "focus_candidate": false
+      "focus_candidate": false,
+      "legacy_score": 76.0,
+      "unified_score": 45.2,
+      "unified_score_grade": "D",
+      "score_breakdown": {
+        "version": "unified_score_v1",
+        "total": 45.2,
+        "grade": "D",
+        "base": 41.0,
+        "components": {
+          "chip": 0.0,
+          "momentum": 35.4,
+          "volume": 81.7,
+          "structure": 79.3,
+          "theme": 0.0
+        },
+        "source_count": 3,
+        "source_multiplier": 1.1,
+        "sources": [
+          "momentum_candidates",
+          "right_top_track",
+          "volume_pullback"
+        ],
+        "reasons": {
+          "chip": [],
+          "momentum": [
+            "追蹤 +1.9%"
+          ],
+          "volume": [
+            "量比 4.30x"
+          ],
+          "structure": [
+            "回穩觀察"
+          ],
+          "theme": []
+        }
+      }
     },
     {
       "stock_id": "3490",
@@ -2668,7 +4847,7 @@
         "support_ok": true,
         "volume_cools": true
       },
-      "score": 76.0,
+      "score": 48.8,
       "source_count": 2,
       "risk_flags": [],
       "priority_level": "B",
@@ -2676,7 +4855,43 @@
       "priority_reason": [
         "達觀察條件"
       ],
-      "focus_candidate": false
+      "focus_candidate": false,
+      "legacy_score": 76.0,
+      "unified_score": 48.8,
+      "unified_score_grade": "D",
+      "score_breakdown": {
+        "version": "unified_score_v1",
+        "total": 48.8,
+        "grade": "D",
+        "base": 44.4,
+        "components": {
+          "chip": 0.0,
+          "momentum": 66.6,
+          "volume": 62.8,
+          "structure": 75.8,
+          "theme": 0.0
+        },
+        "source_count": 3,
+        "source_multiplier": 1.1,
+        "sources": [
+          "momentum_candidates",
+          "right_top_track",
+          "volume_pullback"
+        ],
+        "reasons": {
+          "chip": [],
+          "momentum": [
+            "追蹤 +10.3%"
+          ],
+          "volume": [
+            "量比 3.31x"
+          ],
+          "structure": [
+            "回穩觀察"
+          ],
+          "theme": []
+        }
+      }
     },
     {
       "stock_id": "5488",
@@ -2708,7 +4923,7 @@
         "support_ok": true,
         "volume_cools": true
       },
-      "score": 76.0,
+      "score": 49.7,
       "source_count": 2,
       "risk_flags": [],
       "priority_level": "B",
@@ -2716,7 +4931,43 @@
       "priority_reason": [
         "達觀察條件"
       ],
-      "focus_candidate": false
+      "focus_candidate": false,
+      "legacy_score": 76.0,
+      "unified_score": 49.7,
+      "unified_score_grade": "D",
+      "score_breakdown": {
+        "version": "unified_score_v1",
+        "total": 49.7,
+        "grade": "D",
+        "base": 45.2,
+        "components": {
+          "chip": 0.0,
+          "momentum": 68.2,
+          "volume": 58.4,
+          "structure": 82.3,
+          "theme": 0.0
+        },
+        "source_count": 3,
+        "source_multiplier": 1.1,
+        "sources": [
+          "momentum_candidates",
+          "right_top_track",
+          "volume_pullback"
+        ],
+        "reasons": {
+          "chip": [],
+          "momentum": [
+            "追蹤 +10.8%"
+          ],
+          "volume": [
+            "量比 3.08x"
+          ],
+          "structure": [
+            "回穩觀察"
+          ],
+          "theme": []
+        }
+      }
     },
     {
       "stock_id": "6155",
@@ -2748,7 +4999,7 @@
         "support_ok": true,
         "volume_cools": true
       },
-      "score": 76.0,
+      "score": 44.1,
       "source_count": 2,
       "risk_flags": [],
       "priority_level": "B",
@@ -2756,7 +5007,43 @@
       "priority_reason": [
         "達觀察條件"
       ],
-      "focus_candidate": false
+      "focus_candidate": false,
+      "legacy_score": 76.0,
+      "unified_score": 44.1,
+      "unified_score_grade": "D",
+      "score_breakdown": {
+        "version": "unified_score_v1",
+        "total": 44.1,
+        "grade": "D",
+        "base": 40.1,
+        "components": {
+          "chip": 0.0,
+          "momentum": 51.6,
+          "volume": 57.9,
+          "structure": 77.9,
+          "theme": 0.0
+        },
+        "source_count": 3,
+        "source_multiplier": 1.1,
+        "sources": [
+          "momentum_candidates",
+          "right_top_track",
+          "volume_pullback"
+        ],
+        "reasons": {
+          "chip": [],
+          "momentum": [
+            "追蹤 +6.3%"
+          ],
+          "volume": [
+            "量比 3.05x"
+          ],
+          "structure": [
+            "回穩觀察"
+          ],
+          "theme": []
+        }
+      }
     },
     {
       "stock_id": "3025",
@@ -2788,7 +5075,7 @@
         "support_ok": true,
         "volume_cools": false
       },
-      "score": 74.0,
+      "score": 68.2,
       "source_count": 2,
       "risk_flags": [],
       "priority_level": "B",
@@ -2796,7 +5083,43 @@
       "priority_reason": [
         "達觀察條件"
       ],
-      "focus_candidate": false
+      "focus_candidate": false,
+      "legacy_score": 74.0,
+      "unified_score": 68.2,
+      "unified_score_grade": "B",
+      "score_breakdown": {
+        "version": "unified_score_v1",
+        "total": 68.2,
+        "grade": "B",
+        "base": 62.0,
+        "components": {
+          "chip": 0.0,
+          "momentum": 69.1,
+          "volume": 95.0,
+          "structure": 88.0,
+          "theme": 80.9
+        },
+        "source_count": 3,
+        "source_multiplier": 1.1,
+        "sources": [
+          "momentum_candidates",
+          "right_top_track",
+          "volume_pullback"
+        ],
+        "reasons": {
+          "chip": [],
+          "momentum": [
+            "追蹤 +11.0%"
+          ],
+          "volume": [
+            "量比 7.54x"
+          ],
+          "structure": [],
+          "theme": [
+            "網通 80.9"
+          ]
+        }
+      }
     },
     {
       "stock_id": "6194",
@@ -2828,7 +5151,7 @@
         "support_ok": true,
         "volume_cools": true
       },
-      "score": 73.0,
+      "score": 56.9,
       "source_count": 2,
       "risk_flags": [],
       "priority_level": "B",
@@ -2836,7 +5159,45 @@
       "priority_reason": [
         "達觀察條件"
       ],
-      "focus_candidate": false
+      "focus_candidate": false,
+      "legacy_score": 73.0,
+      "unified_score": 56.9,
+      "unified_score_grade": "C",
+      "score_breakdown": {
+        "version": "unified_score_v1",
+        "total": 56.9,
+        "grade": "C",
+        "base": 51.7,
+        "components": {
+          "chip": 0.0,
+          "momentum": 43.2,
+          "volume": 95.0,
+          "structure": 76.0,
+          "theme": 67.0
+        },
+        "source_count": 3,
+        "source_multiplier": 1.1,
+        "sources": [
+          "momentum_candidates",
+          "right_top_track",
+          "volume_pullback"
+        ],
+        "reasons": {
+          "chip": [],
+          "momentum": [
+            "追蹤 +4.0%"
+          ],
+          "volume": [
+            "量比 11.57x"
+          ],
+          "structure": [
+            "回穩觀察"
+          ],
+          "theme": [
+            "電子零組件 67.0"
+          ]
+        }
+      }
     },
     {
       "stock_id": "1533",
@@ -2868,7 +5229,7 @@
         "support_ok": true,
         "volume_cools": true
       },
-      "score": 70.0,
+      "score": 35.4,
       "source_count": 2,
       "risk_flags": [],
       "priority_level": "B",
@@ -2876,7 +5237,41 @@
       "priority_reason": [
         "達觀察條件"
       ],
-      "focus_candidate": false
+      "focus_candidate": false,
+      "legacy_score": 70.0,
+      "unified_score": 35.4,
+      "unified_score_grade": "D",
+      "score_breakdown": {
+        "version": "unified_score_v1",
+        "total": 35.4,
+        "grade": "D",
+        "base": 32.2,
+        "components": {
+          "chip": 0.0,
+          "momentum": 17.4,
+          "volume": 61.5,
+          "structure": 77.7,
+          "theme": 0.0
+        },
+        "source_count": 3,
+        "source_multiplier": 1.1,
+        "sources": [
+          "momentum_candidates",
+          "right_top_track",
+          "volume_pullback"
+        ],
+        "reasons": {
+          "chip": [],
+          "momentum": [],
+          "volume": [
+            "量比 3.24x"
+          ],
+          "structure": [
+            "回穩觀察"
+          ],
+          "theme": []
+        }
+      }
     },
     {
       "stock_id": "4555",
@@ -2908,7 +5303,7 @@
         "support_ok": true,
         "volume_cools": false
       },
-      "score": 69.0,
+      "score": 49.5,
       "source_count": 2,
       "risk_flags": [],
       "priority_level": "B",
@@ -2916,7 +5311,41 @@
       "priority_reason": [
         "達觀察條件"
       ],
-      "focus_candidate": false
+      "focus_candidate": false,
+      "legacy_score": 69.0,
+      "unified_score": 49.5,
+      "unified_score_grade": "D",
+      "score_breakdown": {
+        "version": "unified_score_v1",
+        "total": 49.5,
+        "grade": "D",
+        "base": 45.0,
+        "components": {
+          "chip": 0.0,
+          "momentum": 49.3,
+          "volume": 75.4,
+          "structure": 88.0,
+          "theme": 0.0
+        },
+        "source_count": 3,
+        "source_multiplier": 1.1,
+        "sources": [
+          "momentum_candidates",
+          "right_top_track",
+          "volume_pullback"
+        ],
+        "reasons": {
+          "chip": [],
+          "momentum": [
+            "追蹤 +5.6%"
+          ],
+          "volume": [
+            "量比 3.97x"
+          ],
+          "structure": [],
+          "theme": []
+        }
+      }
     },
     {
       "stock_id": "4908",
@@ -2948,7 +5377,7 @@
         "support_ok": true,
         "volume_cools": false
       },
-      "score": 69.0,
+      "score": 55.4,
       "source_count": 2,
       "risk_flags": [],
       "priority_level": "B",
@@ -2956,7 +5385,43 @@
       "priority_reason": [
         "達觀察條件"
       ],
-      "focus_candidate": false
+      "focus_candidate": false,
+      "legacy_score": 69.0,
+      "unified_score": 55.4,
+      "unified_score_grade": "C",
+      "score_breakdown": {
+        "version": "unified_score_v1",
+        "total": 55.4,
+        "grade": "C",
+        "base": 50.4,
+        "components": {
+          "chip": 0.0,
+          "momentum": 55.5,
+          "volume": 67.2,
+          "structure": 88.0,
+          "theme": 54.7
+        },
+        "source_count": 3,
+        "source_multiplier": 1.1,
+        "sources": [
+          "momentum_candidates",
+          "right_top_track",
+          "volume_pullback"
+        ],
+        "reasons": {
+          "chip": [],
+          "momentum": [
+            "追蹤 +7.3%"
+          ],
+          "volume": [
+            "量比 3.54x"
+          ],
+          "structure": [],
+          "theme": [
+            "網通 54.7"
+          ]
+        }
+      }
     },
     {
       "stock_id": "6695",
@@ -2988,7 +5453,7 @@
         "support_ok": true,
         "volume_cools": false
       },
-      "score": 69.0,
+      "score": 43.6,
       "source_count": 2,
       "risk_flags": [],
       "priority_level": "B",
@@ -2996,7 +5461,39 @@
       "priority_reason": [
         "達觀察條件"
       ],
-      "focus_candidate": false
+      "focus_candidate": false,
+      "legacy_score": 69.0,
+      "unified_score": 43.6,
+      "unified_score_grade": "D",
+      "score_breakdown": {
+        "version": "unified_score_v1",
+        "total": 43.6,
+        "grade": "D",
+        "base": 39.6,
+        "components": {
+          "chip": 0.0,
+          "momentum": 28.5,
+          "volume": 74.4,
+          "structure": 88.0,
+          "theme": 0.0
+        },
+        "source_count": 3,
+        "source_multiplier": 1.1,
+        "sources": [
+          "momentum_candidates",
+          "right_top_track",
+          "volume_pullback"
+        ],
+        "reasons": {
+          "chip": [],
+          "momentum": [],
+          "volume": [
+            "量比 3.92x"
+          ],
+          "structure": [],
+          "theme": []
+        }
+      }
     },
     {
       "stock_id": "8050",
@@ -3028,7 +5525,7 @@
         "support_ok": true,
         "volume_cools": false
       },
-      "score": 69.0,
+      "score": 39.9,
       "source_count": 2,
       "risk_flags": [],
       "priority_level": "B",
@@ -3036,7 +5533,39 @@
       "priority_reason": [
         "達觀察條件"
       ],
-      "focus_candidate": false
+      "focus_candidate": false,
+      "legacy_score": 69.0,
+      "unified_score": 39.9,
+      "unified_score_grade": "D",
+      "score_breakdown": {
+        "version": "unified_score_v1",
+        "total": 39.9,
+        "grade": "D",
+        "base": 36.3,
+        "components": {
+          "chip": 0.0,
+          "momentum": 28.5,
+          "volume": 57.7,
+          "structure": 88.0,
+          "theme": 0.0
+        },
+        "source_count": 3,
+        "source_multiplier": 1.1,
+        "sources": [
+          "momentum_candidates",
+          "right_top_track",
+          "volume_pullback"
+        ],
+        "reasons": {
+          "chip": [],
+          "momentum": [],
+          "volume": [
+            "量比 3.04x"
+          ],
+          "structure": [],
+          "theme": []
+        }
+      }
     },
     {
       "stock_id": "8249",
@@ -3068,7 +5597,7 @@
         "support_ok": true,
         "volume_cools": false
       },
-      "score": 69.0,
+      "score": 60.7,
       "source_count": 2,
       "risk_flags": [],
       "priority_level": "B",
@@ -3076,7 +5605,41 @@
       "priority_reason": [
         "達觀察條件"
       ],
-      "focus_candidate": false
+      "focus_candidate": false,
+      "legacy_score": 69.0,
+      "unified_score": 60.7,
+      "unified_score_grade": "C",
+      "score_breakdown": {
+        "version": "unified_score_v1",
+        "total": 60.7,
+        "grade": "C",
+        "base": 55.2,
+        "components": {
+          "chip": 0.0,
+          "momentum": 81.4,
+          "volume": 86.2,
+          "structure": 88.0,
+          "theme": 0.0
+        },
+        "source_count": 3,
+        "source_multiplier": 1.1,
+        "sources": [
+          "momentum_candidates",
+          "right_top_track",
+          "volume_pullback"
+        ],
+        "reasons": {
+          "chip": [],
+          "momentum": [
+            "追蹤 +14.3%"
+          ],
+          "volume": [
+            "量比 4.54x"
+          ],
+          "structure": [],
+          "theme": []
+        }
+      }
     },
     {
       "stock_id": "2397",
@@ -3108,7 +5671,7 @@
         "support_ok": true,
         "volume_cools": true
       },
-      "score": 69.0,
+      "score": 42.4,
       "source_count": 2,
       "risk_flags": [],
       "priority_level": "B",
@@ -3116,7 +5679,43 @@
       "priority_reason": [
         "達觀察條件"
       ],
-      "focus_candidate": false
+      "focus_candidate": false,
+      "legacy_score": 69.0,
+      "unified_score": 42.4,
+      "unified_score_grade": "D",
+      "score_breakdown": {
+        "version": "unified_score_v1",
+        "total": 42.4,
+        "grade": "D",
+        "base": 38.5,
+        "components": {
+          "chip": 0.0,
+          "momentum": 48.0,
+          "volume": 52.3,
+          "structure": 80.3,
+          "theme": 0.0
+        },
+        "source_count": 3,
+        "source_multiplier": 1.1,
+        "sources": [
+          "momentum_candidates",
+          "right_top_track",
+          "volume_pullback"
+        ],
+        "reasons": {
+          "chip": [],
+          "momentum": [
+            "追蹤 +5.3%"
+          ],
+          "volume": [
+            "量比 2.76x"
+          ],
+          "structure": [
+            "回穩觀察"
+          ],
+          "theme": []
+        }
+      }
     },
     {
       "stock_id": "3663",
@@ -3148,7 +5747,7 @@
         "support_ok": true,
         "volume_cools": true
       },
-      "score": 69.0,
+      "score": 44.8,
       "source_count": 2,
       "risk_flags": [],
       "priority_level": "B",
@@ -3156,7 +5755,43 @@
       "priority_reason": [
         "達觀察條件"
       ],
-      "focus_candidate": false
+      "focus_candidate": false,
+      "legacy_score": 69.0,
+      "unified_score": 44.8,
+      "unified_score_grade": "D",
+      "score_breakdown": {
+        "version": "unified_score_v1",
+        "total": 44.8,
+        "grade": "D",
+        "base": 40.7,
+        "components": {
+          "chip": 0.0,
+          "momentum": 62.5,
+          "volume": 51.4,
+          "structure": 73.9,
+          "theme": 0.0
+        },
+        "source_count": 3,
+        "source_multiplier": 1.1,
+        "sources": [
+          "momentum_candidates",
+          "right_top_track",
+          "volume_pullback"
+        ],
+        "reasons": {
+          "chip": [],
+          "momentum": [
+            "追蹤 +9.2%"
+          ],
+          "volume": [
+            "量比 2.71x"
+          ],
+          "structure": [
+            "回穩觀察"
+          ],
+          "theme": []
+        }
+      }
     },
     {
       "stock_id": "5236",
@@ -3188,7 +5823,7 @@
         "support_ok": true,
         "volume_cools": true
       },
-      "score": 69.0,
+      "score": 37.8,
       "source_count": 2,
       "risk_flags": [],
       "priority_level": "B",
@@ -3196,7 +5831,43 @@
       "priority_reason": [
         "達觀察條件"
       ],
-      "focus_candidate": false
+      "focus_candidate": false,
+      "legacy_score": 69.0,
+      "unified_score": 37.8,
+      "unified_score_grade": "D",
+      "score_breakdown": {
+        "version": "unified_score_v1",
+        "total": 37.8,
+        "grade": "D",
+        "base": 34.4,
+        "components": {
+          "chip": 0.0,
+          "momentum": 37.7,
+          "volume": 55.4,
+          "structure": 69.3,
+          "theme": 0.0
+        },
+        "source_count": 3,
+        "source_multiplier": 1.1,
+        "sources": [
+          "momentum_candidates",
+          "right_top_track",
+          "volume_pullback"
+        ],
+        "reasons": {
+          "chip": [],
+          "momentum": [
+            "追蹤 +2.5%"
+          ],
+          "volume": [
+            "量比 2.92x"
+          ],
+          "structure": [
+            "回穩觀察"
+          ],
+          "theme": []
+        }
+      }
     },
     {
       "stock_id": "5328",
@@ -3228,7 +5899,7 @@
         "support_ok": true,
         "volume_cools": true
       },
-      "score": 69.0,
+      "score": 51.7,
       "source_count": 2,
       "risk_flags": [],
       "priority_level": "B",
@@ -3236,7 +5907,43 @@
       "priority_reason": [
         "達觀察條件"
       ],
-      "focus_candidate": false
+      "focus_candidate": false,
+      "legacy_score": 69.0,
+      "unified_score": 51.7,
+      "unified_score_grade": "C",
+      "score_breakdown": {
+        "version": "unified_score_v1",
+        "total": 51.7,
+        "grade": "C",
+        "base": 47.0,
+        "components": {
+          "chip": 0.0,
+          "momentum": 81.1,
+          "volume": 51.4,
+          "structure": 82.0,
+          "theme": 0.0
+        },
+        "source_count": 3,
+        "source_multiplier": 1.1,
+        "sources": [
+          "momentum_candidates",
+          "right_top_track",
+          "volume_pullback"
+        ],
+        "reasons": {
+          "chip": [],
+          "momentum": [
+            "追蹤 +14.2%"
+          ],
+          "volume": [
+            "量比 2.71x"
+          ],
+          "structure": [
+            "回穩觀察"
+          ],
+          "theme": []
+        }
+      }
     },
     {
       "stock_id": "6174",
@@ -3268,7 +5975,7 @@
         "support_ok": true,
         "volume_cools": true
       },
-      "score": 69.0,
+      "score": 35.3,
       "source_count": 2,
       "risk_flags": [],
       "priority_level": "B",
@@ -3276,7 +5983,43 @@
       "priority_reason": [
         "達觀察條件"
       ],
-      "focus_candidate": false
+      "focus_candidate": false,
+      "legacy_score": 69.0,
+      "unified_score": 35.3,
+      "unified_score_grade": "D",
+      "score_breakdown": {
+        "version": "unified_score_v1",
+        "total": 35.3,
+        "grade": "D",
+        "base": 32.1,
+        "components": {
+          "chip": 0.0,
+          "momentum": 32.0,
+          "volume": 56.7,
+          "structure": 63.6,
+          "theme": 0.0
+        },
+        "source_count": 3,
+        "source_multiplier": 1.1,
+        "sources": [
+          "momentum_candidates",
+          "right_top_track",
+          "volume_pullback"
+        ],
+        "reasons": {
+          "chip": [],
+          "momentum": [
+            "追蹤 +1.0%"
+          ],
+          "volume": [
+            "量比 2.99x"
+          ],
+          "structure": [
+            "回穩觀察"
+          ],
+          "theme": []
+        }
+      }
     },
     {
       "stock_id": "6175",
@@ -3308,7 +6051,7 @@
         "support_ok": true,
         "volume_cools": true
       },
-      "score": 69.0,
+      "score": 48.3,
       "source_count": 2,
       "risk_flags": [],
       "priority_level": "B",
@@ -3316,7 +6059,43 @@
       "priority_reason": [
         "達觀察條件"
       ],
-      "focus_candidate": false
+      "focus_candidate": false,
+      "legacy_score": 69.0,
+      "unified_score": 48.3,
+      "unified_score_grade": "D",
+      "score_breakdown": {
+        "version": "unified_score_v1",
+        "total": 48.3,
+        "grade": "D",
+        "base": 43.9,
+        "components": {
+          "chip": 0.0,
+          "momentum": 79.3,
+          "volume": 52.9,
+          "structure": 67.6,
+          "theme": 0.0
+        },
+        "source_count": 3,
+        "source_multiplier": 1.1,
+        "sources": [
+          "momentum_candidates",
+          "right_top_track",
+          "volume_pullback"
+        ],
+        "reasons": {
+          "chip": [],
+          "momentum": [
+            "追蹤 +13.7%"
+          ],
+          "volume": [
+            "量比 2.79x"
+          ],
+          "structure": [
+            "回穩觀察"
+          ],
+          "theme": []
+        }
+      }
     },
     {
       "stock_id": "6432",
@@ -3348,7 +6127,7 @@
         "support_ok": true,
         "volume_cools": true
       },
-      "score": 69.0,
+      "score": 55.9,
       "source_count": 2,
       "risk_flags": [],
       "priority_level": "B",
@@ -3356,7 +6135,45 @@
       "priority_reason": [
         "達觀察條件"
       ],
-      "focus_candidate": false
+      "focus_candidate": false,
+      "legacy_score": 69.0,
+      "unified_score": 55.9,
+      "unified_score_grade": "C",
+      "score_breakdown": {
+        "version": "unified_score_v1",
+        "total": 55.9,
+        "grade": "C",
+        "base": 50.8,
+        "components": {
+          "chip": 0.0,
+          "momentum": 74.7,
+          "volume": 48.3,
+          "structure": 75.6,
+          "theme": 73.3
+        },
+        "source_count": 3,
+        "source_multiplier": 1.1,
+        "sources": [
+          "momentum_candidates",
+          "right_top_track",
+          "volume_pullback"
+        ],
+        "reasons": {
+          "chip": [],
+          "momentum": [
+            "追蹤 +12.5%"
+          ],
+          "volume": [
+            "量比 2.55x"
+          ],
+          "structure": [
+            "回穩觀察"
+          ],
+          "theme": [
+            "電子零組件 73.3"
+          ]
+        }
+      }
     },
     {
       "stock_id": "8043",
@@ -3388,7 +6205,7 @@
         "support_ok": true,
         "volume_cools": true
       },
-      "score": 69.0,
+      "score": 49.7,
       "source_count": 2,
       "risk_flags": [],
       "priority_level": "B",
@@ -3396,7 +6213,45 @@
       "priority_reason": [
         "達觀察條件"
       ],
-      "focus_candidate": false
+      "focus_candidate": false,
+      "legacy_score": 69.0,
+      "unified_score": 49.7,
+      "unified_score_grade": "D",
+      "score_breakdown": {
+        "version": "unified_score_v1",
+        "total": 49.7,
+        "grade": "D",
+        "base": 45.2,
+        "components": {
+          "chip": 0.0,
+          "momentum": 52.9,
+          "volume": 51.6,
+          "structure": 73.1,
+          "theme": 69.9
+        },
+        "source_count": 3,
+        "source_multiplier": 1.1,
+        "sources": [
+          "momentum_candidates",
+          "right_top_track",
+          "volume_pullback"
+        ],
+        "reasons": {
+          "chip": [],
+          "momentum": [
+            "追蹤 +6.6%"
+          ],
+          "volume": [
+            "量比 2.72x"
+          ],
+          "structure": [
+            "回穩觀察"
+          ],
+          "theme": [
+            "被動元件 69.9"
+          ]
+        }
+      }
     },
     {
       "stock_id": "2453",
@@ -3428,7 +6283,7 @@
         "support_ok": true,
         "volume_cools": false
       },
-      "score": 68.0,
+      "score": 55.9,
       "source_count": 2,
       "risk_flags": [],
       "priority_level": "B",
@@ -3436,7 +6291,41 @@
       "priority_reason": [
         "達觀察條件"
       ],
-      "focus_candidate": false
+      "focus_candidate": false,
+      "legacy_score": 68.0,
+      "unified_score": 55.9,
+      "unified_score_grade": "C",
+      "score_breakdown": {
+        "version": "unified_score_v1",
+        "total": 55.9,
+        "grade": "C",
+        "base": 50.8,
+        "components": {
+          "chip": 0.0,
+          "momentum": 56.9,
+          "volume": 95.0,
+          "structure": 88.0,
+          "theme": 0.0
+        },
+        "source_count": 3,
+        "source_multiplier": 1.1,
+        "sources": [
+          "momentum_candidates",
+          "right_top_track",
+          "volume_pullback"
+        ],
+        "reasons": {
+          "chip": [],
+          "momentum": [
+            "追蹤 +7.7%"
+          ],
+          "volume": [
+            "量比 8.98x"
+          ],
+          "structure": [],
+          "theme": []
+        }
+      }
     },
     {
       "stock_id": "5011",
@@ -3468,7 +6357,7 @@
         "support_ok": true,
         "volume_cools": false
       },
-      "score": 68.0,
+      "score": 58.1,
       "source_count": 2,
       "risk_flags": [],
       "priority_level": "B",
@@ -3476,7 +6365,41 @@
       "priority_reason": [
         "達觀察條件"
       ],
-      "focus_candidate": false
+      "focus_candidate": false,
+      "legacy_score": 68.0,
+      "unified_score": 58.1,
+      "unified_score_grade": "C",
+      "score_breakdown": {
+        "version": "unified_score_v1",
+        "total": 58.1,
+        "grade": "C",
+        "base": 52.9,
+        "components": {
+          "chip": 0.0,
+          "momentum": 65.0,
+          "volume": 95.0,
+          "structure": 88.0,
+          "theme": 0.0
+        },
+        "source_count": 3,
+        "source_multiplier": 1.1,
+        "sources": [
+          "momentum_candidates",
+          "right_top_track",
+          "volume_pullback"
+        ],
+        "reasons": {
+          "chip": [],
+          "momentum": [
+            "追蹤 +9.9%"
+          ],
+          "volume": [
+            "量比 5.44x"
+          ],
+          "structure": [],
+          "theme": []
+        }
+      }
     },
     {
       "stock_id": "1582",
@@ -3508,7 +6431,7 @@
         "support_ok": true,
         "volume_cools": true
       },
-      "score": 68.0,
+      "score": 38.1,
       "source_count": 2,
       "risk_flags": [],
       "priority_level": "B",
@@ -3516,7 +6439,41 @@
       "priority_reason": [
         "達觀察條件"
       ],
-      "focus_candidate": false
+      "focus_candidate": false,
+      "legacy_score": 68.0,
+      "unified_score": 38.1,
+      "unified_score_grade": "D",
+      "score_breakdown": {
+        "version": "unified_score_v1",
+        "total": 38.1,
+        "grade": "D",
+        "base": 34.6,
+        "components": {
+          "chip": 0.0,
+          "momentum": 11.1,
+          "volume": 83.6,
+          "structure": 75.6,
+          "theme": 0.0
+        },
+        "source_count": 3,
+        "source_multiplier": 1.1,
+        "sources": [
+          "momentum_candidates",
+          "right_top_track",
+          "volume_pullback"
+        ],
+        "reasons": {
+          "chip": [],
+          "momentum": [],
+          "volume": [
+            "量比 4.40x"
+          ],
+          "structure": [
+            "回穩觀察"
+          ],
+          "theme": []
+        }
+      }
     },
     {
       "stock_id": "2488",
@@ -3548,7 +6505,7 @@
         "support_ok": true,
         "volume_cools": true
       },
-      "score": 68.0,
+      "score": 38.6,
       "source_count": 2,
       "risk_flags": [],
       "priority_level": "B",
@@ -3556,7 +6513,41 @@
       "priority_reason": [
         "達觀察條件"
       ],
-      "focus_candidate": false
+      "focus_candidate": false,
+      "legacy_score": 68.0,
+      "unified_score": 38.6,
+      "unified_score_grade": "D",
+      "score_breakdown": {
+        "version": "unified_score_v1",
+        "total": 38.6,
+        "grade": "D",
+        "base": 35.1,
+        "components": {
+          "chip": 0.0,
+          "momentum": 20.3,
+          "volume": 70.8,
+          "structure": 79.1,
+          "theme": 0.0
+        },
+        "source_count": 3,
+        "source_multiplier": 1.1,
+        "sources": [
+          "momentum_candidates",
+          "right_top_track",
+          "volume_pullback"
+        ],
+        "reasons": {
+          "chip": [],
+          "momentum": [],
+          "volume": [
+            "量比 3.73x"
+          ],
+          "structure": [
+            "回穩觀察"
+          ],
+          "theme": []
+        }
+      }
     },
     {
       "stock_id": "3041",
@@ -3588,7 +6579,7 @@
         "support_ok": true,
         "volume_cools": true
       },
-      "score": 68.0,
+      "score": 35.7,
       "source_count": 2,
       "risk_flags": [],
       "priority_level": "B",
@@ -3596,7 +6587,41 @@
       "priority_reason": [
         "達觀察條件"
       ],
-      "focus_candidate": false
+      "focus_candidate": false,
+      "legacy_score": 68.0,
+      "unified_score": 35.7,
+      "unified_score_grade": "D",
+      "score_breakdown": {
+        "version": "unified_score_v1",
+        "total": 35.7,
+        "grade": "D",
+        "base": 32.5,
+        "components": {
+          "chip": 0.0,
+          "momentum": 18.3,
+          "volume": 61.3,
+          "structure": 78.2,
+          "theme": 0.0
+        },
+        "source_count": 3,
+        "source_multiplier": 1.1,
+        "sources": [
+          "momentum_candidates",
+          "right_top_track",
+          "volume_pullback"
+        ],
+        "reasons": {
+          "chip": [],
+          "momentum": [],
+          "volume": [
+            "量比 3.23x"
+          ],
+          "structure": [
+            "回穩觀察"
+          ],
+          "theme": []
+        }
+      }
     },
     {
       "stock_id": "3714",
@@ -3628,7 +6653,7 @@
         "support_ok": true,
         "volume_cools": true
       },
-      "score": 68.0,
+      "score": 36.4,
       "source_count": 2,
       "risk_flags": [],
       "priority_level": "B",
@@ -3636,7 +6661,41 @@
       "priority_reason": [
         "達觀察條件"
       ],
-      "focus_candidate": false
+      "focus_candidate": false,
+      "legacy_score": 68.0,
+      "unified_score": 36.4,
+      "unified_score_grade": "D",
+      "score_breakdown": {
+        "version": "unified_score_v1",
+        "total": 36.4,
+        "grade": "D",
+        "base": 33.1,
+        "components": {
+          "chip": 0.0,
+          "momentum": 19.4,
+          "volume": 59.0,
+          "structure": 82.3,
+          "theme": 0.0
+        },
+        "source_count": 3,
+        "source_multiplier": 1.1,
+        "sources": [
+          "momentum_candidates",
+          "right_top_track",
+          "volume_pullback"
+        ],
+        "reasons": {
+          "chip": [],
+          "momentum": [],
+          "volume": [
+            "量比 3.11x"
+          ],
+          "structure": [
+            "回穩觀察"
+          ],
+          "theme": []
+        }
+      }
     },
     {
       "stock_id": "4729",
@@ -3668,7 +6727,7 @@
         "support_ok": true,
         "volume_cools": true
       },
-      "score": 68.0,
+      "score": 38.7,
       "source_count": 2,
       "risk_flags": [],
       "priority_level": "B",
@@ -3676,7 +6735,41 @@
       "priority_reason": [
         "達觀察條件"
       ],
-      "focus_candidate": false
+      "focus_candidate": false,
+      "legacy_score": 68.0,
+      "unified_score": 38.7,
+      "unified_score_grade": "D",
+      "score_breakdown": {
+        "version": "unified_score_v1",
+        "total": 38.7,
+        "grade": "D",
+        "base": 35.2,
+        "components": {
+          "chip": 0.0,
+          "momentum": 12.3,
+          "volume": 80.1,
+          "structure": 80.4,
+          "theme": 0.0
+        },
+        "source_count": 3,
+        "source_multiplier": 1.1,
+        "sources": [
+          "momentum_candidates",
+          "right_top_track",
+          "volume_pullback"
+        ],
+        "reasons": {
+          "chip": [],
+          "momentum": [],
+          "volume": [
+            "量比 4.22x"
+          ],
+          "structure": [
+            "回穩觀察"
+          ],
+          "theme": []
+        }
+      }
     },
     {
       "stock_id": "6209",
@@ -3708,7 +6801,7 @@
         "support_ok": true,
         "volume_cools": true
       },
-      "score": 68.0,
+      "score": 40.4,
       "source_count": 2,
       "risk_flags": [],
       "priority_level": "B",
@@ -3716,7 +6809,43 @@
       "priority_reason": [
         "達觀察條件"
       ],
-      "focus_candidate": false
+      "focus_candidate": false,
+      "legacy_score": 68.0,
+      "unified_score": 40.4,
+      "unified_score_grade": "D",
+      "score_breakdown": {
+        "version": "unified_score_v1",
+        "total": 40.4,
+        "grade": "D",
+        "base": 36.7,
+        "components": {
+          "chip": 0.0,
+          "momentum": 38.3,
+          "volume": 64.3,
+          "structure": 71.5,
+          "theme": 0.0
+        },
+        "source_count": 3,
+        "source_multiplier": 1.1,
+        "sources": [
+          "momentum_candidates",
+          "right_top_track",
+          "volume_pullback"
+        ],
+        "reasons": {
+          "chip": [],
+          "momentum": [
+            "追蹤 +2.7%"
+          ],
+          "volume": [
+            "量比 3.39x"
+          ],
+          "structure": [
+            "回穩觀察"
+          ],
+          "theme": []
+        }
+      }
     },
     {
       "stock_id": "2369",
@@ -3748,7 +6877,7 @@
         "support_ok": true,
         "volume_cools": false
       },
-      "score": 66.0,
+      "score": 48.1,
       "source_count": 2,
       "risk_flags": [],
       "priority_level": "B",
@@ -3756,7 +6885,39 @@
       "priority_reason": [
         "達觀察條件"
       ],
-      "focus_candidate": false
+      "focus_candidate": false,
+      "legacy_score": 66.0,
+      "unified_score": 48.1,
+      "unified_score_grade": "D",
+      "score_breakdown": {
+        "version": "unified_score_v1",
+        "total": 48.1,
+        "grade": "D",
+        "base": 43.7,
+        "components": {
+          "chip": 0.0,
+          "momentum": 28.5,
+          "volume": 95.0,
+          "structure": 88.0,
+          "theme": 0.0
+        },
+        "source_count": 3,
+        "source_multiplier": 1.1,
+        "sources": [
+          "momentum_candidates",
+          "right_top_track",
+          "volume_pullback"
+        ],
+        "reasons": {
+          "chip": [],
+          "momentum": [],
+          "volume": [
+            "量比 5.04x"
+          ],
+          "structure": [],
+          "theme": []
+        }
+      }
     },
     {
       "stock_id": "3257",
@@ -3788,7 +6949,7 @@
         "support_ok": true,
         "volume_cools": false
       },
-      "score": 66.0,
+      "score": 56.9,
       "source_count": 2,
       "risk_flags": [],
       "priority_level": "B",
@@ -3796,7 +6957,41 @@
       "priority_reason": [
         "達觀察條件"
       ],
-      "focus_candidate": false
+      "focus_candidate": false,
+      "legacy_score": 66.0,
+      "unified_score": 56.9,
+      "unified_score_grade": "C",
+      "score_breakdown": {
+        "version": "unified_score_v1",
+        "total": 56.9,
+        "grade": "C",
+        "base": 51.7,
+        "components": {
+          "chip": 0.0,
+          "momentum": 28.5,
+          "volume": 95.0,
+          "structure": 88.0,
+          "theme": 80.2
+        },
+        "source_count": 3,
+        "source_multiplier": 1.1,
+        "sources": [
+          "momentum_candidates",
+          "right_top_track",
+          "volume_pullback"
+        ],
+        "reasons": {
+          "chip": [],
+          "momentum": [],
+          "volume": [
+            "量比 5.06x"
+          ],
+          "structure": [],
+          "theme": [
+            "半導體 80.2"
+          ]
+        }
+      }
     },
     {
       "stock_id": "5220",
@@ -3828,7 +7023,7 @@
         "support_ok": true,
         "volume_cools": false
       },
-      "score": 66.0,
+      "score": 52.1,
       "source_count": 2,
       "risk_flags": [],
       "priority_level": "B",
@@ -3836,7 +7031,41 @@
       "priority_reason": [
         "達觀察條件"
       ],
-      "focus_candidate": false
+      "focus_candidate": false,
+      "legacy_score": 66.0,
+      "unified_score": 52.1,
+      "unified_score_grade": "C",
+      "score_breakdown": {
+        "version": "unified_score_v1",
+        "total": 52.1,
+        "grade": "C",
+        "base": 47.4,
+        "components": {
+          "chip": 0.0,
+          "momentum": 62.8,
+          "volume": 70.4,
+          "structure": 88.0,
+          "theme": 0.0
+        },
+        "source_count": 3,
+        "source_multiplier": 1.1,
+        "sources": [
+          "momentum_candidates",
+          "right_top_track",
+          "volume_pullback"
+        ],
+        "reasons": {
+          "chip": [],
+          "momentum": [
+            "追蹤 +9.3%"
+          ],
+          "volume": [
+            "量比 3.71x"
+          ],
+          "structure": [],
+          "theme": []
+        }
+      }
     },
     {
       "stock_id": "6552",
@@ -3868,7 +7097,7 @@
         "support_ok": true,
         "volume_cools": false
       },
-      "score": 66.0,
+      "score": 57.4,
       "source_count": 2,
       "risk_flags": [],
       "priority_level": "B",
@@ -3876,7 +7105,41 @@
       "priority_reason": [
         "達觀察條件"
       ],
-      "focus_candidate": false
+      "focus_candidate": false,
+      "legacy_score": 66.0,
+      "unified_score": 57.4,
+      "unified_score_grade": "C",
+      "score_breakdown": {
+        "version": "unified_score_v1",
+        "total": 57.4,
+        "grade": "C",
+        "base": 52.2,
+        "components": {
+          "chip": 0.0,
+          "momentum": 28.5,
+          "volume": 95.0,
+          "structure": 88.0,
+          "theme": 84.6
+        },
+        "source_count": 3,
+        "source_multiplier": 1.1,
+        "sources": [
+          "momentum_candidates",
+          "right_top_track",
+          "volume_pullback"
+        ],
+        "reasons": {
+          "chip": [],
+          "momentum": [],
+          "volume": [
+            "量比 5.45x"
+          ],
+          "structure": [],
+          "theme": [
+            "功率元件 84.6"
+          ]
+        }
+      }
     },
     {
       "stock_id": "1568",
@@ -3908,7 +7171,7 @@
         "support_ok": true,
         "volume_cools": false
       },
-      "score": 63.0,
+      "score": 53.8,
       "source_count": 2,
       "risk_flags": [],
       "priority_level": "B",
@@ -3916,7 +7179,41 @@
       "priority_reason": [
         "達觀察條件"
       ],
-      "focus_candidate": false
+      "focus_candidate": false,
+      "legacy_score": 63.0,
+      "unified_score": 53.8,
+      "unified_score_grade": "C",
+      "score_breakdown": {
+        "version": "unified_score_v1",
+        "total": 53.8,
+        "grade": "C",
+        "base": 48.9,
+        "components": {
+          "chip": 0.0,
+          "momentum": 64.9,
+          "volume": 75.2,
+          "structure": 88.0,
+          "theme": 0.0
+        },
+        "source_count": 3,
+        "source_multiplier": 1.1,
+        "sources": [
+          "momentum_candidates",
+          "right_top_track",
+          "volume_pullback"
+        ],
+        "reasons": {
+          "chip": [],
+          "momentum": [
+            "追蹤 +9.9%"
+          ],
+          "volume": [
+            "量比 3.96x"
+          ],
+          "structure": [],
+          "theme": []
+        }
+      }
     },
     {
       "stock_id": "3376",
@@ -3958,7 +7255,7 @@
         "chip_score": 7.3,
         "trend_score": 0.0
       },
-      "score": 63.0,
+      "score": 65.7,
       "source_count": 3,
       "risk_flags": [],
       "priority_level": "B",
@@ -3966,7 +7263,47 @@
       "priority_reason": [
         "達觀察條件"
       ],
-      "focus_candidate": false
+      "focus_candidate": false,
+      "legacy_score": 63.0,
+      "unified_score": 65.7,
+      "unified_score_grade": "B",
+      "score_breakdown": {
+        "version": "unified_score_v1",
+        "total": 65.7,
+        "grade": "B",
+        "base": 57.2,
+        "components": {
+          "chip": 67.9,
+          "momentum": 54.7,
+          "volume": 50.8,
+          "structure": 81.8,
+          "theme": 0.0
+        },
+        "source_count": 4,
+        "source_multiplier": 1.15,
+        "sources": [
+          "chips",
+          "momentum_candidates",
+          "stock_analysis",
+          "volume_pullback"
+        ],
+        "reasons": {
+          "chip": [
+            "大戶占比 40.9%",
+            "籌碼標籤加分"
+          ],
+          "momentum": [
+            "週漲 +7.1%"
+          ],
+          "volume": [
+            "量比 2.68x"
+          ],
+          "structure": [
+            "回穩觀察"
+          ],
+          "theme": []
+        }
+      }
     },
     {
       "stock_id": "5434",
@@ -3998,7 +7335,7 @@
         "support_ok": true,
         "volume_cools": true
       },
-      "score": 63.0,
+      "score": 42.4,
       "source_count": 2,
       "risk_flags": [],
       "priority_level": "B",
@@ -4006,7 +7343,43 @@
       "priority_reason": [
         "達觀察條件"
       ],
-      "focus_candidate": false
+      "focus_candidate": false,
+      "legacy_score": 63.0,
+      "unified_score": 42.4,
+      "unified_score_grade": "D",
+      "score_breakdown": {
+        "version": "unified_score_v1",
+        "total": 42.4,
+        "grade": "D",
+        "base": 38.5,
+        "components": {
+          "chip": 0.0,
+          "momentum": 54.4,
+          "volume": 54.0,
+          "structure": 70.7,
+          "theme": 0.0
+        },
+        "source_count": 3,
+        "source_multiplier": 1.1,
+        "sources": [
+          "momentum_candidates",
+          "right_top_track",
+          "volume_pullback"
+        ],
+        "reasons": {
+          "chip": [],
+          "momentum": [
+            "追蹤 +7.0%"
+          ],
+          "volume": [
+            "量比 2.85x"
+          ],
+          "structure": [
+            "回穩觀察"
+          ],
+          "theme": []
+        }
+      }
     },
     {
       "stock_id": "6277",
@@ -4038,7 +7411,7 @@
         "support_ok": true,
         "volume_cools": false
       },
-      "score": 62.0,
+      "score": 44.8,
       "source_count": 2,
       "risk_flags": [],
       "priority_level": "B",
@@ -4046,7 +7419,41 @@
       "priority_reason": [
         "達觀察條件"
       ],
-      "focus_candidate": false
+      "focus_candidate": false,
+      "legacy_score": 62.0,
+      "unified_score": 44.8,
+      "unified_score_grade": "D",
+      "score_breakdown": {
+        "version": "unified_score_v1",
+        "total": 44.8,
+        "grade": "D",
+        "base": 40.7,
+        "components": {
+          "chip": 0.0,
+          "momentum": 50.6,
+          "volume": 52.3,
+          "structure": 88.0,
+          "theme": 0.0
+        },
+        "source_count": 3,
+        "source_multiplier": 1.1,
+        "sources": [
+          "momentum_candidates",
+          "right_top_track",
+          "volume_pullback"
+        ],
+        "reasons": {
+          "chip": [],
+          "momentum": [
+            "追蹤 +6.0%"
+          ],
+          "volume": [
+            "量比 2.76x"
+          ],
+          "structure": [],
+          "theme": []
+        }
+      }
     },
     {
       "stock_id": "6719",
@@ -4078,7 +7485,7 @@
         "support_ok": true,
         "volume_cools": false
       },
-      "score": 62.0,
+      "score": 45.5,
       "source_count": 2,
       "risk_flags": [],
       "priority_level": "B",
@@ -4086,7 +7493,41 @@
       "priority_reason": [
         "達觀察條件"
       ],
-      "focus_candidate": false
+      "focus_candidate": false,
+      "legacy_score": 62.0,
+      "unified_score": 45.5,
+      "unified_score_grade": "D",
+      "score_breakdown": {
+        "version": "unified_score_v1",
+        "total": 45.5,
+        "grade": "D",
+        "base": 41.3,
+        "components": {
+          "chip": 0.0,
+          "momentum": 55.3,
+          "volume": 49.5,
+          "structure": 88.0,
+          "theme": 0.0
+        },
+        "source_count": 3,
+        "source_multiplier": 1.1,
+        "sources": [
+          "momentum_candidates",
+          "right_top_track",
+          "volume_pullback"
+        ],
+        "reasons": {
+          "chip": [],
+          "momentum": [
+            "追蹤 +7.2%"
+          ],
+          "volume": [
+            "量比 2.61x"
+          ],
+          "structure": [],
+          "theme": []
+        }
+      }
     },
     {
       "stock_id": "6113",
@@ -4118,7 +7559,7 @@
         "support_ok": true,
         "volume_cools": true
       },
-      "score": 62.0,
+      "score": 35.1,
       "source_count": 2,
       "risk_flags": [],
       "priority_level": "B",
@@ -4126,7 +7567,41 @@
       "priority_reason": [
         "達觀察條件"
       ],
-      "focus_candidate": false
+      "focus_candidate": false,
+      "legacy_score": 62.0,
+      "unified_score": 35.1,
+      "unified_score_grade": "D",
+      "score_breakdown": {
+        "version": "unified_score_v1",
+        "total": 35.1,
+        "grade": "D",
+        "base": 31.9,
+        "components": {
+          "chip": 0.0,
+          "momentum": 15.1,
+          "volume": 64.1,
+          "structure": 76.7,
+          "theme": 0.0
+        },
+        "source_count": 3,
+        "source_multiplier": 1.1,
+        "sources": [
+          "momentum_candidates",
+          "right_top_track",
+          "volume_pullback"
+        ],
+        "reasons": {
+          "chip": [],
+          "momentum": [],
+          "volume": [
+            "量比 3.38x"
+          ],
+          "structure": [
+            "回穩觀察"
+          ],
+          "theme": []
+        }
+      }
     },
     {
       "stock_id": "6189",
@@ -4158,7 +7633,7 @@
         "support_ok": true,
         "volume_cools": true
       },
-      "score": 62.0,
+      "score": 44.1,
       "source_count": 2,
       "risk_flags": [],
       "priority_level": "B",
@@ -4166,7 +7641,43 @@
       "priority_reason": [
         "達觀察條件"
       ],
-      "focus_candidate": false
+      "focus_candidate": false,
+      "legacy_score": 62.0,
+      "unified_score": 44.1,
+      "unified_score_grade": "D",
+      "score_breakdown": {
+        "version": "unified_score_v1",
+        "total": 44.1,
+        "grade": "D",
+        "base": 40.1,
+        "components": {
+          "chip": 0.0,
+          "momentum": 33.5,
+          "volume": 78.2,
+          "structure": 80.6,
+          "theme": 0.0
+        },
+        "source_count": 3,
+        "source_multiplier": 1.1,
+        "sources": [
+          "momentum_candidates",
+          "right_top_track",
+          "volume_pullback"
+        ],
+        "reasons": {
+          "chip": [],
+          "momentum": [
+            "追蹤 +1.4%"
+          ],
+          "volume": [
+            "量比 4.12x"
+          ],
+          "structure": [
+            "回穩觀察"
+          ],
+          "theme": []
+        }
+      }
     },
     {
       "stock_id": "7805",
@@ -4198,7 +7709,7 @@
         "support_ok": true,
         "volume_cools": true
       },
-      "score": 62.0,
+      "score": 53.1,
       "source_count": 2,
       "risk_flags": [],
       "priority_level": "B",
@@ -4206,7 +7717,45 @@
       "priority_reason": [
         "達觀察條件"
       ],
-      "focus_candidate": false
+      "focus_candidate": false,
+      "legacy_score": 62.0,
+      "unified_score": 53.1,
+      "unified_score_grade": "C",
+      "score_breakdown": {
+        "version": "unified_score_v1",
+        "total": 53.1,
+        "grade": "C",
+        "base": 48.3,
+        "components": {
+          "chip": 0.0,
+          "momentum": 38.2,
+          "volume": 77.7,
+          "structure": 78.4,
+          "theme": 75.1
+        },
+        "source_count": 3,
+        "source_multiplier": 1.1,
+        "sources": [
+          "momentum_candidates",
+          "right_top_track",
+          "volume_pullback"
+        ],
+        "reasons": {
+          "chip": [],
+          "momentum": [
+            "追蹤 +2.6%"
+          ],
+          "volume": [
+            "量比 4.09x"
+          ],
+          "structure": [
+            "回穩觀察"
+          ],
+          "theme": [
+            "AI伺服器 75.1"
+          ]
+        }
+      }
     },
     {
       "stock_id": "2305",
@@ -4238,7 +7787,7 @@
         "support_ok": true,
         "volume_cools": false
       },
-      "score": 61.0,
+      "score": 44.7,
       "source_count": 2,
       "risk_flags": [],
       "priority_level": "B",
@@ -4246,7 +7795,41 @@
       "priority_reason": [
         "達觀察條件"
       ],
-      "focus_candidate": false
+      "focus_candidate": false,
+      "legacy_score": 61.0,
+      "unified_score": 44.7,
+      "unified_score_grade": "D",
+      "score_breakdown": {
+        "version": "unified_score_v1",
+        "total": 44.7,
+        "grade": "D",
+        "base": 40.6,
+        "components": {
+          "chip": 0.0,
+          "momentum": 31.2,
+          "volume": 76.0,
+          "structure": 88.0,
+          "theme": 0.0
+        },
+        "source_count": 3,
+        "source_multiplier": 1.1,
+        "sources": [
+          "momentum_candidates",
+          "right_top_track",
+          "volume_pullback"
+        ],
+        "reasons": {
+          "chip": [],
+          "momentum": [
+            "追蹤 +0.7%"
+          ],
+          "volume": [
+            "量比 4.00x"
+          ],
+          "structure": [],
+          "theme": []
+        }
+      }
     },
     {
       "stock_id": "2489",
@@ -4278,7 +7861,7 @@
         "support_ok": true,
         "volume_cools": false
       },
-      "score": 61.0,
+      "score": 43.0,
       "source_count": 2,
       "risk_flags": [],
       "priority_level": "B",
@@ -4286,7 +7869,41 @@
       "priority_reason": [
         "達觀察條件"
       ],
-      "focus_candidate": false
+      "focus_candidate": false,
+      "legacy_score": 61.0,
+      "unified_score": 43.0,
+      "unified_score_grade": "D",
+      "score_breakdown": {
+        "version": "unified_score_v1",
+        "total": 43.0,
+        "grade": "D",
+        "base": 39.1,
+        "components": {
+          "chip": 0.0,
+          "momentum": 30.6,
+          "volume": 69.3,
+          "structure": 88.0,
+          "theme": 0.0
+        },
+        "source_count": 3,
+        "source_multiplier": 1.1,
+        "sources": [
+          "momentum_candidates",
+          "right_top_track",
+          "volume_pullback"
+        ],
+        "reasons": {
+          "chip": [],
+          "momentum": [
+            "追蹤 +0.6%"
+          ],
+          "volume": [
+            "量比 3.65x"
+          ],
+          "structure": [],
+          "theme": []
+        }
+      }
     },
     {
       "stock_id": "2493",
@@ -4318,7 +7935,7 @@
         "support_ok": true,
         "volume_cools": false
       },
-      "score": 61.0,
+      "score": 43.6,
       "source_count": 2,
       "risk_flags": [],
       "priority_level": "B",
@@ -4326,7 +7943,39 @@
       "priority_reason": [
         "達觀察條件"
       ],
-      "focus_candidate": false
+      "focus_candidate": false,
+      "legacy_score": 61.0,
+      "unified_score": 43.6,
+      "unified_score_grade": "D",
+      "score_breakdown": {
+        "version": "unified_score_v1",
+        "total": 43.6,
+        "grade": "D",
+        "base": 39.6,
+        "components": {
+          "chip": 0.0,
+          "momentum": 28.5,
+          "volume": 74.6,
+          "structure": 88.0,
+          "theme": 0.0
+        },
+        "source_count": 3,
+        "source_multiplier": 1.1,
+        "sources": [
+          "momentum_candidates",
+          "right_top_track",
+          "volume_pullback"
+        ],
+        "reasons": {
+          "chip": [],
+          "momentum": [],
+          "volume": [
+            "量比 3.93x"
+          ],
+          "structure": [],
+          "theme": []
+        }
+      }
     },
     {
       "stock_id": "3013",
@@ -4358,7 +8007,7 @@
         "support_ok": true,
         "volume_cools": false
       },
-      "score": 61.0,
+      "score": 39.8,
       "source_count": 2,
       "risk_flags": [],
       "priority_level": "B",
@@ -4366,7 +8015,39 @@
       "priority_reason": [
         "達觀察條件"
       ],
-      "focus_candidate": false
+      "focus_candidate": false,
+      "legacy_score": 61.0,
+      "unified_score": 39.8,
+      "unified_score_grade": "D",
+      "score_breakdown": {
+        "version": "unified_score_v1",
+        "total": 39.8,
+        "grade": "D",
+        "base": 36.2,
+        "components": {
+          "chip": 0.0,
+          "momentum": 28.5,
+          "volume": 57.3,
+          "structure": 88.0,
+          "theme": 0.0
+        },
+        "source_count": 3,
+        "source_multiplier": 1.1,
+        "sources": [
+          "momentum_candidates",
+          "right_top_track",
+          "volume_pullback"
+        ],
+        "reasons": {
+          "chip": [],
+          "momentum": [],
+          "volume": [
+            "量比 3.02x"
+          ],
+          "structure": [],
+          "theme": []
+        }
+      }
     },
     {
       "stock_id": "3652",
@@ -4398,7 +8079,7 @@
         "support_ok": true,
         "volume_cools": false
       },
-      "score": 61.0,
+      "score": 43.5,
       "source_count": 2,
       "risk_flags": [],
       "priority_level": "B",
@@ -4406,7 +8087,39 @@
       "priority_reason": [
         "達觀察條件"
       ],
-      "focus_candidate": false
+      "focus_candidate": false,
+      "legacy_score": 61.0,
+      "unified_score": 43.5,
+      "unified_score_grade": "D",
+      "score_breakdown": {
+        "version": "unified_score_v1",
+        "total": 43.5,
+        "grade": "D",
+        "base": 39.6,
+        "components": {
+          "chip": 0.0,
+          "momentum": 28.5,
+          "volume": 74.2,
+          "structure": 88.0,
+          "theme": 0.0
+        },
+        "source_count": 3,
+        "source_multiplier": 1.1,
+        "sources": [
+          "momentum_candidates",
+          "right_top_track",
+          "volume_pullback"
+        ],
+        "reasons": {
+          "chip": [],
+          "momentum": [],
+          "volume": [
+            "量比 3.91x"
+          ],
+          "structure": [],
+          "theme": []
+        }
+      }
     },
     {
       "stock_id": "4510",
@@ -4438,7 +8151,7 @@
         "support_ok": true,
         "volume_cools": false
       },
-      "score": 61.0,
+      "score": 44.8,
       "source_count": 2,
       "risk_flags": [],
       "priority_level": "B",
@@ -4446,7 +8159,39 @@
       "priority_reason": [
         "達觀察條件"
       ],
-      "focus_candidate": false
+      "focus_candidate": false,
+      "legacy_score": 61.0,
+      "unified_score": 44.8,
+      "unified_score_grade": "D",
+      "score_breakdown": {
+        "version": "unified_score_v1",
+        "total": 44.8,
+        "grade": "D",
+        "base": 40.7,
+        "components": {
+          "chip": 0.0,
+          "momentum": 28.5,
+          "volume": 80.1,
+          "structure": 88.0,
+          "theme": 0.0
+        },
+        "source_count": 3,
+        "source_multiplier": 1.1,
+        "sources": [
+          "momentum_candidates",
+          "right_top_track",
+          "volume_pullback"
+        ],
+        "reasons": {
+          "chip": [],
+          "momentum": [],
+          "volume": [
+            "量比 4.22x"
+          ],
+          "structure": [],
+          "theme": []
+        }
+      }
     },
     {
       "stock_id": "6125",
@@ -4478,7 +8223,7 @@
         "support_ok": true,
         "volume_cools": false
       },
-      "score": 61.0,
+      "score": 49.9,
       "source_count": 2,
       "risk_flags": [],
       "priority_level": "B",
@@ -4486,7 +8231,41 @@
       "priority_reason": [
         "達觀察條件"
       ],
-      "focus_candidate": false
+      "focus_candidate": false,
+      "legacy_score": 61.0,
+      "unified_score": 49.9,
+      "unified_score_grade": "D",
+      "score_breakdown": {
+        "version": "unified_score_v1",
+        "total": 49.9,
+        "grade": "D",
+        "base": 45.4,
+        "components": {
+          "chip": 0.0,
+          "momentum": 28.5,
+          "volume": 64.3,
+          "structure": 88.0,
+          "theme": 78.2
+        },
+        "source_count": 3,
+        "source_multiplier": 1.1,
+        "sources": [
+          "momentum_candidates",
+          "right_top_track",
+          "volume_pullback"
+        ],
+        "reasons": {
+          "chip": [],
+          "momentum": [],
+          "volume": [
+            "量比 3.39x"
+          ],
+          "structure": [],
+          "theme": [
+            "散熱 78.2"
+          ]
+        }
+      }
     },
     {
       "stock_id": "6799",
@@ -4518,7 +8297,7 @@
         "support_ok": true,
         "volume_cools": false
       },
-      "score": 61.0,
+      "score": 53.6,
       "source_count": 2,
       "risk_flags": [],
       "priority_level": "B",
@@ -4526,7 +8305,41 @@
       "priority_reason": [
         "達觀察條件"
       ],
-      "focus_candidate": false
+      "focus_candidate": false,
+      "legacy_score": 61.0,
+      "unified_score": 53.6,
+      "unified_score_grade": "C",
+      "score_breakdown": {
+        "version": "unified_score_v1",
+        "total": 53.6,
+        "grade": "C",
+        "base": 48.8,
+        "components": {
+          "chip": 0.0,
+          "momentum": 28.5,
+          "volume": 83.2,
+          "structure": 88.0,
+          "theme": 73.9
+        },
+        "source_count": 3,
+        "source_multiplier": 1.1,
+        "sources": [
+          "momentum_candidates",
+          "right_top_track",
+          "volume_pullback"
+        ],
+        "reasons": {
+          "chip": [],
+          "momentum": [],
+          "volume": [
+            "量比 4.38x"
+          ],
+          "structure": [],
+          "theme": [
+            "半導體 73.9"
+          ]
+        }
+      }
     },
     {
       "stock_id": "8182",
@@ -4558,7 +8371,7 @@
         "support_ok": true,
         "volume_cools": false
       },
-      "score": 61.0,
+      "score": 49.9,
       "source_count": 2,
       "risk_flags": [],
       "priority_level": "B",
@@ -4566,7 +8379,43 @@
       "priority_reason": [
         "達觀察條件"
       ],
-      "focus_candidate": false
+      "focus_candidate": false,
+      "legacy_score": 61.0,
+      "unified_score": 49.9,
+      "unified_score_grade": "D",
+      "score_breakdown": {
+        "version": "unified_score_v1",
+        "total": 49.9,
+        "grade": "D",
+        "base": 45.3,
+        "components": {
+          "chip": 0.0,
+          "momentum": 30.1,
+          "volume": 61.9,
+          "structure": 88.0,
+          "theme": 78.3
+        },
+        "source_count": 3,
+        "source_multiplier": 1.1,
+        "sources": [
+          "momentum_candidates",
+          "right_top_track",
+          "volume_pullback"
+        ],
+        "reasons": {
+          "chip": [],
+          "momentum": [
+            "追蹤 +0.4%"
+          ],
+          "volume": [
+            "量比 3.26x"
+          ],
+          "structure": [],
+          "theme": [
+            "電子零組件 78.3"
+          ]
+        }
+      }
     },
     {
       "stock_id": "2455",
@@ -4598,7 +8447,7 @@
         "support_ok": true,
         "volume_cools": true
       },
-      "score": 61.0,
+      "score": 34.7,
       "source_count": 2,
       "risk_flags": [],
       "priority_level": "B",
@@ -4606,7 +8455,41 @@
       "priority_reason": [
         "達觀察條件"
       ],
-      "focus_candidate": false
+      "focus_candidate": false,
+      "legacy_score": 61.0,
+      "unified_score": 34.7,
+      "unified_score_grade": "D",
+      "score_breakdown": {
+        "version": "unified_score_v1",
+        "total": 34.7,
+        "grade": "D",
+        "base": 31.6,
+        "components": {
+          "chip": 0.0,
+          "momentum": 27.2,
+          "volume": 48.9,
+          "structure": 74.9,
+          "theme": 0.0
+        },
+        "source_count": 3,
+        "source_multiplier": 1.1,
+        "sources": [
+          "momentum_candidates",
+          "right_top_track",
+          "volume_pullback"
+        ],
+        "reasons": {
+          "chip": [],
+          "momentum": [],
+          "volume": [
+            "量比 2.58x"
+          ],
+          "structure": [
+            "回穩觀察"
+          ],
+          "theme": []
+        }
+      }
     },
     {
       "stock_id": "3167",
@@ -4638,7 +8521,7 @@
         "support_ok": true,
         "volume_cools": true
       },
-      "score": 61.0,
+      "score": 28.5,
       "source_count": 2,
       "risk_flags": [],
       "priority_level": "B",
@@ -4646,7 +8529,41 @@
       "priority_reason": [
         "達觀察條件"
       ],
-      "focus_candidate": false
+      "focus_candidate": false,
+      "legacy_score": 61.0,
+      "unified_score": 28.5,
+      "unified_score_grade": "D",
+      "score_breakdown": {
+        "version": "unified_score_v1",
+        "total": 28.5,
+        "grade": "D",
+        "base": 25.9,
+        "components": {
+          "chip": 0.0,
+          "momentum": 10.0,
+          "volume": 51.4,
+          "structure": 65.6,
+          "theme": 0.0
+        },
+        "source_count": 3,
+        "source_multiplier": 1.1,
+        "sources": [
+          "momentum_candidates",
+          "right_top_track",
+          "volume_pullback"
+        ],
+        "reasons": {
+          "chip": [],
+          "momentum": [],
+          "volume": [
+            "量比 2.71x"
+          ],
+          "structure": [
+            "回穩觀察"
+          ],
+          "theme": []
+        }
+      }
     },
     {
       "stock_id": "3564",
@@ -4678,7 +8595,7 @@
         "support_ok": true,
         "volume_cools": true
       },
-      "score": 61.0,
+      "score": 39.1,
       "source_count": 2,
       "risk_flags": [],
       "priority_level": "B",
@@ -4686,7 +8603,43 @@
       "priority_reason": [
         "達觀察條件"
       ],
-      "focus_candidate": false
+      "focus_candidate": false,
+      "legacy_score": 61.0,
+      "unified_score": 39.1,
+      "unified_score_grade": "D",
+      "score_breakdown": {
+        "version": "unified_score_v1",
+        "total": 39.1,
+        "grade": "D",
+        "base": 35.5,
+        "components": {
+          "chip": 0.0,
+          "momentum": 40.7,
+          "volume": 48.3,
+          "structure": 78.4,
+          "theme": 0.0
+        },
+        "source_count": 3,
+        "source_multiplier": 1.1,
+        "sources": [
+          "momentum_candidates",
+          "right_top_track",
+          "volume_pullback"
+        ],
+        "reasons": {
+          "chip": [],
+          "momentum": [
+            "追蹤 +3.3%"
+          ],
+          "volume": [
+            "量比 2.55x"
+          ],
+          "structure": [
+            "回穩觀察"
+          ],
+          "theme": []
+        }
+      }
     },
     {
       "stock_id": "3580",
@@ -4718,7 +8671,7 @@
         "support_ok": true,
         "volume_cools": true
       },
-      "score": 61.0,
+      "score": 33.6,
       "source_count": 2,
       "risk_flags": [],
       "priority_level": "B",
@@ -4726,7 +8679,43 @@
       "priority_reason": [
         "達觀察條件"
       ],
-      "focus_candidate": false
+      "focus_candidate": false,
+      "legacy_score": 61.0,
+      "unified_score": 33.6,
+      "unified_score_grade": "D",
+      "score_breakdown": {
+        "version": "unified_score_v1",
+        "total": 33.6,
+        "grade": "D",
+        "base": 30.6,
+        "components": {
+          "chip": 0.0,
+          "momentum": 35.1,
+          "volume": 48.9,
+          "structure": 60.1,
+          "theme": 0.0
+        },
+        "source_count": 3,
+        "source_multiplier": 1.1,
+        "sources": [
+          "momentum_candidates",
+          "right_top_track",
+          "volume_pullback"
+        ],
+        "reasons": {
+          "chip": [],
+          "momentum": [
+            "追蹤 +1.8%"
+          ],
+          "volume": [
+            "量比 2.58x"
+          ],
+          "structure": [
+            "回穩觀察"
+          ],
+          "theme": []
+        }
+      }
     },
     {
       "stock_id": "3592",
@@ -4758,7 +8747,7 @@
         "support_ok": true,
         "volume_cools": true
       },
-      "score": 61.0,
+      "score": 45.2,
       "source_count": 2,
       "risk_flags": [],
       "priority_level": "B",
@@ -4766,7 +8755,43 @@
       "priority_reason": [
         "達觀察條件"
       ],
-      "focus_candidate": false
+      "focus_candidate": false,
+      "legacy_score": 61.0,
+      "unified_score": 45.2,
+      "unified_score_grade": "D",
+      "score_breakdown": {
+        "version": "unified_score_v1",
+        "total": 45.2,
+        "grade": "D",
+        "base": 41.1,
+        "components": {
+          "chip": 0.0,
+          "momentum": 28.5,
+          "volume": 50.2,
+          "structure": 83.0,
+          "theme": 73.7
+        },
+        "source_count": 3,
+        "source_multiplier": 1.1,
+        "sources": [
+          "momentum_candidates",
+          "right_top_track",
+          "volume_pullback"
+        ],
+        "reasons": {
+          "chip": [],
+          "momentum": [],
+          "volume": [
+            "量比 2.65x"
+          ],
+          "structure": [
+            "回穩觀察"
+          ],
+          "theme": [
+            "功率元件 73.7"
+          ]
+        }
+      }
     },
     {
       "stock_id": "5471",
@@ -4798,7 +8823,7 @@
         "support_ok": true,
         "volume_cools": true
       },
-      "score": 61.0,
+      "score": 36.6,
       "source_count": 2,
       "risk_flags": [],
       "priority_level": "B",
@@ -4806,7 +8831,41 @@
       "priority_reason": [
         "達觀察條件"
       ],
-      "focus_candidate": false
+      "focus_candidate": false,
+      "legacy_score": 61.0,
+      "unified_score": 36.6,
+      "unified_score_grade": "D",
+      "score_breakdown": {
+        "version": "unified_score_v1",
+        "total": 36.6,
+        "grade": "D",
+        "base": 33.3,
+        "components": {
+          "chip": 0.0,
+          "momentum": 26.4,
+          "volume": 51.4,
+          "structure": 82.0,
+          "theme": 0.0
+        },
+        "source_count": 3,
+        "source_multiplier": 1.1,
+        "sources": [
+          "momentum_candidates",
+          "right_top_track",
+          "volume_pullback"
+        ],
+        "reasons": {
+          "chip": [],
+          "momentum": [],
+          "volume": [
+            "量比 2.71x"
+          ],
+          "structure": [
+            "回穩觀察"
+          ],
+          "theme": []
+        }
+      }
     },
     {
       "stock_id": "4770",
@@ -4838,7 +8897,7 @@
         "support_ok": true,
         "volume_cools": false
       },
-      "score": 60.0,
+      "score": 48.1,
       "source_count": 2,
       "risk_flags": [],
       "priority_level": "B",
@@ -4846,7 +8905,39 @@
       "priority_reason": [
         "達觀察條件"
       ],
-      "focus_candidate": false
+      "focus_candidate": false,
+      "legacy_score": 60.0,
+      "unified_score": 48.1,
+      "unified_score_grade": "D",
+      "score_breakdown": {
+        "version": "unified_score_v1",
+        "total": 48.1,
+        "grade": "D",
+        "base": 43.7,
+        "components": {
+          "chip": 0.0,
+          "momentum": 28.5,
+          "volume": 95.0,
+          "structure": 88.0,
+          "theme": 0.0
+        },
+        "source_count": 3,
+        "source_multiplier": 1.1,
+        "sources": [
+          "momentum_candidates",
+          "right_top_track",
+          "volume_pullback"
+        ],
+        "reasons": {
+          "chip": [],
+          "momentum": [],
+          "volume": [
+            "量比 5.26x"
+          ],
+          "structure": [],
+          "theme": []
+        }
+      }
     },
     {
       "stock_id": "6558",
@@ -4878,7 +8969,7 @@
         "support_ok": true,
         "volume_cools": true
       },
-      "score": 58.0,
+      "score": 40.5,
       "source_count": 2,
       "risk_flags": [],
       "priority_level": "B",
@@ -4886,7 +8977,43 @@
       "priority_reason": [
         "達觀察條件"
       ],
-      "focus_candidate": false
+      "focus_candidate": false,
+      "legacy_score": 58.0,
+      "unified_score": 40.5,
+      "unified_score_grade": "D",
+      "score_breakdown": {
+        "version": "unified_score_v1",
+        "total": 40.5,
+        "grade": "D",
+        "base": 36.8,
+        "components": {
+          "chip": 0.0,
+          "momentum": 43.8,
+          "volume": 48.9,
+          "structure": 80.5,
+          "theme": 0.0
+        },
+        "source_count": 3,
+        "source_multiplier": 1.1,
+        "sources": [
+          "momentum_candidates",
+          "right_top_track",
+          "volume_pullback"
+        ],
+        "reasons": {
+          "chip": [],
+          "momentum": [
+            "追蹤 +4.2%"
+          ],
+          "volume": [
+            "量比 2.58x"
+          ],
+          "structure": [
+            "回穩觀察"
+          ],
+          "theme": []
+        }
+      }
     },
     {
       "stock_id": "2606",
@@ -4923,7 +9050,7 @@
         "chip_score": 5.1,
         "trend_score": 4.8
       },
-      "score": 56.0,
+      "score": 67.3,
       "source_count": 3,
       "risk_flags": [],
       "priority_level": "B",
@@ -4931,7 +9058,47 @@
       "priority_reason": [
         "達觀察條件"
       ],
-      "focus_candidate": false
+      "focus_candidate": false,
+      "legacy_score": 56.0,
+      "unified_score": 67.3,
+      "unified_score_grade": "B",
+      "score_breakdown": {
+        "version": "unified_score_v1",
+        "total": 67.3,
+        "grade": "B",
+        "base": 58.5,
+        "components": {
+          "chip": 87.3,
+          "momentum": 66.3,
+          "volume": 32.7,
+          "structure": 68.0,
+          "theme": 0.0
+        },
+        "source_count": 4,
+        "source_multiplier": 1.15,
+        "sources": [
+          "chips",
+          "momentum_candidates",
+          "stock_analysis",
+          "volume_signal"
+        ],
+        "reasons": {
+          "chip": [
+            "大戶占比 72.3%",
+            "籌碼標籤加分"
+          ],
+          "momentum": [
+            "週漲 +10.2%"
+          ],
+          "volume": [
+            "量比 1.73x"
+          ],
+          "structure": [
+            "點火首日"
+          ],
+          "theme": []
+        }
+      }
     },
     {
       "stock_id": "6101",
@@ -4963,7 +9130,7 @@
         "support_ok": true,
         "volume_cools": false
       },
-      "score": 56.0,
+      "score": 37.1,
       "source_count": 2,
       "risk_flags": [],
       "priority_level": "B",
@@ -4971,7 +9138,39 @@
       "priority_reason": [
         "達觀察條件"
       ],
-      "focus_candidate": false
+      "focus_candidate": false,
+      "legacy_score": 56.0,
+      "unified_score": 37.1,
+      "unified_score_grade": "D",
+      "score_breakdown": {
+        "version": "unified_score_v1",
+        "total": 37.1,
+        "grade": "D",
+        "base": 33.7,
+        "components": {
+          "chip": 0.0,
+          "momentum": 25.4,
+          "volume": 48.9,
+          "structure": 88.0,
+          "theme": 0.0
+        },
+        "source_count": 3,
+        "source_multiplier": 1.1,
+        "sources": [
+          "momentum_candidates",
+          "right_top_track",
+          "volume_pullback"
+        ],
+        "reasons": {
+          "chip": [],
+          "momentum": [],
+          "volume": [
+            "量比 2.58x"
+          ],
+          "structure": [],
+          "theme": []
+        }
+      }
     },
     {
       "stock_id": "3413",
@@ -5011,7 +9210,7 @@
         "chip_score": 2.6,
         "trend_score": 9.6
       },
-      "score": 56.0,
+      "score": 35.1,
       "source_count": 3,
       "risk_flags": [],
       "priority_level": "B",
@@ -5019,7 +9218,45 @@
       "priority_reason": [
         "達觀察條件"
       ],
-      "focus_candidate": false
+      "focus_candidate": false,
+      "legacy_score": 56.0,
+      "unified_score": 35.1,
+      "unified_score_grade": "D",
+      "score_breakdown": {
+        "version": "unified_score_v1",
+        "total": 35.1,
+        "grade": "D",
+        "base": 30.5,
+        "components": {
+          "chip": 64.8,
+          "momentum": 45.4,
+          "volume": 15.0,
+          "structure": 0.0,
+          "theme": 0.0
+        },
+        "source_count": 4,
+        "source_multiplier": 1.15,
+        "sources": [
+          "chips",
+          "momentum_candidates",
+          "right_top_track",
+          "stock_analysis"
+        ],
+        "reasons": {
+          "chip": [
+            "大戶占比 39.5%",
+            "籌碼標籤加分"
+          ],
+          "momentum": [
+            "週漲 +10.0%"
+          ],
+          "volume": [
+            "量比 0.54x"
+          ],
+          "structure": [],
+          "theme": []
+        }
+      }
     },
     {
       "stock_id": "8070",
@@ -5051,7 +9288,7 @@
         "support_ok": true,
         "volume_cools": false
       },
-      "score": 55.0,
+      "score": 41.8,
       "source_count": 2,
       "risk_flags": [],
       "priority_level": "B",
@@ -5059,7 +9296,39 @@
       "priority_reason": [
         "達觀察條件"
       ],
-      "focus_candidate": false
+      "focus_candidate": false,
+      "legacy_score": 55.0,
+      "unified_score": 41.8,
+      "unified_score_grade": "D",
+      "score_breakdown": {
+        "version": "unified_score_v1",
+        "total": 41.8,
+        "grade": "D",
+        "base": 38.0,
+        "components": {
+          "chip": 0.0,
+          "momentum": 28.5,
+          "volume": 66.2,
+          "structure": 88.0,
+          "theme": 0.0
+        },
+        "source_count": 3,
+        "source_multiplier": 1.1,
+        "sources": [
+          "momentum_candidates",
+          "right_top_track",
+          "volume_pullback"
+        ],
+        "reasons": {
+          "chip": [],
+          "momentum": [],
+          "volume": [
+            "量比 3.49x"
+          ],
+          "structure": [],
+          "theme": []
+        }
+      }
     },
     {
       "stock_id": "4527",
@@ -5091,7 +9360,7 @@
         "support_ok": true,
         "volume_cools": false
       },
-      "score": 54.0,
+      "score": 36.7,
       "source_count": 2,
       "risk_flags": [],
       "priority_level": "B",
@@ -5099,7 +9368,39 @@
       "priority_reason": [
         "達觀察條件"
       ],
-      "focus_candidate": false
+      "focus_candidate": false,
+      "legacy_score": 54.0,
+      "unified_score": 36.7,
+      "unified_score_grade": "D",
+      "score_breakdown": {
+        "version": "unified_score_v1",
+        "total": 36.7,
+        "grade": "D",
+        "base": 33.4,
+        "components": {
+          "chip": 0.0,
+          "momentum": 24.7,
+          "volume": 48.0,
+          "structure": 88.0,
+          "theme": 0.0
+        },
+        "source_count": 3,
+        "source_multiplier": 1.1,
+        "sources": [
+          "momentum_candidates",
+          "right_top_track",
+          "volume_pullback"
+        ],
+        "reasons": {
+          "chip": [],
+          "momentum": [],
+          "volume": [
+            "量比 2.53x"
+          ],
+          "structure": [],
+          "theme": []
+        }
+      }
     },
     {
       "stock_id": "6525",
@@ -5131,7 +9432,7 @@
         "support_ok": true,
         "volume_cools": false
       },
-      "score": 54.0,
+      "score": 37.9,
       "source_count": 2,
       "risk_flags": [],
       "priority_level": "B",
@@ -5139,7 +9440,39 @@
       "priority_reason": [
         "達觀察條件"
       ],
-      "focus_candidate": false
+      "focus_candidate": false,
+      "legacy_score": 54.0,
+      "unified_score": 37.9,
+      "unified_score_grade": "D",
+      "score_breakdown": {
+        "version": "unified_score_v1",
+        "total": 37.9,
+        "grade": "D",
+        "base": 34.5,
+        "components": {
+          "chip": 0.0,
+          "momentum": 28.5,
+          "volume": 48.7,
+          "structure": 88.0,
+          "theme": 0.0
+        },
+        "source_count": 3,
+        "source_multiplier": 1.1,
+        "sources": [
+          "momentum_candidates",
+          "right_top_track",
+          "volume_pullback"
+        ],
+        "reasons": {
+          "chip": [],
+          "momentum": [],
+          "volume": [
+            "量比 2.57x"
+          ],
+          "structure": [],
+          "theme": []
+        }
+      }
     },
     {
       "stock_id": "6668",
@@ -5171,7 +9504,7 @@
         "support_ok": true,
         "volume_cools": false
       },
-      "score": 54.0,
+      "score": 42.9,
       "source_count": 2,
       "risk_flags": [],
       "priority_level": "B",
@@ -5179,7 +9512,41 @@
       "priority_reason": [
         "達觀察條件"
       ],
-      "focus_candidate": false
+      "focus_candidate": false,
+      "legacy_score": 54.0,
+      "unified_score": 42.9,
+      "unified_score_grade": "D",
+      "score_breakdown": {
+        "version": "unified_score_v1",
+        "total": 42.9,
+        "grade": "D",
+        "base": 39.0,
+        "components": {
+          "chip": 0.0,
+          "momentum": 43.5,
+          "volume": 52.7,
+          "structure": 88.0,
+          "theme": 0.0
+        },
+        "source_count": 3,
+        "source_multiplier": 1.1,
+        "sources": [
+          "momentum_candidates",
+          "right_top_track",
+          "volume_pullback"
+        ],
+        "reasons": {
+          "chip": [],
+          "momentum": [
+            "追蹤 +4.1%"
+          ],
+          "volume": [
+            "量比 2.78x"
+          ],
+          "structure": [],
+          "theme": []
+        }
+      }
     },
     {
       "stock_id": "1215",
@@ -5216,7 +9583,7 @@
         "chip_score": 10.0,
         "trend_score": 2.2
       },
-      "score": 46.0,
+      "score": 56.2,
       "source_count": 3,
       "risk_flags": [],
       "priority_level": "B",
@@ -5224,7 +9591,47 @@
       "priority_reason": [
         "達觀察條件"
       ],
-      "focus_candidate": false
+      "focus_candidate": false,
+      "legacy_score": 46.0,
+      "unified_score": 56.2,
+      "unified_score_grade": "C",
+      "score_breakdown": {
+        "version": "unified_score_v1",
+        "total": 56.2,
+        "grade": "C",
+        "base": 48.9,
+        "components": {
+          "chip": 85.0,
+          "momentum": 31.1,
+          "volume": 31.4,
+          "structure": 68.0,
+          "theme": 0.0
+        },
+        "source_count": 4,
+        "source_multiplier": 1.15,
+        "sources": [
+          "chips",
+          "momentum_candidates",
+          "stock_analysis",
+          "volume_signal"
+        ],
+        "reasons": {
+          "chip": [
+            "大戶占比 61.6%",
+            "籌碼標籤加分"
+          ],
+          "momentum": [
+            "週漲 +0.7%"
+          ],
+          "volume": [
+            "量比 1.66x"
+          ],
+          "structure": [
+            "點火首日"
+          ],
+          "theme": []
+        }
+      }
     },
     {
       "stock_id": "8105",
@@ -5253,7 +9660,7 @@
         "chip_score": 10.0,
         "trend_score": 2.8
       },
-      "score": 39.0,
+      "score": 51.4,
       "source_count": 2,
       "risk_flags": [],
       "priority_level": "B",
@@ -5261,7 +9668,41 @@
       "priority_reason": [
         "達觀察條件"
       ],
-      "focus_candidate": false
+      "focus_candidate": false,
+      "legacy_score": 39.0,
+      "unified_score": 51.4,
+      "unified_score_grade": "C",
+      "score_breakdown": {
+        "version": "unified_score_v1",
+        "total": 51.4,
+        "grade": "C",
+        "base": 46.7,
+        "components": {
+          "chip": 100.0,
+          "momentum": 74.8,
+          "volume": 15.0,
+          "structure": 0.0,
+          "theme": 0.0
+        },
+        "source_count": 3,
+        "source_multiplier": 1.1,
+        "sources": [
+          "momentum_candidates",
+          "right_top_track",
+          "stock_analysis"
+        ],
+        "reasons": {
+          "chip": [],
+          "momentum": [
+            "追蹤 +12.5%"
+          ],
+          "volume": [
+            "量比 0.71x"
+          ],
+          "structure": [],
+          "theme": []
+        }
+      }
     },
     {
       "stock_id": "2412",
@@ -5293,7 +9734,7 @@
         "entry_price": 142.5,
         "days_remaining": 6
       },
-      "score": 39.0,
+      "score": 32.5,
       "source_count": 2,
       "risk_flags": [],
       "priority_level": "C",
@@ -5301,7 +9742,42 @@
       "priority_reason": [
         "低優先觀察"
       ],
-      "focus_candidate": false
+      "focus_candidate": false,
+      "legacy_score": 39.0,
+      "unified_score": 32.5,
+      "unified_score_grade": "D",
+      "score_breakdown": {
+        "version": "unified_score_v1",
+        "total": 32.5,
+        "grade": "D",
+        "base": 29.6,
+        "components": {
+          "chip": 87.3,
+          "momentum": 11.6,
+          "volume": 24.3,
+          "structure": 0.0,
+          "theme": 0.0
+        },
+        "source_count": 3,
+        "source_multiplier": 1.1,
+        "sources": [
+          "chips",
+          "momentum_candidates",
+          "right_top_track"
+        ],
+        "reasons": {
+          "chip": [
+            "大戶占比 77.8%",
+            "籌碼標籤加分"
+          ],
+          "momentum": [],
+          "volume": [
+            "量比 1.29x"
+          ],
+          "structure": [],
+          "theme": []
+        }
+      }
     },
     {
       "stock_id": "6579",
@@ -5324,7 +9800,7 @@
         "entry_price": 152.5,
         "days_remaining": 8
       },
-      "score": 37.0,
+      "score": 34.1,
       "source_count": 1,
       "risk_flags": [],
       "priority_level": "C",
@@ -5332,7 +9808,40 @@
       "priority_reason": [
         "低優先觀察"
       ],
-      "focus_candidate": false
+      "focus_candidate": false,
+      "legacy_score": 37.0,
+      "unified_score": 34.1,
+      "unified_score_grade": "D",
+      "score_breakdown": {
+        "version": "unified_score_v1",
+        "total": 34.1,
+        "grade": "D",
+        "base": 32.5,
+        "components": {
+          "chip": 0.0,
+          "momentum": 81.8,
+          "volume": 60.1,
+          "structure": 0.0,
+          "theme": 0.0
+        },
+        "source_count": 2,
+        "source_multiplier": 1.05,
+        "sources": [
+          "momentum_candidates",
+          "right_top_track"
+        ],
+        "reasons": {
+          "chip": [],
+          "momentum": [
+            "追蹤 +14.4%"
+          ],
+          "volume": [
+            "量比 3.17x"
+          ],
+          "structure": [],
+          "theme": []
+        }
+      }
     },
     {
       "stock_id": "3045",
@@ -5364,7 +9873,7 @@
         "entry_price": 115.0,
         "days_remaining": 3
       },
-      "score": 36.0,
+      "score": 32.2,
       "source_count": 2,
       "risk_flags": [],
       "priority_level": "C",
@@ -5372,7 +9881,46 @@
       "priority_reason": [
         "低優先觀察"
       ],
-      "focus_candidate": false
+      "focus_candidate": false,
+      "legacy_score": 36.0,
+      "unified_score": 32.2,
+      "unified_score_grade": "D",
+      "score_breakdown": {
+        "version": "unified_score_v1",
+        "total": 32.2,
+        "grade": "D",
+        "base": 29.3,
+        "components": {
+          "chip": 87.3,
+          "momentum": 12.0,
+          "volume": 22.4,
+          "structure": 0.0,
+          "theme": 0.0
+        },
+        "source_count": 3,
+        "source_multiplier": 1.1,
+        "sources": [
+          "chips",
+          "momentum_candidates",
+          "right_top_track"
+        ],
+        "reasons": {
+          "chip": [
+            "大戶占比 89.8%",
+            "籌碼標籤加分"
+          ],
+          "momentum": [],
+          "volume": [
+            "量比 1.19x"
+          ],
+          "structure": [],
+          "theme": []
+        }
+      }
     }
-  ]
+  ],
+  "unified_score_model": {
+    "version": "unified_score_v1",
+    "applied_at": "2026-05-27T15:58:01+08:00"
+  }
 }

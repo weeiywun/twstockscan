@@ -25,6 +25,7 @@ function buildSSRRows() {
         institutional_confluence: null,
         tags: [],
         signal_dates: [],
+        unified_scores: [],
       });
     }
     const row = rows.get(id);
@@ -45,6 +46,7 @@ function buildSSRRows() {
     if (d.chg_2w_1000 != null && Number(d.chg_2w_1000) > 0) row.score += 4;
     if (d.chg_2w_400 != null && Number(d.chg_2w_400) > 0) row.score += 3;
     row.tags.push('籌碼集中');
+    if (d.unified_score != null) row.unified_scores.push(Number(d.unified_score));
   });
 
   [...(DATA.vcp_data || []), ...(DATA.vcp_potential_data || [])].forEach(d => {
@@ -57,6 +59,7 @@ function buildSSRRows() {
     if (d.is_near_pivot) row.score += 5;
     if (d.dry_up_ratio != null && d.dry_up_ratio <= 0.8) row.score += 5;
     row.tags.push(d.vcp_tier === 'vcp' ? 'VCP' : '潛在VCP');
+    if (d.unified_score != null) row.unified_scores.push(Number(d.unified_score));
   });
 
   (DATA.right_top_data || []).forEach(d => {
@@ -69,6 +72,7 @@ function buildSSRRows() {
     if (d.is_consolidation_breakout && d.is_momentum_breakout) row.score += 6;
     row.tags.push(...(d.signal_types || d.tags || ['突破策略']).slice(0, 3));
     if (d.signal_date || d.week_date) row.signal_dates.push(d.signal_date || d.week_date);
+    if (d.unified_score != null) row.unified_scores.push(Number(d.unified_score));
   });
 
   (DATA.trust_momentum_data || []).forEach(d => {
@@ -82,6 +86,7 @@ function buildSSRRows() {
     if (d.trust_vol_ratio_5d >= 0.2) row.score += 5;
     row.tags.push('投信動能');
     if (d.signal_date) row.signal_dates.push(d.signal_date);
+    if (d.unified_score != null) row.unified_scores.push(Number(d.unified_score));
   });
 
   (DATA.foreign_momentum_data || []).forEach(d => {
@@ -95,6 +100,7 @@ function buildSSRRows() {
     if (d.inst_vol_ratio_5d >= 0.2) row.score += 5;
     row.tags.push('外資動能');
     if (d.signal_date) row.signal_dates.push(d.signal_date);
+    if (d.unified_score != null) row.unified_scores.push(Number(d.unified_score));
   });
 
   (DATA.institutional_confluence_data || []).forEach(d => {
@@ -104,6 +110,7 @@ function buildSSRRows() {
     row.score += 12;
     row.tags.push('雙法人共振');
     if (d.signal_date) row.signal_dates.push(d.signal_date);
+    if (d.unified_score != null) row.unified_scores.push(Number(d.unified_score));
   });
 
   return [...rows.values()]
@@ -119,7 +126,9 @@ function buildSSRRows() {
         row.trust ? '投信' : null,
         row.foreign ? '外資' : null,
       ].filter(Boolean).join('+');
-      row.score = Math.round(row.score);
+      row.score = row.unified_scores.length
+        ? Math.round(Math.max(...row.unified_scores))
+        : Math.round(row.score);
       return row;
     })
     .filter(row => row.strategy_count >= 2)
@@ -200,6 +209,7 @@ function renderSSR(strat, main) {
 
   function focusValue(row, col) {
     const m = row.metrics || {};
+    if (col === 'score') return row.unified_score ?? row.score ?? 0;
     if (col === 'primary_metric') return m.ignition_vol_ratio ?? m.today_vol_ratio ?? m.track_vol_ratio ?? 0;
     if (col === 'track_pnl_pct') return m.track_pnl_pct ?? -999;
     return row[col] ?? m[col];
@@ -362,7 +372,19 @@ function renderSSR(strat, main) {
     if (m.week_chg_pct != null) parts.push(`週 ${fmtPct(m.week_chg_pct, 1)}`);
     if (m.bbw != null) parts.push(`BBW ${fmtNum(m.bbw, 1)}`);
     if (m.track_pnl_pct != null) parts.push(`追蹤 ${fmtPct(m.track_pnl_pct, 1)}`);
-    return parts.join(' / ') || '—';
+    const baseText = parts.join(' / ') || '—';
+    const score = row.score_breakdown || {};
+    const c = score.components || {};
+    if (!Object.keys(c).length) return baseText;
+    const detail = [
+      `籌碼 ${fmtNum(c.chip, 0)}`,
+      `動能 ${fmtNum(c.momentum, 0)}`,
+      `量能 ${fmtNum(c.volume, 0)}`,
+      `結構 ${fmtNum(c.structure, 0)}`,
+      `主線 ${fmtNum(c.theme, 0)}`,
+    ].join(' / ');
+    const multiplier = score.source_multiplier ? ` · x${Number(score.source_multiplier).toFixed(2)}` : '';
+    return `${baseText}<br><span style="color:var(--text3)">分解：${detail}${multiplier}</span>`;
   }
 
   function renderFocusTable() {
@@ -386,7 +408,10 @@ function renderSSR(strat, main) {
           <div class="stock-industry" style="font-size:10px;color:var(--text3)">${row.industry || '—'}</div>
         </td>
         <td><span class="tag-badge" style="color:${statusColor};border-color:rgba(80,90,110,.35)">${row.status || '—'}</span></td>
-        <td><span style="font-family:var(--mono);font-weight:700;color:var(--green)">${fmtNum(row.score, 0)}</span></td>
+        <td>
+          <span style="font-family:var(--mono);font-weight:700;color:var(--green)">${fmtNum(row.unified_score ?? row.score, 0)}</span>
+          <span style="font-size:10px;color:var(--text3);margin-left:4px">${row.unified_score_grade || ''}</span>
+        </td>
         <td><span class="price-cell">${fmtNum(row.close, 1)}</span></td>
         <td><span style="font-family:var(--mono);color:var(--amber);font-weight:700">${vol != null ? Number(vol).toFixed(2) + 'x' : '—'}</span></td>
         <td><span class="${Number(track || 0) >= 0 ? 'pos' : 'neg'}" style="font-family:var(--mono)">${track != null ? fmtPct(track, 1) : '—'}</span></td>

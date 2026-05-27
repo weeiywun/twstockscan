@@ -26,7 +26,7 @@
       "source_tags": [],
       "status": "reentry",
       "status_label": "再啟動",
-      "score": 123,
+      "score": 48.9,
       "signal_date": "2026-05-26",
       "ignition_date": "2026-05-22",
       "days_since_ignition": 2,
@@ -45,7 +45,42 @@
       "ignition_vol_ratio": 6.24,
       "pullback_from_ignition_close_pct": 5.9,
       "support_ok": true,
-      "volume_cools": true
+      "volume_cools": true,
+      "legacy_score": 123,
+      "unified_score": 48.9,
+      "unified_score_grade": "D",
+      "score_breakdown": {
+        "version": "unified_score_v1",
+        "total": 48.9,
+        "grade": "D",
+        "base": 46.6,
+        "components": {
+          "chip": 0.0,
+          "momentum": 72.0,
+          "volume": 61.2,
+          "structure": 81.8,
+          "theme": 0.0
+        },
+        "source_count": 2,
+        "source_multiplier": 1.05,
+        "sources": [
+          "price_breakout_track",
+          "volume_pullback"
+        ],
+        "reasons": {
+          "chip": [],
+          "momentum": [],
+          "volume": [
+            "量比 2.13x",
+            "回測量縮"
+          ],
+          "structure": [
+            "reentry",
+            "支撐守住"
+          ],
+          "theme": []
+        }
+      }
     },
     {
       "stock_id": "9105",
@@ -58,7 +93,7 @@
       "source_tags": [],
       "status": "reentry",
       "status_label": "再啟動",
-      "score": 123,
+      "score": 44.1,
       "signal_date": "2026-05-26",
       "ignition_date": "2026-05-22",
       "days_since_ignition": 2,
@@ -77,7 +112,42 @@
       "ignition_vol_ratio": 7.03,
       "pullback_from_ignition_close_pct": 20.89,
       "support_ok": true,
-      "volume_cools": true
+      "volume_cools": true,
+      "legacy_score": 123,
+      "unified_score": 44.1,
+      "unified_score_grade": "D",
+      "score_breakdown": {
+        "version": "unified_score_v1",
+        "total": 44.1,
+        "grade": "D",
+        "base": 42.0,
+        "components": {
+          "chip": 0.0,
+          "momentum": 72.0,
+          "volume": 52.5,
+          "structure": 67.7,
+          "theme": 0.0
+        },
+        "source_count": 2,
+        "source_multiplier": 1.05,
+        "sources": [
+          "price_breakout_track",
+          "volume_pullback"
+        ],
+        "reasons": {
+          "chip": [],
+          "momentum": [],
+          "volume": [
+            "量比 1.22x",
+            "回測量縮"
+          ],
+          "structure": [
+            "reentry",
+            "支撐守住"
+          ],
+          "theme": []
+        }
+      }
     },
     {
       "stock_id": "6127",
@@ -90,7 +160,7 @@
       "source_tags": [],
       "status": "reentry",
       "status_label": "再啟動",
-      "score": 117,
+      "score": 56.8,
       "signal_date": "2026-05-26",
       "ignition_date": "2026-05-21",
       "days_since_ignition": 3,
@@ -109,7 +179,44 @@
       "ignition_vol_ratio": 4.86,
       "pullback_from_ignition_close_pct": 7.92,
       "support_ok": true,
-      "volume_cools": true
+      "volume_cools": true,
+      "legacy_score": 117,
+      "unified_score": 56.8,
+      "unified_score_grade": "C",
+      "score_breakdown": {
+        "version": "unified_score_v1",
+        "total": 56.8,
+        "grade": "C",
+        "base": 54.1,
+        "components": {
+          "chip": 0.0,
+          "momentum": 72.0,
+          "volume": 51.8,
+          "structure": 79.4,
+          "theme": 98.6
+        },
+        "source_count": 2,
+        "source_multiplier": 1.05,
+        "sources": [
+          "price_breakout_track",
+          "volume_pullback"
+        ],
+        "reasons": {
+          "chip": [],
+          "momentum": [],
+          "volume": [
+            "量比 1.15x",
+            "回測量縮"
+          ],
+          "structure": [
+            "reentry",
+            "支撐守住"
+          ],
+          "theme": [
+            "電子零組件 98.6"
+          ]
+        }
+      }
     },
     {
       "stock_id": "5321",
@@ -122,7 +229,7 @@
       "source_tags": [],
       "status": "reentry",
       "status_label": "再啟動",
-      "score": 116,
+      "score": 43.3,
       "signal_date": "2026-05-26",
       "ignition_date": "2026-05-22",
       "days_since_ignition": 2,
@@ -141,7 +248,42 @@
       "ignition_vol_ratio": 4.71,
       "pullback_from_ignition_close_pct": 20.82,
       "support_ok": true,
-      "volume_cools": true
+      "volume_cools": true,
+      "legacy_score": 116,
+      "unified_score": 43.3,
+      "unified_score_grade": "D",
+      "score_breakdown": {
+        "version": "unified_score_v1",
+        "total": 43.3,
+        "grade": "D",
+        "base": 41.2,
+        "components": {
+          "chip": 0.0,
+          "momentum": 72.0,
+          "volume": 48.5,
+          "structure": 67.7,
+          "theme": 0.0
+        },
+        "source_count": 2,
+        "source_multiplier": 1.05,
+        "sources": [
+          "price_breakout_track",
+          "volume_pullback"
+        ],
+        "reasons": {
+          "chip": [],
+          "momentum": [],
+          "volume": [
+            "量比 0.45x",
+            "回測量縮"
+          ],
+          "structure": [
+            "reentry",
+            "支撐守住"
+          ],
+          "theme": []
+        }
+      }
     },
     {
       "stock_id": "8473",
@@ -154,7 +296,7 @@
       "source_tags": [],
       "status": "reentry",
       "status_label": "再啟動",
-      "score": 115,
+      "score": 47.5,
       "signal_date": "2026-05-26",
       "ignition_date": "2026-05-21",
       "days_since_ignition": 3,
@@ -173,7 +315,42 @@
       "ignition_vol_ratio": 4.58,
       "pullback_from_ignition_close_pct": 3.44,
       "support_ok": true,
-      "volume_cools": true
+      "volume_cools": true,
+      "legacy_score": 115,
+      "unified_score": 47.5,
+      "unified_score_grade": "D",
+      "score_breakdown": {
+        "version": "unified_score_v1",
+        "total": 47.5,
+        "grade": "D",
+        "base": 45.3,
+        "components": {
+          "chip": 0.0,
+          "momentum": 72.0,
+          "volume": 51.7,
+          "structure": 84.7,
+          "theme": 0.0
+        },
+        "source_count": 2,
+        "source_multiplier": 1.05,
+        "sources": [
+          "price_breakout_track",
+          "volume_pullback"
+        ],
+        "reasons": {
+          "chip": [],
+          "momentum": [],
+          "volume": [
+            "量比 1.14x",
+            "回測量縮"
+          ],
+          "structure": [
+            "reentry",
+            "支撐守住"
+          ],
+          "theme": []
+        }
+      }
     },
     {
       "stock_id": "3558",
@@ -186,7 +363,7 @@
       "source_tags": [],
       "status": "reentry",
       "status_label": "再啟動",
-      "score": 115,
+      "score": 59.0,
       "signal_date": "2026-05-26",
       "ignition_date": "2026-05-25",
       "days_since_ignition": 1,
@@ -205,7 +382,44 @@
       "ignition_vol_ratio": 4.43,
       "pullback_from_ignition_close_pct": -2.17,
       "support_ok": true,
-      "volume_cools": true
+      "volume_cools": true,
+      "legacy_score": 115,
+      "unified_score": 59.0,
+      "unified_score_grade": "C",
+      "score_breakdown": {
+        "version": "unified_score_v1",
+        "total": 59.0,
+        "grade": "C",
+        "base": 56.2,
+        "components": {
+          "chip": 0.0,
+          "momentum": 72.0,
+          "volume": 58.3,
+          "structure": 86.1,
+          "theme": 93.3
+        },
+        "source_count": 2,
+        "source_multiplier": 1.05,
+        "sources": [
+          "price_breakout_track",
+          "volume_pullback"
+        ],
+        "reasons": {
+          "chip": [],
+          "momentum": [],
+          "volume": [
+            "量比 1.83x",
+            "回測量縮"
+          ],
+          "structure": [
+            "reentry",
+            "支撐守住"
+          ],
+          "theme": [
+            "網通 93.3"
+          ]
+        }
+      }
     },
     {
       "stock_id": "6609",
@@ -218,7 +432,7 @@
       "source_tags": [],
       "status": "reentry",
       "status_label": "再啟動",
-      "score": 114,
+      "score": 48.0,
       "signal_date": "2026-05-26",
       "ignition_date": "2026-05-25",
       "days_since_ignition": 1,
@@ -237,7 +451,42 @@
       "ignition_vol_ratio": 4.29,
       "pullback_from_ignition_close_pct": -3.14,
       "support_ok": true,
-      "volume_cools": true
+      "volume_cools": true,
+      "legacy_score": 114,
+      "unified_score": 48.0,
+      "unified_score_grade": "D",
+      "score_breakdown": {
+        "version": "unified_score_v1",
+        "total": 48.0,
+        "grade": "D",
+        "base": 45.7,
+        "components": {
+          "chip": 0.0,
+          "momentum": 72.0,
+          "volume": 53.7,
+          "structure": 85.0,
+          "theme": 0.0
+        },
+        "source_count": 2,
+        "source_multiplier": 1.05,
+        "sources": [
+          "price_breakout_track",
+          "volume_pullback"
+        ],
+        "reasons": {
+          "chip": [],
+          "momentum": [],
+          "volume": [
+            "量比 1.35x",
+            "回測量縮"
+          ],
+          "structure": [
+            "reentry",
+            "支撐守住"
+          ],
+          "theme": []
+        }
+      }
     },
     {
       "stock_id": "2420",
@@ -250,7 +499,7 @@
       "source_tags": [],
       "status": "reentry",
       "status_label": "再啟動",
-      "score": 113,
+      "score": 47.9,
       "signal_date": "2026-05-26",
       "ignition_date": "2026-05-21",
       "days_since_ignition": 3,
@@ -269,7 +518,42 @@
       "ignition_vol_ratio": 4.23,
       "pullback_from_ignition_close_pct": 0.32,
       "support_ok": true,
-      "volume_cools": true
+      "volume_cools": true,
+      "legacy_score": 113,
+      "unified_score": 47.9,
+      "unified_score_grade": "D",
+      "score_breakdown": {
+        "version": "unified_score_v1",
+        "total": 47.9,
+        "grade": "D",
+        "base": 45.6,
+        "components": {
+          "chip": 0.0,
+          "momentum": 72.0,
+          "volume": 49.9,
+          "structure": 88.3,
+          "theme": 0.0
+        },
+        "source_count": 2,
+        "source_multiplier": 1.05,
+        "sources": [
+          "price_breakout_track",
+          "volume_pullback"
+        ],
+        "reasons": {
+          "chip": [],
+          "momentum": [],
+          "volume": [
+            "量比 0.95x",
+            "回測量縮"
+          ],
+          "structure": [
+            "reentry",
+            "支撐守住"
+          ],
+          "theme": []
+        }
+      }
     },
     {
       "stock_id": "2937",
@@ -282,7 +566,7 @@
       "source_tags": [],
       "status": "reentry",
       "status_label": "再啟動",
-      "score": 113,
+      "score": 47.7,
       "signal_date": "2026-05-26",
       "ignition_date": "2026-05-21",
       "days_since_ignition": 3,
@@ -301,7 +585,42 @@
       "ignition_vol_ratio": 4.22,
       "pullback_from_ignition_close_pct": 0.53,
       "support_ok": true,
-      "volume_cools": true
+      "volume_cools": true,
+      "legacy_score": 113,
+      "unified_score": 47.7,
+      "unified_score_grade": "D",
+      "score_breakdown": {
+        "version": "unified_score_v1",
+        "total": 47.7,
+        "grade": "D",
+        "base": 45.4,
+        "components": {
+          "chip": 0.0,
+          "momentum": 72.0,
+          "volume": 49.2,
+          "structure": 88.0,
+          "theme": 0.0
+        },
+        "source_count": 2,
+        "source_multiplier": 1.05,
+        "sources": [
+          "price_breakout_track",
+          "volume_pullback"
+        ],
+        "reasons": {
+          "chip": [],
+          "momentum": [],
+          "volume": [
+            "量比 0.87x",
+            "回測量縮"
+          ],
+          "structure": [
+            "reentry",
+            "支撐守住"
+          ],
+          "theme": []
+        }
+      }
     },
     {
       "stock_id": "3479",
@@ -314,7 +633,7 @@
       "source_tags": [],
       "status": "reentry",
       "status_label": "再啟動",
-      "score": 112,
+      "score": 47.0,
       "signal_date": "2026-05-26",
       "ignition_date": "2026-05-22",
       "days_since_ignition": 2,
@@ -333,7 +652,42 @@
       "ignition_vol_ratio": 4.05,
       "pullback_from_ignition_close_pct": 6.77,
       "support_ok": true,
-      "volume_cools": true
+      "volume_cools": true,
+      "legacy_score": 112,
+      "unified_score": 47.0,
+      "unified_score_grade": "D",
+      "score_breakdown": {
+        "version": "unified_score_v1",
+        "total": 47.0,
+        "grade": "D",
+        "base": 44.8,
+        "components": {
+          "chip": 0.0,
+          "momentum": 72.0,
+          "volume": 53.1,
+          "structure": 80.8,
+          "theme": 0.0
+        },
+        "source_count": 2,
+        "source_multiplier": 1.05,
+        "sources": [
+          "price_breakout_track",
+          "volume_pullback"
+        ],
+        "reasons": {
+          "chip": [],
+          "momentum": [],
+          "volume": [
+            "量比 1.28x",
+            "回測量縮"
+          ],
+          "structure": [
+            "reentry",
+            "支撐守住"
+          ],
+          "theme": []
+        }
+      }
     },
     {
       "stock_id": "4923",
@@ -346,7 +700,7 @@
       "source_tags": [],
       "status": "reentry",
       "status_label": "再啟動",
-      "score": 111,
+      "score": 57.8,
       "signal_date": "2026-05-26",
       "ignition_date": "2026-05-25",
       "days_since_ignition": 1,
@@ -365,7 +719,44 @@
       "ignition_vol_ratio": 3.87,
       "pullback_from_ignition_close_pct": 9.99,
       "support_ok": true,
-      "volume_cools": true
+      "volume_cools": true,
+      "legacy_score": 111,
+      "unified_score": 57.8,
+      "unified_score_grade": "C",
+      "score_breakdown": {
+        "version": "unified_score_v1",
+        "total": 57.8,
+        "grade": "C",
+        "base": 55.0,
+        "components": {
+          "chip": 0.0,
+          "momentum": 72.0,
+          "volume": 59.0,
+          "structure": 77.0,
+          "theme": 98.1
+        },
+        "source_count": 2,
+        "source_multiplier": 1.05,
+        "sources": [
+          "price_breakout_track",
+          "volume_pullback"
+        ],
+        "reasons": {
+          "chip": [],
+          "momentum": [],
+          "volume": [
+            "量比 1.90x",
+            "回測量縮"
+          ],
+          "structure": [
+            "reentry",
+            "支撐守住"
+          ],
+          "theme": [
+            "功率元件 98.1"
+          ]
+        }
+      }
     },
     {
       "stock_id": "2332",
@@ -380,7 +771,7 @@
       ],
       "status": "reentry",
       "status_label": "再啟動",
-      "score": 109,
+      "score": 80.6,
       "signal_date": "2026-05-26",
       "ignition_date": "2026-05-22",
       "days_since_ignition": 2,
@@ -399,7 +790,46 @@
       "ignition_vol_ratio": 3.47,
       "pullback_from_ignition_close_pct": 0.32,
       "support_ok": true,
-      "volume_cools": true
+      "volume_cools": true,
+      "legacy_score": 109,
+      "unified_score": 80.6,
+      "unified_score_grade": "A",
+      "score_breakdown": {
+        "version": "unified_score_v1",
+        "total": 80.6,
+        "grade": "A",
+        "base": 76.8,
+        "components": {
+          "chip": 82.0,
+          "momentum": 72.0,
+          "volume": 54.2,
+          "structure": 88.3,
+          "theme": 98.0
+        },
+        "source_count": 2,
+        "source_multiplier": 1.05,
+        "sources": [
+          "chips",
+          "volume_pullback"
+        ],
+        "reasons": {
+          "chip": [
+            "籌碼標籤加分"
+          ],
+          "momentum": [],
+          "volume": [
+            "量比 1.40x",
+            "回測量縮"
+          ],
+          "structure": [
+            "reentry",
+            "支撐守住"
+          ],
+          "theme": [
+            "網通 98.0"
+          ]
+        }
+      }
     },
     {
       "stock_id": "2495",
@@ -412,7 +842,7 @@
       "source_tags": [],
       "status": "reentry",
       "status_label": "再啟動",
-      "score": 108,
+      "score": 48.8,
       "signal_date": "2026-05-26",
       "ignition_date": "2026-05-22",
       "days_since_ignition": 2,
@@ -431,7 +861,42 @@
       "ignition_vol_ratio": 3.32,
       "pullback_from_ignition_close_pct": 4.19,
       "support_ok": true,
-      "volume_cools": true
+      "volume_cools": true,
+      "legacy_score": 108,
+      "unified_score": 48.8,
+      "unified_score_grade": "D",
+      "score_breakdown": {
+        "version": "unified_score_v1",
+        "total": 48.8,
+        "grade": "D",
+        "base": 46.5,
+        "components": {
+          "chip": 0.0,
+          "momentum": 72.0,
+          "volume": 58.7,
+          "structure": 83.8,
+          "theme": 0.0
+        },
+        "source_count": 2,
+        "source_multiplier": 1.05,
+        "sources": [
+          "price_breakout_track",
+          "volume_pullback"
+        ],
+        "reasons": {
+          "chip": [],
+          "momentum": [],
+          "volume": [
+            "量比 1.87x",
+            "回測量縮"
+          ],
+          "structure": [
+            "reentry",
+            "支撐守住"
+          ],
+          "theme": []
+        }
+      }
     },
     {
       "stock_id": "3702",
@@ -444,7 +909,7 @@
       "source_tags": [],
       "status": "reentry",
       "status_label": "再啟動",
-      "score": 107,
+      "score": 47.3,
       "signal_date": "2026-05-26",
       "ignition_date": "2026-05-21",
       "days_since_ignition": 3,
@@ -463,7 +928,42 @@
       "ignition_vol_ratio": 3.15,
       "pullback_from_ignition_close_pct": -1.62,
       "support_ok": true,
-      "volume_cools": true
+      "volume_cools": true,
+      "legacy_score": 107,
+      "unified_score": 47.3,
+      "unified_score_grade": "D",
+      "score_breakdown": {
+        "version": "unified_score_v1",
+        "total": 47.3,
+        "grade": "D",
+        "base": 45.1,
+        "components": {
+          "chip": 0.0,
+          "momentum": 72.0,
+          "volume": 48.5,
+          "structure": 86.8,
+          "theme": 0.0
+        },
+        "source_count": 2,
+        "source_multiplier": 1.05,
+        "sources": [
+          "price_breakout_track",
+          "volume_pullback"
+        ],
+        "reasons": {
+          "chip": [],
+          "momentum": [],
+          "volume": [
+            "量比 0.61x",
+            "回測量縮"
+          ],
+          "structure": [
+            "reentry",
+            "支撐守住"
+          ],
+          "theme": []
+        }
+      }
     },
     {
       "stock_id": "2324",
@@ -476,7 +976,7 @@
       "source_tags": [],
       "status": "reentry",
       "status_label": "再啟動",
-      "score": 107,
+      "score": 49.7,
       "signal_date": "2026-05-26",
       "ignition_date": "2026-05-25",
       "days_since_ignition": 1,
@@ -495,7 +995,42 @@
       "ignition_vol_ratio": 3.24,
       "pullback_from_ignition_close_pct": -3.03,
       "support_ok": true,
-      "volume_cools": true
+      "volume_cools": true,
+      "legacy_score": 107,
+      "unified_score": 49.7,
+      "unified_score_grade": "D",
+      "score_breakdown": {
+        "version": "unified_score_v1",
+        "total": 49.7,
+        "grade": "D",
+        "base": 47.3,
+        "components": {
+          "chip": 0.0,
+          "momentum": 72.0,
+          "volume": 61.6,
+          "structure": 85.1,
+          "theme": 0.0
+        },
+        "source_count": 2,
+        "source_multiplier": 1.05,
+        "sources": [
+          "price_breakout_track",
+          "volume_pullback"
+        ],
+        "reasons": {
+          "chip": [],
+          "momentum": [],
+          "volume": [
+            "量比 2.18x",
+            "回測量縮"
+          ],
+          "structure": [
+            "reentry",
+            "支撐守住"
+          ],
+          "theme": []
+        }
+      }
     },
     {
       "stock_id": "2421",
@@ -512,7 +1047,7 @@
       ],
       "status": "reentry",
       "status_label": "再啟動",
-      "score": 106,
+      "score": 84.0,
       "signal_date": "2026-05-26",
       "ignition_date": "2026-05-22",
       "days_since_ignition": 2,
@@ -531,7 +1066,47 @@
       "ignition_vol_ratio": 3.05,
       "pullback_from_ignition_close_pct": 4.1,
       "support_ok": true,
-      "volume_cools": true
+      "volume_cools": true,
+      "legacy_score": 106,
+      "unified_score": 84.0,
+      "unified_score_grade": "A",
+      "score_breakdown": {
+        "version": "unified_score_v1",
+        "total": 84.0,
+        "grade": "A",
+        "base": 76.3,
+        "components": {
+          "chip": 82.0,
+          "momentum": 72.0,
+          "volume": 55.2,
+          "structure": 83.9,
+          "theme": 100.0
+        },
+        "source_count": 3,
+        "source_multiplier": 1.1,
+        "sources": [
+          "chips",
+          "price_breakout_track",
+          "volume_pullback"
+        ],
+        "reasons": {
+          "chip": [
+            "籌碼標籤加分"
+          ],
+          "momentum": [],
+          "volume": [
+            "量比 1.50x",
+            "回測量縮"
+          ],
+          "structure": [
+            "reentry",
+            "支撐守住"
+          ],
+          "theme": [
+            "散熱 100.0"
+          ]
+        }
+      }
     },
     {
       "stock_id": "3704",
@@ -544,7 +1119,7 @@
       "source_tags": [],
       "status": "reentry",
       "status_label": "再啟動",
-      "score": 106,
+      "score": 55.7,
       "signal_date": "2026-05-26",
       "ignition_date": "2026-05-22",
       "days_since_ignition": 2,
@@ -563,7 +1138,44 @@
       "ignition_vol_ratio": 2.98,
       "pullback_from_ignition_close_pct": 2.84,
       "support_ok": true,
-      "volume_cools": true
+      "volume_cools": true,
+      "legacy_score": 106,
+      "unified_score": 55.7,
+      "unified_score_grade": "C",
+      "score_breakdown": {
+        "version": "unified_score_v1",
+        "total": 55.7,
+        "grade": "C",
+        "base": 53.0,
+        "components": {
+          "chip": 0.0,
+          "momentum": 72.0,
+          "volume": 55.0,
+          "structure": 85.4,
+          "theme": 69.6
+        },
+        "source_count": 2,
+        "source_multiplier": 1.05,
+        "sources": [
+          "price_breakout_track",
+          "volume_pullback"
+        ],
+        "reasons": {
+          "chip": [],
+          "momentum": [],
+          "volume": [
+            "量比 1.48x",
+            "回測量縮"
+          ],
+          "structure": [
+            "reentry",
+            "支撐守住"
+          ],
+          "theme": [
+            "網通 69.6"
+          ]
+        }
+      }
     },
     {
       "stock_id": "3441",
@@ -576,7 +1188,7 @@
       "source_tags": [],
       "status": "reentry",
       "status_label": "再啟動",
-      "score": 106,
+      "score": 46.7,
       "signal_date": "2026-05-26",
       "ignition_date": "2026-05-21",
       "days_since_ignition": 3,
@@ -595,7 +1207,42 @@
       "ignition_vol_ratio": 3.0,
       "pullback_from_ignition_close_pct": 5.67,
       "support_ok": true,
-      "volume_cools": true
+      "volume_cools": true,
+      "legacy_score": 106,
+      "unified_score": 46.7,
+      "unified_score_grade": "D",
+      "score_breakdown": {
+        "version": "unified_score_v1",
+        "total": 46.7,
+        "grade": "D",
+        "base": 44.5,
+        "components": {
+          "chip": 0.0,
+          "momentum": 72.0,
+          "volume": 50.4,
+          "structure": 82.1,
+          "theme": 0.0
+        },
+        "source_count": 2,
+        "source_multiplier": 1.05,
+        "sources": [
+          "price_breakout_track",
+          "volume_pullback"
+        ],
+        "reasons": {
+          "chip": [],
+          "momentum": [],
+          "volume": [
+            "量比 1.00x",
+            "回測量縮"
+          ],
+          "structure": [
+            "reentry",
+            "支撐守住"
+          ],
+          "theme": []
+        }
+      }
     },
     {
       "stock_id": "5425",
@@ -608,7 +1255,7 @@
       "source_tags": [],
       "status": "reentry",
       "status_label": "再啟動",
-      "score": 105,
+      "score": 44.4,
       "signal_date": "2026-05-26",
       "ignition_date": "2026-05-20",
       "days_since_ignition": 4,
@@ -627,7 +1274,42 @@
       "ignition_vol_ratio": 2.85,
       "pullback_from_ignition_close_pct": 15.65,
       "support_ok": true,
-      "volume_cools": true
+      "volume_cools": true,
+      "legacy_score": 105,
+      "unified_score": 44.4,
+      "unified_score_grade": "D",
+      "score_breakdown": {
+        "version": "unified_score_v1",
+        "total": 44.4,
+        "grade": "D",
+        "base": 42.3,
+        "components": {
+          "chip": 0.0,
+          "momentum": 72.0,
+          "volume": 50.9,
+          "structure": 70.4,
+          "theme": 0.0
+        },
+        "source_count": 2,
+        "source_multiplier": 1.05,
+        "sources": [
+          "price_breakout_track",
+          "volume_pullback"
+        ],
+        "reasons": {
+          "chip": [],
+          "momentum": [],
+          "volume": [
+            "量比 1.05x",
+            "回測量縮"
+          ],
+          "structure": [
+            "reentry",
+            "支撐守住"
+          ],
+          "theme": []
+        }
+      }
     },
     {
       "stock_id": "3444",
@@ -640,7 +1322,7 @@
       "source_tags": [],
       "status": "reentry",
       "status_label": "再啟動",
-      "score": 105,
+      "score": 49.2,
       "signal_date": "2026-05-26",
       "ignition_date": "2026-05-25",
       "days_since_ignition": 1,
@@ -659,7 +1341,42 @@
       "ignition_vol_ratio": 2.9,
       "pullback_from_ignition_close_pct": 0.94,
       "support_ok": true,
-      "volume_cools": true
+      "volume_cools": true,
+      "legacy_score": 105,
+      "unified_score": 49.2,
+      "unified_score_grade": "D",
+      "score_breakdown": {
+        "version": "unified_score_v1",
+        "total": 49.2,
+        "grade": "D",
+        "base": 46.9,
+        "components": {
+          "chip": 0.0,
+          "momentum": 72.0,
+          "volume": 56.7,
+          "structure": 87.6,
+          "theme": 0.0
+        },
+        "source_count": 2,
+        "source_multiplier": 1.05,
+        "sources": [
+          "price_breakout_track",
+          "volume_pullback"
+        ],
+        "reasons": {
+          "chip": [],
+          "momentum": [],
+          "volume": [
+            "量比 1.66x",
+            "回測量縮"
+          ],
+          "structure": [
+            "reentry",
+            "支撐守住"
+          ],
+          "theme": []
+        }
+      }
     },
     {
       "stock_id": "1709",
@@ -674,7 +1391,7 @@
       ],
       "status": "reentry",
       "status_label": "再啟動",
-      "score": 104,
+      "score": 70.2,
       "signal_date": "2026-05-26",
       "ignition_date": "2026-05-25",
       "days_since_ignition": 1,
@@ -693,7 +1410,44 @@
       "ignition_vol_ratio": 2.72,
       "pullback_from_ignition_close_pct": 0.52,
       "support_ok": true,
-      "volume_cools": true
+      "volume_cools": true,
+      "legacy_score": 104,
+      "unified_score": 70.2,
+      "unified_score_grade": "B",
+      "score_breakdown": {
+        "version": "unified_score_v1",
+        "total": 70.2,
+        "grade": "B",
+        "base": 66.8,
+        "components": {
+          "chip": 82.0,
+          "momentum": 72.0,
+          "volume": 53.5,
+          "structure": 88.1,
+          "theme": 0.0
+        },
+        "source_count": 2,
+        "source_multiplier": 1.05,
+        "sources": [
+          "chips",
+          "volume_pullback"
+        ],
+        "reasons": {
+          "chip": [
+            "籌碼標籤加分"
+          ],
+          "momentum": [],
+          "volume": [
+            "量比 1.33x",
+            "回測量縮"
+          ],
+          "structure": [
+            "reentry",
+            "支撐守住"
+          ],
+          "theme": []
+        }
+      }
     },
     {
       "stock_id": "3114",
@@ -706,7 +1460,7 @@
       "source_tags": [],
       "status": "reentry",
       "status_label": "再啟動",
-      "score": 104,
+      "score": 55.5,
       "signal_date": "2026-05-26",
       "ignition_date": "2026-05-22",
       "days_since_ignition": 2,
@@ -725,7 +1479,44 @@
       "ignition_vol_ratio": 2.59,
       "pullback_from_ignition_close_pct": -1.24,
       "support_ok": true,
-      "volume_cools": true
+      "volume_cools": true,
+      "legacy_score": 104,
+      "unified_score": 55.5,
+      "unified_score_grade": "C",
+      "score_breakdown": {
+        "version": "unified_score_v1",
+        "total": 55.5,
+        "grade": "C",
+        "base": 52.9,
+        "components": {
+          "chip": 0.0,
+          "momentum": 72.0,
+          "volume": 55.9,
+          "structure": 87.2,
+          "theme": 62.8
+        },
+        "source_count": 2,
+        "source_multiplier": 1.05,
+        "sources": [
+          "price_breakout_track",
+          "volume_pullback"
+        ],
+        "reasons": {
+          "chip": [],
+          "momentum": [],
+          "volume": [
+            "量比 1.58x",
+            "回測量縮"
+          ],
+          "structure": [
+            "reentry",
+            "支撐守住"
+          ],
+          "theme": [
+            "電子零組件 62.8"
+          ]
+        }
+      }
     },
     {
       "stock_id": "3675",
@@ -738,7 +1529,7 @@
       "source_tags": [],
       "status": "reentry",
       "status_label": "再啟動",
-      "score": 104,
+      "score": 46.3,
       "signal_date": "2026-05-26",
       "ignition_date": "2026-05-21",
       "days_since_ignition": 3,
@@ -757,7 +1548,42 @@
       "ignition_vol_ratio": 2.59,
       "pullback_from_ignition_close_pct": 5.53,
       "support_ok": true,
-      "volume_cools": true
+      "volume_cools": true,
+      "legacy_score": 104,
+      "unified_score": 46.3,
+      "unified_score_grade": "D",
+      "score_breakdown": {
+        "version": "unified_score_v1",
+        "total": 46.3,
+        "grade": "D",
+        "base": 44.1,
+        "components": {
+          "chip": 0.0,
+          "momentum": 72.0,
+          "volume": 48.5,
+          "structure": 82.2,
+          "theme": 0.0
+        },
+        "source_count": 2,
+        "source_multiplier": 1.05,
+        "sources": [
+          "price_breakout_track",
+          "volume_pullback"
+        ],
+        "reasons": {
+          "chip": [],
+          "momentum": [],
+          "volume": [
+            "量比 0.30x",
+            "回測量縮"
+          ],
+          "structure": [
+            "reentry",
+            "支撐守住"
+          ],
+          "theme": []
+        }
+      }
     },
     {
       "stock_id": "2233",
@@ -770,7 +1596,7 @@
       "source_tags": [],
       "status": "reentry",
       "status_label": "再啟動",
-      "score": 104,
+      "score": 47.8,
       "signal_date": "2026-05-26",
       "ignition_date": "2026-05-22",
       "days_since_ignition": 2,
@@ -789,7 +1615,42 @@
       "ignition_vol_ratio": 2.69,
       "pullback_from_ignition_close_pct": 8.65,
       "support_ok": true,
-      "volume_cools": true
+      "volume_cools": true,
+      "legacy_score": 104,
+      "unified_score": 47.8,
+      "unified_score_grade": "D",
+      "score_breakdown": {
+        "version": "unified_score_v1",
+        "total": 47.8,
+        "grade": "D",
+        "base": 45.5,
+        "components": {
+          "chip": 0.0,
+          "momentum": 72.0,
+          "volume": 59.1,
+          "structure": 78.6,
+          "theme": 0.0
+        },
+        "source_count": 2,
+        "source_multiplier": 1.05,
+        "sources": [
+          "price_breakout_track",
+          "volume_pullback"
+        ],
+        "reasons": {
+          "chip": [],
+          "momentum": [],
+          "volume": [
+            "量比 1.91x",
+            "回測量縮"
+          ],
+          "structure": [
+            "reentry",
+            "支撐守住"
+          ],
+          "theme": []
+        }
+      }
     },
     {
       "stock_id": "6902",
@@ -802,7 +1663,7 @@
       "source_tags": [],
       "status": "reentry",
       "status_label": "再啟動",
-      "score": 104,
+      "score": 45.9,
       "signal_date": "2026-05-26",
       "ignition_date": "2026-05-20",
       "days_since_ignition": 4,
@@ -821,7 +1682,42 @@
       "ignition_vol_ratio": 2.58,
       "pullback_from_ignition_close_pct": 10.16,
       "support_ok": true,
-      "volume_cools": true
+      "volume_cools": true,
+      "legacy_score": 104,
+      "unified_score": 45.9,
+      "unified_score_grade": "D",
+      "score_breakdown": {
+        "version": "unified_score_v1",
+        "total": 45.9,
+        "grade": "D",
+        "base": 43.7,
+        "components": {
+          "chip": 0.0,
+          "momentum": 72.0,
+          "volume": 51.9,
+          "structure": 76.8,
+          "theme": 0.0
+        },
+        "source_count": 2,
+        "source_multiplier": 1.05,
+        "sources": [
+          "price_breakout_track",
+          "volume_pullback"
+        ],
+        "reasons": {
+          "chip": [],
+          "momentum": [],
+          "volume": [
+            "量比 1.16x",
+            "回測量縮"
+          ],
+          "structure": [
+            "reentry",
+            "支撐守住"
+          ],
+          "theme": []
+        }
+      }
     },
     {
       "stock_id": "8261",
@@ -834,7 +1730,7 @@
       "source_tags": [],
       "status": "reentry",
       "status_label": "再啟動",
-      "score": 103,
+      "score": 47.7,
       "signal_date": "2026-05-26",
       "ignition_date": "2026-05-21",
       "days_since_ignition": 3,
@@ -853,7 +1749,44 @@
       "ignition_vol_ratio": 2.55,
       "pullback_from_ignition_close_pct": 29.0,
       "support_ok": true,
-      "volume_cools": true
+      "volume_cools": true,
+      "legacy_score": 103,
+      "unified_score": 47.7,
+      "unified_score_grade": "D",
+      "score_breakdown": {
+        "version": "unified_score_v1",
+        "total": 47.7,
+        "grade": "D",
+        "base": 45.5,
+        "components": {
+          "chip": 0.0,
+          "momentum": 72.0,
+          "volume": 54.9,
+          "structure": 67.7,
+          "theme": 29.3
+        },
+        "source_count": 2,
+        "source_multiplier": 1.05,
+        "sources": [
+          "price_breakout_track",
+          "volume_pullback"
+        ],
+        "reasons": {
+          "chip": [],
+          "momentum": [],
+          "volume": [
+            "量比 1.47x",
+            "回測量縮"
+          ],
+          "structure": [
+            "reentry",
+            "支撐守住"
+          ],
+          "theme": [
+            "功率元件 29.3"
+          ]
+        }
+      }
     },
     {
       "stock_id": "2316",
@@ -866,7 +1799,7 @@
       "source_tags": [],
       "status": "reentry",
       "status_label": "再啟動",
-      "score": 103,
+      "score": 43.9,
       "signal_date": "2026-05-26",
       "ignition_date": "2026-05-20",
       "days_since_ignition": 4,
@@ -885,7 +1818,42 @@
       "ignition_vol_ratio": 2.57,
       "pullback_from_ignition_close_pct": 24.73,
       "support_ok": true,
-      "volume_cools": true
+      "volume_cools": true,
+      "legacy_score": 103,
+      "unified_score": 43.9,
+      "unified_score_grade": "D",
+      "score_breakdown": {
+        "version": "unified_score_v1",
+        "total": 43.9,
+        "grade": "D",
+        "base": 41.8,
+        "components": {
+          "chip": 0.0,
+          "momentum": 72.0,
+          "volume": 51.2,
+          "structure": 67.7,
+          "theme": 0.0
+        },
+        "source_count": 2,
+        "source_multiplier": 1.05,
+        "sources": [
+          "price_breakout_track",
+          "volume_pullback"
+        ],
+        "reasons": {
+          "chip": [],
+          "momentum": [],
+          "volume": [
+            "量比 1.08x",
+            "回測量縮"
+          ],
+          "structure": [
+            "reentry",
+            "支撐守住"
+          ],
+          "theme": []
+        }
+      }
     },
     {
       "stock_id": "4764",
@@ -898,7 +1866,7 @@
       "source_tags": [],
       "status": "reentry",
       "status_label": "再啟動",
-      "score": 103,
+      "score": 48.5,
       "signal_date": "2026-05-26",
       "ignition_date": "2026-05-22",
       "days_since_ignition": 2,
@@ -917,7 +1885,42 @@
       "ignition_vol_ratio": 2.58,
       "pullback_from_ignition_close_pct": 5.62,
       "support_ok": true,
-      "volume_cools": true
+      "volume_cools": true,
+      "legacy_score": 103,
+      "unified_score": 48.5,
+      "unified_score_grade": "D",
+      "score_breakdown": {
+        "version": "unified_score_v1",
+        "total": 48.5,
+        "grade": "D",
+        "base": 46.2,
+        "components": {
+          "chip": 0.0,
+          "momentum": 72.0,
+          "volume": 59.0,
+          "structure": 82.1,
+          "theme": 0.0
+        },
+        "source_count": 2,
+        "source_multiplier": 1.05,
+        "sources": [
+          "price_breakout_track",
+          "volume_pullback"
+        ],
+        "reasons": {
+          "chip": [],
+          "momentum": [],
+          "volume": [
+            "量比 1.90x",
+            "回測量縮"
+          ],
+          "structure": [
+            "reentry",
+            "支撐守住"
+          ],
+          "theme": []
+        }
+      }
     },
     {
       "stock_id": "2484",
@@ -930,7 +1933,7 @@
       "source_tags": [],
       "status": "reentry",
       "status_label": "再啟動",
-      "score": 102,
+      "score": 41.5,
       "signal_date": "2026-05-26",
       "ignition_date": "2026-05-21",
       "days_since_ignition": 3,
@@ -949,7 +1952,41 @@
       "ignition_vol_ratio": 3.69,
       "pullback_from_ignition_close_pct": 24.86,
       "support_ok": true,
-      "volume_cools": false
+      "volume_cools": false,
+      "legacy_score": 102,
+      "unified_score": 41.5,
+      "unified_score_grade": "D",
+      "score_breakdown": {
+        "version": "unified_score_v1",
+        "total": 41.5,
+        "grade": "D",
+        "base": 39.5,
+        "components": {
+          "chip": 0.0,
+          "momentum": 72.0,
+          "volume": 40.0,
+          "structure": 67.7,
+          "theme": 0.0
+        },
+        "source_count": 2,
+        "source_multiplier": 1.05,
+        "sources": [
+          "price_breakout_track",
+          "volume_pullback"
+        ],
+        "reasons": {
+          "chip": [],
+          "momentum": [],
+          "volume": [
+            "量比 2.11x"
+          ],
+          "structure": [
+            "reentry",
+            "支撐守住"
+          ],
+          "theme": []
+        }
+      }
     },
     {
       "stock_id": "5243",
@@ -962,7 +1999,7 @@
       "source_tags": [],
       "status": "reentry",
       "status_label": "再啟動",
-      "score": 97,
+      "score": 42.4,
       "signal_date": "2026-05-26",
       "ignition_date": "2026-05-21",
       "days_since_ignition": 3,
@@ -981,7 +2018,41 @@
       "ignition_vol_ratio": 2.88,
       "pullback_from_ignition_close_pct": 17.86,
       "support_ok": true,
-      "volume_cools": false
+      "volume_cools": false,
+      "legacy_score": 97,
+      "unified_score": 42.4,
+      "unified_score_grade": "D",
+      "score_breakdown": {
+        "version": "unified_score_v1",
+        "total": 42.4,
+        "grade": "D",
+        "base": 40.4,
+        "components": {
+          "chip": 0.0,
+          "momentum": 72.0,
+          "volume": 44.3,
+          "structure": 67.8,
+          "theme": 0.0
+        },
+        "source_count": 2,
+        "source_multiplier": 1.05,
+        "sources": [
+          "price_breakout_track",
+          "volume_pullback"
+        ],
+        "reasons": {
+          "chip": [],
+          "momentum": [],
+          "volume": [
+            "量比 2.34x"
+          ],
+          "structure": [
+            "reentry",
+            "支撐守住"
+          ],
+          "theme": []
+        }
+      }
     },
     {
       "stock_id": "3694",
@@ -994,7 +2065,7 @@
       "source_tags": [],
       "status": "pullback",
       "status_label": "回穩觀察",
-      "score": 113,
+      "score": 53.2,
       "signal_date": "2026-05-26",
       "ignition_date": "2026-05-21",
       "days_since_ignition": 3,
@@ -1013,7 +2084,44 @@
       "ignition_vol_ratio": 5.94,
       "pullback_from_ignition_close_pct": -2.23,
       "support_ok": true,
-      "volume_cools": true
+      "volume_cools": true,
+      "legacy_score": 113,
+      "unified_score": 53.2,
+      "unified_score_grade": "C",
+      "score_breakdown": {
+        "version": "unified_score_v1",
+        "total": 53.2,
+        "grade": "C",
+        "base": 50.7,
+        "components": {
+          "chip": 0.0,
+          "momentum": 72.0,
+          "volume": 48.5,
+          "structure": 81.4,
+          "theme": 67.0
+        },
+        "source_count": 2,
+        "source_multiplier": 1.05,
+        "sources": [
+          "price_breakout_track",
+          "volume_pullback"
+        ],
+        "reasons": {
+          "chip": [],
+          "momentum": [],
+          "volume": [
+            "量比 0.67x",
+            "回測量縮"
+          ],
+          "structure": [
+            "pullback",
+            "支撐守住"
+          ],
+          "theme": [
+            "網通 67.0"
+          ]
+        }
+      }
     },
     {
       "stock_id": "6194",
@@ -1026,7 +2134,7 @@
       "source_tags": [],
       "status": "pullback",
       "status_label": "回穩觀察",
-      "score": 113,
+      "score": 52.8,
       "signal_date": "2026-05-26",
       "ignition_date": "2026-05-22",
       "days_since_ignition": 2,
@@ -1045,7 +2153,44 @@
       "ignition_vol_ratio": 11.57,
       "pullback_from_ignition_close_pct": 3.98,
       "support_ok": true,
-      "volume_cools": true
+      "volume_cools": true,
+      "legacy_score": 113,
+      "unified_score": 52.8,
+      "unified_score_grade": "C",
+      "score_breakdown": {
+        "version": "unified_score_v1",
+        "total": 52.8,
+        "grade": "C",
+        "base": 50.3,
+        "components": {
+          "chip": 0.0,
+          "momentum": 72.0,
+          "volume": 48.5,
+          "structure": 79.4,
+          "theme": 67.0
+        },
+        "source_count": 2,
+        "source_multiplier": 1.05,
+        "sources": [
+          "price_breakout_track",
+          "volume_pullback"
+        ],
+        "reasons": {
+          "chip": [],
+          "momentum": [],
+          "volume": [
+            "量比 0.46x",
+            "回測量縮"
+          ],
+          "structure": [
+            "pullback",
+            "支撐守住"
+          ],
+          "theme": [
+            "電子零組件 67.0"
+          ]
+        }
+      }
     },
     {
       "stock_id": "2362",
@@ -1061,7 +2206,7 @@
       ],
       "status": "pullback",
       "status_label": "回穩觀察",
-      "score": 108,
+      "score": 72.6,
       "signal_date": "2026-05-26",
       "ignition_date": "2026-05-25",
       "days_since_ignition": 1,
@@ -1080,7 +2225,45 @@
       "ignition_vol_ratio": 4.97,
       "pullback_from_ignition_close_pct": -1.42,
       "support_ok": true,
-      "volume_cools": true
+      "volume_cools": true,
+      "legacy_score": 108,
+      "unified_score": 72.6,
+      "unified_score_grade": "B",
+      "score_breakdown": {
+        "version": "unified_score_v1",
+        "total": 72.6,
+        "grade": "B",
+        "base": 66.0,
+        "components": {
+          "chip": 82.0,
+          "momentum": 72.0,
+          "volume": 55.1,
+          "structure": 82.3,
+          "theme": 0.0
+        },
+        "source_count": 3,
+        "source_multiplier": 1.1,
+        "sources": [
+          "chips",
+          "price_breakout_track",
+          "volume_pullback"
+        ],
+        "reasons": {
+          "chip": [
+            "籌碼標籤加分"
+          ],
+          "momentum": [],
+          "volume": [
+            "量比 1.49x",
+            "回測量縮"
+          ],
+          "structure": [
+            "pullback",
+            "支撐守住"
+          ],
+          "theme": []
+        }
+      }
     },
     {
       "stock_id": "1582",
@@ -1093,7 +2276,7 @@
       "source_tags": [],
       "status": "pullback",
       "status_label": "回穩觀察",
-      "score": 104,
+      "score": 45.7,
       "signal_date": "2026-05-26",
       "ignition_date": "2026-05-20",
       "days_since_ignition": 4,
@@ -1112,7 +2295,42 @@
       "ignition_vol_ratio": 4.4,
       "pullback_from_ignition_close_pct": 4.21,
       "support_ok": true,
-      "volume_cools": true
+      "volume_cools": true,
+      "legacy_score": 104,
+      "unified_score": 45.7,
+      "unified_score_grade": "D",
+      "score_breakdown": {
+        "version": "unified_score_v1",
+        "total": 45.7,
+        "grade": "D",
+        "base": 43.5,
+        "components": {
+          "chip": 0.0,
+          "momentum": 72.0,
+          "volume": 48.5,
+          "structure": 79.1,
+          "theme": 0.0
+        },
+        "source_count": 2,
+        "source_multiplier": 1.05,
+        "sources": [
+          "price_breakout_track",
+          "volume_pullback"
+        ],
+        "reasons": {
+          "chip": [],
+          "momentum": [],
+          "volume": [
+            "量比 0.61x",
+            "回測量縮"
+          ],
+          "structure": [
+            "pullback",
+            "支撐守住"
+          ],
+          "theme": []
+        }
+      }
     },
     {
       "stock_id": "2401",
@@ -1125,7 +2343,7 @@
       "source_tags": [],
       "status": "pullback",
       "status_label": "回穩觀察",
-      "score": 104,
+      "score": 46.9,
       "signal_date": "2026-05-26",
       "ignition_date": "2026-05-22",
       "days_since_ignition": 2,
@@ -1144,7 +2362,42 @@
       "ignition_vol_ratio": 4.3,
       "pullback_from_ignition_close_pct": -2.11,
       "support_ok": true,
-      "volume_cools": true
+      "volume_cools": true,
+      "legacy_score": 104,
+      "unified_score": 46.9,
+      "unified_score_grade": "D",
+      "score_breakdown": {
+        "version": "unified_score_v1",
+        "total": 46.9,
+        "grade": "D",
+        "base": 44.6,
+        "components": {
+          "chip": 0.0,
+          "momentum": 72.0,
+          "volume": 51.6,
+          "structure": 81.5,
+          "theme": 0.0
+        },
+        "source_count": 2,
+        "source_multiplier": 1.05,
+        "sources": [
+          "price_breakout_track",
+          "volume_pullback"
+        ],
+        "reasons": {
+          "chip": [],
+          "momentum": [],
+          "volume": [
+            "量比 1.13x",
+            "回測量縮"
+          ],
+          "structure": [
+            "pullback",
+            "支撐守住"
+          ],
+          "theme": []
+        }
+      }
     },
     {
       "stock_id": "2355",
@@ -1157,7 +2410,7 @@
       "source_tags": [],
       "status": "pullback",
       "status_label": "回穩觀察",
-      "score": 103,
+      "score": 44.2,
       "signal_date": "2026-05-26",
       "ignition_date": "2026-05-20",
       "days_since_ignition": 4,
@@ -1176,7 +2429,42 @@
       "ignition_vol_ratio": 4.12,
       "pullback_from_ignition_close_pct": 10.15,
       "support_ok": true,
-      "volume_cools": true
+      "volume_cools": true,
+      "legacy_score": 103,
+      "unified_score": 44.2,
+      "unified_score_grade": "D",
+      "score_breakdown": {
+        "version": "unified_score_v1",
+        "total": 44.2,
+        "grade": "D",
+        "base": 42.1,
+        "components": {
+          "chip": 0.0,
+          "momentum": 72.0,
+          "volume": 48.5,
+          "structure": 72.2,
+          "theme": 0.0
+        },
+        "source_count": 2,
+        "source_multiplier": 1.05,
+        "sources": [
+          "price_breakout_track",
+          "volume_pullback"
+        ],
+        "reasons": {
+          "chip": [],
+          "momentum": [],
+          "volume": [
+            "量比 0.53x",
+            "回測量縮"
+          ],
+          "structure": [
+            "pullback",
+            "支撐守住"
+          ],
+          "theme": []
+        }
+      }
     },
     {
       "stock_id": "4729",
@@ -1189,7 +2477,7 @@
       "source_tags": [],
       "status": "pullback",
       "status_label": "回穩觀察",
-      "score": 103,
+      "score": 46.4,
       "signal_date": "2026-05-26",
       "ignition_date": "2026-05-20",
       "days_since_ignition": 4,
@@ -1208,7 +2496,42 @@
       "ignition_vol_ratio": 4.22,
       "pullback_from_ignition_close_pct": 1.48,
       "support_ok": true,
-      "volume_cools": true
+      "volume_cools": true,
+      "legacy_score": 103,
+      "unified_score": 46.4,
+      "unified_score_grade": "D",
+      "score_breakdown": {
+        "version": "unified_score_v1",
+        "total": 46.4,
+        "grade": "D",
+        "base": 44.2,
+        "components": {
+          "chip": 0.0,
+          "momentum": 72.0,
+          "volume": 48.5,
+          "structure": 82.3,
+          "theme": 0.0
+        },
+        "source_count": 2,
+        "source_multiplier": 1.05,
+        "sources": [
+          "price_breakout_track",
+          "volume_pullback"
+        ],
+        "reasons": {
+          "chip": [],
+          "momentum": [],
+          "volume": [
+            "量比 0.55x",
+            "回測量縮"
+          ],
+          "structure": [
+            "pullback",
+            "支撐守住"
+          ],
+          "theme": []
+        }
+      }
     },
     {
       "stock_id": "6189",
@@ -1221,7 +2544,7 @@
       "source_tags": [],
       "status": "pullback",
       "status_label": "回穩觀察",
-      "score": 103,
+      "score": 46.7,
       "signal_date": "2026-05-26",
       "ignition_date": "2026-05-20",
       "days_since_ignition": 4,
@@ -1240,7 +2563,42 @@
       "ignition_vol_ratio": 4.12,
       "pullback_from_ignition_close_pct": 1.37,
       "support_ok": true,
-      "volume_cools": true
+      "volume_cools": true,
+      "legacy_score": 103,
+      "unified_score": 46.7,
+      "unified_score_grade": "D",
+      "score_breakdown": {
+        "version": "unified_score_v1",
+        "total": 46.7,
+        "grade": "D",
+        "base": 44.4,
+        "components": {
+          "chip": 0.0,
+          "momentum": 72.0,
+          "volume": 49.8,
+          "structure": 82.4,
+          "theme": 0.0
+        },
+        "source_count": 2,
+        "source_multiplier": 1.05,
+        "sources": [
+          "price_breakout_track",
+          "volume_pullback"
+        ],
+        "reasons": {
+          "chip": [],
+          "momentum": [],
+          "volume": [
+            "量比 0.94x",
+            "回測量縮"
+          ],
+          "structure": [
+            "pullback",
+            "支撐守住"
+          ],
+          "theme": []
+        }
+      }
     },
     {
       "stock_id": "2352",
@@ -1253,7 +2611,7 @@
       "source_tags": [],
       "status": "pullback",
       "status_label": "回穩觀察",
-      "score": 103,
+      "score": 46.4,
       "signal_date": "2026-05-26",
       "ignition_date": "2026-05-22",
       "days_since_ignition": 2,
@@ -1272,7 +2630,42 @@
       "ignition_vol_ratio": 4.11,
       "pullback_from_ignition_close_pct": -2.26,
       "support_ok": true,
-      "volume_cools": true
+      "volume_cools": true,
+      "legacy_score": 103,
+      "unified_score": 46.4,
+      "unified_score_grade": "D",
+      "score_breakdown": {
+        "version": "unified_score_v1",
+        "total": 46.4,
+        "grade": "D",
+        "base": 44.2,
+        "components": {
+          "chip": 0.0,
+          "momentum": 72.0,
+          "volume": 49.4,
+          "structure": 81.4,
+          "theme": 0.0
+        },
+        "source_count": 2,
+        "source_multiplier": 1.05,
+        "sources": [
+          "price_breakout_track",
+          "volume_pullback"
+        ],
+        "reasons": {
+          "chip": [],
+          "momentum": [],
+          "volume": [
+            "量比 0.89x",
+            "回測量縮"
+          ],
+          "structure": [
+            "pullback",
+            "支撐守住"
+          ],
+          "theme": []
+        }
+      }
     },
     {
       "stock_id": "7805",
@@ -1285,7 +2678,7 @@
       "source_tags": [],
       "status": "pullback",
       "status_label": "回穩觀察",
-      "score": 103,
+      "score": 54.8,
       "signal_date": "2026-05-26",
       "ignition_date": "2026-05-22",
       "days_since_ignition": 2,
@@ -1304,7 +2697,44 @@
       "ignition_vol_ratio": 4.09,
       "pullback_from_ignition_close_pct": 2.62,
       "support_ok": true,
-      "volume_cools": true
+      "volume_cools": true,
+      "legacy_score": 103,
+      "unified_score": 54.8,
+      "unified_score_grade": "C",
+      "score_breakdown": {
+        "version": "unified_score_v1",
+        "total": 54.8,
+        "grade": "C",
+        "base": 52.2,
+        "components": {
+          "chip": 0.0,
+          "momentum": 72.0,
+          "volume": 52.5,
+          "structure": 80.9,
+          "theme": 75.1
+        },
+        "source_count": 2,
+        "source_multiplier": 1.05,
+        "sources": [
+          "price_breakout_track",
+          "volume_pullback"
+        ],
+        "reasons": {
+          "chip": [],
+          "momentum": [],
+          "volume": [
+            "量比 1.22x",
+            "回測量縮"
+          ],
+          "structure": [
+            "pullback",
+            "支撐守住"
+          ],
+          "theme": [
+            "AI伺服器 75.1"
+          ]
+        }
+      }
     },
     {
       "stock_id": "2603",
@@ -1317,7 +2747,7 @@
       "source_tags": [],
       "status": "pullback",
       "status_label": "回穩觀察",
-      "score": 100,
+      "score": 47.6,
       "signal_date": "2026-05-26",
       "ignition_date": "2026-05-20",
       "days_since_ignition": 4,
@@ -1336,7 +2766,42 @@
       "ignition_vol_ratio": 3.65,
       "pullback_from_ignition_close_pct": -0.47,
       "support_ok": true,
-      "volume_cools": true
+      "volume_cools": true,
+      "legacy_score": 100,
+      "unified_score": 47.6,
+      "unified_score_grade": "D",
+      "score_breakdown": {
+        "version": "unified_score_v1",
+        "total": 47.6,
+        "grade": "D",
+        "base": 45.3,
+        "components": {
+          "chip": 0.0,
+          "momentum": 72.0,
+          "volume": 53.2,
+          "structure": 83.5,
+          "theme": 0.0
+        },
+        "source_count": 2,
+        "source_multiplier": 1.05,
+        "sources": [
+          "price_breakout_track",
+          "volume_pullback"
+        ],
+        "reasons": {
+          "chip": [],
+          "momentum": [],
+          "volume": [
+            "量比 1.29x",
+            "回測量縮"
+          ],
+          "structure": [
+            "pullback",
+            "支撐守住"
+          ],
+          "theme": []
+        }
+      }
     },
     {
       "stock_id": "2488",
@@ -1349,7 +2814,7 @@
       "source_tags": [],
       "status": "pullback",
       "status_label": "回穩觀察",
-      "score": 100,
+      "score": 46.7,
       "signal_date": "2026-05-26",
       "ignition_date": "2026-05-22",
       "days_since_ignition": 2,
@@ -1368,7 +2833,42 @@
       "ignition_vol_ratio": 3.73,
       "pullback_from_ignition_close_pct": -2.21,
       "support_ok": true,
-      "volume_cools": true
+      "volume_cools": true,
+      "legacy_score": 100,
+      "unified_score": 46.7,
+      "unified_score_grade": "D",
+      "score_breakdown": {
+        "version": "unified_score_v1",
+        "total": 46.7,
+        "grade": "D",
+        "base": 44.5,
+        "components": {
+          "chip": 0.0,
+          "momentum": 72.0,
+          "volume": 51.2,
+          "structure": 81.4,
+          "theme": 0.0
+        },
+        "source_count": 2,
+        "source_multiplier": 1.05,
+        "sources": [
+          "price_breakout_track",
+          "volume_pullback"
+        ],
+        "reasons": {
+          "chip": [],
+          "momentum": [],
+          "volume": [
+            "量比 1.08x",
+            "回測量縮"
+          ],
+          "structure": [
+            "pullback",
+            "支撐守住"
+          ],
+          "theme": []
+        }
+      }
     },
     {
       "stock_id": "3490",
@@ -1381,7 +2881,7 @@
       "source_tags": [],
       "status": "pullback",
       "status_label": "回穩觀察",
-      "score": 98,
+      "score": 45.7,
       "signal_date": "2026-05-26",
       "ignition_date": "2026-05-22",
       "days_since_ignition": 2,
@@ -1400,7 +2900,42 @@
       "ignition_vol_ratio": 3.31,
       "pullback_from_ignition_close_pct": -4.14,
       "support_ok": true,
-      "volume_cools": true
+      "volume_cools": true,
+      "legacy_score": 98,
+      "unified_score": 45.7,
+      "unified_score_grade": "D",
+      "score_breakdown": {
+        "version": "unified_score_v1",
+        "total": 45.7,
+        "grade": "D",
+        "base": 43.5,
+        "components": {
+          "chip": 0.0,
+          "momentum": 72.0,
+          "volume": 48.5,
+          "structure": 79.2,
+          "theme": 0.0
+        },
+        "source_count": 2,
+        "source_multiplier": 1.05,
+        "sources": [
+          "price_breakout_track",
+          "volume_pullback"
+        ],
+        "reasons": {
+          "chip": [],
+          "momentum": [],
+          "volume": [
+            "量比 0.75x",
+            "回測量縮"
+          ],
+          "structure": [
+            "pullback",
+            "支撐守住"
+          ],
+          "theme": []
+        }
+      }
     },
     {
       "stock_id": "6209",
@@ -1413,7 +2948,7 @@
       "source_tags": [],
       "status": "pullback",
       "status_label": "回穩觀察",
-      "score": 98,
+      "score": 45.1,
       "signal_date": "2026-05-26",
       "ignition_date": "2026-05-21",
       "days_since_ignition": 3,
@@ -1432,7 +2967,42 @@
       "ignition_vol_ratio": 3.39,
       "pullback_from_ignition_close_pct": -6.57,
       "support_ok": true,
-      "volume_cools": true
+      "volume_cools": true,
+      "legacy_score": 98,
+      "unified_score": 45.1,
+      "unified_score_grade": "D",
+      "score_breakdown": {
+        "version": "unified_score_v1",
+        "total": 45.1,
+        "grade": "D",
+        "base": 43.0,
+        "components": {
+          "chip": 0.0,
+          "momentum": 72.0,
+          "volume": 48.5,
+          "structure": 76.3,
+          "theme": 0.0
+        },
+        "source_count": 2,
+        "source_multiplier": 1.05,
+        "sources": [
+          "price_breakout_track",
+          "volume_pullback"
+        ],
+        "reasons": {
+          "chip": [],
+          "momentum": [],
+          "volume": [
+            "量比 0.78x",
+            "回測量縮"
+          ],
+          "structure": [
+            "pullback",
+            "支撐守住"
+          ],
+          "theme": []
+        }
+      }
     },
     {
       "stock_id": "6113",
@@ -1445,7 +3015,7 @@
       "source_tags": [],
       "status": "pullback",
       "status_label": "回穩觀察",
-      "score": 98,
+      "score": 45.9,
       "signal_date": "2026-05-26",
       "ignition_date": "2026-05-22",
       "days_since_ignition": 2,
@@ -1464,7 +3034,42 @@
       "ignition_vol_ratio": 3.38,
       "pullback_from_ignition_close_pct": -3.62,
       "support_ok": true,
-      "volume_cools": true
+      "volume_cools": true,
+      "legacy_score": 98,
+      "unified_score": 45.9,
+      "unified_score_grade": "D",
+      "score_breakdown": {
+        "version": "unified_score_v1",
+        "total": 45.9,
+        "grade": "D",
+        "base": 43.7,
+        "components": {
+          "chip": 0.0,
+          "momentum": 72.0,
+          "volume": 48.6,
+          "structure": 79.8,
+          "theme": 0.0
+        },
+        "source_count": 2,
+        "source_multiplier": 1.05,
+        "sources": [
+          "price_breakout_track",
+          "volume_pullback"
+        ],
+        "reasons": {
+          "chip": [],
+          "momentum": [],
+          "volume": [
+            "量比 0.81x",
+            "回測量縮"
+          ],
+          "structure": [
+            "pullback",
+            "支撐守住"
+          ],
+          "theme": []
+        }
+      }
     },
     {
       "stock_id": "5488",
@@ -1477,7 +3082,7 @@
       "source_tags": [],
       "status": "pullback",
       "status_label": "回穩觀察",
-      "score": 97,
+      "score": 46.7,
       "signal_date": "2026-05-26",
       "ignition_date": "2026-05-21",
       "days_since_ignition": 3,
@@ -1496,7 +3101,42 @@
       "ignition_vol_ratio": 3.08,
       "pullback_from_ignition_close_pct": 0.42,
       "support_ok": true,
-      "volume_cools": true
+      "volume_cools": true,
+      "legacy_score": 97,
+      "unified_score": 46.7,
+      "unified_score_grade": "D",
+      "score_breakdown": {
+        "version": "unified_score_v1",
+        "total": 46.7,
+        "grade": "D",
+        "base": 44.5,
+        "components": {
+          "chip": 0.0,
+          "momentum": 72.0,
+          "volume": 49.1,
+          "structure": 83.5,
+          "theme": 0.0
+        },
+        "source_count": 2,
+        "source_multiplier": 1.05,
+        "sources": [
+          "price_breakout_track",
+          "volume_pullback"
+        ],
+        "reasons": {
+          "chip": [],
+          "momentum": [],
+          "volume": [
+            "量比 0.86x",
+            "回測量縮"
+          ],
+          "structure": [
+            "pullback",
+            "支撐守住"
+          ],
+          "theme": []
+        }
+      }
     },
     {
       "stock_id": "1533",
@@ -1509,7 +3149,7 @@
       "source_tags": [],
       "status": "pullback",
       "status_label": "回穩觀察",
-      "score": 97,
+      "score": 46.0,
       "signal_date": "2026-05-26",
       "ignition_date": "2026-05-21",
       "days_since_ignition": 3,
@@ -1528,7 +3168,42 @@
       "ignition_vol_ratio": 3.24,
       "pullback_from_ignition_close_pct": -3.01,
       "support_ok": true,
-      "volume_cools": true
+      "volume_cools": true,
+      "legacy_score": 97,
+      "unified_score": 46.0,
+      "unified_score_grade": "D",
+      "score_breakdown": {
+        "version": "unified_score_v1",
+        "total": 46.0,
+        "grade": "D",
+        "base": 43.8,
+        "components": {
+          "chip": 0.0,
+          "momentum": 72.0,
+          "volume": 48.5,
+          "structure": 80.5,
+          "theme": 0.0
+        },
+        "source_count": 2,
+        "source_multiplier": 1.05,
+        "sources": [
+          "price_breakout_track",
+          "volume_pullback"
+        ],
+        "reasons": {
+          "chip": [],
+          "momentum": [],
+          "volume": [
+            "量比 0.52x",
+            "回測量縮"
+          ],
+          "structure": [
+            "pullback",
+            "支撐守住"
+          ],
+          "theme": []
+        }
+      }
     },
     {
       "stock_id": "3041",
@@ -1541,7 +3216,7 @@
       "source_tags": [],
       "status": "pullback",
       "status_label": "回穩觀察",
-      "score": 97,
+      "score": 46.5,
       "signal_date": "2026-05-26",
       "ignition_date": "2026-05-22",
       "days_since_ignition": 2,
@@ -1560,7 +3235,42 @@
       "ignition_vol_ratio": 3.23,
       "pullback_from_ignition_close_pct": -2.76,
       "support_ok": true,
-      "volume_cools": true
+      "volume_cools": true,
+      "legacy_score": 97,
+      "unified_score": 46.5,
+      "unified_score_grade": "D",
+      "score_breakdown": {
+        "version": "unified_score_v1",
+        "total": 46.5,
+        "grade": "D",
+        "base": 44.3,
+        "components": {
+          "chip": 0.0,
+          "momentum": 72.0,
+          "volume": 50.5,
+          "structure": 80.8,
+          "theme": 0.0
+        },
+        "source_count": 2,
+        "source_multiplier": 1.05,
+        "sources": [
+          "price_breakout_track",
+          "volume_pullback"
+        ],
+        "reasons": {
+          "chip": [],
+          "momentum": [],
+          "volume": [
+            "量比 1.01x",
+            "回測量縮"
+          ],
+          "structure": [
+            "pullback",
+            "支撐守住"
+          ],
+          "theme": []
+        }
+      }
     },
     {
       "stock_id": "3714",
@@ -1573,7 +3283,7 @@
       "source_tags": [],
       "status": "pullback",
       "status_label": "回穩觀察",
-      "score": 97,
+      "score": 47.1,
       "signal_date": "2026-05-26",
       "ignition_date": "2026-05-25",
       "days_since_ignition": 1,
@@ -1592,7 +3302,42 @@
       "ignition_vol_ratio": 3.11,
       "pullback_from_ignition_close_pct": -0.38,
       "support_ok": true,
-      "volume_cools": true
+      "volume_cools": true,
+      "legacy_score": 97,
+      "unified_score": 47.1,
+      "unified_score_grade": "D",
+      "score_breakdown": {
+        "version": "unified_score_v1",
+        "total": 47.1,
+        "grade": "D",
+        "base": 44.9,
+        "components": {
+          "chip": 0.0,
+          "momentum": 72.0,
+          "volume": 50.7,
+          "structure": 83.6,
+          "theme": 0.0
+        },
+        "source_count": 2,
+        "source_multiplier": 1.05,
+        "sources": [
+          "price_breakout_track",
+          "volume_pullback"
+        ],
+        "reasons": {
+          "chip": [],
+          "momentum": [],
+          "volume": [
+            "量比 1.03x",
+            "回測量縮"
+          ],
+          "structure": [
+            "pullback",
+            "支撐守住"
+          ],
+          "theme": []
+        }
+      }
     },
     {
       "stock_id": "2478",
@@ -1605,7 +3350,7 @@
       "source_tags": [],
       "status": "pullback",
       "status_label": "回穩觀察",
-      "score": 96,
+      "score": 50.0,
       "signal_date": "2026-05-26",
       "ignition_date": "2026-05-25",
       "days_since_ignition": 1,
@@ -1624,7 +3369,44 @@
       "ignition_vol_ratio": 3.01,
       "pullback_from_ignition_close_pct": -0.83,
       "support_ok": true,
-      "volume_cools": true
+      "volume_cools": true,
+      "legacy_score": 96,
+      "unified_score": 50.0,
+      "unified_score_grade": "C",
+      "score_breakdown": {
+        "version": "unified_score_v1",
+        "total": 50.0,
+        "grade": "C",
+        "base": 47.6,
+        "components": {
+          "chip": 0.0,
+          "momentum": 72.0,
+          "volume": 48.5,
+          "structure": 83.0,
+          "theme": 33.1
+        },
+        "source_count": 2,
+        "source_multiplier": 1.05,
+        "sources": [
+          "price_breakout_track",
+          "volume_pullback"
+        ],
+        "reasons": {
+          "chip": [],
+          "momentum": [],
+          "volume": [
+            "量比 0.36x",
+            "回測量縮"
+          ],
+          "structure": [
+            "pullback",
+            "支撐守住"
+          ],
+          "theme": [
+            "被動元件 33.1"
+          ]
+        }
+      }
     },
     {
       "stock_id": "6155",
@@ -1637,7 +3419,7 @@
       "source_tags": [],
       "status": "pullback",
       "status_label": "回穩觀察",
-      "score": 96,
+      "score": 46.0,
       "signal_date": "2026-05-26",
       "ignition_date": "2026-05-22",
       "days_since_ignition": 2,
@@ -1656,7 +3438,42 @@
       "ignition_vol_ratio": 3.05,
       "pullback_from_ignition_close_pct": -2.94,
       "support_ok": true,
-      "volume_cools": true
+      "volume_cools": true,
+      "legacy_score": 96,
+      "unified_score": 46.0,
+      "unified_score_grade": "D",
+      "score_breakdown": {
+        "version": "unified_score_v1",
+        "total": 46.0,
+        "grade": "D",
+        "base": 43.8,
+        "components": {
+          "chip": 0.0,
+          "momentum": 72.0,
+          "volume": 48.5,
+          "structure": 80.6,
+          "theme": 0.0
+        },
+        "source_count": 2,
+        "source_multiplier": 1.05,
+        "sources": [
+          "price_breakout_track",
+          "volume_pullback"
+        ],
+        "reasons": {
+          "chip": [],
+          "momentum": [],
+          "volume": [
+            "量比 0.66x",
+            "回測量縮"
+          ],
+          "structure": [
+            "pullback",
+            "支撐守住"
+          ],
+          "theme": []
+        }
+      }
     },
     {
       "stock_id": "6174",
@@ -1669,7 +3486,7 @@
       "source_tags": [],
       "status": "pullback",
       "status_label": "回穩觀察",
-      "score": 96,
+      "score": 44.4,
       "signal_date": "2026-05-26",
       "ignition_date": "2026-05-21",
       "days_since_ignition": 3,
@@ -1688,7 +3505,42 @@
       "ignition_vol_ratio": 2.99,
       "pullback_from_ignition_close_pct": 11.06,
       "support_ok": true,
-      "volume_cools": true
+      "volume_cools": true,
+      "legacy_score": 96,
+      "unified_score": 44.4,
+      "unified_score_grade": "D",
+      "score_breakdown": {
+        "version": "unified_score_v1",
+        "total": 44.4,
+        "grade": "D",
+        "base": 42.2,
+        "components": {
+          "chip": 0.0,
+          "momentum": 72.0,
+          "volume": 50.1,
+          "structure": 71.1,
+          "theme": 0.0
+        },
+        "source_count": 2,
+        "source_multiplier": 1.05,
+        "sources": [
+          "price_breakout_track",
+          "volume_pullback"
+        ],
+        "reasons": {
+          "chip": [],
+          "momentum": [],
+          "volume": [
+            "量比 0.97x",
+            "回測量縮"
+          ],
+          "structure": [
+            "pullback",
+            "支撐守住"
+          ],
+          "theme": []
+        }
+      }
     },
     {
       "stock_id": "5236",
@@ -1701,7 +3553,7 @@
       "source_tags": [],
       "status": "pullback",
       "status_label": "回穩觀察",
-      "score": 96,
+      "score": 44.8,
       "signal_date": "2026-05-26",
       "ignition_date": "2026-05-20",
       "days_since_ignition": 4,
@@ -1720,7 +3572,42 @@
       "ignition_vol_ratio": 2.92,
       "pullback_from_ignition_close_pct": 7.85,
       "support_ok": true,
-      "volume_cools": true
+      "volume_cools": true,
+      "legacy_score": 96,
+      "unified_score": 44.8,
+      "unified_score_grade": "D",
+      "score_breakdown": {
+        "version": "unified_score_v1",
+        "total": 44.8,
+        "grade": "D",
+        "base": 42.7,
+        "components": {
+          "chip": 0.0,
+          "momentum": 72.0,
+          "volume": 48.5,
+          "structure": 74.8,
+          "theme": 0.0
+        },
+        "source_count": 2,
+        "source_multiplier": 1.05,
+        "sources": [
+          "price_breakout_track",
+          "volume_pullback"
+        ],
+        "reasons": {
+          "chip": [],
+          "momentum": [],
+          "volume": [
+            "量比 0.57x",
+            "回測量縮"
+          ],
+          "structure": [
+            "pullback",
+            "支撐守住"
+          ],
+          "theme": []
+        }
+      }
     },
     {
       "stock_id": "6214",
@@ -1736,7 +3623,7 @@
       ],
       "status": "pullback",
       "status_label": "回穩觀察",
-      "score": 95,
+      "score": 71.4,
       "signal_date": "2026-05-26",
       "ignition_date": "2026-05-22",
       "days_since_ignition": 2,
@@ -1755,7 +3642,45 @@
       "ignition_vol_ratio": 2.78,
       "pullback_from_ignition_close_pct": -0.38,
       "support_ok": true,
-      "volume_cools": true
+      "volume_cools": true,
+      "legacy_score": 95,
+      "unified_score": 71.4,
+      "unified_score_grade": "B",
+      "score_breakdown": {
+        "version": "unified_score_v1",
+        "total": 71.4,
+        "grade": "B",
+        "base": 64.9,
+        "components": {
+          "chip": 82.0,
+          "momentum": 72.0,
+          "volume": 48.5,
+          "structure": 83.6,
+          "theme": 0.0
+        },
+        "source_count": 3,
+        "source_multiplier": 1.1,
+        "sources": [
+          "chips",
+          "price_breakout_track",
+          "volume_pullback"
+        ],
+        "reasons": {
+          "chip": [
+            "籌碼標籤加分"
+          ],
+          "momentum": [],
+          "volume": [
+            "量比 0.74x",
+            "回測量縮"
+          ],
+          "structure": [
+            "pullback",
+            "支撐守住"
+          ],
+          "theme": []
+        }
+      }
     },
     {
       "stock_id": "6175",
@@ -1768,7 +3693,7 @@
       "source_tags": [],
       "status": "pullback",
       "status_label": "回穩觀察",
-      "score": 95,
+      "score": 44.6,
       "signal_date": "2026-05-26",
       "ignition_date": "2026-05-21",
       "days_since_ignition": 3,
@@ -1787,7 +3712,42 @@
       "ignition_vol_ratio": 2.79,
       "pullback_from_ignition_close_pct": 8.8,
       "support_ok": true,
-      "volume_cools": true
+      "volume_cools": true,
+      "legacy_score": 95,
+      "unified_score": 44.6,
+      "unified_score_grade": "D",
+      "score_breakdown": {
+        "version": "unified_score_v1",
+        "total": 44.6,
+        "grade": "D",
+        "base": 42.4,
+        "components": {
+          "chip": 0.0,
+          "momentum": 72.0,
+          "volume": 48.5,
+          "structure": 73.7,
+          "theme": 0.0
+        },
+        "source_count": 2,
+        "source_multiplier": 1.05,
+        "sources": [
+          "price_breakout_track",
+          "volume_pullback"
+        ],
+        "reasons": {
+          "chip": [],
+          "momentum": [],
+          "volume": [
+            "量比 0.73x",
+            "回測量縮"
+          ],
+          "structure": [
+            "pullback",
+            "支撐守住"
+          ],
+          "theme": []
+        }
+      }
     },
     {
       "stock_id": "2397",
@@ -1800,7 +3760,7 @@
       "source_tags": [],
       "status": "pullback",
       "status_label": "回穩觀察",
-      "score": 95,
+      "score": 47.0,
       "signal_date": "2026-05-26",
       "ignition_date": "2026-05-25",
       "days_since_ignition": 1,
@@ -1819,7 +3779,42 @@
       "ignition_vol_ratio": 2.76,
       "pullback_from_ignition_close_pct": -1.54,
       "support_ok": true,
-      "volume_cools": true
+      "volume_cools": true,
+      "legacy_score": 95,
+      "unified_score": 47.0,
+      "unified_score_grade": "D",
+      "score_breakdown": {
+        "version": "unified_score_v1",
+        "total": 47.0,
+        "grade": "D",
+        "base": 44.7,
+        "components": {
+          "chip": 0.0,
+          "momentum": 72.0,
+          "volume": 51.4,
+          "structure": 82.2,
+          "theme": 0.0
+        },
+        "source_count": 2,
+        "source_multiplier": 1.05,
+        "sources": [
+          "price_breakout_track",
+          "volume_pullback"
+        ],
+        "reasons": {
+          "chip": [],
+          "momentum": [],
+          "volume": [
+            "量比 1.10x",
+            "回測量縮"
+          ],
+          "structure": [
+            "pullback",
+            "支撐守住"
+          ],
+          "theme": []
+        }
+      }
     },
     {
       "stock_id": "5434",
@@ -1832,7 +3827,7 @@
       "source_tags": [],
       "status": "pullback",
       "status_label": "回穩觀察",
-      "score": 95,
+      "score": 46.1,
       "signal_date": "2026-05-26",
       "ignition_date": "2026-05-22",
       "days_since_ignition": 2,
@@ -1851,7 +3846,42 @@
       "ignition_vol_ratio": 2.85,
       "pullback_from_ignition_close_pct": 7.01,
       "support_ok": true,
-      "volume_cools": true
+      "volume_cools": true,
+      "legacy_score": 95,
+      "unified_score": 46.1,
+      "unified_score_grade": "D",
+      "score_breakdown": {
+        "version": "unified_score_v1",
+        "total": 46.1,
+        "grade": "D",
+        "base": 43.9,
+        "components": {
+          "chip": 0.0,
+          "momentum": 72.0,
+          "volume": 53.9,
+          "structure": 75.8,
+          "theme": 0.0
+        },
+        "source_count": 2,
+        "source_multiplier": 1.05,
+        "sources": [
+          "price_breakout_track",
+          "volume_pullback"
+        ],
+        "reasons": {
+          "chip": [],
+          "momentum": [],
+          "volume": [
+            "量比 1.37x",
+            "回測量縮"
+          ],
+          "structure": [
+            "pullback",
+            "支撐守住"
+          ],
+          "theme": []
+        }
+      }
     },
     {
       "stock_id": "3221",
@@ -1864,7 +3894,7 @@
       "source_tags": [],
       "status": "pullback",
       "status_label": "回穩觀察",
-      "score": 95,
+      "score": 43.9,
       "signal_date": "2026-05-26",
       "ignition_date": "2026-05-21",
       "days_since_ignition": 3,
@@ -1883,7 +3913,42 @@
       "ignition_vol_ratio": 2.83,
       "pullback_from_ignition_close_pct": 15.59,
       "support_ok": true,
-      "volume_cools": true
+      "volume_cools": true,
+      "legacy_score": 95,
+      "unified_score": 43.9,
+      "unified_score_grade": "D",
+      "score_breakdown": {
+        "version": "unified_score_v1",
+        "total": 43.9,
+        "grade": "D",
+        "base": 41.8,
+        "components": {
+          "chip": 0.0,
+          "momentum": 72.0,
+          "volume": 53.2,
+          "structure": 65.8,
+          "theme": 0.0
+        },
+        "source_count": 2,
+        "source_multiplier": 1.05,
+        "sources": [
+          "price_breakout_track",
+          "volume_pullback"
+        ],
+        "reasons": {
+          "chip": [],
+          "momentum": [],
+          "volume": [
+            "量比 1.29x",
+            "回測量縮"
+          ],
+          "structure": [
+            "pullback",
+            "支撐守住"
+          ],
+          "theme": []
+        }
+      }
     },
     {
       "stock_id": "3376",
@@ -1899,7 +3964,7 @@
       ],
       "status": "pullback",
       "status_label": "回穩觀察",
-      "score": 94,
+      "score": 68.1,
       "signal_date": "2026-05-26",
       "ignition_date": "2026-05-25",
       "days_since_ignition": 1,
@@ -1918,7 +3983,44 @@
       "ignition_vol_ratio": 2.68,
       "pullback_from_ignition_close_pct": -0.68,
       "support_ok": true,
-      "volume_cools": true
+      "volume_cools": true,
+      "legacy_score": 94,
+      "unified_score": 68.1,
+      "unified_score_grade": "B",
+      "score_breakdown": {
+        "version": "unified_score_v1",
+        "total": 68.1,
+        "grade": "B",
+        "base": 64.8,
+        "components": {
+          "chip": 82.0,
+          "momentum": 72.0,
+          "volume": 48.5,
+          "structure": 83.2,
+          "theme": 0.0
+        },
+        "source_count": 2,
+        "source_multiplier": 1.05,
+        "sources": [
+          "chips",
+          "volume_pullback"
+        ],
+        "reasons": {
+          "chip": [
+            "籌碼標籤加分"
+          ],
+          "momentum": [],
+          "volume": [
+            "量比 0.79x",
+            "回測量縮"
+          ],
+          "structure": [
+            "pullback",
+            "支撐守住"
+          ],
+          "theme": []
+        }
+      }
     },
     {
       "stock_id": "8043",
@@ -1931,7 +4033,7 @@
       "source_tags": [],
       "status": "pullback",
       "status_label": "回穩觀察",
-      "score": 94,
+      "score": 52.7,
       "signal_date": "2026-05-26",
       "ignition_date": "2026-05-20",
       "days_since_ignition": 4,
@@ -1950,7 +4052,44 @@
       "ignition_vol_ratio": 2.72,
       "pullback_from_ignition_close_pct": 5.68,
       "support_ok": true,
-      "volume_cools": true
+      "volume_cools": true,
+      "legacy_score": 94,
+      "unified_score": 52.7,
+      "unified_score_grade": "C",
+      "score_breakdown": {
+        "version": "unified_score_v1",
+        "total": 52.7,
+        "grade": "C",
+        "base": 50.2,
+        "components": {
+          "chip": 0.0,
+          "momentum": 72.0,
+          "volume": 48.5,
+          "structure": 77.4,
+          "theme": 69.9
+        },
+        "source_count": 2,
+        "source_multiplier": 1.05,
+        "sources": [
+          "price_breakout_track",
+          "volume_pullback"
+        ],
+        "reasons": {
+          "chip": [],
+          "momentum": [],
+          "volume": [
+            "量比 0.53x",
+            "回測量縮"
+          ],
+          "structure": [
+            "pullback",
+            "支撐守住"
+          ],
+          "theme": [
+            "被動元件 69.9"
+          ]
+        }
+      }
     },
     {
       "stock_id": "5328",
@@ -1963,7 +4102,7 @@
       "source_tags": [],
       "status": "pullback",
       "status_label": "回穩觀察",
-      "score": 94,
+      "score": 46.9,
       "signal_date": "2026-05-26",
       "ignition_date": "2026-05-22",
       "days_since_ignition": 2,
@@ -1982,7 +4121,42 @@
       "ignition_vol_ratio": 2.71,
       "pullback_from_ignition_close_pct": -0.56,
       "support_ok": true,
-      "volume_cools": true
+      "volume_cools": true,
+      "legacy_score": 94,
+      "unified_score": 46.9,
+      "unified_score_grade": "D",
+      "score_breakdown": {
+        "version": "unified_score_v1",
+        "total": 46.9,
+        "grade": "D",
+        "base": 44.6,
+        "components": {
+          "chip": 0.0,
+          "momentum": 72.0,
+          "volume": 49.8,
+          "structure": 83.3,
+          "theme": 0.0
+        },
+        "source_count": 2,
+        "source_multiplier": 1.05,
+        "sources": [
+          "price_breakout_track",
+          "volume_pullback"
+        ],
+        "reasons": {
+          "chip": [],
+          "momentum": [],
+          "volume": [
+            "量比 0.94x",
+            "回測量縮"
+          ],
+          "structure": [
+            "pullback",
+            "支撐守住"
+          ],
+          "theme": []
+        }
+      }
     },
     {
       "stock_id": "3663",
@@ -1995,7 +4169,7 @@
       "source_tags": [],
       "status": "pullback",
       "status_label": "回穩觀察",
-      "score": 94,
+      "score": 45.5,
       "signal_date": "2026-05-26",
       "ignition_date": "2026-05-22",
       "days_since_ignition": 2,
@@ -2014,7 +4188,42 @@
       "ignition_vol_ratio": 2.71,
       "pullback_from_ignition_close_pct": 5.18,
       "support_ok": true,
-      "volume_cools": true
+      "volume_cools": true,
+      "legacy_score": 94,
+      "unified_score": 45.5,
+      "unified_score_grade": "D",
+      "score_breakdown": {
+        "version": "unified_score_v1",
+        "total": 45.5,
+        "grade": "D",
+        "base": 43.3,
+        "components": {
+          "chip": 0.0,
+          "momentum": 72.0,
+          "volume": 48.5,
+          "structure": 78.0,
+          "theme": 0.0
+        },
+        "source_count": 2,
+        "source_multiplier": 1.05,
+        "sources": [
+          "price_breakout_track",
+          "volume_pullback"
+        ],
+        "reasons": {
+          "chip": [],
+          "momentum": [],
+          "volume": [
+            "量比 0.78x",
+            "回測量縮"
+          ],
+          "structure": [
+            "pullback",
+            "支撐守住"
+          ],
+          "theme": []
+        }
+      }
     },
     {
       "stock_id": "5471",
@@ -2027,7 +4236,7 @@
       "source_tags": [],
       "status": "pullback",
       "status_label": "回穩觀察",
-      "score": 94,
+      "score": 46.6,
       "signal_date": "2026-05-26",
       "ignition_date": "2026-05-21",
       "days_since_ignition": 3,
@@ -2046,7 +4255,42 @@
       "ignition_vol_ratio": 2.71,
       "pullback_from_ignition_close_pct": -0.57,
       "support_ok": true,
-      "volume_cools": true
+      "volume_cools": true,
+      "legacy_score": 94,
+      "unified_score": 46.6,
+      "unified_score_grade": "D",
+      "score_breakdown": {
+        "version": "unified_score_v1",
+        "total": 46.6,
+        "grade": "D",
+        "base": 44.4,
+        "components": {
+          "chip": 0.0,
+          "momentum": 72.0,
+          "volume": 48.5,
+          "structure": 83.3,
+          "theme": 0.0
+        },
+        "source_count": 2,
+        "source_multiplier": 1.05,
+        "sources": [
+          "price_breakout_track",
+          "volume_pullback"
+        ],
+        "reasons": {
+          "chip": [],
+          "momentum": [],
+          "volume": [
+            "量比 0.49x",
+            "回測量縮"
+          ],
+          "structure": [
+            "pullback",
+            "支撐守住"
+          ],
+          "theme": []
+        }
+      }
     },
     {
       "stock_id": "3167",
@@ -2059,7 +4303,7 @@
       "source_tags": [],
       "status": "pullback",
       "status_label": "回穩觀察",
-      "score": 94,
+      "score": 44.3,
       "signal_date": "2026-05-26",
       "ignition_date": "2026-05-21",
       "days_since_ignition": 3,
@@ -2078,7 +4322,42 @@
       "ignition_vol_ratio": 2.71,
       "pullback_from_ignition_close_pct": 9.92,
       "support_ok": true,
-      "volume_cools": true
+      "volume_cools": true,
+      "legacy_score": 94,
+      "unified_score": 44.3,
+      "unified_score_grade": "D",
+      "score_breakdown": {
+        "version": "unified_score_v1",
+        "total": 44.3,
+        "grade": "D",
+        "base": 42.2,
+        "components": {
+          "chip": 0.0,
+          "momentum": 72.0,
+          "volume": 48.5,
+          "structure": 72.4,
+          "theme": 0.0
+        },
+        "source_count": 2,
+        "source_multiplier": 1.05,
+        "sources": [
+          "price_breakout_track",
+          "volume_pullback"
+        ],
+        "reasons": {
+          "chip": [],
+          "momentum": [],
+          "volume": [
+            "量比 0.21x",
+            "回測量縮"
+          ],
+          "structure": [
+            "pullback",
+            "支撐守住"
+          ],
+          "theme": []
+        }
+      }
     },
     {
       "stock_id": "3592",
@@ -2091,7 +4370,7 @@
       "source_tags": [],
       "status": "pullback",
       "status_label": "回穩觀察",
-      "score": 94,
+      "score": 55.5,
       "signal_date": "2026-05-26",
       "ignition_date": "2026-05-25",
       "days_since_ignition": 1,
@@ -2110,7 +4389,44 @@
       "ignition_vol_ratio": 2.65,
       "pullback_from_ignition_close_pct": 0.0,
       "support_ok": true,
-      "volume_cools": true
+      "volume_cools": true,
+      "legacy_score": 94,
+      "unified_score": 55.5,
+      "unified_score_grade": "C",
+      "score_breakdown": {
+        "version": "unified_score_v1",
+        "total": 55.5,
+        "grade": "C",
+        "base": 52.9,
+        "components": {
+          "chip": 0.0,
+          "momentum": 72.0,
+          "volume": 53.5,
+          "structure": 84.0,
+          "theme": 73.7
+        },
+        "source_count": 2,
+        "source_multiplier": 1.05,
+        "sources": [
+          "price_breakout_track",
+          "volume_pullback"
+        ],
+        "reasons": {
+          "chip": [],
+          "momentum": [],
+          "volume": [
+            "量比 1.32x",
+            "回測量縮"
+          ],
+          "structure": [
+            "pullback",
+            "支撐守住"
+          ],
+          "theme": [
+            "功率元件 73.7"
+          ]
+        }
+      }
     },
     {
       "stock_id": "6558",
@@ -2123,7 +4439,7 @@
       "source_tags": [],
       "status": "pullback",
       "status_label": "回穩觀察",
-      "score": 93,
+      "score": 46.4,
       "signal_date": "2026-05-26",
       "ignition_date": "2026-05-20",
       "days_since_ignition": 4,
@@ -2142,7 +4458,42 @@
       "ignition_vol_ratio": 2.58,
       "pullback_from_ignition_close_pct": 1.4,
       "support_ok": true,
-      "volume_cools": true
+      "volume_cools": true,
+      "legacy_score": 93,
+      "unified_score": 46.4,
+      "unified_score_grade": "D",
+      "score_breakdown": {
+        "version": "unified_score_v1",
+        "total": 46.4,
+        "grade": "D",
+        "base": 44.2,
+        "components": {
+          "chip": 0.0,
+          "momentum": 72.0,
+          "volume": 48.5,
+          "structure": 82.4,
+          "theme": 0.0
+        },
+        "source_count": 2,
+        "source_multiplier": 1.05,
+        "sources": [
+          "price_breakout_track",
+          "volume_pullback"
+        ],
+        "reasons": {
+          "chip": [],
+          "momentum": [],
+          "volume": [
+            "量比 0.66x",
+            "回測量縮"
+          ],
+          "structure": [
+            "pullback",
+            "支撐守住"
+          ],
+          "theme": []
+        }
+      }
     },
     {
       "stock_id": "3580",
@@ -2155,7 +4506,7 @@
       "source_tags": [],
       "status": "pullback",
       "status_label": "回穩觀察",
-      "score": 93,
+      "score": 43.5,
       "signal_date": "2026-05-26",
       "ignition_date": "2026-05-20",
       "days_since_ignition": 4,
@@ -2174,7 +4525,42 @@
       "ignition_vol_ratio": 2.58,
       "pullback_from_ignition_close_pct": 13.11,
       "support_ok": true,
-      "volume_cools": true
+      "volume_cools": true,
+      "legacy_score": 93,
+      "unified_score": 43.5,
+      "unified_score_grade": "D",
+      "score_breakdown": {
+        "version": "unified_score_v1",
+        "total": 43.5,
+        "grade": "D",
+        "base": 41.4,
+        "components": {
+          "chip": 0.0,
+          "momentum": 72.0,
+          "volume": 48.5,
+          "structure": 68.7,
+          "theme": 0.0
+        },
+        "source_count": 2,
+        "source_multiplier": 1.05,
+        "sources": [
+          "price_breakout_track",
+          "volume_pullback"
+        ],
+        "reasons": {
+          "chip": [],
+          "momentum": [],
+          "volume": [
+            "量比 0.56x",
+            "回測量縮"
+          ],
+          "structure": [
+            "pullback",
+            "支撐守住"
+          ],
+          "theme": []
+        }
+      }
     },
     {
       "stock_id": "6432",
@@ -2187,7 +4573,7 @@
       "source_tags": [],
       "status": "pullback",
       "status_label": "回穩觀察",
-      "score": 93,
+      "score": 53.5,
       "signal_date": "2026-05-26",
       "ignition_date": "2026-05-21",
       "days_since_ignition": 3,
@@ -2206,7 +4592,44 @@
       "ignition_vol_ratio": 2.55,
       "pullback_from_ignition_close_pct": 4.22,
       "support_ok": true,
-      "volume_cools": true
+      "volume_cools": true,
+      "legacy_score": 93,
+      "unified_score": 53.5,
+      "unified_score_grade": "C",
+      "score_breakdown": {
+        "version": "unified_score_v1",
+        "total": 53.5,
+        "grade": "C",
+        "base": 51.0,
+        "components": {
+          "chip": 0.0,
+          "momentum": 72.0,
+          "volume": 49.1,
+          "structure": 79.1,
+          "theme": 73.3
+        },
+        "source_count": 2,
+        "source_multiplier": 1.05,
+        "sources": [
+          "price_breakout_track",
+          "volume_pullback"
+        ],
+        "reasons": {
+          "chip": [],
+          "momentum": [],
+          "volume": [
+            "量比 0.86x",
+            "回測量縮"
+          ],
+          "structure": [
+            "pullback",
+            "支撐守住"
+          ],
+          "theme": [
+            "電子零組件 73.3"
+          ]
+        }
+      }
     },
     {
       "stock_id": "3564",
@@ -2219,7 +4642,7 @@
       "source_tags": [],
       "status": "pullback",
       "status_label": "回穩觀察",
-      "score": 93,
+      "score": 47.5,
       "signal_date": "2026-05-26",
       "ignition_date": "2026-05-25",
       "days_since_ignition": 1,
@@ -2238,7 +4661,42 @@
       "ignition_vol_ratio": 2.55,
       "pullback_from_ignition_close_pct": 2.63,
       "support_ok": true,
-      "volume_cools": true
+      "volume_cools": true,
+      "legacy_score": 93,
+      "unified_score": 47.5,
+      "unified_score_grade": "D",
+      "score_breakdown": {
+        "version": "unified_score_v1",
+        "total": 47.5,
+        "grade": "D",
+        "base": 45.2,
+        "components": {
+          "chip": 0.0,
+          "momentum": 72.0,
+          "volume": 55.2,
+          "structure": 80.9,
+          "theme": 0.0
+        },
+        "source_count": 2,
+        "source_multiplier": 1.05,
+        "sources": [
+          "price_breakout_track",
+          "volume_pullback"
+        ],
+        "reasons": {
+          "chip": [],
+          "momentum": [],
+          "volume": [
+            "量比 1.50x",
+            "回測量縮"
+          ],
+          "structure": [
+            "pullback",
+            "支撐守住"
+          ],
+          "theme": []
+        }
+      }
     },
     {
       "stock_id": "2455",
@@ -2251,7 +4709,7 @@
       "source_tags": [],
       "status": "pullback",
       "status_label": "回穩觀察",
-      "score": 93,
+      "score": 46.5,
       "signal_date": "2026-05-26",
       "ignition_date": "2026-05-25",
       "days_since_ignition": 1,
@@ -2270,7 +4728,42 @@
       "ignition_vol_ratio": 2.58,
       "pullback_from_ignition_close_pct": -4.62,
       "support_ok": true,
-      "volume_cools": true
+      "volume_cools": true,
+      "legacy_score": 93,
+      "unified_score": 46.5,
+      "unified_score_grade": "D",
+      "score_breakdown": {
+        "version": "unified_score_v1",
+        "total": 46.5,
+        "grade": "D",
+        "base": 44.3,
+        "components": {
+          "chip": 0.0,
+          "momentum": 72.0,
+          "volume": 52.7,
+          "structure": 78.6,
+          "theme": 0.0
+        },
+        "source_count": 2,
+        "source_multiplier": 1.05,
+        "sources": [
+          "price_breakout_track",
+          "volume_pullback"
+        ],
+        "reasons": {
+          "chip": [],
+          "momentum": [],
+          "volume": [
+            "量比 1.24x",
+            "回測量縮"
+          ],
+          "structure": [
+            "pullback",
+            "支撐守住"
+          ],
+          "theme": []
+        }
+      }
     },
     {
       "stock_id": "2453",
@@ -2283,7 +4776,7 @@
       "source_tags": [],
       "status": "ignition",
       "status_label": "點火",
-      "score": 95,
+      "score": 55.8,
       "signal_date": "2026-05-26",
       "ignition_date": "2026-05-26",
       "days_since_ignition": 0,
@@ -2302,7 +4795,41 @@
       "ignition_vol_ratio": 8.98,
       "pullback_from_ignition_close_pct": 0.0,
       "support_ok": true,
-      "volume_cools": false
+      "volume_cools": false,
+      "legacy_score": 95,
+      "unified_score": 55.8,
+      "unified_score_grade": "C",
+      "score_breakdown": {
+        "version": "unified_score_v1",
+        "total": 55.8,
+        "grade": "C",
+        "base": 53.1,
+        "components": {
+          "chip": 0.0,
+          "momentum": 72.0,
+          "volume": 95.0,
+          "structure": 80.7,
+          "theme": 0.0
+        },
+        "source_count": 2,
+        "source_multiplier": 1.05,
+        "sources": [
+          "price_breakout_track",
+          "volume_pullback"
+        ],
+        "reasons": {
+          "chip": [],
+          "momentum": [],
+          "volume": [
+            "量比 8.98x"
+          ],
+          "structure": [
+            "ignition",
+            "支撐守住"
+          ],
+          "theme": []
+        }
+      }
     },
     {
       "stock_id": "3025",
@@ -2315,7 +4842,7 @@
       "source_tags": [],
       "status": "ignition",
       "status_label": "點火",
-      "score": 95,
+      "score": 64.3,
       "signal_date": "2026-05-26",
       "ignition_date": "2026-05-26",
       "days_since_ignition": 0,
@@ -2334,7 +4861,43 @@
       "ignition_vol_ratio": 7.54,
       "pullback_from_ignition_close_pct": 0.0,
       "support_ok": true,
-      "volume_cools": false
+      "volume_cools": false,
+      "legacy_score": 95,
+      "unified_score": 64.3,
+      "unified_score_grade": "C",
+      "score_breakdown": {
+        "version": "unified_score_v1",
+        "total": 64.3,
+        "grade": "C",
+        "base": 61.2,
+        "components": {
+          "chip": 0.0,
+          "momentum": 72.0,
+          "volume": 95.0,
+          "structure": 80.7,
+          "theme": 80.9
+        },
+        "source_count": 2,
+        "source_multiplier": 1.05,
+        "sources": [
+          "price_breakout_track",
+          "volume_pullback"
+        ],
+        "reasons": {
+          "chip": [],
+          "momentum": [],
+          "volume": [
+            "量比 7.54x"
+          ],
+          "structure": [
+            "ignition",
+            "支撐守住"
+          ],
+          "theme": [
+            "網通 80.9"
+          ]
+        }
+      }
     },
     {
       "stock_id": "5011",
@@ -2347,7 +4910,7 @@
       "source_tags": [],
       "status": "ignition",
       "status_label": "點火",
-      "score": 93,
+      "score": 55.8,
       "signal_date": "2026-05-26",
       "ignition_date": "2026-05-26",
       "days_since_ignition": 0,
@@ -2366,7 +4929,41 @@
       "ignition_vol_ratio": 5.44,
       "pullback_from_ignition_close_pct": 0.0,
       "support_ok": true,
-      "volume_cools": false
+      "volume_cools": false,
+      "legacy_score": 93,
+      "unified_score": 55.8,
+      "unified_score_grade": "C",
+      "score_breakdown": {
+        "version": "unified_score_v1",
+        "total": 55.8,
+        "grade": "C",
+        "base": 53.1,
+        "components": {
+          "chip": 0.0,
+          "momentum": 72.0,
+          "volume": 95.0,
+          "structure": 80.7,
+          "theme": 0.0
+        },
+        "source_count": 2,
+        "source_multiplier": 1.05,
+        "sources": [
+          "price_breakout_track",
+          "volume_pullback"
+        ],
+        "reasons": {
+          "chip": [],
+          "momentum": [],
+          "volume": [
+            "量比 5.44x"
+          ],
+          "structure": [
+            "ignition",
+            "支撐守住"
+          ],
+          "theme": []
+        }
+      }
     },
     {
       "stock_id": "6552",
@@ -2379,7 +4976,7 @@
       "source_tags": [],
       "status": "ignition",
       "status_label": "點火",
-      "score": 93,
+      "score": 64.7,
       "signal_date": "2026-05-26",
       "ignition_date": "2026-05-26",
       "days_since_ignition": 0,
@@ -2398,7 +4995,43 @@
       "ignition_vol_ratio": 5.45,
       "pullback_from_ignition_close_pct": 0.0,
       "support_ok": true,
-      "volume_cools": false
+      "volume_cools": false,
+      "legacy_score": 93,
+      "unified_score": 64.7,
+      "unified_score_grade": "C",
+      "score_breakdown": {
+        "version": "unified_score_v1",
+        "total": 64.7,
+        "grade": "C",
+        "base": 61.6,
+        "components": {
+          "chip": 0.0,
+          "momentum": 72.0,
+          "volume": 95.0,
+          "structure": 80.7,
+          "theme": 84.6
+        },
+        "source_count": 2,
+        "source_multiplier": 1.05,
+        "sources": [
+          "price_breakout_track",
+          "volume_pullback"
+        ],
+        "reasons": {
+          "chip": [],
+          "momentum": [],
+          "volume": [
+            "量比 5.45x"
+          ],
+          "structure": [
+            "ignition",
+            "支撐守住"
+          ],
+          "theme": [
+            "功率元件 84.6"
+          ]
+        }
+      }
     },
     {
       "stock_id": "4770",
@@ -2411,7 +5044,7 @@
       "source_tags": [],
       "status": "ignition",
       "status_label": "點火",
-      "score": 92,
+      "score": 55.8,
       "signal_date": "2026-05-26",
       "ignition_date": "2026-05-26",
       "days_since_ignition": 0,
@@ -2430,7 +5063,41 @@
       "ignition_vol_ratio": 5.26,
       "pullback_from_ignition_close_pct": 0.0,
       "support_ok": true,
-      "volume_cools": false
+      "volume_cools": false,
+      "legacy_score": 92,
+      "unified_score": 55.8,
+      "unified_score_grade": "C",
+      "score_breakdown": {
+        "version": "unified_score_v1",
+        "total": 55.8,
+        "grade": "C",
+        "base": 53.1,
+        "components": {
+          "chip": 0.0,
+          "momentum": 72.0,
+          "volume": 95.0,
+          "structure": 80.7,
+          "theme": 0.0
+        },
+        "source_count": 2,
+        "source_multiplier": 1.05,
+        "sources": [
+          "price_breakout_track",
+          "volume_pullback"
+        ],
+        "reasons": {
+          "chip": [],
+          "momentum": [],
+          "volume": [
+            "量比 5.26x"
+          ],
+          "structure": [
+            "ignition",
+            "支撐守住"
+          ],
+          "theme": []
+        }
+      }
     },
     {
       "stock_id": "3257",
@@ -2443,7 +5110,7 @@
       "source_tags": [],
       "status": "ignition",
       "status_label": "點火",
-      "score": 90,
+      "score": 64.2,
       "signal_date": "2026-05-26",
       "ignition_date": "2026-05-26",
       "days_since_ignition": 0,
@@ -2462,7 +5129,43 @@
       "ignition_vol_ratio": 5.06,
       "pullback_from_ignition_close_pct": 0.0,
       "support_ok": true,
-      "volume_cools": false
+      "volume_cools": false,
+      "legacy_score": 90,
+      "unified_score": 64.2,
+      "unified_score_grade": "C",
+      "score_breakdown": {
+        "version": "unified_score_v1",
+        "total": 64.2,
+        "grade": "C",
+        "base": 61.2,
+        "components": {
+          "chip": 0.0,
+          "momentum": 72.0,
+          "volume": 95.0,
+          "structure": 80.7,
+          "theme": 80.2
+        },
+        "source_count": 2,
+        "source_multiplier": 1.05,
+        "sources": [
+          "price_breakout_track",
+          "volume_pullback"
+        ],
+        "reasons": {
+          "chip": [],
+          "momentum": [],
+          "volume": [
+            "量比 5.06x"
+          ],
+          "structure": [
+            "ignition",
+            "支撐守住"
+          ],
+          "theme": [
+            "半導體 80.2"
+          ]
+        }
+      }
     },
     {
       "stock_id": "2369",
@@ -2475,7 +5178,7 @@
       "source_tags": [],
       "status": "ignition",
       "status_label": "點火",
-      "score": 90,
+      "score": 55.8,
       "signal_date": "2026-05-26",
       "ignition_date": "2026-05-26",
       "days_since_ignition": 0,
@@ -2494,7 +5197,41 @@
       "ignition_vol_ratio": 5.04,
       "pullback_from_ignition_close_pct": 0.0,
       "support_ok": true,
-      "volume_cools": false
+      "volume_cools": false,
+      "legacy_score": 90,
+      "unified_score": 55.8,
+      "unified_score_grade": "C",
+      "score_breakdown": {
+        "version": "unified_score_v1",
+        "total": 55.8,
+        "grade": "C",
+        "base": 53.1,
+        "components": {
+          "chip": 0.0,
+          "momentum": 72.0,
+          "volume": 95.0,
+          "structure": 80.7,
+          "theme": 0.0
+        },
+        "source_count": 2,
+        "source_multiplier": 1.05,
+        "sources": [
+          "price_breakout_track",
+          "volume_pullback"
+        ],
+        "reasons": {
+          "chip": [],
+          "momentum": [],
+          "volume": [
+            "量比 5.04x"
+          ],
+          "structure": [
+            "ignition",
+            "支撐守住"
+          ],
+          "theme": []
+        }
+      }
     },
     {
       "stock_id": "8249",
@@ -2507,7 +5244,7 @@
       "source_tags": [],
       "status": "ignition",
       "status_label": "點火",
-      "score": 87,
+      "score": 53.9,
       "signal_date": "2026-05-26",
       "ignition_date": "2026-05-26",
       "days_since_ignition": 0,
@@ -2526,7 +5263,41 @@
       "ignition_vol_ratio": 4.54,
       "pullback_from_ignition_close_pct": 0.0,
       "support_ok": true,
-      "volume_cools": false
+      "volume_cools": false,
+      "legacy_score": 87,
+      "unified_score": 53.9,
+      "unified_score_grade": "C",
+      "score_breakdown": {
+        "version": "unified_score_v1",
+        "total": 53.9,
+        "grade": "C",
+        "base": 51.4,
+        "components": {
+          "chip": 0.0,
+          "momentum": 72.0,
+          "volume": 86.2,
+          "structure": 80.7,
+          "theme": 0.0
+        },
+        "source_count": 2,
+        "source_multiplier": 1.05,
+        "sources": [
+          "price_breakout_track",
+          "volume_pullback"
+        ],
+        "reasons": {
+          "chip": [],
+          "momentum": [],
+          "volume": [
+            "量比 4.54x"
+          ],
+          "structure": [
+            "ignition",
+            "支撐守住"
+          ],
+          "theme": []
+        }
+      }
     },
     {
       "stock_id": "6799",
@@ -2539,7 +5310,7 @@
       "source_tags": [],
       "status": "ignition",
       "status_label": "點火",
-      "score": 86,
+      "score": 61.1,
       "signal_date": "2026-05-26",
       "ignition_date": "2026-05-26",
       "days_since_ignition": 0,
@@ -2558,7 +5329,43 @@
       "ignition_vol_ratio": 4.38,
       "pullback_from_ignition_close_pct": 0.0,
       "support_ok": true,
-      "volume_cools": false
+      "volume_cools": false,
+      "legacy_score": 86,
+      "unified_score": 61.1,
+      "unified_score_grade": "C",
+      "score_breakdown": {
+        "version": "unified_score_v1",
+        "total": 61.1,
+        "grade": "C",
+        "base": 58.2,
+        "components": {
+          "chip": 0.0,
+          "momentum": 72.0,
+          "volume": 83.2,
+          "structure": 80.7,
+          "theme": 73.9
+        },
+        "source_count": 2,
+        "source_multiplier": 1.05,
+        "sources": [
+          "price_breakout_track",
+          "volume_pullback"
+        ],
+        "reasons": {
+          "chip": [],
+          "momentum": [],
+          "volume": [
+            "量比 4.38x"
+          ],
+          "structure": [
+            "ignition",
+            "支撐守住"
+          ],
+          "theme": [
+            "半導體 73.9"
+          ]
+        }
+      }
     },
     {
       "stock_id": "4510",
@@ -2571,7 +5378,7 @@
       "source_tags": [],
       "status": "ignition",
       "status_label": "點火",
-      "score": 85,
+      "score": 52.7,
       "signal_date": "2026-05-26",
       "ignition_date": "2026-05-26",
       "days_since_ignition": 0,
@@ -2590,7 +5397,41 @@
       "ignition_vol_ratio": 4.22,
       "pullback_from_ignition_close_pct": 0.0,
       "support_ok": true,
-      "volume_cools": false
+      "volume_cools": false,
+      "legacy_score": 85,
+      "unified_score": 52.7,
+      "unified_score_grade": "C",
+      "score_breakdown": {
+        "version": "unified_score_v1",
+        "total": 52.7,
+        "grade": "C",
+        "base": 50.2,
+        "components": {
+          "chip": 0.0,
+          "momentum": 72.0,
+          "volume": 80.1,
+          "structure": 80.7,
+          "theme": 0.0
+        },
+        "source_count": 2,
+        "source_multiplier": 1.05,
+        "sources": [
+          "price_breakout_track",
+          "volume_pullback"
+        ],
+        "reasons": {
+          "chip": [],
+          "momentum": [],
+          "volume": [
+            "量比 4.22x"
+          ],
+          "structure": [
+            "ignition",
+            "支撐守住"
+          ],
+          "theme": []
+        }
+      }
     },
     {
       "stock_id": "5484",
@@ -2603,7 +5444,7 @@
       "source_tags": [],
       "status": "ignition",
       "status_label": "點火",
-      "score": 84,
+      "score": 52.0,
       "signal_date": "2026-05-26",
       "ignition_date": "2026-05-26",
       "days_since_ignition": 0,
@@ -2622,7 +5463,41 @@
       "ignition_vol_ratio": 4.05,
       "pullback_from_ignition_close_pct": 0.0,
       "support_ok": true,
-      "volume_cools": false
+      "volume_cools": false,
+      "legacy_score": 84,
+      "unified_score": 52.0,
+      "unified_score_grade": "C",
+      "score_breakdown": {
+        "version": "unified_score_v1",
+        "total": 52.0,
+        "grade": "C",
+        "base": 49.5,
+        "components": {
+          "chip": 0.0,
+          "momentum": 72.0,
+          "volume": 76.9,
+          "structure": 80.7,
+          "theme": 0.0
+        },
+        "source_count": 2,
+        "source_multiplier": 1.05,
+        "sources": [
+          "price_breakout_track",
+          "volume_pullback"
+        ],
+        "reasons": {
+          "chip": [],
+          "momentum": [],
+          "volume": [
+            "量比 4.05x"
+          ],
+          "structure": [
+            "ignition",
+            "支撐守住"
+          ],
+          "theme": []
+        }
+      }
     },
     {
       "stock_id": "4555",
@@ -2635,7 +5510,7 @@
       "source_tags": [],
       "status": "ignition",
       "status_label": "點火",
-      "score": 84,
+      "score": 51.7,
       "signal_date": "2026-05-26",
       "ignition_date": "2026-05-26",
       "days_since_ignition": 0,
@@ -2654,7 +5529,41 @@
       "ignition_vol_ratio": 3.97,
       "pullback_from_ignition_close_pct": 0.0,
       "support_ok": true,
-      "volume_cools": false
+      "volume_cools": false,
+      "legacy_score": 84,
+      "unified_score": 51.7,
+      "unified_score_grade": "C",
+      "score_breakdown": {
+        "version": "unified_score_v1",
+        "total": 51.7,
+        "grade": "C",
+        "base": 49.2,
+        "components": {
+          "chip": 0.0,
+          "momentum": 72.0,
+          "volume": 75.4,
+          "structure": 80.7,
+          "theme": 0.0
+        },
+        "source_count": 2,
+        "source_multiplier": 1.05,
+        "sources": [
+          "price_breakout_track",
+          "volume_pullback"
+        ],
+        "reasons": {
+          "chip": [],
+          "momentum": [],
+          "volume": [
+            "量比 3.97x"
+          ],
+          "structure": [
+            "ignition",
+            "支撐守住"
+          ],
+          "theme": []
+        }
+      }
     },
     {
       "stock_id": "1568",
@@ -2667,7 +5576,7 @@
       "source_tags": [],
       "status": "ignition",
       "status_label": "點火",
-      "score": 84,
+      "score": 51.6,
       "signal_date": "2026-05-26",
       "ignition_date": "2026-05-26",
       "days_since_ignition": 0,
@@ -2686,7 +5595,41 @@
       "ignition_vol_ratio": 3.96,
       "pullback_from_ignition_close_pct": 0.0,
       "support_ok": true,
-      "volume_cools": false
+      "volume_cools": false,
+      "legacy_score": 84,
+      "unified_score": 51.6,
+      "unified_score_grade": "C",
+      "score_breakdown": {
+        "version": "unified_score_v1",
+        "total": 51.6,
+        "grade": "C",
+        "base": 49.2,
+        "components": {
+          "chip": 0.0,
+          "momentum": 72.0,
+          "volume": 75.2,
+          "structure": 80.7,
+          "theme": 0.0
+        },
+        "source_count": 2,
+        "source_multiplier": 1.05,
+        "sources": [
+          "price_breakout_track",
+          "volume_pullback"
+        ],
+        "reasons": {
+          "chip": [],
+          "momentum": [],
+          "volume": [
+            "量比 3.96x"
+          ],
+          "structure": [
+            "ignition",
+            "支撐守住"
+          ],
+          "theme": []
+        }
+      }
     },
     {
       "stock_id": "2305",
@@ -2699,7 +5642,7 @@
       "source_tags": [],
       "status": "ignition",
       "status_label": "點火",
-      "score": 84,
+      "score": 51.8,
       "signal_date": "2026-05-26",
       "ignition_date": "2026-05-26",
       "days_since_ignition": 0,
@@ -2718,7 +5661,41 @@
       "ignition_vol_ratio": 4.0,
       "pullback_from_ignition_close_pct": 0.0,
       "support_ok": true,
-      "volume_cools": false
+      "volume_cools": false,
+      "legacy_score": 84,
+      "unified_score": 51.8,
+      "unified_score_grade": "C",
+      "score_breakdown": {
+        "version": "unified_score_v1",
+        "total": 51.8,
+        "grade": "C",
+        "base": 49.3,
+        "components": {
+          "chip": 0.0,
+          "momentum": 72.0,
+          "volume": 76.0,
+          "structure": 80.7,
+          "theme": 0.0
+        },
+        "source_count": 2,
+        "source_multiplier": 1.05,
+        "sources": [
+          "price_breakout_track",
+          "volume_pullback"
+        ],
+        "reasons": {
+          "chip": [],
+          "momentum": [],
+          "volume": [
+            "量比 4.00x"
+          ],
+          "structure": [
+            "ignition",
+            "支撐守住"
+          ],
+          "theme": []
+        }
+      }
     },
     {
       "stock_id": "2493",
@@ -2731,7 +5708,7 @@
       "source_tags": [],
       "status": "ignition",
       "status_label": "點火",
-      "score": 84,
+      "score": 51.5,
       "signal_date": "2026-05-26",
       "ignition_date": "2026-05-26",
       "days_since_ignition": 0,
@@ -2750,7 +5727,41 @@
       "ignition_vol_ratio": 3.93,
       "pullback_from_ignition_close_pct": 0.0,
       "support_ok": true,
-      "volume_cools": false
+      "volume_cools": false,
+      "legacy_score": 84,
+      "unified_score": 51.5,
+      "unified_score_grade": "C",
+      "score_breakdown": {
+        "version": "unified_score_v1",
+        "total": 51.5,
+        "grade": "C",
+        "base": 49.1,
+        "components": {
+          "chip": 0.0,
+          "momentum": 72.0,
+          "volume": 74.6,
+          "structure": 80.7,
+          "theme": 0.0
+        },
+        "source_count": 2,
+        "source_multiplier": 1.05,
+        "sources": [
+          "price_breakout_track",
+          "volume_pullback"
+        ],
+        "reasons": {
+          "chip": [],
+          "momentum": [],
+          "volume": [
+            "量比 3.93x"
+          ],
+          "structure": [
+            "ignition",
+            "支撐守住"
+          ],
+          "theme": []
+        }
+      }
     },
     {
       "stock_id": "6116",
@@ -2763,7 +5774,7 @@
       "source_tags": [],
       "status": "ignition",
       "status_label": "點火",
-      "score": 83,
+      "score": 51.2,
       "signal_date": "2026-05-26",
       "ignition_date": "2026-05-26",
       "days_since_ignition": 0,
@@ -2782,7 +5793,41 @@
       "ignition_vol_ratio": 3.85,
       "pullback_from_ignition_close_pct": 0.0,
       "support_ok": true,
-      "volume_cools": false
+      "volume_cools": false,
+      "legacy_score": 83,
+      "unified_score": 51.2,
+      "unified_score_grade": "C",
+      "score_breakdown": {
+        "version": "unified_score_v1",
+        "total": 51.2,
+        "grade": "C",
+        "base": 48.8,
+        "components": {
+          "chip": 0.0,
+          "momentum": 72.0,
+          "volume": 73.1,
+          "structure": 80.7,
+          "theme": 0.0
+        },
+        "source_count": 2,
+        "source_multiplier": 1.05,
+        "sources": [
+          "price_breakout_track",
+          "volume_pullback"
+        ],
+        "reasons": {
+          "chip": [],
+          "momentum": [],
+          "volume": [
+            "量比 3.85x"
+          ],
+          "structure": [
+            "ignition",
+            "支撐守住"
+          ],
+          "theme": []
+        }
+      }
     },
     {
       "stock_id": "3652",
@@ -2795,7 +5840,7 @@
       "source_tags": [],
       "status": "ignition",
       "status_label": "點火",
-      "score": 83,
+      "score": 51.4,
       "signal_date": "2026-05-26",
       "ignition_date": "2026-05-26",
       "days_since_ignition": 0,
@@ -2814,7 +5859,41 @@
       "ignition_vol_ratio": 3.91,
       "pullback_from_ignition_close_pct": 0.0,
       "support_ok": true,
-      "volume_cools": false
+      "volume_cools": false,
+      "legacy_score": 83,
+      "unified_score": 51.4,
+      "unified_score_grade": "C",
+      "score_breakdown": {
+        "version": "unified_score_v1",
+        "total": 51.4,
+        "grade": "C",
+        "base": 49.0,
+        "components": {
+          "chip": 0.0,
+          "momentum": 72.0,
+          "volume": 74.2,
+          "structure": 80.7,
+          "theme": 0.0
+        },
+        "source_count": 2,
+        "source_multiplier": 1.05,
+        "sources": [
+          "price_breakout_track",
+          "volume_pullback"
+        ],
+        "reasons": {
+          "chip": [],
+          "momentum": [],
+          "volume": [
+            "量比 3.91x"
+          ],
+          "structure": [
+            "ignition",
+            "支撐守住"
+          ],
+          "theme": []
+        }
+      }
     },
     {
       "stock_id": "6695",
@@ -2827,7 +5906,7 @@
       "source_tags": [],
       "status": "ignition",
       "status_label": "點火",
-      "score": 83,
+      "score": 51.5,
       "signal_date": "2026-05-26",
       "ignition_date": "2026-05-26",
       "days_since_ignition": 0,
@@ -2846,7 +5925,41 @@
       "ignition_vol_ratio": 3.92,
       "pullback_from_ignition_close_pct": 0.0,
       "support_ok": true,
-      "volume_cools": false
+      "volume_cools": false,
+      "legacy_score": 83,
+      "unified_score": 51.5,
+      "unified_score_grade": "C",
+      "score_breakdown": {
+        "version": "unified_score_v1",
+        "total": 51.5,
+        "grade": "C",
+        "base": 49.0,
+        "components": {
+          "chip": 0.0,
+          "momentum": 72.0,
+          "volume": 74.4,
+          "structure": 80.7,
+          "theme": 0.0
+        },
+        "source_count": 2,
+        "source_multiplier": 1.05,
+        "sources": [
+          "price_breakout_track",
+          "volume_pullback"
+        ],
+        "reasons": {
+          "chip": [],
+          "momentum": [],
+          "volume": [
+            "量比 3.92x"
+          ],
+          "structure": [
+            "ignition",
+            "支撐守住"
+          ],
+          "theme": []
+        }
+      }
     },
     {
       "stock_id": "5220",
@@ -2859,7 +5972,7 @@
       "source_tags": [],
       "status": "ignition",
       "status_label": "點火",
-      "score": 82,
+      "score": 50.6,
       "signal_date": "2026-05-26",
       "ignition_date": "2026-05-26",
       "days_since_ignition": 0,
@@ -2878,7 +5991,41 @@
       "ignition_vol_ratio": 3.71,
       "pullback_from_ignition_close_pct": 0.0,
       "support_ok": true,
-      "volume_cools": false
+      "volume_cools": false,
+      "legacy_score": 82,
+      "unified_score": 50.6,
+      "unified_score_grade": "C",
+      "score_breakdown": {
+        "version": "unified_score_v1",
+        "total": 50.6,
+        "grade": "C",
+        "base": 48.2,
+        "components": {
+          "chip": 0.0,
+          "momentum": 72.0,
+          "volume": 70.4,
+          "structure": 80.7,
+          "theme": 0.0
+        },
+        "source_count": 2,
+        "source_multiplier": 1.05,
+        "sources": [
+          "price_breakout_track",
+          "volume_pullback"
+        ],
+        "reasons": {
+          "chip": [],
+          "momentum": [],
+          "volume": [
+            "量比 3.71x"
+          ],
+          "structure": [
+            "ignition",
+            "支撐守住"
+          ],
+          "theme": []
+        }
+      }
     },
     {
       "stock_id": "6284",
@@ -2891,7 +6038,7 @@
       "source_tags": [],
       "status": "ignition",
       "status_label": "點火",
-      "score": 82,
+      "score": 50.3,
       "signal_date": "2026-05-26",
       "ignition_date": "2026-05-26",
       "days_since_ignition": 0,
@@ -2910,7 +6057,41 @@
       "ignition_vol_ratio": 3.63,
       "pullback_from_ignition_close_pct": 0.0,
       "support_ok": true,
-      "volume_cools": false
+      "volume_cools": false,
+      "legacy_score": 82,
+      "unified_score": 50.3,
+      "unified_score_grade": "C",
+      "score_breakdown": {
+        "version": "unified_score_v1",
+        "total": 50.3,
+        "grade": "C",
+        "base": 47.9,
+        "components": {
+          "chip": 0.0,
+          "momentum": 72.0,
+          "volume": 68.9,
+          "structure": 80.7,
+          "theme": 0.0
+        },
+        "source_count": 2,
+        "source_multiplier": 1.05,
+        "sources": [
+          "price_breakout_track",
+          "volume_pullback"
+        ],
+        "reasons": {
+          "chip": [],
+          "momentum": [],
+          "volume": [
+            "量比 3.63x"
+          ],
+          "structure": [
+            "ignition",
+            "支撐守住"
+          ],
+          "theme": []
+        }
+      }
     },
     {
       "stock_id": "2489",
@@ -2923,7 +6104,7 @@
       "source_tags": [],
       "status": "ignition",
       "status_label": "點火",
-      "score": 82,
+      "score": 50.4,
       "signal_date": "2026-05-26",
       "ignition_date": "2026-05-26",
       "days_since_ignition": 0,
@@ -2942,7 +6123,41 @@
       "ignition_vol_ratio": 3.65,
       "pullback_from_ignition_close_pct": 0.0,
       "support_ok": true,
-      "volume_cools": false
+      "volume_cools": false,
+      "legacy_score": 82,
+      "unified_score": 50.4,
+      "unified_score_grade": "C",
+      "score_breakdown": {
+        "version": "unified_score_v1",
+        "total": 50.4,
+        "grade": "C",
+        "base": 48.0,
+        "components": {
+          "chip": 0.0,
+          "momentum": 72.0,
+          "volume": 69.3,
+          "structure": 80.7,
+          "theme": 0.0
+        },
+        "source_count": 2,
+        "source_multiplier": 1.05,
+        "sources": [
+          "price_breakout_track",
+          "volume_pullback"
+        ],
+        "reasons": {
+          "chip": [],
+          "momentum": [],
+          "volume": [
+            "量比 3.65x"
+          ],
+          "structure": [
+            "ignition",
+            "支撐守住"
+          ],
+          "theme": []
+        }
+      }
     },
     {
       "stock_id": "3708",
@@ -2959,7 +6174,7 @@
       ],
       "status": "ignition",
       "status_label": "點火",
-      "score": 81,
+      "score": 78.2,
       "signal_date": "2026-05-26",
       "ignition_date": "2026-05-26",
       "days_since_ignition": 0,
@@ -2978,7 +6193,45 @@
       "ignition_vol_ratio": 3.53,
       "pullback_from_ignition_close_pct": 0.0,
       "support_ok": true,
-      "volume_cools": false
+      "volume_cools": false,
+      "legacy_score": 81,
+      "unified_score": 78.2,
+      "unified_score_grade": "A",
+      "score_breakdown": {
+        "version": "unified_score_v1",
+        "total": 78.2,
+        "grade": "A",
+        "base": 68.0,
+        "components": {
+          "chip": 82.0,
+          "momentum": 72.0,
+          "volume": 67.0,
+          "structure": 80.7,
+          "theme": 0.0
+        },
+        "source_count": 4,
+        "source_multiplier": 1.15,
+        "sources": [
+          "chips",
+          "price_breakout_track",
+          "volume_pullback",
+          "volume_signal"
+        ],
+        "reasons": {
+          "chip": [
+            "籌碼標籤加分"
+          ],
+          "momentum": [],
+          "volume": [
+            "量比 3.53x"
+          ],
+          "structure": [
+            "ignition",
+            "支撐守住"
+          ],
+          "theme": []
+        }
+      }
     },
     {
       "stock_id": "2353",
@@ -2995,7 +6248,7 @@
       ],
       "status": "ignition",
       "status_label": "點火",
-      "score": 81,
+      "score": 77.8,
       "signal_date": "2026-05-26",
       "ignition_date": "2026-05-26",
       "days_since_ignition": 0,
@@ -3014,7 +6267,45 @@
       "ignition_vol_ratio": 3.43,
       "pullback_from_ignition_close_pct": 0.0,
       "support_ok": true,
-      "volume_cools": false
+      "volume_cools": false,
+      "legacy_score": 81,
+      "unified_score": 77.8,
+      "unified_score_grade": "A",
+      "score_breakdown": {
+        "version": "unified_score_v1",
+        "total": 77.8,
+        "grade": "A",
+        "base": 67.7,
+        "components": {
+          "chip": 82.0,
+          "momentum": 72.0,
+          "volume": 65.1,
+          "structure": 80.7,
+          "theme": 0.0
+        },
+        "source_count": 4,
+        "source_multiplier": 1.15,
+        "sources": [
+          "chips",
+          "price_breakout_track",
+          "volume_pullback",
+          "volume_signal"
+        ],
+        "reasons": {
+          "chip": [
+            "籌碼標籤加分"
+          ],
+          "momentum": [],
+          "volume": [
+            "量比 3.43x"
+          ],
+          "structure": [
+            "ignition",
+            "支撐守住"
+          ],
+          "theme": []
+        }
+      }
     },
     {
       "stock_id": "5299",
@@ -3027,7 +6318,7 @@
       "source_tags": [],
       "status": "ignition",
       "status_label": "點火",
-      "score": 81,
+      "score": 53.6,
       "signal_date": "2026-05-26",
       "ignition_date": "2026-05-26",
       "days_since_ignition": 0,
@@ -3046,7 +6337,43 @@
       "ignition_vol_ratio": 3.49,
       "pullback_from_ignition_close_pct": 0.0,
       "support_ok": true,
-      "volume_cools": false
+      "volume_cools": false,
+      "legacy_score": 81,
+      "unified_score": 53.6,
+      "unified_score_grade": "C",
+      "score_breakdown": {
+        "version": "unified_score_v1",
+        "total": 53.6,
+        "grade": "C",
+        "base": 51.0,
+        "components": {
+          "chip": 0.0,
+          "momentum": 72.0,
+          "volume": 66.2,
+          "structure": 80.7,
+          "theme": 36.6
+        },
+        "source_count": 2,
+        "source_multiplier": 1.05,
+        "sources": [
+          "price_breakout_track",
+          "volume_pullback"
+        ],
+        "reasons": {
+          "chip": [],
+          "momentum": [],
+          "volume": [
+            "量比 3.49x"
+          ],
+          "structure": [
+            "ignition",
+            "支撐守住"
+          ],
+          "theme": [
+            "功率元件 36.6"
+          ]
+        }
+      }
     },
     {
       "stock_id": "4908",
@@ -3059,7 +6386,7 @@
       "source_tags": [],
       "status": "ignition",
       "status_label": "點火",
-      "score": 81,
+      "score": 55.7,
       "signal_date": "2026-05-26",
       "ignition_date": "2026-05-26",
       "days_since_ignition": 0,
@@ -3078,7 +6405,43 @@
       "ignition_vol_ratio": 3.54,
       "pullback_from_ignition_close_pct": 0.0,
       "support_ok": true,
-      "volume_cools": false
+      "volume_cools": false,
+      "legacy_score": 81,
+      "unified_score": 55.7,
+      "unified_score_grade": "C",
+      "score_breakdown": {
+        "version": "unified_score_v1",
+        "total": 55.7,
+        "grade": "C",
+        "base": 53.1,
+        "components": {
+          "chip": 0.0,
+          "momentum": 72.0,
+          "volume": 67.2,
+          "structure": 80.7,
+          "theme": 54.7
+        },
+        "source_count": 2,
+        "source_multiplier": 1.05,
+        "sources": [
+          "price_breakout_track",
+          "volume_pullback"
+        ],
+        "reasons": {
+          "chip": [],
+          "momentum": [],
+          "volume": [
+            "量比 3.54x"
+          ],
+          "structure": [
+            "ignition",
+            "支撐守住"
+          ],
+          "theme": [
+            "網通 54.7"
+          ]
+        }
+      }
     },
     {
       "stock_id": "8070",
@@ -3091,7 +6454,7 @@
       "source_tags": [],
       "status": "ignition",
       "status_label": "點火",
-      "score": 81,
+      "score": 49.7,
       "signal_date": "2026-05-26",
       "ignition_date": "2026-05-26",
       "days_since_ignition": 0,
@@ -3110,7 +6473,41 @@
       "ignition_vol_ratio": 3.49,
       "pullback_from_ignition_close_pct": 0.0,
       "support_ok": true,
-      "volume_cools": false
+      "volume_cools": false,
+      "legacy_score": 81,
+      "unified_score": 49.7,
+      "unified_score_grade": "D",
+      "score_breakdown": {
+        "version": "unified_score_v1",
+        "total": 49.7,
+        "grade": "D",
+        "base": 47.4,
+        "components": {
+          "chip": 0.0,
+          "momentum": 72.0,
+          "volume": 66.2,
+          "structure": 80.7,
+          "theme": 0.0
+        },
+        "source_count": 2,
+        "source_multiplier": 1.05,
+        "sources": [
+          "price_breakout_track",
+          "volume_pullback"
+        ],
+        "reasons": {
+          "chip": [],
+          "momentum": [],
+          "volume": [
+            "量比 3.49x"
+          ],
+          "structure": [
+            "ignition",
+            "支撐守住"
+          ],
+          "theme": []
+        }
+      }
     },
     {
       "stock_id": "8182",
@@ -3123,7 +6520,7 @@
       "source_tags": [],
       "status": "ignition",
       "status_label": "點火",
-      "score": 80,
+      "score": 57.1,
       "signal_date": "2026-05-26",
       "ignition_date": "2026-05-26",
       "days_since_ignition": 0,
@@ -3142,7 +6539,43 @@
       "ignition_vol_ratio": 3.26,
       "pullback_from_ignition_close_pct": 0.0,
       "support_ok": true,
-      "volume_cools": false
+      "volume_cools": false,
+      "legacy_score": 80,
+      "unified_score": 57.1,
+      "unified_score_grade": "C",
+      "score_breakdown": {
+        "version": "unified_score_v1",
+        "total": 57.1,
+        "grade": "C",
+        "base": 54.4,
+        "components": {
+          "chip": 0.0,
+          "momentum": 72.0,
+          "volume": 61.9,
+          "structure": 80.7,
+          "theme": 78.3
+        },
+        "source_count": 2,
+        "source_multiplier": 1.05,
+        "sources": [
+          "price_breakout_track",
+          "volume_pullback"
+        ],
+        "reasons": {
+          "chip": [],
+          "momentum": [],
+          "volume": [
+            "量比 3.26x"
+          ],
+          "structure": [
+            "ignition",
+            "支撐守住"
+          ],
+          "theme": [
+            "電子零組件 78.3"
+          ]
+        }
+      }
     },
     {
       "stock_id": "6125",
@@ -3155,7 +6588,7 @@
       "source_tags": [],
       "status": "ignition",
       "status_label": "點火",
-      "score": 80,
+      "score": 57.6,
       "signal_date": "2026-05-26",
       "ignition_date": "2026-05-26",
       "days_since_ignition": 0,
@@ -3174,7 +6607,43 @@
       "ignition_vol_ratio": 3.39,
       "pullback_from_ignition_close_pct": 0.0,
       "support_ok": true,
-      "volume_cools": false
+      "volume_cools": false,
+      "legacy_score": 80,
+      "unified_score": 57.6,
+      "unified_score_grade": "C",
+      "score_breakdown": {
+        "version": "unified_score_v1",
+        "total": 57.6,
+        "grade": "C",
+        "base": 54.8,
+        "components": {
+          "chip": 0.0,
+          "momentum": 72.0,
+          "volume": 64.3,
+          "structure": 80.7,
+          "theme": 78.2
+        },
+        "source_count": 2,
+        "source_multiplier": 1.05,
+        "sources": [
+          "price_breakout_track",
+          "volume_pullback"
+        ],
+        "reasons": {
+          "chip": [],
+          "momentum": [],
+          "volume": [
+            "量比 3.39x"
+          ],
+          "structure": [
+            "ignition",
+            "支撐守住"
+          ],
+          "theme": [
+            "散熱 78.2"
+          ]
+        }
+      }
     },
     {
       "stock_id": "8255",
@@ -3187,7 +6656,7 @@
       "source_tags": [],
       "status": "ignition",
       "status_label": "點火",
-      "score": 79,
+      "score": 56.4,
       "signal_date": "2026-05-26",
       "ignition_date": "2026-05-26",
       "days_since_ignition": 0,
@@ -3206,7 +6675,43 @@
       "ignition_vol_ratio": 3.12,
       "pullback_from_ignition_close_pct": 0.0,
       "support_ok": true,
-      "volume_cools": false
+      "volume_cools": false,
+      "legacy_score": 79,
+      "unified_score": 56.4,
+      "unified_score_grade": "C",
+      "score_breakdown": {
+        "version": "unified_score_v1",
+        "total": 56.4,
+        "grade": "C",
+        "base": 53.7,
+        "components": {
+          "chip": 0.0,
+          "momentum": 72.0,
+          "volume": 59.2,
+          "structure": 80.7,
+          "theme": 77.0
+        },
+        "source_count": 2,
+        "source_multiplier": 1.05,
+        "sources": [
+          "price_breakout_track",
+          "volume_pullback"
+        ],
+        "reasons": {
+          "chip": [],
+          "momentum": [],
+          "volume": [
+            "量比 3.12x"
+          ],
+          "structure": [
+            "ignition",
+            "支撐守住"
+          ],
+          "theme": [
+            "車用電子 77.0"
+          ]
+        }
+      }
     },
     {
       "stock_id": "2061",
@@ -3219,7 +6724,7 @@
       "source_tags": [],
       "status": "ignition",
       "status_label": "點火",
-      "score": 79,
+      "score": 53.6,
       "signal_date": "2026-05-26",
       "ignition_date": "2026-05-26",
       "days_since_ignition": 0,
@@ -3238,7 +6743,43 @@
       "ignition_vol_ratio": 3.2,
       "pullback_from_ignition_close_pct": 0.0,
       "support_ok": true,
-      "volume_cools": false
+      "volume_cools": false,
+      "legacy_score": 79,
+      "unified_score": 53.6,
+      "unified_score_grade": "C",
+      "score_breakdown": {
+        "version": "unified_score_v1",
+        "total": 53.6,
+        "grade": "C",
+        "base": 51.0,
+        "components": {
+          "chip": 0.0,
+          "momentum": 72.0,
+          "volume": 60.7,
+          "structure": 80.7,
+          "theme": 47.5
+        },
+        "source_count": 2,
+        "source_multiplier": 1.05,
+        "sources": [
+          "price_breakout_track",
+          "volume_pullback"
+        ],
+        "reasons": {
+          "chip": [],
+          "momentum": [],
+          "volume": [
+            "量比 3.20x"
+          ],
+          "structure": [
+            "ignition",
+            "支撐守住"
+          ],
+          "theme": [
+            "重電 47.5"
+          ]
+        }
+      }
     },
     {
       "stock_id": "3042",
@@ -3251,7 +6792,7 @@
       "source_tags": [],
       "status": "ignition",
       "status_label": "點火",
-      "score": 78,
+      "score": 55.6,
       "signal_date": "2026-05-26",
       "ignition_date": "2026-05-26",
       "days_since_ignition": 0,
@@ -3270,7 +6811,43 @@
       "ignition_vol_ratio": 2.98,
       "pullback_from_ignition_close_pct": 0.0,
       "support_ok": true,
-      "volume_cools": false
+      "volume_cools": false,
+      "legacy_score": 78,
+      "unified_score": 55.6,
+      "unified_score_grade": "C",
+      "score_breakdown": {
+        "version": "unified_score_v1",
+        "total": 55.6,
+        "grade": "C",
+        "base": 52.9,
+        "components": {
+          "chip": 0.0,
+          "momentum": 72.0,
+          "volume": 56.5,
+          "structure": 80.7,
+          "theme": 74.8
+        },
+        "source_count": 2,
+        "source_multiplier": 1.05,
+        "sources": [
+          "price_breakout_track",
+          "volume_pullback"
+        ],
+        "reasons": {
+          "chip": [],
+          "momentum": [],
+          "volume": [
+            "量比 2.98x"
+          ],
+          "structure": [
+            "ignition",
+            "支撐守住"
+          ],
+          "theme": [
+            "被動元件 74.8"
+          ]
+        }
+      }
     },
     {
       "stock_id": "3013",
@@ -3283,7 +6860,7 @@
       "source_tags": [],
       "status": "ignition",
       "status_label": "點火",
-      "score": 78,
+      "score": 47.9,
       "signal_date": "2026-05-26",
       "ignition_date": "2026-05-26",
       "days_since_ignition": 0,
@@ -3302,7 +6879,41 @@
       "ignition_vol_ratio": 3.02,
       "pullback_from_ignition_close_pct": 0.0,
       "support_ok": true,
-      "volume_cools": false
+      "volume_cools": false,
+      "legacy_score": 78,
+      "unified_score": 47.9,
+      "unified_score_grade": "D",
+      "score_breakdown": {
+        "version": "unified_score_v1",
+        "total": 47.9,
+        "grade": "D",
+        "base": 45.6,
+        "components": {
+          "chip": 0.0,
+          "momentum": 72.0,
+          "volume": 57.3,
+          "structure": 80.7,
+          "theme": 0.0
+        },
+        "source_count": 2,
+        "source_multiplier": 1.05,
+        "sources": [
+          "price_breakout_track",
+          "volume_pullback"
+        ],
+        "reasons": {
+          "chip": [],
+          "momentum": [],
+          "volume": [
+            "量比 3.02x"
+          ],
+          "structure": [
+            "ignition",
+            "支撐守住"
+          ],
+          "theme": []
+        }
+      }
     },
     {
       "stock_id": "8050",
@@ -3315,7 +6926,7 @@
       "source_tags": [],
       "status": "ignition",
       "status_label": "點火",
-      "score": 78,
+      "score": 48.0,
       "signal_date": "2026-05-26",
       "ignition_date": "2026-05-26",
       "days_since_ignition": 0,
@@ -3334,7 +6945,41 @@
       "ignition_vol_ratio": 3.04,
       "pullback_from_ignition_close_pct": 0.0,
       "support_ok": true,
-      "volume_cools": false
+      "volume_cools": false,
+      "legacy_score": 78,
+      "unified_score": 48.0,
+      "unified_score_grade": "D",
+      "score_breakdown": {
+        "version": "unified_score_v1",
+        "total": 48.0,
+        "grade": "D",
+        "base": 45.7,
+        "components": {
+          "chip": 0.0,
+          "momentum": 72.0,
+          "volume": 57.7,
+          "structure": 80.7,
+          "theme": 0.0
+        },
+        "source_count": 2,
+        "source_multiplier": 1.05,
+        "sources": [
+          "price_breakout_track",
+          "volume_pullback"
+        ],
+        "reasons": {
+          "chip": [],
+          "momentum": [],
+          "volume": [
+            "量比 3.04x"
+          ],
+          "structure": [
+            "ignition",
+            "支撐守住"
+          ],
+          "theme": []
+        }
+      }
     },
     {
       "stock_id": "6277",
@@ -3347,7 +6992,7 @@
       "source_tags": [],
       "status": "ignition",
       "status_label": "點火",
-      "score": 77,
+      "score": 46.8,
       "signal_date": "2026-05-26",
       "ignition_date": "2026-05-26",
       "days_since_ignition": 0,
@@ -3366,7 +7011,41 @@
       "ignition_vol_ratio": 2.76,
       "pullback_from_ignition_close_pct": 0.0,
       "support_ok": true,
-      "volume_cools": false
+      "volume_cools": false,
+      "legacy_score": 77,
+      "unified_score": 46.8,
+      "unified_score_grade": "D",
+      "score_breakdown": {
+        "version": "unified_score_v1",
+        "total": 46.8,
+        "grade": "D",
+        "base": 44.6,
+        "components": {
+          "chip": 0.0,
+          "momentum": 72.0,
+          "volume": 52.3,
+          "structure": 80.7,
+          "theme": 0.0
+        },
+        "source_count": 2,
+        "source_multiplier": 1.05,
+        "sources": [
+          "price_breakout_track",
+          "volume_pullback"
+        ],
+        "reasons": {
+          "chip": [],
+          "momentum": [],
+          "volume": [
+            "量比 2.76x"
+          ],
+          "structure": [
+            "ignition",
+            "支撐守住"
+          ],
+          "theme": []
+        }
+      }
     },
     {
       "stock_id": "6668",
@@ -3379,7 +7058,7 @@
       "source_tags": [],
       "status": "ignition",
       "status_label": "點火",
-      "score": 77,
+      "score": 46.9,
       "signal_date": "2026-05-26",
       "ignition_date": "2026-05-26",
       "days_since_ignition": 0,
@@ -3398,7 +7077,41 @@
       "ignition_vol_ratio": 2.78,
       "pullback_from_ignition_close_pct": 0.0,
       "support_ok": true,
-      "volume_cools": false
+      "volume_cools": false,
+      "legacy_score": 77,
+      "unified_score": 46.9,
+      "unified_score_grade": "D",
+      "score_breakdown": {
+        "version": "unified_score_v1",
+        "total": 46.9,
+        "grade": "D",
+        "base": 44.7,
+        "components": {
+          "chip": 0.0,
+          "momentum": 72.0,
+          "volume": 52.7,
+          "structure": 80.7,
+          "theme": 0.0
+        },
+        "source_count": 2,
+        "source_multiplier": 1.05,
+        "sources": [
+          "price_breakout_track",
+          "volume_pullback"
+        ],
+        "reasons": {
+          "chip": [],
+          "momentum": [],
+          "volume": [
+            "量比 2.78x"
+          ],
+          "structure": [
+            "ignition",
+            "支撐守住"
+          ],
+          "theme": []
+        }
+      }
     },
     {
       "stock_id": "2881",
@@ -3415,7 +7128,7 @@
       ],
       "status": "ignition",
       "status_label": "點火",
-      "score": 76,
+      "score": 74.5,
       "signal_date": "2026-05-26",
       "ignition_date": "2026-05-26",
       "days_since_ignition": 0,
@@ -3434,7 +7147,45 @@
       "ignition_vol_ratio": 2.67,
       "pullback_from_ignition_close_pct": 0.0,
       "support_ok": true,
-      "volume_cools": false
+      "volume_cools": false,
+      "legacy_score": 76,
+      "unified_score": 74.5,
+      "unified_score_grade": "B",
+      "score_breakdown": {
+        "version": "unified_score_v1",
+        "total": 74.5,
+        "grade": "B",
+        "base": 64.8,
+        "components": {
+          "chip": 82.0,
+          "momentum": 72.0,
+          "volume": 50.6,
+          "structure": 80.7,
+          "theme": 0.0
+        },
+        "source_count": 4,
+        "source_multiplier": 1.15,
+        "sources": [
+          "chips",
+          "price_breakout_track",
+          "volume_pullback",
+          "volume_signal"
+        ],
+        "reasons": {
+          "chip": [
+            "籌碼標籤加分"
+          ],
+          "momentum": [],
+          "volume": [
+            "量比 2.67x"
+          ],
+          "structure": [
+            "ignition",
+            "支撐守住"
+          ],
+          "theme": []
+        }
+      }
     },
     {
       "stock_id": "5285",
@@ -3447,7 +7198,7 @@
       "source_tags": [],
       "status": "ignition",
       "status_label": "點火",
-      "score": 76,
+      "score": 46.7,
       "signal_date": "2026-05-26",
       "ignition_date": "2026-05-26",
       "days_since_ignition": 0,
@@ -3466,7 +7217,41 @@
       "ignition_vol_ratio": 2.73,
       "pullback_from_ignition_close_pct": 0.0,
       "support_ok": true,
-      "volume_cools": false
+      "volume_cools": false,
+      "legacy_score": 76,
+      "unified_score": 46.7,
+      "unified_score_grade": "D",
+      "score_breakdown": {
+        "version": "unified_score_v1",
+        "total": 46.7,
+        "grade": "D",
+        "base": 44.5,
+        "components": {
+          "chip": 0.0,
+          "momentum": 72.0,
+          "volume": 51.8,
+          "structure": 80.7,
+          "theme": 0.0
+        },
+        "source_count": 2,
+        "source_multiplier": 1.05,
+        "sources": [
+          "price_breakout_track",
+          "volume_pullback"
+        ],
+        "reasons": {
+          "chip": [],
+          "momentum": [],
+          "volume": [
+            "量比 2.73x"
+          ],
+          "structure": [
+            "ignition",
+            "支撐守住"
+          ],
+          "theme": []
+        }
+      }
     },
     {
       "stock_id": "6719",
@@ -3479,7 +7264,7 @@
       "source_tags": [],
       "status": "ignition",
       "status_label": "點火",
-      "score": 76,
+      "score": 46.2,
       "signal_date": "2026-05-26",
       "ignition_date": "2026-05-26",
       "days_since_ignition": 0,
@@ -3498,7 +7283,41 @@
       "ignition_vol_ratio": 2.61,
       "pullback_from_ignition_close_pct": 0.0,
       "support_ok": true,
-      "volume_cools": false
+      "volume_cools": false,
+      "legacy_score": 76,
+      "unified_score": 46.2,
+      "unified_score_grade": "D",
+      "score_breakdown": {
+        "version": "unified_score_v1",
+        "total": 46.2,
+        "grade": "D",
+        "base": 44.0,
+        "components": {
+          "chip": 0.0,
+          "momentum": 72.0,
+          "volume": 49.5,
+          "structure": 80.7,
+          "theme": 0.0
+        },
+        "source_count": 2,
+        "source_multiplier": 1.05,
+        "sources": [
+          "price_breakout_track",
+          "volume_pullback"
+        ],
+        "reasons": {
+          "chip": [],
+          "momentum": [],
+          "volume": [
+            "量比 2.61x"
+          ],
+          "structure": [
+            "ignition",
+            "支撐守住"
+          ],
+          "theme": []
+        }
+      }
     },
     {
       "stock_id": "3372",
@@ -3514,7 +7333,7 @@
       ],
       "status": "ignition",
       "status_label": "點火",
-      "score": 75,
+      "score": 70.6,
       "signal_date": "2026-05-26",
       "ignition_date": "2026-05-26",
       "days_since_ignition": 0,
@@ -3533,7 +7352,44 @@
       "ignition_vol_ratio": 2.52,
       "pullback_from_ignition_close_pct": 0.0,
       "support_ok": true,
-      "volume_cools": false
+      "volume_cools": false,
+      "legacy_score": 75,
+      "unified_score": 70.6,
+      "unified_score_grade": "B",
+      "score_breakdown": {
+        "version": "unified_score_v1",
+        "total": 70.6,
+        "grade": "B",
+        "base": 64.2,
+        "components": {
+          "chip": 82.0,
+          "momentum": 72.0,
+          "volume": 47.8,
+          "structure": 80.7,
+          "theme": 0.0
+        },
+        "source_count": 3,
+        "source_multiplier": 1.1,
+        "sources": [
+          "chips",
+          "volume_pullback",
+          "volume_signal"
+        ],
+        "reasons": {
+          "chip": [
+            "籌碼標籤加分"
+          ],
+          "momentum": [],
+          "volume": [
+            "量比 2.52x"
+          ],
+          "structure": [
+            "ignition",
+            "支撐守住"
+          ],
+          "theme": []
+        }
+      }
     },
     {
       "stock_id": "6271",
@@ -3546,7 +7402,7 @@
       "source_tags": [],
       "status": "ignition",
       "status_label": "點火",
-      "score": 75,
+      "score": 46.1,
       "signal_date": "2026-05-26",
       "ignition_date": "2026-05-26",
       "days_since_ignition": 0,
@@ -3565,7 +7421,41 @@
       "ignition_vol_ratio": 2.58,
       "pullback_from_ignition_close_pct": 0.0,
       "support_ok": true,
-      "volume_cools": false
+      "volume_cools": false,
+      "legacy_score": 75,
+      "unified_score": 46.1,
+      "unified_score_grade": "D",
+      "score_breakdown": {
+        "version": "unified_score_v1",
+        "total": 46.1,
+        "grade": "D",
+        "base": 43.9,
+        "components": {
+          "chip": 0.0,
+          "momentum": 72.0,
+          "volume": 48.9,
+          "structure": 80.7,
+          "theme": 0.0
+        },
+        "source_count": 2,
+        "source_multiplier": 1.05,
+        "sources": [
+          "price_breakout_track",
+          "volume_pullback"
+        ],
+        "reasons": {
+          "chip": [],
+          "momentum": [],
+          "volume": [
+            "量比 2.58x"
+          ],
+          "structure": [
+            "ignition",
+            "支撐守住"
+          ],
+          "theme": []
+        }
+      }
     },
     {
       "stock_id": "4527",
@@ -3578,7 +7468,7 @@
       "source_tags": [],
       "status": "ignition",
       "status_label": "點火",
-      "score": 75,
+      "score": 45.9,
       "signal_date": "2026-05-26",
       "ignition_date": "2026-05-26",
       "days_since_ignition": 0,
@@ -3597,7 +7487,41 @@
       "ignition_vol_ratio": 2.53,
       "pullback_from_ignition_close_pct": 0.0,
       "support_ok": true,
-      "volume_cools": false
+      "volume_cools": false,
+      "legacy_score": 75,
+      "unified_score": 45.9,
+      "unified_score_grade": "D",
+      "score_breakdown": {
+        "version": "unified_score_v1",
+        "total": 45.9,
+        "grade": "D",
+        "base": 43.7,
+        "components": {
+          "chip": 0.0,
+          "momentum": 72.0,
+          "volume": 48.0,
+          "structure": 80.7,
+          "theme": 0.0
+        },
+        "source_count": 2,
+        "source_multiplier": 1.05,
+        "sources": [
+          "price_breakout_track",
+          "volume_pullback"
+        ],
+        "reasons": {
+          "chip": [],
+          "momentum": [],
+          "volume": [
+            "量比 2.53x"
+          ],
+          "structure": [
+            "ignition",
+            "支撐守住"
+          ],
+          "theme": []
+        }
+      }
     },
     {
       "stock_id": "6101",
@@ -3610,7 +7534,7 @@
       "source_tags": [],
       "status": "ignition",
       "status_label": "點火",
-      "score": 75,
+      "score": 46.1,
       "signal_date": "2026-05-26",
       "ignition_date": "2026-05-26",
       "days_since_ignition": 0,
@@ -3629,7 +7553,41 @@
       "ignition_vol_ratio": 2.58,
       "pullback_from_ignition_close_pct": 0.0,
       "support_ok": true,
-      "volume_cools": false
+      "volume_cools": false,
+      "legacy_score": 75,
+      "unified_score": 46.1,
+      "unified_score_grade": "D",
+      "score_breakdown": {
+        "version": "unified_score_v1",
+        "total": 46.1,
+        "grade": "D",
+        "base": 43.9,
+        "components": {
+          "chip": 0.0,
+          "momentum": 72.0,
+          "volume": 48.9,
+          "structure": 80.7,
+          "theme": 0.0
+        },
+        "source_count": 2,
+        "source_multiplier": 1.05,
+        "sources": [
+          "price_breakout_track",
+          "volume_pullback"
+        ],
+        "reasons": {
+          "chip": [],
+          "momentum": [],
+          "volume": [
+            "量比 2.58x"
+          ],
+          "structure": [
+            "ignition",
+            "支撐守住"
+          ],
+          "theme": []
+        }
+      }
     },
     {
       "stock_id": "6525",
@@ -3642,7 +7600,7 @@
       "source_tags": [],
       "status": "ignition",
       "status_label": "點火",
-      "score": 75,
+      "score": 46.1,
       "signal_date": "2026-05-26",
       "ignition_date": "2026-05-26",
       "days_since_ignition": 0,
@@ -3661,7 +7619,41 @@
       "ignition_vol_ratio": 2.57,
       "pullback_from_ignition_close_pct": 0.0,
       "support_ok": true,
-      "volume_cools": false
+      "volume_cools": false,
+      "legacy_score": 75,
+      "unified_score": 46.1,
+      "unified_score_grade": "D",
+      "score_breakdown": {
+        "version": "unified_score_v1",
+        "total": 46.1,
+        "grade": "D",
+        "base": 43.9,
+        "components": {
+          "chip": 0.0,
+          "momentum": 72.0,
+          "volume": 48.7,
+          "structure": 80.7,
+          "theme": 0.0
+        },
+        "source_count": 2,
+        "source_multiplier": 1.05,
+        "sources": [
+          "price_breakout_track",
+          "volume_pullback"
+        ],
+        "reasons": {
+          "chip": [],
+          "momentum": [],
+          "volume": [
+            "量比 2.57x"
+          ],
+          "structure": [
+            "ignition",
+            "支撐守住"
+          ],
+          "theme": []
+        }
+      }
     }
   ],
   "failed": [
@@ -3676,7 +7668,7 @@
       "source_tags": [],
       "status": "failed",
       "status_label": "失敗",
-      "score": 11,
+      "score": 41.5,
       "signal_date": "2026-05-26",
       "ignition_date": "2026-05-25",
       "days_since_ignition": 1,
@@ -3695,7 +7687,39 @@
       "ignition_vol_ratio": 4.63,
       "pullback_from_ignition_close_pct": -9.91,
       "support_ok": false,
-      "volume_cools": true
+      "volume_cools": true,
+      "legacy_score": 11,
+      "unified_score": 41.5,
+      "unified_score_grade": "D",
+      "score_breakdown": {
+        "version": "unified_score_v1",
+        "total": 41.5,
+        "grade": "D",
+        "base": 39.5,
+        "components": {
+          "chip": 0.0,
+          "momentum": 72.0,
+          "volume": 54.4,
+          "structure": 53.3,
+          "theme": 0.0
+        },
+        "source_count": 2,
+        "source_multiplier": 1.05,
+        "sources": [
+          "price_breakout_track",
+          "volume_pullback"
+        ],
+        "reasons": {
+          "chip": [],
+          "momentum": [],
+          "volume": [
+            "量比 1.42x",
+            "回測量縮"
+          ],
+          "structure": [],
+          "theme": []
+        }
+      }
     },
     {
       "stock_id": "6151",
@@ -3708,7 +7732,7 @@
       "source_tags": [],
       "status": "failed",
       "status_label": "失敗",
-      "score": 10,
+      "score": 42.7,
       "signal_date": "2026-05-26",
       "ignition_date": "2026-05-22",
       "days_since_ignition": 2,
@@ -3727,7 +7751,39 @@
       "ignition_vol_ratio": 4.58,
       "pullback_from_ignition_close_pct": -6.73,
       "support_ok": false,
-      "volume_cools": true
+      "volume_cools": true,
+      "legacy_score": 10,
+      "unified_score": 42.7,
+      "unified_score_grade": "D",
+      "score_breakdown": {
+        "version": "unified_score_v1",
+        "total": 42.7,
+        "grade": "D",
+        "base": 40.7,
+        "components": {
+          "chip": 0.0,
+          "momentum": 72.0,
+          "volume": 49.0,
+          "structure": 64.4,
+          "theme": 0.0
+        },
+        "source_count": 2,
+        "source_multiplier": 1.05,
+        "sources": [
+          "price_breakout_track",
+          "volume_pullback"
+        ],
+        "reasons": {
+          "chip": [],
+          "momentum": [],
+          "volume": [
+            "量比 0.85x",
+            "回測量縮"
+          ],
+          "structure": [],
+          "theme": []
+        }
+      }
     },
     {
       "stock_id": "3176",
@@ -3740,7 +7796,7 @@
       "source_tags": [],
       "status": "failed",
       "status_label": "失敗",
-      "score": 9,
+      "score": 45.4,
       "signal_date": "2026-05-26",
       "ignition_date": "2026-05-22",
       "days_since_ignition": 2,
@@ -3759,7 +7815,39 @@
       "ignition_vol_ratio": 4.34,
       "pullback_from_ignition_close_pct": -2.95,
       "support_ok": false,
-      "volume_cools": true
+      "volume_cools": true,
+      "legacy_score": 9,
+      "unified_score": 45.4,
+      "unified_score_grade": "D",
+      "score_breakdown": {
+        "version": "unified_score_v1",
+        "total": 45.4,
+        "grade": "D",
+        "base": 43.2,
+        "components": {
+          "chip": 0.0,
+          "momentum": 72.0,
+          "volume": 48.5,
+          "structure": 77.7,
+          "theme": 0.0
+        },
+        "source_count": 2,
+        "source_multiplier": 1.05,
+        "sources": [
+          "price_breakout_track",
+          "volume_pullback"
+        ],
+        "reasons": {
+          "chip": [],
+          "momentum": [],
+          "volume": [
+            "量比 0.52x",
+            "回測量縮"
+          ],
+          "structure": [],
+          "theme": []
+        }
+      }
     },
     {
       "stock_id": "3504",
@@ -3772,7 +7860,7 @@
       "source_tags": [],
       "status": "failed",
       "status_label": "失敗",
-      "score": 6,
+      "score": 45.8,
       "signal_date": "2026-05-26",
       "ignition_date": "2026-05-20",
       "days_since_ignition": 4,
@@ -3791,7 +7879,39 @@
       "ignition_vol_ratio": 3.8,
       "pullback_from_ignition_close_pct": -2.43,
       "support_ok": false,
-      "volume_cools": true
+      "volume_cools": true,
+      "legacy_score": 6,
+      "unified_score": 45.8,
+      "unified_score_grade": "D",
+      "score_breakdown": {
+        "version": "unified_score_v1",
+        "total": 45.8,
+        "grade": "D",
+        "base": 43.6,
+        "components": {
+          "chip": 0.0,
+          "momentum": 72.0,
+          "volume": 48.5,
+          "structure": 79.5,
+          "theme": 0.0
+        },
+        "source_count": 2,
+        "source_multiplier": 1.05,
+        "sources": [
+          "price_breakout_track",
+          "volume_pullback"
+        ],
+        "reasons": {
+          "chip": [],
+          "momentum": [],
+          "volume": [
+            "量比 0.44x",
+            "回測量縮"
+          ],
+          "structure": [],
+          "theme": []
+        }
+      }
     },
     {
       "stock_id": "6168",
@@ -3804,7 +7924,7 @@
       "source_tags": [],
       "status": "failed",
       "status_label": "失敗",
-      "score": 6,
+      "score": 42.5,
       "signal_date": "2026-05-26",
       "ignition_date": "2026-05-25",
       "days_since_ignition": 1,
@@ -3823,7 +7943,39 @@
       "ignition_vol_ratio": 3.76,
       "pullback_from_ignition_close_pct": -7.77,
       "support_ok": false,
-      "volume_cools": true
+      "volume_cools": true,
+      "legacy_score": 6,
+      "unified_score": 42.5,
+      "unified_score_grade": "D",
+      "score_breakdown": {
+        "version": "unified_score_v1",
+        "total": 42.5,
+        "grade": "D",
+        "base": 40.5,
+        "components": {
+          "chip": 0.0,
+          "momentum": 72.0,
+          "volume": 51.5,
+          "structure": 60.8,
+          "theme": 0.0
+        },
+        "source_count": 2,
+        "source_multiplier": 1.05,
+        "sources": [
+          "price_breakout_track",
+          "volume_pullback"
+        ],
+        "reasons": {
+          "chip": [],
+          "momentum": [],
+          "volume": [
+            "量比 1.11x",
+            "回測量縮"
+          ],
+          "structure": [],
+          "theme": []
+        }
+      }
     },
     {
       "stock_id": "3416",
@@ -3836,7 +7988,7 @@
       "source_tags": [],
       "status": "failed",
       "status_label": "失敗",
-      "score": 2,
+      "score": 47.1,
       "signal_date": "2026-05-26",
       "ignition_date": "2026-05-25",
       "days_since_ignition": 1,
@@ -3855,7 +8007,39 @@
       "ignition_vol_ratio": 3.1,
       "pullback_from_ignition_close_pct": -1.31,
       "support_ok": false,
-      "volume_cools": true
+      "volume_cools": true,
+      "legacy_score": 2,
+      "unified_score": 47.1,
+      "unified_score_grade": "D",
+      "score_breakdown": {
+        "version": "unified_score_v1",
+        "total": 47.1,
+        "grade": "D",
+        "base": 44.8,
+        "components": {
+          "chip": 0.0,
+          "momentum": 72.0,
+          "volume": 50.7,
+          "structure": 83.4,
+          "theme": 0.0
+        },
+        "source_count": 2,
+        "source_multiplier": 1.05,
+        "sources": [
+          "price_breakout_track",
+          "volume_pullback"
+        ],
+        "reasons": {
+          "chip": [],
+          "momentum": [],
+          "volume": [
+            "量比 1.03x",
+            "回測量縮"
+          ],
+          "structure": [],
+          "theme": []
+        }
+      }
     },
     {
       "stock_id": "8044",
@@ -3868,7 +8052,7 @@
       "source_tags": [],
       "status": "failed",
       "status_label": "失敗",
-      "score": 1,
+      "score": 43.1,
       "signal_date": "2026-05-26",
       "ignition_date": "2026-05-21",
       "days_since_ignition": 3,
@@ -3887,7 +8071,39 @@
       "ignition_vol_ratio": 2.96,
       "pullback_from_ignition_close_pct": -6.08,
       "support_ok": false,
-      "volume_cools": true
+      "volume_cools": true,
+      "legacy_score": 1,
+      "unified_score": 43.1,
+      "unified_score_grade": "D",
+      "score_breakdown": {
+        "version": "unified_score_v1",
+        "total": 43.1,
+        "grade": "D",
+        "base": 41.0,
+        "components": {
+          "chip": 0.0,
+          "momentum": 72.0,
+          "volume": 48.5,
+          "structure": 66.7,
+          "theme": 0.0
+        },
+        "source_count": 2,
+        "source_multiplier": 1.05,
+        "sources": [
+          "price_breakout_track",
+          "volume_pullback"
+        ],
+        "reasons": {
+          "chip": [],
+          "momentum": [],
+          "volume": [
+            "量比 0.46x",
+            "回測量縮"
+          ],
+          "structure": [],
+          "theme": []
+        }
+      }
     },
     {
       "stock_id": "6742",
@@ -3900,7 +8116,7 @@
       "source_tags": [],
       "status": "failed",
       "status_label": "失敗",
-      "score": -1,
+      "score": 45.3,
       "signal_date": "2026-05-26",
       "ignition_date": "2026-05-22",
       "days_since_ignition": 2,
@@ -3919,7 +8135,39 @@
       "ignition_vol_ratio": 2.7,
       "pullback_from_ignition_close_pct": -3.09,
       "support_ok": false,
-      "volume_cools": true
+      "volume_cools": true,
+      "legacy_score": -1,
+      "unified_score": 45.3,
+      "unified_score_grade": "D",
+      "score_breakdown": {
+        "version": "unified_score_v1",
+        "total": 45.3,
+        "grade": "D",
+        "base": 43.1,
+        "components": {
+          "chip": 0.0,
+          "momentum": 72.0,
+          "volume": 48.5,
+          "structure": 77.2,
+          "theme": 0.0
+        },
+        "source_count": 2,
+        "source_multiplier": 1.05,
+        "sources": [
+          "price_breakout_track",
+          "volume_pullback"
+        ],
+        "reasons": {
+          "chip": [],
+          "momentum": [],
+          "volume": [
+            "量比 0.18x",
+            "回測量縮"
+          ],
+          "structure": [],
+          "theme": []
+        }
+      }
     },
     {
       "stock_id": "7709",
@@ -3932,7 +8180,7 @@
       "source_tags": [],
       "status": "failed",
       "status_label": "失敗",
-      "score": -2,
+      "score": 46.6,
       "signal_date": "2026-05-26",
       "ignition_date": "2026-05-21",
       "days_since_ignition": 3,
@@ -3951,7 +8199,43 @@
       "ignition_vol_ratio": 2.58,
       "pullback_from_ignition_close_pct": -1.29,
       "support_ok": false,
-      "volume_cools": true
+      "volume_cools": true,
+      "legacy_score": -2,
+      "unified_score": 46.6,
+      "unified_score_grade": "D",
+      "score_breakdown": {
+        "version": "unified_score_v1",
+        "total": 46.6,
+        "grade": "D",
+        "base": 44.4,
+        "components": {
+          "chip": 0.0,
+          "momentum": 72.0,
+          "volume": 48.5,
+          "structure": 83.5,
+          "theme": 0.0
+        },
+        "source_count": 2,
+        "source_multiplier": 1.05,
+        "sources": [
+          "price_breakout_track",
+          "volume_pullback"
+        ],
+        "reasons": {
+          "chip": [],
+          "momentum": [],
+          "volume": [
+            "量比 0.47x",
+            "回測量縮"
+          ],
+          "structure": [],
+          "theme": []
+        }
+      }
     }
-  ]
+  ],
+  "unified_score_model": {
+    "version": "unified_score_v1",
+    "applied_at": "2026-05-27T15:58:01+08:00"
+  }
 }

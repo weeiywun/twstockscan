@@ -110,11 +110,14 @@ jobs:
       - name: Refresh momentum candidates
         run: python scripts/scan_momentum_candidates.py
 
+      - name: Apply unified stock scoring
+        run: python scripts/apply_unified_scores.py
+
       - name: Commit dependent scan results
         run: |
           git config user.name  "github-actions[bot]"
           git config user.email "github-actions[bot]@users.noreply.github.com"
-          git add data/volume_signal.json data/volume_pullback.json data/momentum_pullback.json data/momentum_candidates.json data/performance.json data/chips_big_holder.json data/current_prices.json assets/line/performance-latest.png
+          git add data/volume_signal.json data/volume_pullback.json data/momentum_pullback.json data/momentum_candidates.json data/performance.json data/chips_big_holder.json data/current_prices.json data/ai_analysis.json data/intraday_volume_pullback.json data/right_top.json data/right_top_track.json data/trust_momentum.json data/vcp.json data/volume_breakout.json assets/line/performance-latest.png
 
           if ! git diff --staged --quiet; then
             git commit -m "data: post-holdings scan refresh $(date -u +%Y-%m-%d)"
