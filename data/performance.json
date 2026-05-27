@@ -21,7 +21,29 @@
       "unified_score": 0.0,
       "unified_score_grade": "D",
       "score_breakdown": {
-        "version": "unified_score_v2_momentum_first",
+        "version": "unified_score_v2_momentum_first_stock_level",
+        "total": 0.0,
+        "grade": "D",
+        "base": 0.0,
+        "components": {
+          "chip": 0.0,
+          "momentum": 0.0,
+          "volume": 0.0,
+          "structure": 0.0,
+          "theme": 0.0
+        },
+        "source_count": 1,
+        "source_multiplier": 1.0,
+        "sources": [
+          "holding"
+        ],
+        "aggregation": "max_component_by_stock"
+      },
+      "score": 0.0,
+      "legacy_score": 0.0,
+      "context_unified_score": 0.0,
+      "context_score_breakdown": {
+        "version": "unified_score_v2_momentum_first_stock_level",
         "total": 0.0,
         "grade": "D",
         "base": 0.0,
@@ -44,9 +66,7 @@
           "structure": [],
           "theme": []
         }
-      },
-      "score": 0.0,
-      "legacy_score": 0.0
+      }
     },
     {
       "id": "p1776522841867",
@@ -64,10 +84,37 @@
       "sell_fee": 96,
       "sell_tax": 339,
       "current_price": 124.0,
-      "unified_score": 0.0,
-      "unified_score_grade": "D",
+      "unified_score": 73.6,
+      "unified_score_grade": "B",
       "score_breakdown": {
-        "version": "unified_score_v2_momentum_first",
+        "version": "unified_score_v2_momentum_first_stock_level",
+        "total": 73.6,
+        "grade": "B",
+        "base": 64.0,
+        "components": {
+          "chip": 33.8,
+          "momentum": 73.6,
+          "volume": 57.3,
+          "structure": 88.0,
+          "theme": 0.0
+        },
+        "source_count": 6,
+        "source_multiplier": 1.15,
+        "sources": [
+          "holding",
+          "momentum_candidates",
+          "price_breakout_track",
+          "right_top",
+          "right_top_track",
+          "volume_pullback"
+        ],
+        "aggregation": "max_component_by_stock"
+      },
+      "score": 73.6,
+      "legacy_score": 0.0,
+      "context_unified_score": 0.0,
+      "context_score_breakdown": {
+        "version": "unified_score_v2_momentum_first_stock_level",
         "total": 0.0,
         "grade": "D",
         "base": 0.0,
@@ -90,9 +137,7 @@
           "structure": [],
           "theme": []
         }
-      },
-      "score": 0.0,
-      "legacy_score": 0.0
+      }
     },
     {
       "id": "p1776522969168",
@@ -110,10 +155,37 @@
       "sell_fee": 256,
       "sell_tax": 901,
       "current_price": 171.5,
-      "unified_score": 0.0,
-      "unified_score_grade": "D",
+      "unified_score": 72.2,
+      "unified_score_grade": "B",
       "score_breakdown": {
-        "version": "unified_score_v2_momentum_first",
+        "version": "unified_score_v2_momentum_first_stock_level",
+        "total": 72.2,
+        "grade": "B",
+        "base": 62.8,
+        "components": {
+          "chip": 0.0,
+          "momentum": 85.0,
+          "volume": 51.7,
+          "structure": 77.2,
+          "theme": 0.0
+        },
+        "source_count": 6,
+        "source_multiplier": 1.15,
+        "sources": [
+          "holding",
+          "intraday_volume_pullback",
+          "price_breakout_track",
+          "right_top_track",
+          "stock_analysis",
+          "volume_pullback"
+        ],
+        "aggregation": "max_component_by_stock"
+      },
+      "score": 72.2,
+      "legacy_score": 0.0,
+      "context_unified_score": 0.0,
+      "context_score_breakdown": {
+        "version": "unified_score_v2_momentum_first_stock_level",
         "total": 0.0,
         "grade": "D",
         "base": 0.0,
@@ -136,9 +208,7 @@
           "structure": [],
           "theme": []
         }
-      },
-      "score": 0.0,
-      "legacy_score": 0.0
+      }
     },
     {
       "id": "p1777280271672",
@@ -168,10 +238,33 @@
         }
       ],
       "current_price": 661.0,
-      "unified_score": 1.8,
+      "unified_score": 40.6,
       "unified_score_grade": "D",
       "score_breakdown": {
-        "version": "unified_score_v2_momentum_first",
+        "version": "unified_score_v2_momentum_first_stock_level",
+        "total": 40.6,
+        "grade": "D",
+        "base": 38.6,
+        "components": {
+          "chip": 0.0,
+          "momentum": 82.0,
+          "volume": 0.0,
+          "structure": 0.0,
+          "theme": 35.0
+        },
+        "source_count": 2,
+        "source_multiplier": 1.05,
+        "sources": [
+          "holding",
+          "institutional_momentum"
+        ],
+        "aggregation": "max_component_by_stock"
+      },
+      "score": 40.6,
+      "legacy_score": 3.5,
+      "context_unified_score": 1.8,
+      "context_score_breakdown": {
+        "version": "unified_score_v2_momentum_first_stock_level",
         "total": 1.8,
         "grade": "D",
         "base": 1.8,
@@ -196,9 +289,7 @@
             "電子零組件 35.0"
           ]
         }
-      },
-      "score": 1.8,
-      "legacy_score": 3.5
+      }
     },
     {
       "id": "p1777280305937",
@@ -237,10 +328,33 @@
         }
       ],
       "current_price": 269.5,
-      "unified_score": 0.0,
+      "unified_score": 38.7,
       "unified_score_grade": "D",
       "score_breakdown": {
-        "version": "unified_score_v2_momentum_first",
+        "version": "unified_score_v2_momentum_first_stock_level",
+        "total": 38.7,
+        "grade": "D",
+        "base": 36.9,
+        "components": {
+          "chip": 0.0,
+          "momentum": 82.0,
+          "volume": 0.0,
+          "structure": 0.0,
+          "theme": 0.0
+        },
+        "source_count": 2,
+        "source_multiplier": 1.05,
+        "sources": [
+          "holding",
+          "institutional_momentum"
+        ],
+        "aggregation": "max_component_by_stock"
+      },
+      "score": 38.7,
+      "legacy_score": 0.0,
+      "context_unified_score": 0.0,
+      "context_score_breakdown": {
+        "version": "unified_score_v2_momentum_first_stock_level",
         "total": 0.0,
         "grade": "D",
         "base": 0.0,
@@ -263,9 +377,7 @@
           "structure": [],
           "theme": []
         }
-      },
-      "score": 0.0,
-      "legacy_score": 0.0
+      }
     },
     {
       "id": "p1777347611521",
@@ -295,10 +407,37 @@
         }
       ],
       "current_price": 124.0,
-      "unified_score": 0.0,
-      "unified_score_grade": "D",
+      "unified_score": 73.6,
+      "unified_score_grade": "B",
       "score_breakdown": {
-        "version": "unified_score_v2_momentum_first",
+        "version": "unified_score_v2_momentum_first_stock_level",
+        "total": 73.6,
+        "grade": "B",
+        "base": 64.0,
+        "components": {
+          "chip": 33.8,
+          "momentum": 73.6,
+          "volume": 57.3,
+          "structure": 88.0,
+          "theme": 0.0
+        },
+        "source_count": 6,
+        "source_multiplier": 1.15,
+        "sources": [
+          "holding",
+          "momentum_candidates",
+          "price_breakout_track",
+          "right_top",
+          "right_top_track",
+          "volume_pullback"
+        ],
+        "aggregation": "max_component_by_stock"
+      },
+      "score": 73.6,
+      "legacy_score": 0.0,
+      "context_unified_score": 0.0,
+      "context_score_breakdown": {
+        "version": "unified_score_v2_momentum_first_stock_level",
         "total": 0.0,
         "grade": "D",
         "base": 0.0,
@@ -321,9 +460,7 @@
           "structure": [],
           "theme": []
         }
-      },
-      "score": 0.0,
-      "legacy_score": 0.0
+      }
     },
     {
       "id": "p1777347643566",
@@ -353,10 +490,34 @@
         }
       ],
       "current_price": 146.0,
-      "unified_score": 0.4,
+      "unified_score": 25.8,
       "unified_score_grade": "D",
       "score_breakdown": {
-        "version": "unified_score_v2_momentum_first",
+        "version": "unified_score_v2_momentum_first_stock_level",
+        "total": 25.8,
+        "grade": "D",
+        "base": 23.4,
+        "components": {
+          "chip": 0.0,
+          "momentum": 42.9,
+          "volume": 15.0,
+          "structure": 0.0,
+          "theme": 7.9
+        },
+        "source_count": 3,
+        "source_multiplier": 1.1,
+        "sources": [
+          "holding",
+          "right_top_track",
+          "stock_analysis"
+        ],
+        "aggregation": "max_component_by_stock"
+      },
+      "score": 25.8,
+      "legacy_score": 0.8,
+      "context_unified_score": 0.4,
+      "context_score_breakdown": {
+        "version": "unified_score_v2_momentum_first_stock_level",
         "total": 0.4,
         "grade": "D",
         "base": 0.4,
@@ -381,9 +542,7 @@
             "AI伺服器 7.9"
           ]
         }
-      },
-      "score": 0.4,
-      "legacy_score": 0.8
+      }
     },
     {
       "id": "p1777901637665",
@@ -413,10 +572,34 @@
         }
       ],
       "current_price": 146.0,
-      "unified_score": 0.4,
+      "unified_score": 25.8,
       "unified_score_grade": "D",
       "score_breakdown": {
-        "version": "unified_score_v2_momentum_first",
+        "version": "unified_score_v2_momentum_first_stock_level",
+        "total": 25.8,
+        "grade": "D",
+        "base": 23.4,
+        "components": {
+          "chip": 0.0,
+          "momentum": 42.9,
+          "volume": 15.0,
+          "structure": 0.0,
+          "theme": 7.9
+        },
+        "source_count": 3,
+        "source_multiplier": 1.1,
+        "sources": [
+          "holding",
+          "right_top_track",
+          "stock_analysis"
+        ],
+        "aggregation": "max_component_by_stock"
+      },
+      "score": 25.8,
+      "legacy_score": 0.8,
+      "context_unified_score": 0.4,
+      "context_score_breakdown": {
+        "version": "unified_score_v2_momentum_first_stock_level",
         "total": 0.4,
         "grade": "D",
         "base": 0.4,
@@ -441,9 +624,7 @@
             "AI伺服器 7.9"
           ]
         }
-      },
-      "score": 0.4,
-      "legacy_score": 0.8
+      }
     },
     {
       "id": "p1778048653927",
@@ -482,10 +663,33 @@
         }
       ],
       "current_price": 304.5,
-      "unified_score": 0.0,
+      "unified_score": 26.4,
       "unified_score_grade": "D",
       "score_breakdown": {
-        "version": "unified_score_v2_momentum_first",
+        "version": "unified_score_v2_momentum_first_stock_level",
+        "total": 26.4,
+        "grade": "D",
+        "base": 25.1,
+        "components": {
+          "chip": 0.0,
+          "momentum": 39.1,
+          "volume": 30.2,
+          "structure": 0.0,
+          "theme": 0.0
+        },
+        "source_count": 2,
+        "source_multiplier": 1.05,
+        "sources": [
+          "holding",
+          "right_top_track"
+        ],
+        "aggregation": "max_component_by_stock"
+      },
+      "score": 26.4,
+      "legacy_score": 0.0,
+      "context_unified_score": 0.0,
+      "context_score_breakdown": {
+        "version": "unified_score_v2_momentum_first_stock_level",
         "total": 0.0,
         "grade": "D",
         "base": 0.0,
@@ -508,9 +712,7 @@
           "structure": [],
           "theme": []
         }
-      },
-      "score": 0.0,
-      "legacy_score": 0.0
+      }
     },
     {
       "id": "p1778130331338",
@@ -540,10 +742,33 @@
         }
       ],
       "current_price": 87.4,
-      "unified_score": 0.0,
+      "unified_score": 20.3,
       "unified_score_grade": "D",
       "score_breakdown": {
-        "version": "unified_score_v2_momentum_first",
+        "version": "unified_score_v2_momentum_first_stock_level",
+        "total": 20.3,
+        "grade": "D",
+        "base": 19.4,
+        "components": {
+          "chip": 0.0,
+          "momentum": 43.0,
+          "volume": 0.0,
+          "structure": 0.0,
+          "theme": 0.0
+        },
+        "source_count": 2,
+        "source_multiplier": 1.05,
+        "sources": [
+          "holding",
+          "stock_analysis"
+        ],
+        "aggregation": "max_component_by_stock"
+      },
+      "score": 20.3,
+      "legacy_score": 0.0,
+      "context_unified_score": 0.0,
+      "context_score_breakdown": {
+        "version": "unified_score_v2_momentum_first_stock_level",
         "total": 0.0,
         "grade": "D",
         "base": 0.0,
@@ -566,9 +791,7 @@
           "structure": [],
           "theme": []
         }
-      },
-      "score": 0.0,
-      "legacy_score": 0.0
+      }
     },
     {
       "id": "p1778130400466",
@@ -598,10 +821,37 @@
         }
       ],
       "current_price": 171.5,
-      "unified_score": 0.0,
-      "unified_score_grade": "D",
+      "unified_score": 72.2,
+      "unified_score_grade": "B",
       "score_breakdown": {
-        "version": "unified_score_v2_momentum_first",
+        "version": "unified_score_v2_momentum_first_stock_level",
+        "total": 72.2,
+        "grade": "B",
+        "base": 62.8,
+        "components": {
+          "chip": 0.0,
+          "momentum": 85.0,
+          "volume": 51.7,
+          "structure": 77.2,
+          "theme": 0.0
+        },
+        "source_count": 6,
+        "source_multiplier": 1.15,
+        "sources": [
+          "holding",
+          "intraday_volume_pullback",
+          "price_breakout_track",
+          "right_top_track",
+          "stock_analysis",
+          "volume_pullback"
+        ],
+        "aggregation": "max_component_by_stock"
+      },
+      "score": 72.2,
+      "legacy_score": 0.0,
+      "context_unified_score": 0.0,
+      "context_score_breakdown": {
+        "version": "unified_score_v2_momentum_first_stock_level",
         "total": 0.0,
         "grade": "D",
         "base": 0.0,
@@ -624,9 +874,7 @@
           "structure": [],
           "theme": []
         }
-      },
-      "score": 0.0,
-      "legacy_score": 0.0
+      }
     },
     {
       "id": "p1778208418799",
@@ -656,10 +904,33 @@
         }
       ],
       "current_price": 87.4,
-      "unified_score": 0.0,
+      "unified_score": 20.3,
       "unified_score_grade": "D",
       "score_breakdown": {
-        "version": "unified_score_v2_momentum_first",
+        "version": "unified_score_v2_momentum_first_stock_level",
+        "total": 20.3,
+        "grade": "D",
+        "base": 19.4,
+        "components": {
+          "chip": 0.0,
+          "momentum": 43.0,
+          "volume": 0.0,
+          "structure": 0.0,
+          "theme": 0.0
+        },
+        "source_count": 2,
+        "source_multiplier": 1.05,
+        "sources": [
+          "holding",
+          "stock_analysis"
+        ],
+        "aggregation": "max_component_by_stock"
+      },
+      "score": 20.3,
+      "legacy_score": 0.0,
+      "context_unified_score": 0.0,
+      "context_score_breakdown": {
+        "version": "unified_score_v2_momentum_first_stock_level",
         "total": 0.0,
         "grade": "D",
         "base": 0.0,
@@ -682,9 +953,7 @@
           "structure": [],
           "theme": []
         }
-      },
-      "score": 0.0,
-      "legacy_score": 0.0
+      }
     },
     {
       "id": "p1778208511613",
@@ -714,10 +983,33 @@
         }
       ],
       "current_price": 87.4,
-      "unified_score": 0.0,
+      "unified_score": 20.3,
       "unified_score_grade": "D",
       "score_breakdown": {
-        "version": "unified_score_v2_momentum_first",
+        "version": "unified_score_v2_momentum_first_stock_level",
+        "total": 20.3,
+        "grade": "D",
+        "base": 19.4,
+        "components": {
+          "chip": 0.0,
+          "momentum": 43.0,
+          "volume": 0.0,
+          "structure": 0.0,
+          "theme": 0.0
+        },
+        "source_count": 2,
+        "source_multiplier": 1.05,
+        "sources": [
+          "holding",
+          "stock_analysis"
+        ],
+        "aggregation": "max_component_by_stock"
+      },
+      "score": 20.3,
+      "legacy_score": 0.0,
+      "context_unified_score": 0.0,
+      "context_score_breakdown": {
+        "version": "unified_score_v2_momentum_first_stock_level",
         "total": 0.0,
         "grade": "D",
         "base": 0.0,
@@ -740,9 +1032,7 @@
           "structure": [],
           "theme": []
         }
-      },
-      "score": 0.0,
-      "legacy_score": 0.0
+      }
     },
     {
       "id": "p1778374255362",
@@ -772,10 +1062,33 @@
         }
       ],
       "current_price": 87.4,
-      "unified_score": 0.0,
+      "unified_score": 20.3,
       "unified_score_grade": "D",
       "score_breakdown": {
-        "version": "unified_score_v2_momentum_first",
+        "version": "unified_score_v2_momentum_first_stock_level",
+        "total": 20.3,
+        "grade": "D",
+        "base": 19.4,
+        "components": {
+          "chip": 0.0,
+          "momentum": 43.0,
+          "volume": 0.0,
+          "structure": 0.0,
+          "theme": 0.0
+        },
+        "source_count": 2,
+        "source_multiplier": 1.05,
+        "sources": [
+          "holding",
+          "stock_analysis"
+        ],
+        "aggregation": "max_component_by_stock"
+      },
+      "score": 20.3,
+      "legacy_score": 0.0,
+      "context_unified_score": 0.0,
+      "context_score_breakdown": {
+        "version": "unified_score_v2_momentum_first_stock_level",
         "total": 0.0,
         "grade": "D",
         "base": 0.0,
@@ -798,9 +1111,7 @@
           "structure": [],
           "theme": []
         }
-      },
-      "score": 0.0,
-      "legacy_score": 0.0
+      }
     },
     {
       "id": "p1778464457204",
@@ -830,10 +1141,33 @@
         }
       ],
       "current_price": 87.4,
-      "unified_score": 0.0,
+      "unified_score": 20.3,
       "unified_score_grade": "D",
       "score_breakdown": {
-        "version": "unified_score_v2_momentum_first",
+        "version": "unified_score_v2_momentum_first_stock_level",
+        "total": 20.3,
+        "grade": "D",
+        "base": 19.4,
+        "components": {
+          "chip": 0.0,
+          "momentum": 43.0,
+          "volume": 0.0,
+          "structure": 0.0,
+          "theme": 0.0
+        },
+        "source_count": 2,
+        "source_multiplier": 1.05,
+        "sources": [
+          "holding",
+          "stock_analysis"
+        ],
+        "aggregation": "max_component_by_stock"
+      },
+      "score": 20.3,
+      "legacy_score": 0.0,
+      "context_unified_score": 0.0,
+      "context_score_breakdown": {
+        "version": "unified_score_v2_momentum_first_stock_level",
         "total": 0.0,
         "grade": "D",
         "base": 0.0,
@@ -856,9 +1190,7 @@
           "structure": [],
           "theme": []
         }
-      },
-      "score": 0.0,
-      "legacy_score": 0.0
+      }
     },
     {
       "id": "p1778476199959",
@@ -891,7 +1223,29 @@
       "unified_score": 0.0,
       "unified_score_grade": "D",
       "score_breakdown": {
-        "version": "unified_score_v2_momentum_first",
+        "version": "unified_score_v2_momentum_first_stock_level",
+        "total": 0.0,
+        "grade": "D",
+        "base": 0.0,
+        "components": {
+          "chip": 0.0,
+          "momentum": 0.0,
+          "volume": 0.0,
+          "structure": 0.0,
+          "theme": 0.0
+        },
+        "source_count": 1,
+        "source_multiplier": 1.0,
+        "sources": [
+          "holding"
+        ],
+        "aggregation": "max_component_by_stock"
+      },
+      "score": 0.0,
+      "legacy_score": 0.0,
+      "context_unified_score": 0.0,
+      "context_score_breakdown": {
+        "version": "unified_score_v2_momentum_first_stock_level",
         "total": 0.0,
         "grade": "D",
         "base": 0.0,
@@ -914,9 +1268,7 @@
           "structure": [],
           "theme": []
         }
-      },
-      "score": 0.0,
-      "legacy_score": 0.0
+      }
     },
     {
       "id": "p1778648736842",
@@ -964,10 +1316,34 @@
         }
       ],
       "current_price": 125.5,
-      "unified_score": 0.0,
+      "unified_score": 49.6,
       "unified_score_grade": "D",
       "score_breakdown": {
-        "version": "unified_score_v2_momentum_first",
+        "version": "unified_score_v2_momentum_first_stock_level",
+        "total": 49.6,
+        "grade": "D",
+        "base": 45.1,
+        "components": {
+          "chip": 0.0,
+          "momentum": 85.0,
+          "volume": 27.4,
+          "structure": 0.0,
+          "theme": 0.0
+        },
+        "source_count": 3,
+        "source_multiplier": 1.1,
+        "sources": [
+          "holding",
+          "institutional_momentum",
+          "right_top_track"
+        ],
+        "aggregation": "max_component_by_stock"
+      },
+      "score": 49.6,
+      "legacy_score": 0.0,
+      "context_unified_score": 0.0,
+      "context_score_breakdown": {
+        "version": "unified_score_v2_momentum_first_stock_level",
         "total": 0.0,
         "grade": "D",
         "base": 0.0,
@@ -990,9 +1366,7 @@
           "structure": [],
           "theme": []
         }
-      },
-      "score": 0.0,
-      "legacy_score": 0.0
+      }
     },
     {
       "id": "p1779159288100",
@@ -1025,7 +1399,29 @@
       "unified_score": 0.0,
       "unified_score_grade": "D",
       "score_breakdown": {
-        "version": "unified_score_v2_momentum_first",
+        "version": "unified_score_v2_momentum_first_stock_level",
+        "total": 0.0,
+        "grade": "D",
+        "base": 0.0,
+        "components": {
+          "chip": 0.0,
+          "momentum": 0.0,
+          "volume": 0.0,
+          "structure": 0.0,
+          "theme": 0.0
+        },
+        "source_count": 1,
+        "source_multiplier": 1.0,
+        "sources": [
+          "holding"
+        ],
+        "aggregation": "max_component_by_stock"
+      },
+      "score": 0.0,
+      "legacy_score": 0.0,
+      "context_unified_score": 0.0,
+      "context_score_breakdown": {
+        "version": "unified_score_v2_momentum_first_stock_level",
         "total": 0.0,
         "grade": "D",
         "base": 0.0,
@@ -1048,9 +1444,7 @@
           "structure": [],
           "theme": []
         }
-      },
-      "score": 0.0,
-      "legacy_score": 0.0
+      }
     },
     {
       "id": "p1779172767180",
@@ -1083,7 +1477,29 @@
       "unified_score": 0.0,
       "unified_score_grade": "D",
       "score_breakdown": {
-        "version": "unified_score_v2_momentum_first",
+        "version": "unified_score_v2_momentum_first_stock_level",
+        "total": 0.0,
+        "grade": "D",
+        "base": 0.0,
+        "components": {
+          "chip": 0.0,
+          "momentum": 0.0,
+          "volume": 0.0,
+          "structure": 0.0,
+          "theme": 0.0
+        },
+        "source_count": 1,
+        "source_multiplier": 1.0,
+        "sources": [
+          "holding"
+        ],
+        "aggregation": "max_component_by_stock"
+      },
+      "score": 0.0,
+      "legacy_score": 0.0,
+      "context_unified_score": 0.0,
+      "context_score_breakdown": {
+        "version": "unified_score_v2_momentum_first_stock_level",
         "total": 0.0,
         "grade": "D",
         "base": 0.0,
@@ -1106,9 +1522,7 @@
           "structure": [],
           "theme": []
         }
-      },
-      "score": 0.0,
-      "legacy_score": 0.0
+      }
     },
     {
       "id": "p1779172783547",
@@ -1141,7 +1555,29 @@
       "unified_score": 0.0,
       "unified_score_grade": "D",
       "score_breakdown": {
-        "version": "unified_score_v2_momentum_first",
+        "version": "unified_score_v2_momentum_first_stock_level",
+        "total": 0.0,
+        "grade": "D",
+        "base": 0.0,
+        "components": {
+          "chip": 0.0,
+          "momentum": 0.0,
+          "volume": 0.0,
+          "structure": 0.0,
+          "theme": 0.0
+        },
+        "source_count": 1,
+        "source_multiplier": 1.0,
+        "sources": [
+          "holding"
+        ],
+        "aggregation": "max_component_by_stock"
+      },
+      "score": 0.0,
+      "legacy_score": 0.0,
+      "context_unified_score": 0.0,
+      "context_score_breakdown": {
+        "version": "unified_score_v2_momentum_first_stock_level",
         "total": 0.0,
         "grade": "D",
         "base": 0.0,
@@ -1164,9 +1600,7 @@
           "structure": [],
           "theme": []
         }
-      },
-      "score": 0.0,
-      "legacy_score": 0.0
+      }
     },
     {
       "id": "p1779418330087",
@@ -1214,10 +1648,41 @@
         }
       ],
       "current_price": 45.25,
-      "unified_score": 3.5,
-      "unified_score_grade": "D",
+      "unified_score": 93.7,
+      "unified_score_grade": "A+",
       "score_breakdown": {
-        "version": "unified_score_v2_momentum_first",
+        "version": "unified_score_v2_momentum_first_stock_level",
+        "total": 93.7,
+        "grade": "A+",
+        "base": 81.5,
+        "components": {
+          "chip": 82.0,
+          "momentum": 91.0,
+          "volume": 64.1,
+          "structure": 85.4,
+          "theme": 69.6
+        },
+        "source_count": 10,
+        "source_multiplier": 1.15,
+        "sources": [
+          "chips",
+          "holding",
+          "institutional_momentum",
+          "intraday_volume_pullback",
+          "price_breakout_track",
+          "right_top",
+          "right_top_track",
+          "stock_analysis",
+          "volume_pullback",
+          "volume_signal"
+        ],
+        "aggregation": "max_component_by_stock"
+      },
+      "score": 93.7,
+      "legacy_score": 7.0,
+      "context_unified_score": 3.5,
+      "context_score_breakdown": {
+        "version": "unified_score_v2_momentum_first_stock_level",
         "total": 3.5,
         "grade": "D",
         "base": 3.5,
@@ -1242,9 +1707,7 @@
             "網通 69.6"
           ]
         }
-      },
-      "score": 3.5,
-      "legacy_score": 7.0
+      }
     },
     {
       "id": "p1779418348670",
@@ -1274,10 +1737,41 @@
         }
       ],
       "current_price": 45.25,
-      "unified_score": 3.5,
-      "unified_score_grade": "D",
+      "unified_score": 93.7,
+      "unified_score_grade": "A+",
       "score_breakdown": {
-        "version": "unified_score_v2_momentum_first",
+        "version": "unified_score_v2_momentum_first_stock_level",
+        "total": 93.7,
+        "grade": "A+",
+        "base": 81.5,
+        "components": {
+          "chip": 82.0,
+          "momentum": 91.0,
+          "volume": 64.1,
+          "structure": 85.4,
+          "theme": 69.6
+        },
+        "source_count": 10,
+        "source_multiplier": 1.15,
+        "sources": [
+          "chips",
+          "holding",
+          "institutional_momentum",
+          "intraday_volume_pullback",
+          "price_breakout_track",
+          "right_top",
+          "right_top_track",
+          "stock_analysis",
+          "volume_pullback",
+          "volume_signal"
+        ],
+        "aggregation": "max_component_by_stock"
+      },
+      "score": 93.7,
+      "legacy_score": 7.0,
+      "context_unified_score": 3.5,
+      "context_score_breakdown": {
+        "version": "unified_score_v2_momentum_first_stock_level",
         "total": 3.5,
         "grade": "D",
         "base": 3.5,
@@ -1302,9 +1796,7 @@
             "網通 69.6"
           ]
         }
-      },
-      "score": 3.5,
-      "legacy_score": 7.0
+      }
     },
     {
       "id": "p1779677750867",
@@ -1334,10 +1826,41 @@
         }
       ],
       "current_price": 45.25,
-      "unified_score": 3.5,
-      "unified_score_grade": "D",
+      "unified_score": 93.7,
+      "unified_score_grade": "A+",
       "score_breakdown": {
-        "version": "unified_score_v2_momentum_first",
+        "version": "unified_score_v2_momentum_first_stock_level",
+        "total": 93.7,
+        "grade": "A+",
+        "base": 81.5,
+        "components": {
+          "chip": 82.0,
+          "momentum": 91.0,
+          "volume": 64.1,
+          "structure": 85.4,
+          "theme": 69.6
+        },
+        "source_count": 10,
+        "source_multiplier": 1.15,
+        "sources": [
+          "chips",
+          "holding",
+          "institutional_momentum",
+          "intraday_volume_pullback",
+          "price_breakout_track",
+          "right_top",
+          "right_top_track",
+          "stock_analysis",
+          "volume_pullback",
+          "volume_signal"
+        ],
+        "aggregation": "max_component_by_stock"
+      },
+      "score": 93.7,
+      "legacy_score": 7.0,
+      "context_unified_score": 3.5,
+      "context_score_breakdown": {
+        "version": "unified_score_v2_momentum_first_stock_level",
         "total": 3.5,
         "grade": "D",
         "base": 3.5,
@@ -1362,9 +1885,7 @@
             "網通 69.6"
           ]
         }
-      },
-      "score": 3.5,
-      "legacy_score": 7.0
+      }
     }
   ],
   "price_history": {
@@ -1796,6 +2317,6 @@
   ],
   "unified_score_model": {
     "version": "unified_score_v1",
-    "applied_at": "2026-05-27T16:26:53+08:00"
+    "applied_at": "2026-05-27T16:37:40+08:00"
   }
 }

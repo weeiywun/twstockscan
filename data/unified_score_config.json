@@ -1,5 +1,5 @@
 {
-  "version": "unified_score_v2_momentum_first",
+  "version": "unified_score_v2_momentum_first_stock_level",
   "updated": "2026-05-27",
   "weights": {
     "chip": 0.1,
@@ -19,6 +19,7 @@
     "All component scores are normalized to 0-100 before weighting.",
     "Cross-source hits use a bounded multiplier instead of unlimited additive points.",
     "legacy_score preserves the previous strategy-specific score for comparison.",
-    "v2 shifts the model to momentum-first: momentum is the primary ranking signal, volume confirms demand, structure protects entry quality, chip and theme are supporting evidence."
+    "v2 shifts the model to momentum-first: momentum is the primary ranking signal, volume confirms demand, structure protects entry quality, chip and theme are supporting evidence.",
+    "Rows now display stock-level scores aggregated from all available strategy contexts, while context_unified_score preserves the per-page row score."
   ]
 }

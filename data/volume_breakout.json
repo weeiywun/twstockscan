@@ -27,7 +27,29 @@
       "unified_score": 0.0,
       "unified_score_grade": "D",
       "score_breakdown": {
-        "version": "unified_score_v2_momentum_first",
+        "version": "unified_score_v2_momentum_first_stock_level",
+        "total": 0.0,
+        "grade": "D",
+        "base": 0.0,
+        "components": {
+          "chip": 0.0,
+          "momentum": 0.0,
+          "volume": 0.0,
+          "structure": 0.0,
+          "theme": 0.0
+        },
+        "source_count": 1,
+        "source_multiplier": 1.0,
+        "sources": [
+          "volume_breakout"
+        ],
+        "aggregation": "max_component_by_stock"
+      },
+      "score": 0.0,
+      "legacy_score": 0.0,
+      "context_unified_score": 0.0,
+      "context_score_breakdown": {
+        "version": "unified_score_v2_momentum_first_stock_level",
         "total": 0.0,
         "grade": "D",
         "base": 0.0,
@@ -50,9 +72,7 @@
           "structure": [],
           "theme": []
         }
-      },
-      "score": 0.0,
-      "legacy_score": 0.0
+      }
     },
     {
       "close": 32.4,
@@ -72,7 +92,29 @@
       "unified_score": 0.0,
       "unified_score_grade": "D",
       "score_breakdown": {
-        "version": "unified_score_v2_momentum_first",
+        "version": "unified_score_v2_momentum_first_stock_level",
+        "total": 0.0,
+        "grade": "D",
+        "base": 0.0,
+        "components": {
+          "chip": 0.0,
+          "momentum": 0.0,
+          "volume": 0.0,
+          "structure": 0.0,
+          "theme": 0.0
+        },
+        "source_count": 1,
+        "source_multiplier": 1.0,
+        "sources": [
+          "volume_breakout"
+        ],
+        "aggregation": "max_component_by_stock"
+      },
+      "score": 0.0,
+      "legacy_score": 0.0,
+      "context_unified_score": 0.0,
+      "context_score_breakdown": {
+        "version": "unified_score_v2_momentum_first_stock_level",
         "total": 0.0,
         "grade": "D",
         "base": 0.0,
@@ -95,9 +137,7 @@
           "structure": [],
           "theme": []
         }
-      },
-      "score": 0.0,
-      "legacy_score": 0.0
+      }
     },
     {
       "close": 55.3,
@@ -117,7 +157,29 @@
       "unified_score": 0.0,
       "unified_score_grade": "D",
       "score_breakdown": {
-        "version": "unified_score_v2_momentum_first",
+        "version": "unified_score_v2_momentum_first_stock_level",
+        "total": 0.0,
+        "grade": "D",
+        "base": 0.0,
+        "components": {
+          "chip": 0.0,
+          "momentum": 0.0,
+          "volume": 0.0,
+          "structure": 0.0,
+          "theme": 0.0
+        },
+        "source_count": 1,
+        "source_multiplier": 1.0,
+        "sources": [
+          "volume_breakout"
+        ],
+        "aggregation": "max_component_by_stock"
+      },
+      "score": 0.0,
+      "legacy_score": 0.0,
+      "context_unified_score": 0.0,
+      "context_score_breakdown": {
+        "version": "unified_score_v2_momentum_first_stock_level",
         "total": 0.0,
         "grade": "D",
         "base": 0.0,
@@ -140,13 +202,11 @@
           "structure": [],
           "theme": []
         }
-      },
-      "score": 0.0,
-      "legacy_score": 0.0
+      }
     }
   ],
   "unified_score_model": {
     "version": "unified_score_v1",
-    "applied_at": "2026-05-27T16:26:53+08:00"
+    "applied_at": "2026-05-27T16:37:40+08:00"
   }
 }
