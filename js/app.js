@@ -405,7 +405,7 @@ function _navBadge(s) {
   if (s.id === 'future_dashboard') return DATA.futures_dashboard_data?.us_sentiment?.fear_greed?.score ?? '—';
   if (s.id === 'performance') return (DATA.performance_data?.positions || []).filter(p => !p.confirmed).length;
   if (s.id === 'theme_heat') return DATA.theme_heat_data?.themes?.slice(0, 5).length ?? '—';
-  if (s.id === 'ssr') return typeof buildSSRRows === 'function' ? buildSSRRows().length : '—';
+  if (s.id === 'ssr') return DATA.momentum_candidates_data?.focus_results?.length ?? (typeof buildSSRRows === 'function' ? buildSSRRows().length : '—');
   if (s.id === 'stock_analysis') return DATA.stock_analysis_data?.active?.length ?? '—';
   if (s.id === 'volume_pullback') return DATA.volume_pullback_data?.active?.length ?? '—';
   if (s.id === 'momentum_pullback') return DATA.momentum_pullback_data?.results?.length ?? '—';
