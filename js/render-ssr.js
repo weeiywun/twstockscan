@@ -426,6 +426,7 @@ function renderSSR(strat, main) {
         <div class="toolbar-right">
           <span class="updated-tag">顯示 ${filteredFocus.length} / ${momentumData.summary?.total || focusRows.length}</span>
           <span class="updated-tag">更新：${(momentumData.updated || '').slice(0, 10) || strat.dataUpdated}</span>
+          <button class="btn-csv" onclick="exportFocusCSV()">匯出 CSV</button>
         </div>
       </div>
       <div style="padding:10px 14px;border-bottom:1px solid var(--border);font-size:12px;color:var(--text3);line-height:1.7">
@@ -538,6 +539,65 @@ function renderSSR(strat, main) {
     URL.revokeObjectURL(url);
   }
   window.exportSSRCSV = exportSSRCSV;
+
+  function exportFocusCSV() {
+    const sourceLabels = {
+      chips: '大戶',
+      volume_signal: '量增',
+      right_top_track: '突破追蹤',
+      volume_pullback: '量增回測',
+      stock_analysis: '標的追蹤',
+    };
+    const headers = [
+      '代號', '名稱', '產業', '市場', '狀態',
+      '分數', '等級',
+      '收盤',
+      '量比',
+      '追蹤損益(%)',
+      '週漲跌(%)', 'BBW', 'BBW狀態',
+      '來源',
+      '籌碼分', '動能分', '量能分', '結構分', '主線分', '乘數',
+    ];
+    const csvRows = filteredFocus.map(row => {
+      const m = row.metrics || {};
+      const sc = (row.score_breakdown || {}).components || {};
+      const mul = row.score_breakdown?.source_multiplier ?? '';
+      const vol = m.today_vol_ratio ?? m.ignition_vol_ratio ?? m.track_vol_ratio;
+      const sources = (row.sources || []).map(s => sourceLabels[s] || s).join(' / ');
+      return [
+        row.stock_id,
+        row.name || '',
+        row.industry || '',
+        row.market || '',
+        row.status || '',
+        row.unified_score ?? row.score ?? '',
+        row.unified_score_grade || '',
+        row.close ?? '',
+        vol != null ? Number(vol).toFixed(2) : '',
+        m.track_pnl_pct != null ? Number(m.track_pnl_pct).toFixed(2) : '',
+        m.week_chg_pct != null ? Number(m.week_chg_pct).toFixed(2) : '',
+        m.bbw != null ? Number(m.bbw).toFixed(1) : '',
+        m.bbw_status || '',
+        sources,
+        sc.chip != null ? Number(sc.chip).toFixed(0) : '',
+        sc.momentum != null ? Number(sc.momentum).toFixed(0) : '',
+        sc.volume != null ? Number(sc.volume).toFixed(0) : '',
+        sc.structure != null ? Number(sc.structure).toFixed(0) : '',
+        sc.theme != null ? Number(sc.theme).toFixed(0) : '',
+        mul !== '' ? Number(mul).toFixed(2) : '',
+      ];
+    });
+    const csv = [headers, ...csvRows]
+      .map(r => r.map(v => `"${String(v).replace(/"/g, '""')}"`).join(','))
+      .join('\r\n');
+    const blob = new Blob(['﻿' + csv], { type: 'text/csv;charset=utf-8' });
+    const url = URL.createObjectURL(blob);
+    const updated = (momentumData.updated || '').slice(0, 10) || strat.dataUpdated || 'export';
+    const a = Object.assign(document.createElement('a'), { href: url, download: `focus_pool_${updated}.csv` });
+    a.click();
+    URL.revokeObjectURL(url);
+  }
+  window.exportFocusCSV = exportFocusCSV;
 
   const emptyHTML = `
     <div class="coming-soon" style="padding:48px 20px">
