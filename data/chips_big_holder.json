@@ -40,24 +40,24 @@
         "05/22"
       ],
       "consecutive_weeks": 6,
-      "close": 346.0,
+      "close": 314.5,
       "ema120": 302.67,
       "deviation": 7.38,
       "vol_5d_avg": 1934,
       "vol_20d_avg": 2420,
-      "week_chg_pct": 10.02,
+      "week_chg_pct": 0.16,
       "bbw": 9.24,
-      "unified_score": 66.5,
-      "unified_score_grade": "B",
+      "unified_score": 64.6,
+      "unified_score_grade": "C",
       "score_breakdown": {
         "version": "unified_score_v2_momentum_first_stock_level",
-        "total": 66.5,
-        "grade": "B",
-        "base": 57.8,
+        "total": 64.6,
+        "grade": "C",
+        "base": 56.2,
         "components": {
           "chip": 63.9,
-          "momentum": 58.5,
-          "volume": 47.3,
+          "momentum": 44.6,
+          "volume": 65.9,
           "structure": 88.3,
           "theme": 0.0
         },
@@ -72,18 +72,18 @@
         ],
         "aggregation": "max_component_by_stock"
       },
-      "score": 66.5,
+      "score": 64.6,
       "legacy_score": 35.8,
-      "context_unified_score": 64.8,
+      "context_unified_score": 59.0,
       "context_score_breakdown": {
         "version": "unified_score_v2_momentum_first_stock_level",
-        "total": 64.8,
+        "total": 59.0,
         "grade": "C",
-        "base": 56.3,
+        "base": 51.3,
         "components": {
           "chip": 63.9,
-          "momentum": 58.5,
-          "volume": 42.6,
+          "momentum": 41.0,
+          "volume": 53.9,
           "structure": 86.5,
           "theme": 0.0
         },
@@ -103,11 +103,11 @@
             "籌碼標籤加分"
           ],
           "momentum": [
-            "週漲 +10.0%",
+            "週漲 +0.2%",
             "收盤站上 EMA120"
           ],
           "volume": [
-            "量比 1.37x",
+            "量比 3.15x",
             "5/20 均量 0.80x",
             "回測量縮"
           ],
@@ -154,24 +154,59 @@
         "05/22"
       ],
       "consecutive_weeks": 6,
-      "close": 131.5,
+      "close": 131.0,
       "ema120": 116.24,
       "deviation": 8.39,
       "vol_5d_avg": 1435,
       "vol_20d_avg": 1294,
-      "week_chg_pct": 13.85,
+      "week_chg_pct": 10.08,
       "bbw": 12.56,
-      "unified_score": 76.2,
-      "unified_score_grade": "A",
+      "unified_score": 73.5,
+      "unified_score_grade": "B",
       "score_breakdown": {
         "version": "unified_score_v2_momentum_first_stock_level",
-        "total": 76.2,
-        "grade": "A",
-        "base": 66.2,
+        "total": 73.5,
+        "grade": "B",
+        "base": 63.9,
         "components": {
           "chip": 50.2,
-          "momentum": 66.9,
-          "volume": 76.0,
+          "momentum": 63.6,
+          "volume": 72.7,
+          "structure": 80.7,
+          "theme": 0.0
+        },
+        "source_count": 14,
+        "source_multiplier": 1.15,
+        "sources": [
+          "chips",
+          "intraday_volume_pullback",
+          "momentum_candidates",
+          "momentum_pullback",
+          "price_breakout_track",
+          "right_top",
+          "right_top_track",
+          "stock_analysis",
+          "volume_pullback",
+          "volume_signal",
+          "標的追蹤",
+          "突破策略",
+          "籌碼集中",
+          "量增訊號"
+        ],
+        "aggregation": "max_component_by_stock"
+      },
+      "score": 73.5,
+      "legacy_score": 37.2,
+      "context_unified_score": 64.2,
+      "context_score_breakdown": {
+        "version": "unified_score_v2_momentum_first_stock_level",
+        "total": 64.2,
+        "grade": "C",
+        "base": 55.8,
+        "components": {
+          "chip": 50.2,
+          "momentum": 58.7,
+          "volume": 49.1,
           "structure": 80.7,
           "theme": 0.0
         },
@@ -181,36 +216,7 @@
           "chips",
           "intraday_volume_pullback",
           "momentum_candidates",
-          "price_breakout_track",
-          "right_top",
-          "right_top_track",
-          "stock_analysis",
-          "volume_pullback",
-          "volume_signal"
-        ],
-        "aggregation": "max_component_by_stock"
-      },
-      "score": 76.2,
-      "legacy_score": 37.2,
-      "context_unified_score": 69.2,
-      "context_score_breakdown": {
-        "version": "unified_score_v2_momentum_first_stock_level",
-        "total": 69.2,
-        "grade": "B",
-        "base": 60.2,
-        "components": {
-          "chip": 50.2,
-          "momentum": 66.9,
-          "volume": 51.7,
-          "structure": 80.7,
-          "theme": 0.0
-        },
-        "source_count": 8,
-        "source_multiplier": 1.15,
-        "sources": [
-          "chips",
-          "intraday_volume_pullback",
-          "momentum_candidates",
+          "momentum_pullback",
           "right_top",
           "right_top_track",
           "stock_analysis",
@@ -224,17 +230,18 @@
             "籌碼標籤加分"
           ],
           "momentum": [
-            "週漲 +13.8%",
-            "日漲 +5.2%",
+            "週漲 +10.1%",
             "收盤站上 EMA120"
           ],
           "volume": [
-            "量比 3.44x",
-            "5/20 均量 1.11x"
+            "量比 3.02x",
+            "5/20 均量 1.11x",
+            "回測量縮 28%"
           ],
           "structure": [
             "點火首日",
-            "支撐守住"
+            "強勢回測區",
+            "均線距離 +2.6%"
           ],
           "theme": []
         }
@@ -276,53 +283,55 @@
         "05/22"
       ],
       "consecutive_weeks": 6,
-      "close": 31.9,
+      "close": 31.4,
       "ema120": 27.37,
       "deviation": 7.95,
       "vol_5d_avg": 32967,
       "vol_20d_avg": 26530,
-      "week_chg_pct": 14.95,
+      "week_chg_pct": 14.39,
       "bbw": 8.12,
-      "unified_score": 75.7,
-      "unified_score_grade": "A",
+      "unified_score": 72.9,
+      "unified_score_grade": "B",
       "score_breakdown": {
         "version": "unified_score_v2_momentum_first_stock_level",
-        "total": 75.7,
-        "grade": "A",
-        "base": 65.9,
+        "total": 72.9,
+        "grade": "B",
+        "base": 63.4,
         "components": {
           "chip": 43.1,
-          "momentum": 66.0,
-          "volume": 79.0,
-          "structure": 80.7,
+          "momentum": 68.6,
+          "volume": 63.2,
+          "structure": 83.0,
           "theme": 0.0
         },
-        "source_count": 7,
+        "source_count": 9,
         "source_multiplier": 1.15,
         "sources": [
           "chips",
           "momentum_candidates",
+          "momentum_pullback",
           "price_breakout_track",
           "right_top_track",
           "stock_analysis",
           "volume_pullback",
-          "volume_signal"
+          "標的追蹤",
+          "籌碼集中"
         ],
         "aggregation": "max_component_by_stock"
       },
-      "score": 75.7,
+      "score": 72.9,
       "legacy_score": 37.3,
-      "context_unified_score": 69.3,
+      "context_unified_score": 67.6,
       "context_score_breakdown": {
         "version": "unified_score_v2_momentum_first_stock_level",
-        "total": 69.3,
+        "total": 67.6,
         "grade": "B",
-        "base": 60.2,
+        "base": 58.7,
         "components": {
           "chip": 43.1,
-          "momentum": 65.8,
-          "volume": 56.9,
-          "structure": 80.7,
+          "momentum": 64.3,
+          "volume": 52.2,
+          "structure": 83.0,
           "theme": 0.0
         },
         "source_count": 6,
@@ -330,10 +339,10 @@
         "sources": [
           "chips",
           "momentum_candidates",
+          "momentum_pullback",
           "right_top_track",
           "stock_analysis",
-          "volume_pullback",
-          "volume_signal"
+          "volume_pullback"
         ],
         "reasons": {
           "chip": [
@@ -342,17 +351,19 @@
             "籌碼標籤加分"
           ],
           "momentum": [
-            "週漲 +14.9%",
-            "追蹤 +8.0%",
+            "週漲 +14.4%",
+            "追蹤 +6.3%",
             "收盤站上 EMA120"
           ],
           "volume": [
-            "量比 3.58x",
-            "5/20 均量 1.24x"
+            "量比 1.74x",
+            "5/20 均量 1.24x",
+            "回測量縮 23%"
           ],
           "structure": [
-            "點火首日",
-            "支撐守住"
+            "回穩觀察",
+            "強勢回測區",
+            "均線距離 +1.9%"
           ],
           "theme": []
         }
@@ -395,24 +406,24 @@
         "05/22"
       ],
       "consecutive_weeks": 3,
-      "close": 19.95,
+      "close": 19.8,
       "ema120": 18.96,
       "deviation": 5.48,
       "vol_5d_avg": 691,
       "vol_20d_avg": 606,
-      "week_chg_pct": -0.5,
+      "week_chg_pct": 0.76,
       "bbw": 14.01,
-      "unified_score": 39.1,
+      "unified_score": 38.9,
       "unified_score_grade": "D",
       "score_breakdown": {
         "version": "unified_score_v2_momentum_first_stock_level",
-        "total": 39.1,
+        "total": 38.9,
         "grade": "D",
-        "base": 37.3,
+        "base": 37.1,
         "components": {
           "chip": 53.1,
-          "momentum": 54.7,
-          "volume": 29.4,
+          "momentum": 55.3,
+          "volume": 27.6,
           "structure": 0.0,
           "theme": 0.0
         },
@@ -424,18 +435,18 @@
         ],
         "aggregation": "max_component_by_stock"
       },
-      "score": 39.1,
+      "score": 38.9,
       "legacy_score": 33.5,
-      "context_unified_score": 39.1,
+      "context_unified_score": 38.9,
       "context_score_breakdown": {
         "version": "unified_score_v2_momentum_first_stock_level",
-        "total": 39.1,
+        "total": 38.9,
         "grade": "D",
-        "base": 37.3,
+        "base": 37.1,
         "components": {
           "chip": 53.1,
-          "momentum": 54.7,
-          "volume": 29.4,
+          "momentum": 55.3,
+          "volume": 27.6,
           "structure": 0.0,
           "theme": 0.0
         },
@@ -452,10 +463,11 @@
             "籌碼標籤加分"
           ],
           "momentum": [
+            "週漲 +0.8%",
             "收盤站上 EMA120"
           ],
           "volume": [
-            "量比 1.01x",
+            "量比 0.82x",
             "5/20 均量 1.14x"
           ],
           "structure": [],
@@ -499,26 +511,26 @@
         "05/22"
       ],
       "consecutive_weeks": 3,
-      "close": 15.5,
+      "close": 15.6,
       "ema120": 14.99,
       "deviation": 3.07,
       "vol_5d_avg": 5120,
       "vol_20d_avg": 4468,
-      "week_chg_pct": 11.91,
+      "week_chg_pct": 11.83,
       "bbw": 11.1,
-      "unified_score": 69.9,
+      "unified_score": 70.0,
       "unified_score_grade": "B",
       "score_breakdown": {
         "version": "unified_score_v2_momentum_first_stock_level",
-        "total": 69.9,
+        "total": 70.0,
         "grade": "B",
-        "base": 60.8,
+        "base": 60.9,
         "components": {
           "chip": 48.4,
-          "momentum": 50.1,
-          "volume": 61.0,
-          "structure": 88.3,
-          "theme": 98.0
+          "momentum": 51.1,
+          "volume": 64.7,
+          "structure": 82.9,
+          "theme": 88.7
         },
         "source_count": 4,
         "source_multiplier": 1.15,
@@ -530,20 +542,20 @@
         ],
         "aggregation": "max_component_by_stock"
       },
-      "score": 69.9,
+      "score": 70.0,
       "legacy_score": 45.7,
-      "context_unified_score": 66.9,
+      "context_unified_score": 65.8,
       "context_score_breakdown": {
         "version": "unified_score_v2_momentum_first_stock_level",
-        "total": 66.9,
+        "total": 65.8,
         "grade": "B",
-        "base": 58.2,
+        "base": 57.3,
         "components": {
           "chip": 48.4,
-          "momentum": 50.1,
-          "volume": 50.7,
-          "structure": 88.3,
-          "theme": 98.0
+          "momentum": 51.1,
+          "volume": 50.2,
+          "structure": 82.9,
+          "theme": 88.7
         },
         "source_count": 4,
         "source_multiplier": 1.15,
@@ -560,20 +572,21 @@
             "籌碼標籤加分"
           ],
           "momentum": [
-            "週漲 +11.9%",
+            "週漲 +11.8%",
+            "日漲 +0.7%",
             "收盤站上 EMA120"
           ],
           "volume": [
-            "量比 1.59x",
+            "量比 1.50x",
             "5/20 均量 1.15x",
             "回測量縮"
           ],
           "structure": [
-            "再啟動",
+            "回穩觀察",
             "支撐守住"
           ],
           "theme": [
-            "網通 98.0"
+            "網通 88.7"
           ]
         }
       }
@@ -614,59 +627,63 @@
         "05/22"
       ],
       "consecutive_weeks": 3,
-      "close": 70.0,
+      "close": 72.5,
       "ema120": 61.25,
       "deviation": 6.77,
       "vol_5d_avg": 4311,
       "vol_20d_avg": 5418,
-      "week_chg_pct": 10.24,
+      "week_chg_pct": 12.4,
       "bbw": 11.07,
-      "unified_score": 62.3,
-      "unified_score_grade": "C",
+      "unified_score": 68.7,
+      "unified_score_grade": "B",
       "score_breakdown": {
         "version": "unified_score_v2_momentum_first_stock_level",
-        "total": 62.3,
-        "grade": "C",
-        "base": 54.2,
+        "total": 68.7,
+        "grade": "B",
+        "base": 59.7,
         "components": {
           "chip": 56.5,
-          "momentum": 63.8,
-          "volume": 38.4,
+          "momentum": 73.0,
+          "volume": 44.0,
           "structure": 68.0,
           "theme": 0.0
         },
-        "source_count": 5,
+        "source_count": 7,
         "source_multiplier": 1.15,
         "sources": [
           "chips",
           "institutional_momentum",
           "momentum_candidates",
+          "right_top",
+          "right_top_track",
           "stock_analysis",
           "volume_signal"
         ],
         "aggregation": "max_component_by_stock"
       },
-      "score": 62.3,
+      "score": 68.7,
       "legacy_score": 33.9,
-      "context_unified_score": 58.7,
+      "context_unified_score": 61.5,
       "context_score_breakdown": {
         "version": "unified_score_v2_momentum_first_stock_level",
-        "total": 58.7,
+        "total": 61.5,
         "grade": "C",
-        "base": 51.1,
+        "base": 53.4,
         "components": {
           "chip": 56.5,
-          "momentum": 61.8,
+          "momentum": 67.1,
           "volume": 29.6,
           "structure": 68.0,
           "theme": 0.0
         },
-        "source_count": 5,
+        "source_count": 7,
         "source_multiplier": 1.15,
         "sources": [
           "chips",
           "institutional_momentum",
           "momentum_candidates",
+          "right_top",
+          "right_top_track",
           "stock_analysis",
           "volume_signal"
         ],
@@ -677,8 +694,8 @@
             "籌碼標籤加分"
           ],
           "momentum": [
-            "週漲 +10.2%",
-            "日漲 +3.1%",
+            "週漲 +12.4%",
+            "日漲 +3.6%",
             "收盤站上 EMA120"
           ],
           "volume": [
@@ -733,20 +750,20 @@
       "deviation": 2.06,
       "vol_5d_avg": 885,
       "vol_20d_avg": 825,
-      "week_chg_pct": 16.67,
+      "week_chg_pct": 15.75,
       "bbw": 13.92,
-      "unified_score": 66.6,
+      "unified_score": 69.9,
       "unified_score_grade": "B",
       "score_breakdown": {
         "version": "unified_score_v2_momentum_first_stock_level",
-        "total": 66.6,
+        "total": 69.9,
         "grade": "B",
-        "base": 57.9,
+        "base": 60.8,
         "components": {
           "chip": 48.1,
-          "momentum": 56.5,
-          "volume": 62.2,
-          "structure": 80.7,
+          "momentum": 55.8,
+          "volume": 70.2,
+          "structure": 88.7,
           "theme": 0.0
         },
         "source_count": 5,
@@ -760,19 +777,19 @@
         ],
         "aggregation": "max_component_by_stock"
       },
-      "score": 66.6,
+      "score": 69.9,
       "legacy_score": 36.2,
-      "context_unified_score": 61.2,
+      "context_unified_score": 65.2,
       "context_score_breakdown": {
         "version": "unified_score_v2_momentum_first_stock_level",
-        "total": 61.2,
-        "grade": "C",
-        "base": 53.2,
+        "total": 65.2,
+        "grade": "B",
+        "base": 56.7,
         "components": {
           "chip": 48.1,
-          "momentum": 56.5,
-          "volume": 43.5,
-          "structure": 80.7,
+          "momentum": 55.8,
+          "volume": 53.8,
+          "structure": 88.7,
           "theme": 0.0
         },
         "source_count": 5,
@@ -790,16 +807,17 @@
             "籌碼標籤加分"
           ],
           "momentum": [
-            "週漲 +16.7%",
-            "日漲 +0.5%",
-            "追蹤 +0.5%"
+            "週漲 +15.8%",
+            "追蹤 +0.5%",
+            "收盤站上 EMA120"
           ],
           "volume": [
-            "量比 2.70x",
-            "5/20 均量 1.07x"
+            "量比 2.30x",
+            "5/20 均量 1.07x",
+            "回測量縮"
           ],
           "structure": [
-            "點火首日",
+            "再啟動",
             "支撐守住"
           ],
           "theme": []
@@ -843,24 +861,24 @@
         "05/22"
       ],
       "consecutive_weeks": 3,
-      "close": 13.65,
+      "close": 13.8,
       "ema120": 13.55,
       "deviation": 3.67,
       "vol_5d_avg": 2113,
       "vol_20d_avg": 1337,
-      "week_chg_pct": -1.09,
+      "week_chg_pct": 0.0,
       "bbw": 8.43,
-      "unified_score": 44.6,
+      "unified_score": 46.5,
       "unified_score_grade": "D",
       "score_breakdown": {
         "version": "unified_score_v2_momentum_first_stock_level",
-        "total": 44.6,
+        "total": 46.5,
         "grade": "D",
-        "base": 38.8,
+        "base": 40.4,
         "components": {
           "chip": 55.8,
-          "momentum": 47.7,
-          "volume": 46.9,
+          "momentum": 51.2,
+          "volume": 47.2,
           "structure": 0.0,
           "theme": 0.0
         },
@@ -875,18 +893,18 @@
         ],
         "aggregation": "max_component_by_stock"
       },
-      "score": 44.6,
+      "score": 46.5,
       "legacy_score": 38.9,
-      "context_unified_score": 43.6,
+      "context_unified_score": 44.8,
       "context_score_breakdown": {
         "version": "unified_score_v2_momentum_first_stock_level",
-        "total": 43.6,
+        "total": 44.8,
         "grade": "D",
-        "base": 37.9,
+        "base": 39.0,
         "components": {
           "chip": 55.8,
-          "momentum": 47.7,
-          "volume": 43.5,
+          "momentum": 51.2,
+          "volume": 41.4,
           "structure": 0.0,
           "theme": 0.0
         },
@@ -906,10 +924,11 @@
             "籌碼標籤加分"
           ],
           "momentum": [
+            "日漲 +1.1%",
             "收盤站上 EMA120"
           ],
           "volume": [
-            "量比 1.14x",
+            "量比 0.92x",
             "5/20 均量 1.58x"
           ],
           "structure": [],
@@ -953,24 +972,24 @@
         "05/22"
       ],
       "consecutive_weeks": 3,
-      "close": 16.1,
+      "close": 15.65,
       "ema120": 16.42,
       "deviation": 2.0,
       "vol_5d_avg": 666,
       "vol_20d_avg": 691,
-      "week_chg_pct": 0.0,
+      "week_chg_pct": -1.88,
       "bbw": 12.72,
-      "unified_score": 26.4,
+      "unified_score": 27.8,
       "unified_score_grade": "D",
       "score_breakdown": {
         "version": "unified_score_v2_momentum_first_stock_level",
-        "total": 26.4,
+        "total": 27.8,
         "grade": "D",
-        "base": 25.1,
+        "base": 26.4,
         "components": {
           "chip": 45.1,
-          "momentum": 27.3,
-          "volume": 33.3,
+          "momentum": 25.9,
+          "volume": 41.1,
           "structure": 0.0,
           "theme": 0.0
         },
@@ -982,18 +1001,18 @@
         ],
         "aggregation": "max_component_by_stock"
       },
-      "score": 26.4,
+      "score": 27.8,
       "legacy_score": 24.3,
       "context_unified_score": 24.2,
       "context_score_breakdown": {
         "version": "unified_score_v2_momentum_first_stock_level",
         "total": 24.2,
         "grade": "D",
-        "base": 23.1,
+        "base": 23.0,
         "components": {
           "chip": 45.1,
-          "momentum": 27.3,
-          "volume": 25.1,
+          "momentum": 25.9,
+          "volume": 27.5,
           "structure": 0.0,
           "theme": 0.0
         },
@@ -1011,7 +1030,7 @@
           ],
           "momentum": [],
           "volume": [
-            "量比 1.10x",
+            "量比 1.35x",
             "5/20 均量 0.96x"
           ],
           "structure": [],
@@ -1055,53 +1074,64 @@
         "05/22"
       ],
       "consecutive_weeks": 3,
-      "close": 18.75,
+      "close": 19.9,
       "ema120": 17.94,
       "deviation": 6.16,
       "vol_5d_avg": 1639,
       "vol_20d_avg": 1854,
-      "week_chg_pct": 0.81,
+      "week_chg_pct": 8.15,
       "bbw": 12.64,
-      "unified_score": 35.9,
-      "unified_score_grade": "D",
+      "unified_score": 77.8,
+      "unified_score_grade": "A",
       "score_breakdown": {
         "version": "unified_score_v2_momentum_first_stock_level",
-        "total": 35.9,
-        "grade": "D",
-        "base": 35.9,
+        "total": 77.8,
+        "grade": "A",
+        "base": 67.6,
         "components": {
           "chip": 57.7,
-          "momentum": 55.9,
-          "volume": 20.0,
-          "structure": 0.0,
+          "momentum": 67.8,
+          "volume": 76.9,
+          "structure": 80.7,
           "theme": 0.0
         },
-        "source_count": 1,
-        "source_multiplier": 1.0,
+        "source_count": 7,
+        "source_multiplier": 1.15,
         "sources": [
-          "chips"
+          "chips",
+          "momentum_candidates",
+          "price_breakout_track",
+          "right_top",
+          "right_top_track",
+          "volume_pullback",
+          "volume_signal"
         ],
         "aggregation": "max_component_by_stock"
       },
-      "score": 35.9,
+      "score": 77.8,
       "legacy_score": 32.2,
-      "context_unified_score": 35.9,
+      "context_unified_score": 70.0,
       "context_score_breakdown": {
         "version": "unified_score_v2_momentum_first_stock_level",
-        "total": 35.9,
-        "grade": "D",
-        "base": 35.9,
+        "total": 70.0,
+        "grade": "B",
+        "base": 60.9,
         "components": {
           "chip": 57.7,
-          "momentum": 55.9,
-          "volume": 20.0,
-          "structure": 0.0,
+          "momentum": 64.4,
+          "volume": 56.0,
+          "structure": 80.7,
           "theme": 0.0
         },
-        "source_count": 1,
-        "source_multiplier": 1.0,
+        "source_count": 6,
+        "source_multiplier": 1.15,
         "sources": [
-          "chips"
+          "chips",
+          "momentum_candidates",
+          "right_top",
+          "right_top_track",
+          "volume_pullback",
+          "volume_signal"
         ],
         "reasons": {
           "chip": [
@@ -1110,14 +1140,18 @@
             "籌碼標籤加分"
           ],
           "momentum": [
-            "週漲 +0.8%",
+            "週漲 +8.2%",
+            "日漲 +6.1%",
             "收盤站上 EMA120"
           ],
           "volume": [
-            "量比 0.58x",
+            "量比 4.58x",
             "5/20 均量 0.88x"
           ],
-          "structure": [],
+          "structure": [
+            "點火首日",
+            "支撐守住"
+          ],
           "theme": []
         }
       }
@@ -1158,57 +1192,65 @@
         "05/22"
       ],
       "consecutive_weeks": 6,
-      "close": 133.0,
+      "close": 135.5,
       "ema120": 122.45,
       "deviation": 7.39,
       "vol_5d_avg": 3235,
       "vol_20d_avg": 4274,
-      "week_chg_pct": 6.83,
+      "week_chg_pct": 5.45,
       "bbw": 11.28,
-      "unified_score": 42.4,
-      "unified_score_grade": "D",
+      "unified_score": 60.3,
+      "unified_score_grade": "C",
       "score_breakdown": {
         "version": "unified_score_v2_momentum_first_stock_level",
-        "total": 42.4,
-        "grade": "D",
-        "base": 38.6,
+        "total": 60.3,
+        "grade": "C",
+        "base": 52.4,
         "components": {
           "chip": 56.8,
-          "momentum": 61.4,
-          "volume": 21.1,
-          "structure": 0.0,
+          "momentum": 64.2,
+          "volume": 30.6,
+          "structure": 68.0,
           "theme": 0.0
         },
-        "source_count": 3,
-        "source_multiplier": 1.1,
+        "source_count": 7,
+        "source_multiplier": 1.15,
         "sources": [
           "chips",
+          "momentum_candidates",
+          "right_top",
+          "right_top_track",
           "stock_analysis",
-          "vcp"
+          "vcp",
+          "volume_signal"
         ],
         "aggregation": "max_component_by_stock"
       },
-      "score": 42.4,
+      "score": 60.3,
       "legacy_score": 33.0,
-      "context_unified_score": 41.6,
+      "context_unified_score": 56.7,
       "context_score_breakdown": {
         "version": "unified_score_v2_momentum_first_stock_level",
-        "total": 41.6,
-        "grade": "D",
-        "base": 37.8,
+        "total": 56.7,
+        "grade": "C",
+        "base": 49.3,
         "components": {
           "chip": 56.8,
-          "momentum": 60.5,
-          "volume": 19.5,
-          "structure": 0.0,
+          "momentum": 61.1,
+          "volume": 23.8,
+          "structure": 68.0,
           "theme": 0.0
         },
-        "source_count": 3,
-        "source_multiplier": 1.1,
+        "source_count": 7,
+        "source_multiplier": 1.15,
         "sources": [
           "chips",
+          "momentum_candidates",
+          "right_top",
+          "right_top_track",
           "stock_analysis",
-          "vcp"
+          "vcp",
+          "volume_signal"
         ],
         "reasons": {
           "chip": [
@@ -1217,15 +1259,17 @@
             "籌碼標籤加分"
           ],
           "momentum": [
-            "週漲 +6.8%",
+            "週漲 +5.5%",
             "日漲 +1.9%",
-            "追蹤 +5.6%"
+            "收盤站上 EMA120"
           ],
           "volume": [
-            "量比 1.01x",
+            "量比 1.46x",
             "5/20 均量 0.76x"
           ],
-          "structure": [],
+          "structure": [
+            "點火首日"
+          ],
           "theme": []
         }
       }
@@ -1266,23 +1310,23 @@
         "05/22"
       ],
       "consecutive_weeks": 4,
-      "close": 6.95,
+      "close": 6.87,
       "ema120": 6.66,
       "deviation": 4.88,
       "vol_5d_avg": 527,
       "vol_20d_avg": 780,
-      "week_chg_pct": -1.14,
+      "week_chg_pct": -2.28,
       "bbw": 7.26,
-      "unified_score": 35.3,
+      "unified_score": 33.9,
       "unified_score_grade": "D",
       "score_breakdown": {
         "version": "unified_score_v2_momentum_first_stock_level",
-        "total": 35.3,
+        "total": 33.9,
         "grade": "D",
-        "base": 32.1,
+        "base": 30.8,
         "components": {
           "chip": 56.8,
-          "momentum": 47.5,
+          "momentum": 44.7,
           "volume": 20.2,
           "structure": 0.0,
           "theme": 0.0
@@ -1296,17 +1340,17 @@
         ],
         "aggregation": "max_component_by_stock"
       },
-      "score": 35.3,
+      "score": 33.9,
       "legacy_score": 30.2,
-      "context_unified_score": 32.8,
+      "context_unified_score": 31.9,
       "context_score_breakdown": {
         "version": "unified_score_v2_momentum_first_stock_level",
-        "total": 32.8,
+        "total": 31.9,
         "grade": "D",
-        "base": 29.9,
+        "base": 29.0,
         "components": {
           "chip": 56.8,
-          "momentum": 44.0,
+          "momentum": 42.2,
           "volume": 17.5,
           "structure": 0.0,
           "theme": 0.0
@@ -1325,11 +1369,10 @@
             "籌碼標籤加分"
           ],
           "momentum": [
-            "日漲 +0.1%",
             "收盤站上 EMA120"
           ],
           "volume": [
-            "量比 0.76x",
+            "量比 0.78x",
             "5/20 均量 0.68x"
           ],
           "structure": [],
@@ -1373,25 +1416,25 @@
         "05/22"
       ],
       "consecutive_weeks": 1,
-      "close": 129.5,
+      "close": 129.0,
       "ema120": 118.37,
       "deviation": 9.82,
       "vol_5d_avg": 1426,
       "vol_20d_avg": 1414,
-      "week_chg_pct": 4.86,
+      "week_chg_pct": 4.03,
       "bbw": 8.96,
-      "unified_score": 64.0,
-      "unified_score_grade": "C",
+      "unified_score": 65.0,
+      "unified_score_grade": "B",
       "score_breakdown": {
         "version": "unified_score_v2_momentum_first_stock_level",
-        "total": 64.0,
-        "grade": "C",
-        "base": 55.6,
+        "total": 65.0,
+        "grade": "B",
+        "base": 56.5,
         "components": {
           "chip": 49.2,
-          "momentum": 57.3,
-          "volume": 49.6,
-          "structure": 83.6,
+          "momentum": 56.9,
+          "volume": 51.4,
+          "structure": 87.8,
           "theme": 0.0
         },
         "source_count": 5,
@@ -1405,19 +1448,19 @@
         ],
         "aggregation": "max_component_by_stock"
       },
-      "score": 64.0,
+      "score": 65.0,
       "legacy_score": 33.3,
-      "context_unified_score": 61.3,
+      "context_unified_score": 61.7,
       "context_score_breakdown": {
         "version": "unified_score_v2_momentum_first_stock_level",
-        "total": 61.3,
+        "total": 61.7,
         "grade": "C",
-        "base": 53.3,
+        "base": 53.7,
         "components": {
           "chip": 49.2,
-          "momentum": 55.7,
-          "volume": 43.1,
-          "structure": 83.6,
+          "momentum": 54.5,
+          "volume": 44.3,
+          "structure": 87.8,
           "theme": 0.0
         },
         "source_count": 4,
@@ -1434,17 +1477,16 @@
             "籌碼標籤加分"
           ],
           "momentum": [
-            "週漲 +4.9%",
-            "日漲 +0.4%",
+            "週漲 +4.0%",
             "收盤站上 EMA120"
           ],
           "volume": [
-            "量比 0.65x",
+            "量比 0.99x",
             "5/20 均量 1.01x",
             "回測量縮"
           ],
           "structure": [
-            "回穩觀察",
+            "再啟動",
             "支撐守住"
           ],
           "theme": []
@@ -1487,55 +1529,59 @@
         "05/22"
       ],
       "consecutive_weeks": 6,
-      "close": 36.95,
+      "close": 36.9,
       "ema120": 35.39,
       "deviation": 3.42,
       "vol_5d_avg": 635,
       "vol_20d_avg": 907,
-      "week_chg_pct": 3.79,
+      "week_chg_pct": 3.22,
       "bbw": 7.33,
-      "unified_score": 38.4,
-      "unified_score_grade": "D",
+      "unified_score": 56.5,
+      "unified_score_grade": "C",
       "score_breakdown": {
         "version": "unified_score_v2_momentum_first_stock_level",
-        "total": 38.4,
-        "grade": "D",
-        "base": 36.5,
+        "total": 56.5,
+        "grade": "C",
+        "base": 49.2,
         "components": {
           "chip": 53.7,
-          "momentum": 54.6,
-          "volume": 26.4,
-          "structure": 0.0,
+          "momentum": 53.7,
+          "volume": 37.7,
+          "structure": 68.0,
           "theme": 0.0
         },
-        "source_count": 2,
-        "source_multiplier": 1.05,
+        "source_count": 4,
+        "source_multiplier": 1.15,
         "sources": [
           "chips",
-          "right_top_track"
+          "momentum_candidates",
+          "right_top_track",
+          "volume_signal"
         ],
         "aggregation": "max_component_by_stock"
       },
-      "score": 38.4,
+      "score": 56.5,
       "legacy_score": 30.7,
-      "context_unified_score": 36.5,
+      "context_unified_score": 53.0,
       "context_score_breakdown": {
         "version": "unified_score_v2_momentum_first_stock_level",
-        "total": 36.5,
-        "grade": "D",
-        "base": 34.8,
+        "total": 53.0,
+        "grade": "C",
+        "base": 46.1,
         "components": {
           "chip": 53.7,
-          "momentum": 54.6,
-          "volume": 19.3,
-          "structure": 0.0,
+          "momentum": 53.7,
+          "volume": 25.3,
+          "structure": 68.0,
           "theme": 0.0
         },
-        "source_count": 2,
-        "source_multiplier": 1.05,
+        "source_count": 4,
+        "source_multiplier": 1.15,
         "sources": [
           "chips",
-          "right_top_track"
+          "momentum_candidates",
+          "right_top_track",
+          "volume_signal"
         ],
         "reasons": {
           "chip": [
@@ -1543,15 +1589,17 @@
             "籌碼標籤加分"
           ],
           "momentum": [
-            "週漲 +3.8%",
-            "日漲 +0.8%",
-            "追蹤 +0.7%"
+            "週漲 +3.2%",
+            "追蹤 +0.5%",
+            "收盤站上 EMA120"
           ],
           "volume": [
-            "量比 0.99x",
+            "量比 1.62x",
             "5/20 均量 0.70x"
           ],
-          "structure": [],
+          "structure": [
+            "點火首日"
+          ],
           "theme": []
         }
       }
@@ -1597,19 +1645,19 @@
       "deviation": 0.84,
       "vol_5d_avg": 599,
       "vol_20d_avg": 796,
-      "week_chg_pct": -3.08,
+      "week_chg_pct": -1.87,
       "bbw": 10.02,
-      "unified_score": 23.0,
+      "unified_score": 23.5,
       "unified_score_grade": "D",
       "score_breakdown": {
         "version": "unified_score_v2_momentum_first_stock_level",
-        "total": 23.0,
+        "total": 23.5,
         "grade": "D",
-        "base": 23.0,
+        "base": 23.5,
         "components": {
           "chip": 56.7,
-          "momentum": 27.6,
-          "volume": 19.8,
+          "momentum": 29.8,
+          "volume": 17.5,
           "structure": 0.0,
           "theme": 0.0
         },
@@ -1620,18 +1668,18 @@
         ],
         "aggregation": "max_component_by_stock"
       },
-      "score": 23.0,
+      "score": 23.5,
       "legacy_score": 24.2,
-      "context_unified_score": 23.0,
+      "context_unified_score": 23.5,
       "context_score_breakdown": {
         "version": "unified_score_v2_momentum_first_stock_level",
-        "total": 23.0,
+        "total": 23.5,
         "grade": "D",
-        "base": 23.0,
+        "base": 23.5,
         "components": {
           "chip": 56.7,
-          "momentum": 27.6,
-          "volume": 19.8,
+          "momentum": 29.8,
+          "volume": 17.5,
           "structure": 0.0,
           "theme": 0.0
         },
@@ -1648,7 +1696,7 @@
           ],
           "momentum": [],
           "volume": [
-            "量比 1.04x",
+            "量比 0.75x",
             "5/20 均量 0.75x"
           ],
           "structure": [],
@@ -1692,24 +1740,24 @@
         "05/22"
       ],
       "consecutive_weeks": 6,
-      "close": 103.5,
+      "close": 110.0,
       "ema120": 91.75,
       "deviation": 3.65,
       "vol_5d_avg": 33028,
       "vol_20d_avg": 34411,
-      "week_chg_pct": 6.48,
+      "week_chg_pct": 14.82,
       "bbw": 13.15,
-      "unified_score": 71.8,
-      "unified_score_grade": "B",
+      "unified_score": 79.4,
+      "unified_score_grade": "A",
       "score_breakdown": {
         "version": "unified_score_v2_momentum_first_stock_level",
-        "total": 71.8,
-        "grade": "B",
-        "base": 62.4,
+        "total": 79.4,
+        "grade": "A",
+        "base": 69.1,
         "components": {
           "chip": 56.5,
-          "momentum": 70.8,
-          "volume": 49.2,
+          "momentum": 78.4,
+          "volume": 62.1,
           "structure": 84.0,
           "theme": 0.0
         },
@@ -1728,19 +1776,19 @@
         ],
         "aggregation": "max_component_by_stock"
       },
-      "score": 71.8,
+      "score": 79.4,
       "legacy_score": 34.1,
-      "context_unified_score": 65.0,
+      "context_unified_score": 72.7,
       "context_score_breakdown": {
         "version": "unified_score_v2_momentum_first_stock_level",
-        "total": 65.0,
+        "total": 72.7,
         "grade": "B",
-        "base": 56.5,
+        "base": 63.2,
         "components": {
           "chip": 56.5,
-          "momentum": 64.3,
-          "volume": 39.3,
-          "structure": 80.7,
+          "momentum": 72.6,
+          "volume": 50.7,
+          "structure": 81.3,
           "theme": 0.0
         },
         "source_count": 8,
@@ -1762,16 +1810,17 @@
             "籌碼標籤加分"
           ],
           "momentum": [
-            "週漲 +6.5%",
-            "日漲 +5.9%",
-            "收盤站上 EMA120"
+            "週漲 +14.8%",
+            "日漲 +6.3%",
+            "追蹤 +6.3%"
           ],
           "volume": [
-            "量比 2.60x",
-            "5/20 均量 0.96x"
+            "量比 2.15x",
+            "5/20 均量 0.96x",
+            "回測量縮"
           ],
           "structure": [
-            "點火首日",
+            "再啟動",
             "支撐守住"
           ],
           "theme": []
@@ -1814,59 +1863,55 @@
         "05/22"
       ],
       "consecutive_weeks": 3,
-      "close": 142.5,
+      "close": 129.5,
       "ema120": 142.6,
       "deviation": 0.28,
       "vol_5d_avg": 1695,
       "vol_20d_avg": 1639,
-      "week_chg_pct": 0.71,
+      "week_chg_pct": -8.8,
       "bbw": 8.16,
-      "unified_score": 48.8,
+      "unified_score": 34.7,
       "unified_score_grade": "D",
       "score_breakdown": {
         "version": "unified_score_v2_momentum_first_stock_level",
-        "total": 48.8,
+        "total": 34.7,
         "grade": "D",
-        "base": 42.4,
+        "base": 33.0,
         "components": {
           "chip": 62.1,
-          "momentum": 37.9,
-          "volume": 35.8,
-          "structure": 68.0,
+          "momentum": 24.8,
+          "volume": 62.6,
+          "structure": 0.0,
           "theme": 0.0
         },
-        "source_count": 4,
-        "source_multiplier": 1.15,
+        "source_count": 2,
+        "source_multiplier": 1.05,
         "sources": [
           "chips",
-          "momentum_candidates",
-          "stock_analysis",
-          "volume_signal"
+          "stock_analysis"
         ],
         "aggregation": "max_component_by_stock"
       },
-      "score": 48.8,
+      "score": 34.7,
       "legacy_score": 29.4,
-      "context_unified_score": 47.1,
+      "context_unified_score": 31.2,
       "context_score_breakdown": {
         "version": "unified_score_v2_momentum_first_stock_level",
-        "total": 47.1,
+        "total": 31.2,
         "grade": "D",
-        "base": 41.0,
+        "base": 29.7,
         "components": {
           "chip": 62.1,
-          "momentum": 36.9,
-          "volume": 31.9,
-          "structure": 68.0,
+          "momentum": 24.8,
+          "volume": 49.3,
+          "structure": 0.0,
           "theme": 0.0
         },
-        "source_count": 4,
-        "source_multiplier": 1.15,
+        "source_count": 2,
+        "source_multiplier": 1.05,
         "sources": [
           "chips",
-          "momentum_candidates",
-          "stock_analysis",
-          "volume_signal"
+          "stock_analysis"
         ],
         "reasons": {
           "chip": [
@@ -1874,16 +1919,12 @@
             "千張增 +1.5%",
             "籌碼標籤加分"
           ],
-          "momentum": [
-            "週漲 +0.7%"
-          ],
+          "momentum": [],
           "volume": [
-            "量比 1.59x",
+            "量比 3.42x",
             "5/20 均量 1.03x"
           ],
-          "structure": [
-            "點火首日"
-          ],
+          "structure": [],
           "theme": []
         }
       }
@@ -1924,59 +1965,55 @@
         "05/22"
       ],
       "consecutive_weeks": 3,
-      "close": 35.2,
+      "close": 34.8,
       "ema120": 35.09,
       "deviation": 1.17,
       "vol_5d_avg": 33404,
       "vol_20d_avg": 30522,
-      "week_chg_pct": 2.18,
+      "week_chg_pct": 1.46,
       "bbw": 8.99,
-      "unified_score": 56.1,
-      "unified_score_grade": "C",
+      "unified_score": 35.3,
+      "unified_score_grade": "D",
       "score_breakdown": {
         "version": "unified_score_v2_momentum_first_stock_level",
-        "total": 56.1,
-        "grade": "C",
-        "base": 48.8,
+        "total": 35.3,
+        "grade": "D",
+        "base": 33.6,
         "components": {
           "chip": 56.3,
-          "momentum": 45.0,
-          "volume": 50.9,
-          "structure": 68.0,
+          "momentum": 32.2,
+          "volume": 53.9,
+          "structure": 0.0,
           "theme": 0.0
         },
-        "source_count": 4,
-        "source_multiplier": 1.15,
+        "source_count": 2,
+        "source_multiplier": 1.05,
         "sources": [
           "chips",
-          "momentum_candidates",
-          "stock_analysis",
-          "volume_signal"
+          "stock_analysis"
         ],
         "aggregation": "max_component_by_stock"
       },
-      "score": 56.1,
+      "score": 35.3,
       "legacy_score": 34.0,
-      "context_unified_score": 52.4,
+      "context_unified_score": 30.1,
       "context_score_breakdown": {
         "version": "unified_score_v2_momentum_first_stock_level",
-        "total": 52.4,
-        "grade": "C",
-        "base": 45.6,
+        "total": 30.1,
+        "grade": "D",
+        "base": 28.7,
         "components": {
           "chip": 56.3,
-          "momentum": 45.0,
-          "volume": 37.9,
-          "structure": 68.0,
+          "momentum": 30.7,
+          "volume": 36.9,
+          "structure": 0.0,
           "theme": 0.0
         },
-        "source_count": 4,
-        "source_multiplier": 1.15,
+        "source_count": 2,
+        "source_multiplier": 1.05,
         "sources": [
           "chips",
-          "momentum_candidates",
-          "stock_analysis",
-          "volume_signal"
+          "stock_analysis"
         ],
         "reasons": {
           "chip": [
@@ -1985,16 +2022,13 @@
             "籌碼標籤加分"
           ],
           "momentum": [
-            "週漲 +2.2%",
-            "收盤站上 EMA120"
+            "週漲 +1.5%"
           ],
           "volume": [
-            "量比 2.04x",
+            "量比 1.94x",
             "5/20 均量 1.09x"
           ],
-          "structure": [
-            "點火首日"
-          ],
+          "structure": [],
           "theme": []
         }
       }
@@ -2035,24 +2069,24 @@
         "05/22"
       ],
       "consecutive_weeks": 1,
-      "close": 136.0,
+      "close": 137.0,
       "ema120": 134.66,
       "deviation": 1.73,
       "vol_5d_avg": 21338,
       "vol_20d_avg": 13742,
-      "week_chg_pct": -4.56,
+      "week_chg_pct": -1.44,
       "bbw": 4.59,
-      "unified_score": 61.8,
+      "unified_score": 62.2,
       "unified_score_grade": "C",
       "score_breakdown": {
         "version": "unified_score_v2_momentum_first_stock_level",
-        "total": 61.8,
+        "total": 62.2,
         "grade": "C",
-        "base": 53.7,
+        "base": 54.1,
         "components": {
           "chip": 56.9,
-          "momentum": 48.4,
-          "volume": 56.4,
+          "momentum": 49.9,
+          "volume": 55.4,
           "structure": 80.9,
           "theme": 0.0
         },
@@ -2068,18 +2102,18 @@
         ],
         "aggregation": "max_component_by_stock"
       },
-      "score": 61.8,
+      "score": 62.2,
       "legacy_score": 37.5,
-      "context_unified_score": 58.0,
+      "context_unified_score": 59.1,
       "context_score_breakdown": {
         "version": "unified_score_v2_momentum_first_stock_level",
-        "total": 58.0,
+        "total": 59.1,
         "grade": "C",
-        "base": 50.4,
+        "base": 51.4,
         "components": {
           "chip": 56.9,
-          "momentum": 41.1,
-          "volume": 56.4,
+          "momentum": 43.9,
+          "volume": 55.4,
           "structure": 80.9,
           "theme": 0.0
         },
@@ -2099,10 +2133,11 @@
             "籌碼標籤加分"
           ],
           "momentum": [
+            "日漲 +0.7%",
             "收盤站上 EMA120"
           ],
           "volume": [
-            "量比 1.24x",
+            "量比 1.08x",
             "5/20 均量 1.55x",
             "回測量縮"
           ],
@@ -2149,24 +2184,24 @@
         "05/22"
       ],
       "consecutive_weeks": 6,
-      "close": 82.0,
+      "close": 81.0,
       "ema120": 76.21,
       "deviation": 7.2,
       "vol_5d_avg": 666,
       "vol_20d_avg": 740,
-      "week_chg_pct": 4.99,
+      "week_chg_pct": 1.63,
       "bbw": 6.59,
-      "unified_score": 40.1,
+      "unified_score": 39.4,
       "unified_score_grade": "D",
       "score_breakdown": {
         "version": "unified_score_v2_momentum_first_stock_level",
-        "total": 40.1,
+        "total": 39.4,
         "grade": "D",
-        "base": 38.2,
+        "base": 37.5,
         "components": {
           "chip": 49.2,
-          "momentum": 55.6,
-          "volume": 33.1,
+          "momentum": 54.3,
+          "volume": 32.6,
           "structure": 0.0,
           "theme": 0.0
         },
@@ -2178,18 +2213,18 @@
         ],
         "aggregation": "max_component_by_stock"
       },
-      "score": 40.1,
+      "score": 39.4,
       "legacy_score": 31.7,
-      "context_unified_score": 37.6,
+      "context_unified_score": 36.2,
       "context_score_breakdown": {
         "version": "unified_score_v2_momentum_first_stock_level",
-        "total": 37.6,
+        "total": 36.2,
         "grade": "D",
-        "base": 35.8,
+        "base": 34.4,
         "components": {
           "chip": 49.2,
-          "momentum": 55.6,
-          "volume": 23.6,
+          "momentum": 53.3,
+          "volume": 22.1,
           "structure": 0.0,
           "theme": 0.0
         },
@@ -2206,12 +2241,12 @@
             "籌碼標籤加分"
           ],
           "momentum": [
-            "週漲 +5.0%",
+            "週漲 +1.6%",
             "追蹤 +1.5%",
             "收盤站上 EMA120"
           ],
           "volume": [
-            "量比 1.13x",
+            "量比 0.98x",
             "5/20 均量 0.90x"
           ],
           "structure": [],
@@ -2255,53 +2290,57 @@
         "05/22"
       ],
       "consecutive_weeks": 3,
-      "close": 59.4,
+      "close": 59.8,
       "ema120": 59.42,
       "deviation": 1.15,
       "vol_5d_avg": 1016,
       "vol_20d_avg": 1382,
-      "week_chg_pct": 1.19,
+      "week_chg_pct": 2.57,
       "bbw": 8.02,
-      "unified_score": 27.4,
-      "unified_score_grade": "D",
+      "unified_score": 52.6,
+      "unified_score_grade": "C",
       "score_breakdown": {
         "version": "unified_score_v2_momentum_first_stock_level",
-        "total": 27.4,
-        "grade": "D",
-        "base": 27.4,
+        "total": 52.6,
+        "grade": "C",
+        "base": 47.8,
         "components": {
           "chip": 56.3,
-          "momentum": 38.3,
-          "volume": 18.1,
-          "structure": 0.0,
+          "momentum": 51.2,
+          "volume": 35.8,
+          "structure": 68.0,
           "theme": 0.0
         },
-        "source_count": 1,
-        "source_multiplier": 1.0,
+        "source_count": 3,
+        "source_multiplier": 1.1,
         "sources": [
-          "chips"
+          "chips",
+          "momentum_candidates",
+          "volume_signal"
         ],
         "aggregation": "max_component_by_stock"
       },
-      "score": 27.4,
+      "score": 52.6,
       "legacy_score": 25.4,
-      "context_unified_score": 27.4,
+      "context_unified_score": 48.6,
       "context_score_breakdown": {
         "version": "unified_score_v2_momentum_first_stock_level",
-        "total": 27.4,
+        "total": 48.6,
         "grade": "D",
-        "base": 27.4,
+        "base": 44.2,
         "components": {
           "chip": 56.3,
-          "momentum": 38.3,
-          "volume": 18.1,
-          "structure": 0.0,
+          "momentum": 49.7,
+          "volume": 23.9,
+          "structure": 68.0,
           "theme": 0.0
         },
-        "source_count": 1,
-        "source_multiplier": 1.0,
+        "source_count": 3,
+        "source_multiplier": 1.1,
         "sources": [
-          "chips"
+          "chips",
+          "momentum_candidates",
+          "volume_signal"
         ],
         "reasons": {
           "chip": [
@@ -2309,13 +2348,17 @@
             "籌碼標籤加分"
           ],
           "momentum": [
-            "週漲 +1.2%"
+            "週漲 +2.6%",
+            "日漲 +0.7%",
+            "收盤站上 EMA120"
           ],
           "volume": [
-            "量比 0.86x",
+            "量比 1.47x",
             "5/20 均量 0.74x"
           ],
-          "structure": [],
+          "structure": [
+            "點火首日"
+          ],
           "theme": []
         }
       }
@@ -2356,24 +2399,24 @@
         "05/22"
       ],
       "consecutive_weeks": 6,
-      "close": 158.5,
+      "close": 161.5,
       "ema120": 154.61,
       "deviation": 3.81,
       "vol_5d_avg": 1581,
       "vol_20d_avg": 1663,
-      "week_chg_pct": 4.28,
+      "week_chg_pct": 5.9,
       "bbw": 10.78,
-      "unified_score": 36.2,
+      "unified_score": 39.5,
       "unified_score_grade": "D",
       "score_breakdown": {
         "version": "unified_score_v2_momentum_first_stock_level",
-        "total": 36.2,
+        "total": 39.5,
         "grade": "D",
-        "base": 34.5,
+        "base": 37.6,
         "components": {
           "chip": 57.1,
-          "momentum": 51.3,
-          "volume": 22.9,
+          "momentum": 55.0,
+          "volume": 28.5,
           "structure": 0.0,
           "theme": 0.0
         },
@@ -2385,18 +2428,18 @@
         ],
         "aggregation": "max_component_by_stock"
       },
-      "score": 36.2,
+      "score": 39.5,
       "legacy_score": 33.5,
-      "context_unified_score": 36.0,
+      "context_unified_score": 38.5,
       "context_score_breakdown": {
         "version": "unified_score_v2_momentum_first_stock_level",
-        "total": 36.0,
+        "total": 38.5,
         "grade": "D",
-        "base": 34.3,
+        "base": 36.6,
         "components": {
           "chip": 57.1,
-          "momentum": 51.3,
-          "volume": 21.9,
+          "momentum": 55.0,
+          "volume": 24.7,
           "structure": 0.0,
           "theme": 0.0
         },
@@ -2413,11 +2456,12 @@
             "籌碼標籤加分"
           ],
           "momentum": [
-            "週漲 +4.3%",
+            "週漲 +5.9%",
+            "日漲 +1.9%",
             "收盤站上 EMA120"
           ],
           "volume": [
-            "量比 0.65x",
+            "量比 1.09x",
             "5/20 均量 0.95x"
           ],
           "structure": [],
@@ -2466,19 +2510,19 @@
       "deviation": 0.67,
       "vol_5d_avg": 10398,
       "vol_20d_avg": 9944,
-      "week_chg_pct": -2.71,
+      "week_chg_pct": -1.62,
       "bbw": 6.94,
-      "unified_score": 37.6,
+      "unified_score": 38.1,
       "unified_score_grade": "D",
       "score_breakdown": {
         "version": "unified_score_v2_momentum_first_stock_level",
-        "total": 37.6,
+        "total": 38.1,
         "grade": "D",
-        "base": 34.2,
+        "base": 34.7,
         "components": {
           "chip": 57.1,
-          "momentum": 44.1,
-          "volume": 34.6,
+          "momentum": 43.9,
+          "volume": 36.8,
           "structure": 0.0,
           "theme": 0.0
         },
@@ -2491,18 +2535,18 @@
         ],
         "aggregation": "max_component_by_stock"
       },
-      "score": 37.6,
+      "score": 38.1,
       "legacy_score": 27.3,
-      "context_unified_score": 28.8,
+      "context_unified_score": 29.2,
       "context_score_breakdown": {
         "version": "unified_score_v2_momentum_first_stock_level",
-        "total": 28.8,
+        "total": 29.2,
         "grade": "D",
-        "base": 26.2,
+        "base": 26.6,
         "components": {
           "chip": 57.1,
-          "momentum": 28.5,
-          "volume": 30.6,
+          "momentum": 29.5,
+          "volume": 30.3,
           "structure": 0.0,
           "theme": 0.0
         },
@@ -2521,7 +2565,7 @@
           ],
           "momentum": [],
           "volume": [
-            "量比 1.42x",
+            "量比 1.39x",
             "5/20 均量 1.05x"
           ],
           "structure": [],
@@ -2565,55 +2609,57 @@
         "05/22"
       ],
       "consecutive_weeks": 1,
-      "close": 17.65,
+      "close": 18.9,
       "ema120": 16.01,
       "deviation": 7.45,
       "vol_5d_avg": 5531,
       "vol_20d_avg": 7584,
-      "week_chg_pct": 5.69,
+      "week_chg_pct": 13.51,
       "bbw": 4.78,
-      "unified_score": 61.5,
-      "unified_score_grade": "C",
+      "unified_score": 83.4,
+      "unified_score_grade": "A",
       "score_breakdown": {
         "version": "unified_score_v2_momentum_first_stock_level",
-        "total": 61.5,
-        "grade": "C",
-        "base": 53.4,
+        "total": 83.4,
+        "grade": "A",
+        "base": 72.5,
         "components": {
           "chip": 55.4,
-          "momentum": 62.0,
-          "volume": 39.2,
-          "structure": 68.0,
+          "momentum": 73.0,
+          "volume": 88.2,
+          "structure": 80.7,
           "theme": 0.0
         },
-        "source_count": 6,
+        "source_count": 8,
         "source_multiplier": 1.15,
         "sources": [
           "chips",
           "momentum_candidates",
+          "price_breakout_track",
           "right_top",
           "right_top_track",
           "stock_analysis",
+          "volume_pullback",
           "volume_signal"
         ],
         "aggregation": "max_component_by_stock"
       },
-      "score": 61.5,
+      "score": 83.4,
       "legacy_score": 32.3,
-      "context_unified_score": 57.7,
+      "context_unified_score": 74.5,
       "context_score_breakdown": {
         "version": "unified_score_v2_momentum_first_stock_level",
-        "total": 57.7,
-        "grade": "C",
-        "base": 50.1,
+        "total": 74.5,
+        "grade": "B",
+        "base": 64.8,
         "components": {
           "chip": 55.4,
-          "momentum": 61.0,
-          "volume": 27.8,
-          "structure": 68.0,
+          "momentum": 72.8,
+          "volume": 57.5,
+          "structure": 80.7,
           "theme": 0.0
         },
-        "source_count": 6,
+        "source_count": 7,
         "source_multiplier": 1.15,
         "sources": [
           "chips",
@@ -2621,6 +2667,7 @@
           "right_top",
           "right_top_track",
           "stock_analysis",
+          "volume_pullback",
           "volume_signal"
         ],
         "reasons": {
@@ -2630,16 +2677,17 @@
             "籌碼標籤加分"
           ],
           "momentum": [
-            "週漲 +5.7%",
-            "日漲 +0.3%",
-            "追蹤 +0.3%"
+            "週漲 +13.5%",
+            "日漲 +7.1%",
+            "追蹤 +7.4%"
           ],
           "volume": [
-            "量比 1.88x",
+            "量比 5.23x",
             "5/20 均量 0.73x"
           ],
           "structure": [
-            "點火首日"
+            "點火首日",
+            "支撐守住"
           ],
           "theme": []
         }
@@ -2681,25 +2729,25 @@
         "05/22"
       ],
       "consecutive_weeks": 1,
-      "close": 31.6,
+      "close": 31.55,
       "ema120": 31.34,
       "deviation": 1.79,
       "vol_5d_avg": 11069,
       "vol_20d_avg": 11375,
-      "week_chg_pct": -2.47,
+      "week_chg_pct": -1.56,
       "bbw": 6.44,
-      "unified_score": 58.8,
+      "unified_score": 59.6,
       "unified_score_grade": "C",
       "score_breakdown": {
         "version": "unified_score_v2_momentum_first_stock_level",
-        "total": 58.8,
+        "total": 59.6,
         "grade": "C",
-        "base": 53.4,
+        "base": 54.1,
         "components": {
           "chip": 57.1,
-          "momentum": 54.2,
-          "volume": 43.4,
-          "structure": 83.1,
+          "momentum": 55.2,
+          "volume": 44.3,
+          "structure": 83.5,
           "theme": 0.0
         },
         "source_count": 3,
@@ -2711,19 +2759,19 @@
         ],
         "aggregation": "max_component_by_stock"
       },
-      "score": 58.8,
+      "score": 59.6,
       "legacy_score": 31.4,
-      "context_unified_score": 52.3,
+      "context_unified_score": 53.1,
       "context_score_breakdown": {
         "version": "unified_score_v2_momentum_first_stock_level",
-        "total": 52.3,
+        "total": 53.1,
         "grade": "C",
-        "base": 49.8,
+        "base": 50.5,
         "components": {
           "chip": 57.1,
-          "momentum": 46.9,
-          "volume": 42.2,
-          "structure": 83.1,
+          "momentum": 47.9,
+          "volume": 43.0,
+          "structure": 83.5,
           "theme": 0.0
         },
         "source_count": 2,
@@ -2742,14 +2790,14 @@
             "收盤站上 EMA120"
           ],
           "volume": [
-            "量比 1.05x",
+            "量比 0.90x",
             "5/20 均量 0.97x",
-            "回測量縮 54%"
+            "回測量縮 59%"
           ],
           "structure": [
             "強勢回測區",
-            "均線距離 +0.4%",
-            "防守距離 0.3%"
+            "均線距離 +0.3%",
+            "防守距離 0.2%"
           ],
           "theme": []
         }
@@ -2791,24 +2839,24 @@
         "05/22"
       ],
       "consecutive_weeks": 1,
-      "close": 39.4,
+      "close": 39.45,
       "ema120": 39.78,
       "deviation": 0.29,
       "vol_5d_avg": 35621,
       "vol_20d_avg": 26485,
-      "week_chg_pct": -3.08,
+      "week_chg_pct": -2.11,
       "bbw": 4.37,
-      "unified_score": 37.8,
+      "unified_score": 37.6,
       "unified_score_grade": "D",
       "score_breakdown": {
         "version": "unified_score_v2_momentum_first_stock_level",
-        "total": 37.8,
+        "total": 37.6,
         "grade": "D",
-        "base": 36.0,
+        "base": 35.8,
         "components": {
           "chip": 56.8,
           "momentum": 46.7,
-          "volume": 37.1,
+          "volume": 36.3,
           "structure": 0.0,
           "theme": 0.0
         },
@@ -2820,18 +2868,18 @@
         ],
         "aggregation": "max_component_by_stock"
       },
-      "score": 37.8,
+      "score": 37.6,
       "legacy_score": 30.5,
-      "context_unified_score": 29.6,
+      "context_unified_score": 29.8,
       "context_score_breakdown": {
         "version": "unified_score_v2_momentum_first_stock_level",
-        "total": 29.6,
+        "total": 29.8,
         "grade": "D",
-        "base": 28.2,
+        "base": 28.4,
         "components": {
           "chip": 56.8,
-          "momentum": 29.4,
-          "volume": 37.1,
+          "momentum": 30.3,
+          "volume": 36.3,
           "structure": 0.0,
           "theme": 0.0
         },
@@ -2847,9 +2895,11 @@
             "千張增 +0.2%",
             "籌碼標籤加分"
           ],
-          "momentum": [],
+          "momentum": [
+            "日漲 +0.1%"
+          ],
           "volume": [
-            "量比 1.19x",
+            "量比 1.10x",
             "5/20 均量 1.34x"
           ],
           "structure": [],
@@ -2893,25 +2943,25 @@
         "05/22"
       ],
       "consecutive_weeks": 3,
-      "close": 41.7,
+      "close": 41.05,
       "ema120": 39.07,
       "deviation": 4.55,
       "vol_5d_avg": 844,
       "vol_20d_avg": 699,
-      "week_chg_pct": 8.17,
+      "week_chg_pct": 5.8,
       "bbw": 6.58,
-      "unified_score": 66.6,
+      "unified_score": 67.6,
       "unified_score_grade": "B",
       "score_breakdown": {
         "version": "unified_score_v2_momentum_first_stock_level",
-        "total": 66.6,
+        "total": 67.6,
         "grade": "B",
-        "base": 57.9,
+        "base": 58.8,
         "components": {
           "chip": 56.3,
-          "momentum": 51.1,
-          "volume": 67.7,
-          "structure": 82.3,
+          "momentum": 54.8,
+          "volume": 67.4,
+          "structure": 77.6,
           "theme": 0.0
         },
         "source_count": 6,
@@ -2926,19 +2976,19 @@
         ],
         "aggregation": "max_component_by_stock"
       },
-      "score": 66.6,
+      "score": 67.6,
       "legacy_score": 37.6,
-      "context_unified_score": 62.6,
+      "context_unified_score": 62.9,
       "context_score_breakdown": {
         "version": "unified_score_v2_momentum_first_stock_level",
-        "total": 62.6,
+        "total": 62.9,
         "grade": "C",
-        "base": 54.5,
+        "base": 54.7,
         "components": {
           "chip": 56.3,
-          "momentum": 51.1,
-          "volume": 54.0,
-          "structure": 82.3,
+          "momentum": 54.8,
+          "volume": 50.9,
+          "structure": 77.6,
           "theme": 0.0
         },
         "source_count": 5,
@@ -2956,19 +3006,16 @@
             "籌碼標籤加分"
           ],
           "momentum": [
-            "週漲 +8.2%",
-            "追蹤 +2.1%",
+            "週漲 +5.8%",
+            "追蹤 +0.5%",
             "收盤站上 EMA120"
           ],
           "volume": [
-            "量比 1.92x",
+            "量比 1.43x",
             "5/20 均量 1.21x",
             "回測量縮"
           ],
-          "structure": [
-            "回穩觀察",
-            "支撐守住"
-          ],
+          "structure": [],
           "theme": []
         }
       }
@@ -3009,61 +3056,68 @@
         "05/22"
       ],
       "consecutive_weeks": 1,
-      "close": 19.25,
+      "close": 19.2,
       "ema120": 17.64,
       "deviation": 4.3,
       "vol_5d_avg": 614,
       "vol_20d_avg": 569,
-      "week_chg_pct": 5.48,
+      "week_chg_pct": 5.79,
       "bbw": 6.82,
-      "unified_score": 66.0,
+      "unified_score": 66.7,
       "unified_score_grade": "B",
       "score_breakdown": {
         "version": "unified_score_v2_momentum_first_stock_level",
-        "total": 66.0,
+        "total": 66.7,
         "grade": "B",
-        "base": 57.4,
+        "base": 58.0,
         "components": {
           "chip": 53.2,
-          "momentum": 56.8,
-          "volume": 53.1,
-          "structure": 88.1,
+          "momentum": 57.2,
+          "volume": 59.3,
+          "structure": 80.7,
           "theme": 0.0
         },
-        "source_count": 5,
+        "source_count": 9,
         "source_multiplier": 1.15,
         "sources": [
           "chips",
           "institutional_momentum",
           "momentum_candidates",
+          "price_breakout_track",
+          "right_top",
+          "right_top_track",
           "stock_analysis",
-          "volume_pullback"
+          "volume_pullback",
+          "volume_signal"
         ],
         "aggregation": "max_component_by_stock"
       },
-      "score": 66.0,
+      "score": 66.7,
       "legacy_score": 34.5,
-      "context_unified_score": 64.8,
+      "context_unified_score": 62.0,
       "context_score_breakdown": {
         "version": "unified_score_v2_momentum_first_stock_level",
-        "total": 64.8,
+        "total": 62.0,
         "grade": "C",
-        "base": 56.3,
+        "base": 53.9,
         "components": {
           "chip": 53.2,
-          "momentum": 56.8,
-          "volume": 49.0,
-          "structure": 88.1,
+          "momentum": 56.1,
+          "volume": 45.1,
+          "structure": 80.7,
           "theme": 0.0
         },
-        "source_count": 5,
+        "source_count": 8,
         "source_multiplier": 1.15,
         "sources": [
           "chips",
           "institutional_momentum",
           "momentum_candidates",
+          "right_top",
+          "right_top_track",
           "stock_analysis",
-          "volume_pullback"
+          "volume_pullback",
+          "volume_signal"
         ],
         "reasons": {
           "chip": [
@@ -3072,17 +3126,15 @@
             "籌碼標籤加分"
           ],
           "momentum": [
-            "週漲 +5.5%",
-            "日漲 +0.5%",
-            "追蹤 +0.5%"
+            "週漲 +5.8%",
+            "收盤站上 EMA120"
           ],
           "volume": [
-            "量比 1.52x",
-            "5/20 均量 1.08x",
-            "回測量縮"
+            "量比 2.84x",
+            "5/20 均量 1.08x"
           ],
           "structure": [
-            "再啟動",
+            "點火首日",
             "支撐守住"
           ],
           "theme": []
@@ -3125,24 +3177,24 @@
         "05/22"
       ],
       "consecutive_weeks": 3,
-      "close": 26.75,
+      "close": 26.85,
       "ema120": 26.87,
       "deviation": 0.29,
       "vol_5d_avg": 555,
       "vol_20d_avg": 421,
-      "week_chg_pct": -0.93,
+      "week_chg_pct": -0.92,
       "bbw": 5.74,
-      "unified_score": 30.3,
+      "unified_score": 31.2,
       "unified_score_grade": "D",
       "score_breakdown": {
         "version": "unified_score_v2_momentum_first_stock_level",
-        "total": 30.3,
+        "total": 31.2,
         "grade": "D",
-        "base": 30.3,
+        "base": 31.2,
         "components": {
           "chip": 55.0,
-          "momentum": 37.1,
-          "volume": 32.6,
+          "momentum": 37.8,
+          "volume": 34.8,
           "structure": 0.0,
           "theme": 0.0
         },
@@ -3153,18 +3205,18 @@
         ],
         "aggregation": "max_component_by_stock"
       },
-      "score": 30.3,
+      "score": 31.2,
       "legacy_score": 30.4,
-      "context_unified_score": 30.3,
+      "context_unified_score": 31.2,
       "context_score_breakdown": {
         "version": "unified_score_v2_momentum_first_stock_level",
-        "total": 30.3,
+        "total": 31.2,
         "grade": "D",
-        "base": 30.3,
+        "base": 31.2,
         "components": {
           "chip": 55.0,
-          "momentum": 37.1,
-          "volume": 32.6,
+          "momentum": 37.8,
+          "volume": 34.8,
           "structure": 0.0,
           "theme": 0.0
         },
@@ -3178,9 +3230,11 @@
             "大戶占比 53.2%",
             "籌碼標籤加分"
           ],
-          "momentum": [],
+          "momentum": [
+            "日漲 +0.4%"
+          ],
           "volume": [
-            "量比 0.53x",
+            "量比 1.03x",
             "5/20 均量 1.32x"
           ],
           "structure": [],
@@ -3224,24 +3278,24 @@
         "05/22"
       ],
       "consecutive_weeks": 1,
-      "close": 34.9,
+      "close": 34.85,
       "ema120": 34.19,
       "deviation": 4.7,
       "vol_5d_avg": 1173,
       "vol_20d_avg": 855,
-      "week_chg_pct": -2.79,
+      "week_chg_pct": -4.39,
       "bbw": 10.5,
-      "unified_score": 64.9,
+      "unified_score": 64.0,
       "unified_score_grade": "C",
       "score_breakdown": {
         "version": "unified_score_v2_momentum_first_stock_level",
-        "total": 64.9,
+        "total": 64.0,
         "grade": "C",
-        "base": 56.5,
+        "base": 55.6,
         "components": {
           "chip": 56.7,
-          "momentum": 51.2,
-          "volume": 59.6,
+          "momentum": 52.4,
+          "volume": 54.1,
           "structure": 85.7,
           "theme": 0.0
         },
@@ -3257,7 +3311,7 @@
         ],
         "aggregation": "max_component_by_stock"
       },
-      "score": 64.9,
+      "score": 64.0,
       "legacy_score": 36.3,
       "context_unified_score": 58.1,
       "context_score_breakdown": {
@@ -3267,8 +3321,8 @@
         "base": 50.5,
         "components": {
           "chip": 56.7,
-          "momentum": 42.5,
-          "volume": 51.5,
+          "momentum": 43.3,
+          "volume": 50.1,
           "structure": 85.7,
           "theme": 0.0
         },
@@ -3291,7 +3345,7 @@
             "收盤站上 EMA120"
           ],
           "volume": [
-            "量比 1.01x",
+            "量比 0.67x",
             "5/20 均量 1.37x",
             "回測量縮"
           ],
@@ -3339,24 +3393,24 @@
         "05/22"
       ],
       "consecutive_weeks": 1,
-      "close": 110.5,
+      "close": 110.0,
       "ema120": 109.39,
       "deviation": 2.38,
       "vol_5d_avg": 17020,
       "vol_20d_avg": 12679,
-      "week_chg_pct": -5.15,
+      "week_chg_pct": -4.35,
       "bbw": 6.63,
-      "unified_score": 43.1,
+      "unified_score": 41.8,
       "unified_score_grade": "D",
       "score_breakdown": {
         "version": "unified_score_v2_momentum_first_stock_level",
-        "total": 43.1,
+        "total": 41.8,
         "grade": "D",
-        "base": 37.5,
+        "base": 36.4,
         "components": {
           "chip": 56.4,
-          "momentum": 47.6,
-          "volume": 41.8,
+          "momentum": 47.7,
+          "volume": 37.0,
           "structure": 0.0,
           "theme": 0.0
         },
@@ -3370,18 +3424,18 @@
         ],
         "aggregation": "max_component_by_stock"
       },
-      "score": 43.1,
+      "score": 41.8,
       "legacy_score": 34.8,
-      "context_unified_score": 39.6,
+      "context_unified_score": 38.4,
       "context_score_breakdown": {
         "version": "unified_score_v2_momentum_first_stock_level",
-        "total": 39.6,
+        "total": 38.4,
         "grade": "D",
-        "base": 34.5,
+        "base": 33.4,
         "components": {
           "chip": 56.4,
-          "momentum": 40.8,
-          "volume": 41.8,
+          "momentum": 41.1,
+          "volume": 37.0,
           "structure": 0.0,
           "theme": 0.0
         },
@@ -3403,7 +3457,7 @@
             "收盤站上 EMA120"
           ],
           "volume": [
-            "量比 1.69x",
+            "量比 1.19x",
             "5/20 均量 1.34x"
           ],
           "structure": [],
@@ -3447,24 +3501,24 @@
         "05/22"
       ],
       "consecutive_weeks": 1,
-      "close": 26.15,
+      "close": 26.35,
       "ema120": 25.48,
       "deviation": 4.98,
       "vol_5d_avg": 697,
       "vol_20d_avg": 638,
-      "week_chg_pct": 0.19,
+      "week_chg_pct": 0.96,
       "bbw": 5.14,
-      "unified_score": 38.0,
+      "unified_score": 43.7,
       "unified_score_grade": "D",
       "score_breakdown": {
         "version": "unified_score_v2_momentum_first_stock_level",
-        "total": 38.0,
+        "total": 43.7,
         "grade": "D",
-        "base": 36.2,
+        "base": 41.6,
         "components": {
           "chip": 56.4,
-          "momentum": 49.6,
-          "volume": 32.9,
+          "momentum": 56.8,
+          "volume": 41.7,
           "structure": 0.0,
           "theme": 0.0
         },
@@ -3476,18 +3530,18 @@
         ],
         "aggregation": "max_component_by_stock"
       },
-      "score": 38.0,
+      "score": 43.7,
       "legacy_score": 33.9,
-      "context_unified_score": 36.5,
+      "context_unified_score": 41.1,
       "context_score_breakdown": {
         "version": "unified_score_v2_momentum_first_stock_level",
-        "total": 36.5,
+        "total": 41.1,
         "grade": "D",
-        "base": 34.8,
+        "base": 39.1,
         "components": {
           "chip": 56.4,
-          "momentum": 49.3,
-          "volume": 27.8,
+          "momentum": 56.8,
+          "volume": 31.8,
           "structure": 0.0,
           "theme": 0.0
         },
@@ -3504,11 +3558,12 @@
             "籌碼標籤加分"
           ],
           "momentum": [
-            "週漲 +0.2%",
+            "週漲 +1.0%",
+            "日漲 +0.8%",
             "收盤站上 EMA120"
           ],
           "volume": [
-            "量比 0.99x",
+            "量比 1.41x",
             "5/20 均量 1.09x"
           ],
           "structure": [],
@@ -3552,24 +3607,24 @@
         "05/22"
       ],
       "consecutive_weeks": 3,
-      "close": 71.1,
+      "close": 71.2,
       "ema120": 67.81,
       "deviation": 2.49,
       "vol_5d_avg": 834,
       "vol_20d_avg": 837,
-      "week_chg_pct": 0.42,
+      "week_chg_pct": 0.56,
       "bbw": 5.09,
-      "unified_score": 38.5,
+      "unified_score": 37.1,
       "unified_score_grade": "D",
       "score_breakdown": {
         "version": "unified_score_v2_momentum_first_stock_level",
-        "total": 38.5,
+        "total": 37.1,
         "grade": "D",
-        "base": 38.5,
+        "base": 37.1,
         "components": {
           "chip": 56.4,
-          "momentum": 58.5,
-          "volume": 26.2,
+          "momentum": 57.0,
+          "volume": 23.2,
           "structure": 0.0,
           "theme": 0.0
         },
@@ -3580,18 +3635,18 @@
         ],
         "aggregation": "max_component_by_stock"
       },
-      "score": 38.5,
+      "score": 37.1,
       "legacy_score": 32.5,
-      "context_unified_score": 38.5,
+      "context_unified_score": 37.1,
       "context_score_breakdown": {
         "version": "unified_score_v2_momentum_first_stock_level",
-        "total": 38.5,
+        "total": 37.1,
         "grade": "D",
-        "base": 38.5,
+        "base": 37.1,
         "components": {
           "chip": 56.4,
-          "momentum": 58.5,
-          "volume": 26.2,
+          "momentum": 57.0,
+          "volume": 23.2,
           "structure": 0.0,
           "theme": 0.0
         },
@@ -3607,12 +3662,12 @@
             "籌碼標籤加分"
           ],
           "momentum": [
-            "週漲 +0.4%",
-            "日漲 +2.8%",
+            "週漲 +0.6%",
+            "日漲 +0.1%",
             "收盤站上 EMA120"
           ],
           "volume": [
-            "量比 1.11x",
+            "量比 0.65x",
             "5/20 均量 1.00x"
           ],
           "structure": [],
@@ -3661,48 +3716,20 @@
       "deviation": 6.11,
       "vol_5d_avg": 799,
       "vol_20d_avg": 501,
-      "week_chg_pct": 6.38,
+      "week_chg_pct": 7.26,
       "bbw": 13.12,
-      "unified_score": 73.2,
+      "unified_score": 69.3,
       "unified_score_grade": "B",
       "score_breakdown": {
         "version": "unified_score_v2_momentum_first_stock_level",
-        "total": 73.2,
+        "total": 69.3,
         "grade": "B",
-        "base": 63.6,
+        "base": 60.3,
         "components": {
           "chip": 52.3,
-          "momentum": 63.7,
-          "volume": 66.1,
+          "momentum": 61.0,
+          "volume": 57.6,
           "structure": 88.1,
-          "theme": 0.0
-        },
-        "source_count": 7,
-        "source_multiplier": 1.15,
-        "sources": [
-          "chips",
-          "intraday_volume_pullback",
-          "momentum_candidates",
-          "price_breakout_track",
-          "right_top_track",
-          "stock_analysis",
-          "volume_signal"
-        ],
-        "aggregation": "max_component_by_stock"
-      },
-      "score": 73.2,
-      "legacy_score": 40.8,
-      "context_unified_score": 71.8,
-      "context_score_breakdown": {
-        "version": "unified_score_v2_momentum_first_stock_level",
-        "total": 71.8,
-        "grade": "B",
-        "base": 62.4,
-        "components": {
-          "chip": 52.3,
-          "momentum": 63.7,
-          "volume": 66.1,
-          "structure": 80.1,
           "theme": 0.0
         },
         "source_count": 6,
@@ -3711,9 +3738,35 @@
           "chips",
           "intraday_volume_pullback",
           "momentum_candidates",
+          "price_breakout_track",
           "right_top_track",
-          "stock_analysis",
-          "volume_signal"
+          "stock_analysis"
+        ],
+        "aggregation": "max_component_by_stock"
+      },
+      "score": 69.3,
+      "legacy_score": 40.8,
+      "context_unified_score": 69.0,
+      "context_score_breakdown": {
+        "version": "unified_score_v2_momentum_first_stock_level",
+        "total": 69.0,
+        "grade": "B",
+        "base": 60.0,
+        "components": {
+          "chip": 52.3,
+          "momentum": 61.0,
+          "volume": 57.6,
+          "structure": 86.1,
+          "theme": 0.0
+        },
+        "source_count": 5,
+        "source_multiplier": 1.15,
+        "sources": [
+          "chips",
+          "intraday_volume_pullback",
+          "momentum_candidates",
+          "right_top_track",
+          "stock_analysis"
         ],
         "reasons": {
           "chip": [
@@ -3721,17 +3774,16 @@
             "籌碼標籤加分"
           ],
           "momentum": [
-            "週漲 +6.4%",
-            "日漲 +5.7%",
-            "追蹤 +6.4%"
+            "週漲 +7.3%",
+            "追蹤 +6.4%",
+            "收盤站上 EMA120"
           ],
           "volume": [
-            "量比 2.63x",
+            "量比 1.30x",
             "5/20 均量 1.59x",
             "回測量縮"
           ],
           "structure": [
-            "點火首日",
             "支撐守住"
           ],
           "theme": []
@@ -3775,25 +3827,25 @@
         "05/22"
       ],
       "consecutive_weeks": 1,
-      "close": 219.0,
+      "close": 212.0,
       "ema120": 202.85,
       "deviation": 3.52,
       "vol_5d_avg": 6009,
       "vol_20d_avg": 5067,
-      "week_chg_pct": 7.09,
+      "week_chg_pct": 4.69,
       "bbw": 9.77,
-      "unified_score": 64.5,
+      "unified_score": 62.6,
       "unified_score_grade": "C",
       "score_breakdown": {
         "version": "unified_score_v2_momentum_first_stock_level",
-        "total": 64.5,
+        "total": 62.6,
         "grade": "C",
-        "base": 56.1,
+        "base": 54.4,
         "components": {
           "chip": 61.8,
-          "momentum": 55.7,
-          "volume": 49.4,
-          "structure": 83.2,
+          "momentum": 52.2,
+          "volume": 51.3,
+          "structure": 79.5,
           "theme": 0.0
         },
         "source_count": 4,
@@ -3806,19 +3858,19 @@
         ],
         "aggregation": "max_component_by_stock"
       },
-      "score": 64.5,
+      "score": 62.6,
       "legacy_score": 38.2,
-      "context_unified_score": 63.9,
+      "context_unified_score": 61.6,
       "context_score_breakdown": {
         "version": "unified_score_v2_momentum_first_stock_level",
-        "total": 63.9,
+        "total": 61.6,
         "grade": "C",
-        "base": 55.5,
+        "base": 53.6,
         "components": {
           "chip": 61.8,
-          "momentum": 55.7,
-          "volume": 47.3,
-          "structure": 83.2,
+          "momentum": 52.2,
+          "volume": 48.0,
+          "structure": 79.5,
           "theme": 0.0
         },
         "source_count": 4,
@@ -3836,11 +3888,11 @@
             "籌碼標籤加分"
           ],
           "momentum": [
-            "週漲 +7.1%",
+            "週漲 +4.7%",
             "收盤站上 EMA120"
           ],
           "volume": [
-            "量比 0.92x",
+            "量比 1.04x",
             "5/20 均量 1.19x",
             "回測量縮"
           ],
@@ -3991,25 +4043,25 @@
         "05/22"
       ],
       "consecutive_weeks": 1,
-      "close": 165.0,
+      "close": 162.0,
       "ema120": 149.23,
       "deviation": 6.21,
       "vol_5d_avg": 7357,
       "vol_20d_avg": 5616,
-      "week_chg_pct": 13.79,
+      "week_chg_pct": 13.29,
       "bbw": 11.73,
-      "unified_score": 76.9,
-      "unified_score_grade": "A",
+      "unified_score": 74.2,
+      "unified_score_grade": "B",
       "score_breakdown": {
         "version": "unified_score_v2_momentum_first_stock_level",
-        "total": 76.9,
-        "grade": "A",
-        "base": 66.9,
+        "total": 74.2,
+        "grade": "B",
+        "base": 64.5,
         "components": {
           "chip": 61.2,
-          "momentum": 59.5,
-          "volume": 65.7,
-          "structure": 83.9,
+          "momentum": 54.3,
+          "volume": 66.9,
+          "structure": 81.4,
           "theme": 100.0
         },
         "source_count": 6,
@@ -4024,19 +4076,19 @@
         ],
         "aggregation": "max_component_by_stock"
       },
-      "score": 76.9,
+      "score": 74.2,
       "legacy_score": 52.0,
-      "context_unified_score": 73.1,
+      "context_unified_score": 69.6,
       "context_score_breakdown": {
         "version": "unified_score_v2_momentum_first_stock_level",
-        "total": 73.1,
+        "total": 69.6,
         "grade": "B",
-        "base": 63.6,
+        "base": 60.5,
         "components": {
           "chip": 61.2,
-          "momentum": 58.0,
-          "volume": 55.2,
-          "structure": 83.9,
+          "momentum": 54.3,
+          "volume": 51.1,
+          "structure": 81.4,
           "theme": 100.0
         },
         "source_count": 5,
@@ -4055,17 +4107,17 @@
             "籌碼標籤加分"
           ],
           "momentum": [
-            "週漲 +13.8%",
-            "日漲 +1.5%",
-            "追蹤 +4.1%"
+            "週漲 +13.3%",
+            "追蹤 +2.2%",
+            "收盤站上 EMA120"
           ],
           "volume": [
-            "量比 1.79x",
+            "量比 1.14x",
             "5/20 均量 1.31x",
             "回測量縮"
           ],
           "structure": [
-            "再啟動",
+            "回穩觀察",
             "支撐守住"
           ],
           "theme": [
@@ -4075,9 +4127,9 @@
       }
     }
   ],
-  "price_updated": "2026-05-26",
+  "price_updated": "2026-05-27",
   "unified_score_model": {
     "version": "unified_score_v1",
-    "applied_at": "2026-05-27T17:00:39+08:00"
+    "applied_at": "2026-05-27T17:20:50+08:00"
   }
 }
