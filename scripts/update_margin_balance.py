@@ -120,6 +120,10 @@ def fetch_twse(date: datetime.date) -> dict[str, Any] | None:
                     (row for row in rows if item_idx is not None and item_idx < len(row) and str(row[item_idx]).startswith("融資(")),
                     None,
                 )
+                amount_row = next(
+                    (row for row in rows if item_idx is not None and item_idx < len(row) and str(row[item_idx]).startswith("融資金額")),
+                    None,
+                )
                 if finance_row and bal_idx is not None:
                     return {
                         "date": data.get("date") or date.isoformat(),
@@ -128,6 +132,10 @@ def fetch_twse(date: datetime.date) -> dict[str, Any] | None:
                         "previous_balance_lots": _int(finance_row[prev_idx]) if prev_idx is not None else None,
                         "finance_buy_lots": _int(finance_row[buy_idx]) if buy_idx is not None else None,
                         "finance_sell_lots": _int(finance_row[sell_idx]) if sell_idx is not None else None,
+                        "finance_balance_thousand_twd": _int(amount_row[bal_idx]) if amount_row and bal_idx is not None else None,
+                        "previous_balance_thousand_twd": _int(amount_row[prev_idx]) if amount_row and prev_idx is not None else None,
+                        "finance_buy_thousand_twd": _int(amount_row[buy_idx]) if amount_row and buy_idx is not None else None,
+                        "finance_sell_thousand_twd": _int(amount_row[sell_idx]) if amount_row and sell_idx is not None else None,
                         "stock_count": None,
                         "source": "twse_mi_margn",
                     }
@@ -181,48 +189,34 @@ def fetch_twse(date: datetime.date) -> dict[str, Any] | None:
 def fetch_tpex(date: datetime.date) -> dict[str, Any] | None:
     try:
         res = requests.get(
-            "https://www.tpex.org.tw/web/stock/margin_trading/margin_balance/margin_bal_result.php",
-            params={"d": _roc_date(date), "l": "zh-tw", "o": "htm", "s": "0"},
+            "https://www.tpex.org.tw/www/zh-tw/margin/balance",
+            params={"date": _roc_date(date), "response": "json"},
             headers=HEADERS,
             timeout=25,
         )
         res.raise_for_status()
-        soup = BeautifulSoup(res.text, "html.parser")
-        title = soup.get_text(" ", strip=True)
-        if "查無資料" in title or "無資料" in title:
+        data = res.json()
+        tables = data.get("tables") or []
+        table = tables[0] if tables else {}
+        summary = table.get("summary") or []
+        if not summary:
             return None
-
-        total_balance = 0
-        total_prev = 0
-        total_buy = 0
-        total_sell = 0
-        count = 0
-        for tr in soup.find_all("tr"):
-            cells = [td.get_text(" ", strip=True) for td in tr.find_all(["td", "th"])]
-            if len(cells) < 8 or not re.match(r"^\d{4,6}[A-Z]?$", cells[0]):
-                continue
-            prev_balance = _int(cells[2])
-            buy = _int(cells[3])
-            sell = _int(cells[4])
-            balance = _int(cells[6])
-            if balance is None:
-                continue
-            total_balance += balance
-            total_prev += prev_balance or 0
-            total_buy += buy or 0
-            total_sell += sell or 0
-            count += 1
-
-        if not count:
+        lots_row = next((row for row in summary if len(row) > 1 and "合計" in str(row[1])), None)
+        amount_row = next((row for row in summary if len(row) > 1 and "融資金" in str(row[1])), None)
+        if not lots_row:
             return None
         return {
-            "date": date.isoformat(),
+            "date": data.get("date") or date.isoformat(),
             "market": "TPEX",
-            "finance_balance_lots": total_balance,
-            "previous_balance_lots": total_prev or None,
-            "finance_buy_lots": total_buy or None,
-            "finance_sell_lots": total_sell or None,
-            "stock_count": count,
+            "finance_balance_lots": _int(lots_row[6]) if len(lots_row) > 6 else None,
+            "previous_balance_lots": _int(lots_row[2]) if len(lots_row) > 2 else None,
+            "finance_buy_lots": _int(lots_row[3]) if len(lots_row) > 3 else None,
+            "finance_sell_lots": _int(lots_row[4]) if len(lots_row) > 4 else None,
+            "finance_balance_thousand_twd": _int(amount_row[6]) if amount_row and len(amount_row) > 6 else None,
+            "previous_balance_thousand_twd": _int(amount_row[2]) if amount_row and len(amount_row) > 2 else None,
+            "finance_buy_thousand_twd": _int(amount_row[3]) if amount_row and len(amount_row) > 3 else None,
+            "finance_sell_thousand_twd": _int(amount_row[4]) if amount_row and len(amount_row) > 4 else None,
+            "stock_count": table.get("totalCount"),
             "source": "tpex_margin_balance",
         }
     except Exception as exc:
@@ -250,12 +244,18 @@ def main() -> int:
             continue
         total = (twse or {}).get("finance_balance_lots", 0) + (tpex or {}).get("finance_balance_lots", 0)
         prev = (twse or {}).get("previous_balance_lots", 0) + (tpex or {}).get("previous_balance_lots", 0)
+        amount = (twse or {}).get("finance_balance_thousand_twd", 0) + (tpex or {}).get("finance_balance_thousand_twd", 0)
+        amount_prev = (twse or {}).get("previous_balance_thousand_twd", 0) + (tpex or {}).get("previous_balance_thousand_twd", 0)
         rows.append({
             "date": date.isoformat(),
             "total_finance_balance_lots": total or None,
             "total_change_lots": (total - prev) if total and prev else None,
+            "total_finance_balance_thousand_twd": amount or None,
+            "total_change_thousand_twd": (amount - amount_prev) if amount and amount_prev else None,
             "twse_finance_balance_lots": (twse or {}).get("finance_balance_lots"),
             "tpex_finance_balance_lots": (tpex or {}).get("finance_balance_lots"),
+            "twse_finance_balance_thousand_twd": (twse or {}).get("finance_balance_thousand_twd"),
+            "tpex_finance_balance_thousand_twd": (tpex or {}).get("finance_balance_thousand_twd"),
             "twse": twse,
             "tpex": tpex,
         })
@@ -268,7 +268,7 @@ def main() -> int:
         "source": "twse_mi_margn+tpex_margin_balance",
         "summary": latest or {},
         "history": history,
-        "definition": "上市與上櫃市場融資餘額合計；單位為張。用於觀察市場槓桿與情緒是否升溫。",
+        "definition": "上市與上櫃市場融資餘額合計；金額單位為仟元，前端換算為億元。用於觀察市場槓桿與情緒是否升溫。",
     }
     os.makedirs(DATA_DIR, exist_ok=True)
     with open(OUTPUT_PATH, "w", encoding="utf-8") as f:

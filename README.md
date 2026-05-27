@@ -37,7 +37,7 @@ data/
   right_top_track.json        ← 突破策略標的追蹤
   trust_momentum.json         ← 法人動能掃描結果（TWSE/TPEx 官方法人買賣超 + price_cache）
   futures_dashboard.json      ← FUTURE DASHBOARD（期貨 + VIX + 情緒指標）
-  margin_balance.json         ← 融資餘額（TWSE/TPEx 官方資料，市場槓桿觀察）
+  margin_balance.json         ← 融資餘額金額（TWSE/TPEx 官方資料，前端以億元顯示）
   market_index.json           ← 大盤指數（加權、櫃買、期貨夜盤）
   performance.json            ← 績效追蹤（建倉 / 出場紀錄）
   ai_recommendations.json     ← AI 選股推薦

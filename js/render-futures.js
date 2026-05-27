@@ -130,7 +130,7 @@ function fdFuturesCombinedRows(dayTx, nightTx) {
 }
 
 function fdStockRows(stock) {
-  const rows = (stock?.history || []).slice(0, 5);
+  const rows = (stock?.history || []).slice(0, 4);
   return rows.map(row => {
     const t = row.traders || {};
     return `
@@ -180,7 +180,7 @@ function fdMarketReadNote(retailDash, pc, marginData) {
   const retail = Number(mtx?.today);
   const retailChange = Number(mtx?.change);
   const pcValue = Number(pc?.open_interest_ratio);
-  const marginChange = Number(marginData?.summary?.total_change_lots);
+  const marginChange = Number(marginData?.summary?.total_change_thousand_twd);
   const notes = [];
   if (!Number.isNaN(retail) && retail >= 20) notes.push('散戶偏多偏高，追價時更需要等回測。');
   if (!Number.isNaN(retailChange) && retailChange >= 8) notes.push('散戶多方部位快速升溫，留意短線震盪。');
@@ -247,24 +247,24 @@ function fdSeriesChart({ title, meta, lines, summary, className = '' }) {
 }
 
 function fdMarginRows(marginData) {
-  const rows = (marginData?.history || []).slice(-5).reverse();
+  const rows = (marginData?.history || []).slice(-4).reverse();
   if (!rows.length) {
     return '<tr><td colspan="5" style="text-align:center;color:var(--text3)">尚無融資餘額資料</td></tr>';
   }
   return rows.map(row => {
-    const twseChange = row.twse?.finance_balance_lots != null && row.twse?.previous_balance_lots != null
-      ? row.twse.finance_balance_lots - row.twse.previous_balance_lots
+    const twseChange = row.twse?.finance_balance_thousand_twd != null && row.twse?.previous_balance_thousand_twd != null
+      ? row.twse.finance_balance_thousand_twd - row.twse.previous_balance_thousand_twd
       : null;
-    const tpexChange = row.tpex?.finance_balance_lots != null && row.tpex?.previous_balance_lots != null
-      ? row.tpex.finance_balance_lots - row.tpex.previous_balance_lots
+    const tpexChange = row.tpex?.finance_balance_thousand_twd != null && row.tpex?.previous_balance_thousand_twd != null
+      ? row.tpex.finance_balance_thousand_twd - row.tpex.previous_balance_thousand_twd
       : null;
     return `
       <tr>
         <td data-label="日期" class="mono">${row.date || '—'}</td>
-        <td data-label="融資餘額" class="mono">${row.total_finance_balance_lots == null ? '—' : fdNum(row.total_finance_balance_lots / 10000, 1)}</td>
-        <td data-label="日增減" class="mono ${fdTone(row.total_change_lots)}">${row.total_change_lots == null ? '—' : fdSigned(row.total_change_lots / 10000, 1)}</td>
-        <td data-label="上市增減" class="mono ${fdTone(twseChange)}">${twseChange == null ? '—' : fdSigned(twseChange / 10000, 1)}</td>
-        <td data-label="上櫃增減" class="mono ${fdTone(tpexChange)}">${tpexChange == null ? '—' : fdSigned(tpexChange / 10000, 1)}</td>
+        <td data-label="融資餘額" class="mono">${row.total_finance_balance_thousand_twd == null ? '—' : fdNum(row.total_finance_balance_thousand_twd / 100000, 1)}</td>
+        <td data-label="日增減" class="mono ${fdTone(row.total_change_thousand_twd)}">${row.total_change_thousand_twd == null ? '—' : fdSigned(row.total_change_thousand_twd / 100000, 1)}</td>
+        <td data-label="上市增減" class="mono ${fdTone(twseChange)}">${twseChange == null ? '—' : fdSigned(twseChange / 100000, 1)}</td>
+        <td data-label="上櫃增減" class="mono ${fdTone(tpexChange)}">${tpexChange == null ? '—' : fdSigned(tpexChange / 100000, 1)}</td>
       </tr>`;
   }).join('');
 }
@@ -272,11 +272,11 @@ function fdMarginRows(marginData) {
 function fdMarginTable(marginData) {
   const latest = marginData?.summary || {};
   const summary = latest.date
-    ? `餘額 ${latest.total_finance_balance_lots == null ? '—' : fdNum(latest.total_finance_balance_lots / 10000, 1) + ' 萬張'} · 日增減 ${latest.total_change_lots == null ? '—' : fdSigned(latest.total_change_lots / 10000, 1) + ' 萬張'}`
+    ? `餘額 ${latest.total_finance_balance_thousand_twd == null ? '—' : fdNum(latest.total_finance_balance_thousand_twd / 100000, 1) + ' 億'} · 日增減 ${latest.total_change_thousand_twd == null ? '—' : fdSigned(latest.total_change_thousand_twd / 100000, 1) + ' 億'}`
     : '等待更新';
   return fdTable(
     '融資餘額變化',
-    `${marginData?.date || '等待更新'} · ${summary} · 單位：萬張`,
+    `${marginData?.date || '等待更新'} · ${summary} · 單位：億`,
     ['日期', '融資餘額', '日增減', '上市增減', '上櫃增減'],
     fdMarginRows(marginData),
     'fd-margin-table'
