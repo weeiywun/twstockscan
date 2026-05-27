@@ -8,7 +8,9 @@
 
 ## 統一分數模型
 
-`scripts/unified_scoring.py` 是目前所有策略共用的 0-100 分數模型，權重集中在 `data/unified_score_config.json`。每日掃描與週六大戶掃描完成後，會執行 `scripts/apply_unified_scores.py`，替 `chips_big_holder`、`right_top`、`volume_signal`、`volume_pullback`、`momentum_pullback`、`momentum_candidates`、`performance` 等資料補上：
+`scripts/enrich_candidate_features.py` 會先把各策略篩出的股票代號彙整成 `data/candidate_features.json`，並從本地 `price_cache.parquet`、大戶籌碼、回測模型、題材熱度等既有資料補齊共用特徵，不額外呼叫外部 API。
+
+`scripts/unified_scoring.py` 是目前所有策略共用的 0-100 分數模型，權重集中在 `data/unified_score_config.json`。每日掃描與週六大戶掃描完成後，會先執行共用特徵補齊，再執行 `scripts/apply_unified_scores.py`，替 `chips_big_holder`、`right_top`、`volume_signal`、`volume_pullback`、`momentum_pullback`、`momentum_candidates`、`performance` 等資料補上：
 
 - `score` / `unified_score`：統一後的總分，上限 100。
 - `legacy_score`：調整前各策略自己的原始分數，方便回頭比較。

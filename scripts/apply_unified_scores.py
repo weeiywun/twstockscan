@@ -8,7 +8,7 @@ import os
 from datetime import datetime, timedelta, timezone
 from typing import Any
 
-from unified_scoring import WEIGHTS, apply_unified_score, clamp, grade, source_multiplier
+from unified_scoring import WEIGHTS, clamp, compute_unified_score, grade, source_multiplier
 
 SCRIPT_DIR = os.path.dirname(os.path.abspath(__file__))
 DATA_DIR = os.path.join(SCRIPT_DIR, "..", "data")
@@ -61,11 +61,45 @@ def build_theme_index() -> dict[str, dict[str, Any]]:
     return index
 
 
+def load_feature_map() -> dict[str, dict[str, Any]]:
+    data = load_json("candidate_features.json")
+    return {
+        str(row.get("stock_id") or ""): row
+        for row in data.get("results", []) or []
+        if isinstance(row, dict) and row.get("stock_id")
+    }
+
+
+def score_row(
+    row: dict[str, Any],
+    *,
+    source: str,
+    theme_index: dict[str, dict[str, Any]],
+    feature_map: dict[str, dict[str, Any]],
+) -> None:
+    sid = stock_id_of(row)
+    feature = feature_map.get(sid) or {}
+    enriched = {**feature, **row}
+    enriched["sources"] = sorted(set((feature.get("sources") or []) + (row.get("sources") or []) + [source]))
+    enriched["tags"] = sorted(set((feature.get("tags") or []) + (row.get("tags") or []) + (row.get("source_tags") or [])))
+    if feature.get("metrics") or row.get("metrics"):
+        enriched["metrics"] = {**(feature.get("metrics") or {}), **(row.get("metrics") or {})}
+
+    detail = compute_unified_score(enriched, fallback_source=source, theme_index=theme_index)
+    if "legacy_score" not in row and row.get("score") is not None:
+        row["legacy_score"] = row.get("score")
+    row["unified_score"] = detail["total"]
+    row["unified_score_grade"] = detail["grade"]
+    row["score_breakdown"] = detail
+    row["score"] = detail["total"]
+
+
 def apply_to_rows(
     data: dict[str, Any],
     keys: list[str],
     source: str,
     theme_index: dict[str, dict[str, Any]],
+    feature_map: dict[str, dict[str, Any]],
     row_refs: list[dict[str, Any]],
 ) -> int:
     count = 0
@@ -76,7 +110,7 @@ def apply_to_rows(
         for row in rows:
             if not isinstance(row, dict):
                 continue
-            apply_unified_score(row, fallback_source=source, theme_index=theme_index)
+            score_row(row, source=source, theme_index=theme_index, feature_map=feature_map)
             row_refs.append(row)
             count += 1
     if count:
@@ -92,13 +126,14 @@ def apply_file(
     keys: list[str],
     source: str,
     theme_index: dict[str, dict[str, Any]],
+    feature_map: dict[str, dict[str, Any]],
     row_refs: list[dict[str, Any]],
     datasets: list[tuple[str, dict[str, Any]]],
 ) -> int:
     data = load_json(filename)
     if not data:
         return 0
-    count = apply_to_rows(data, keys, source, theme_index, row_refs)
+    count = apply_to_rows(data, keys, source, theme_index, feature_map, row_refs)
     if count:
         datasets.append((filename, data))
     return count
@@ -106,6 +141,7 @@ def apply_file(
 
 def enrich_performance(
     theme_index: dict[str, dict[str, Any]],
+    feature_map: dict[str, dict[str, Any]],
     row_refs: list[dict[str, Any]],
     datasets: list[tuple[str, dict[str, Any]]],
 ) -> int:
@@ -120,7 +156,7 @@ def enrich_performance(
         sid = str(row.get("stock_id") or "")
         if current_prices.get(sid) is not None and row.get("current_price") is None:
             row["current_price"] = current_prices.get(sid)
-        apply_unified_score(row, fallback_source="holding", theme_index=theme_index)
+        score_row(row, source="holding", theme_index=theme_index, feature_map=feature_map)
         row_refs.append(row)
         count += 1
     if count:
@@ -193,6 +229,7 @@ def apply_stock_score_profiles(row_refs: list[dict[str, Any]], profiles: dict[st
 
 def main() -> int:
     theme_index = build_theme_index()
+    feature_map = load_feature_map()
     row_refs: list[dict[str, Any]] = []
     datasets: list[tuple[str, dict[str, Any]]] = []
     targets = [
@@ -211,10 +248,10 @@ def main() -> int:
     ]
     total = 0
     for filename, keys, source in targets:
-        count = apply_file(filename, keys, source, theme_index, row_refs, datasets)
+        count = apply_file(filename, keys, source, theme_index, feature_map, row_refs, datasets)
         total += count
         print(f"[unified-score] {filename}: {count}")
-    perf_count = enrich_performance(theme_index, row_refs, datasets)
+    perf_count = enrich_performance(theme_index, feature_map, row_refs, datasets)
     total += perf_count
     print(f"[unified-score] performance.json: {perf_count}")
     profiles = build_stock_score_profiles(row_refs)

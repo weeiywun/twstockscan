@@ -38,7 +38,7 @@ FLEX_LIGHT = "#aaaaaa"
 FLEX_GAIN = "#d93025"
 FLEX_LOSS = "#0c6b3e"
 MAX_HOLDINGS = 4
-MAX_FOCUS = 5
+MAX_FOCUS = 3
 
 
 def performance_image_url() -> str:
@@ -141,7 +141,7 @@ def build_focus_items() -> list[dict[str, Any]]:
     rows = data.get("focus_results") or [
         row for row in data.get("results", []) if row.get("focus_candidate")
     ]
-    rows.sort(key=lambda row: (row.get("priority_rank", 9), -(num(row.get("score"), 0) or 0), row.get("stock_id", "")))
+    rows.sort(key=lambda row: (-(num(row.get("unified_score"), num(row.get("score"), 0)) or 0), row.get("priority_rank", 9), row.get("stock_id", "")))
     return rows[:MAX_FOCUS]
 
 
@@ -207,7 +207,7 @@ def holding_row(item: dict[str, Any]) -> dict:
 def focus_row(item: dict[str, Any]) -> dict:
     metrics = item.get("metrics", {})
     vol_ratio = metrics.get("today_vol_ratio") or metrics.get("ignition_vol_ratio") or metrics.get("track_vol_ratio")
-    track = metrics.get("track_pnl_pct")
+    score = num(item.get("unified_score"), num(item.get("score")))
     status = item.get("status") or "觀察"
     return {
         "type": "box",
@@ -237,8 +237,8 @@ def focus_row(item: dict[str, Any]) -> dict:
                 "layout": "vertical",
                 "flex": 2,
                 "contents": [
-                    flex_text(f"{num(vol_ratio, 0):.2f}x" if vol_ratio is not None else "--", "sm", FLEX_PRIMARY, weight="bold", align="center"),
-                    flex_text(f"追蹤 {fmt_pct(track)}", "xxs", FLEX_MUTED, align="center"),
+                    flex_text(f"{score:.1f}" if score is not None else "--", "sm", FLEX_PRIMARY, weight="bold", align="center"),
+                    flex_text(f"量比 {num(vol_ratio, 0):.2f}x" if vol_ratio is not None else "量比 --", "xxs", FLEX_MUTED, align="center"),
                 ],
             },
         ],
@@ -268,10 +268,10 @@ def build_flex_message(holdings: list[dict[str, Any]], focus_items: list[dict[st
     if not holdings:
         holdings_content.append(empty_row("目前沒有持倉資料"))
 
-    focus_content = [section_title("精選觀察 Top 5", f"{len(focus_items)} 檔")]
+    focus_content = [section_title("標的池 Top 3", f"{len(focus_items)} 檔")]
     focus_content.extend([focus_row(item) for item in focus_items[:MAX_FOCUS]])
     if not focus_items:
-        focus_content.append(empty_row("今日沒有符合精選觀察的標的"))
+        focus_content.append(empty_row("今日標的池沒有候選標的"))
 
     bubble = {
         "type": "bubble",
