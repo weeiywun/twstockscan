@@ -29,6 +29,10 @@ const STRATEGIES = [
   },
   {
     id: "theme_heat",
+    // BACKUP - DO NOT DELETE:
+    // Theme heat remains generated in data/theme_heat.json, but the main workflow
+    // is simplified back to the decision-ready stock pool.
+    hidden: true,
     name: "資金主線",
     shortName: "資金主線",
     icon: "◆",
@@ -47,18 +51,13 @@ const STRATEGIES = [
   },
   {
     id: "ssr",
-    name: "精選觀察",
-    shortName: "精選觀察",
+    name: "標的池",
+    shortName: "標的池",
     icon: "✦",
     group: "decision",
     available: true,
-    description: "目前聚焦籌碼集中與突破策略，找出大戶追蹤與價格突破同時命中的標的。VCP / 法人動能暫停備用勿刪。",
-    conditions: [
-      "目前主線：籌碼集中 + 突破策略",
-      "VCP / 法人動能已暫停備用勿刪，不納入前台交集與每日策略掃描",
-      "法人連買標籤仍由 institutional_tags.yml 維持更新",
-      "此頁只做交集總覽，不改變各策略原本的篩選邏輯",
-    ],
+    description: "彙整已收斂的精選候選，作為每日人工看圖與決策的主要標的池。",
+    conditions: [],
     dataUpdated: "載入中...",
     dataSource: "前端彙整既有策略結果",
   },
@@ -275,7 +274,7 @@ let DATE_LABELS = [];
 // ════════════════════════════════════════════════════
 //  STATE
 // ════════════════════════════════════════════════════
-let activeStratId = (PERF_UNLOCKED ? STRATEGIES[0] : (STRATEGIES.find(s => s.id === "theme_heat") || STRATEGIES.find(s => s.id !== "performance") || STRATEGIES[0])).id;
+let activeStratId = (PERF_UNLOCKED ? STRATEGIES[0] : (STRATEGIES.find(s => s.id === "ssr") || STRATEGIES.find(s => s.id !== "performance" && !s.hidden) || STRATEGIES[0])).id;
 let sortCol = "chg_2w_1000";
 let sortAsc = false;
 let chipsViewMode = "stock"; // "stock" | "industry"

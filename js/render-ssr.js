@@ -136,7 +136,7 @@ function renderSSR(strat, main) {
   const SHOW_INTRADAY_ALERT_PANEL = false;
   const intraday = DATA.intraday_volume_pullback_data || [];
   const intradayMeta = DATA.intraday_volume_pullback_meta || {};
-  let filter = window._ssrFilter || (focusRows.length ? 'focus' : 'c5_2');
+  let filter = 'focus';
   const sortCol = window._ssrSortCol || 'score';
   const sortAsc = window._ssrSortAsc !== undefined ? window._ssrSortAsc : false;
   const intradaySortCol = window._ssrIntradaySortCol || 'intraday_vol_ratio_to_10d';
@@ -213,35 +213,6 @@ function renderSSR(strat, main) {
     return `<span class="sort-icon">${intradaySortCol === col ? (intradaySortAsc ? '↑' : '↓') : '·'}</span>`;
   }
 
-  const tripleCount = rows.filter(r => r.strategy_count >= 3).length;
-  const chipsVcpCount = rows.filter(r => r.chips && r.vcp).length;
-  const chipsBreakoutCount = rows.filter(r => r.chips && r.breakout).length;
-  const vcpBreakoutCount = rows.filter(r => r.vcp && r.breakout).length;
-  const trustVcpCount = rows.filter(r => r.trust && r.vcp).length;
-  const trustBreakoutCount = rows.filter(r => r.trust && r.breakout).length;
-  const foreignVcpCount = rows.filter(r => r.foreign && r.vcp).length;
-  const foreignBreakoutCount = rows.filter(r => r.foreign && r.breakout).length;
-  const instConfluenceCount = rows.filter(r => r.trust && r.foreign).length;
-  const ssrFilterOptions = [
-    { key: 'focus', label: '精選觀察', count: focusRows.length, always: focusRows.length > 0 },
-    { key: 'c5_2', label: 'C5取2', count: rows.length, always: true },
-    { key: 'triple', label: '三組以上', count: tripleCount },
-    { key: 'inst_confluence', label: '投信+外資', count: instConfluenceCount },
-    { key: 'chips_vcp', label: '大戶+VCP', count: chipsVcpCount },
-    { key: 'chips_breakout', label: '大戶+突破', count: chipsBreakoutCount },
-    { key: 'vcp_breakout', label: 'VCP+突破', count: vcpBreakoutCount },
-    { key: 'trust_vcp', label: '投信+VCP', count: trustVcpCount },
-    { key: 'trust_breakout', label: '投信+突破', count: trustBreakoutCount },
-    { key: 'foreign_vcp', label: '外資+VCP', count: foreignVcpCount },
-    { key: 'foreign_breakout', label: '外資+突破', count: foreignBreakoutCount },
-  ];
-  const visibleSsrFilters = ssrFilterOptions.filter(opt => opt.always || opt.count > 0);
-  if (!visibleSsrFilters.some(opt => opt.key === filter)) {
-    filter = 'c5_2';
-    window._ssrFilter = filter;
-  }
-  const ssrFilterButtons = visibleSsrFilters.map(opt => `
-        <button class="view-btn ${filter === opt.key ? 'active' : ''}" onclick="setSSRFilter('${opt.key}')">${opt.label} ${opt.count}</button>`).join('');
   const filtered = rows.filter(matchFilter).sort(compare);
   const filteredFocus = focusRows.slice().sort(compareFocus);
   const topIndustry = filtered.reduce((acc, row) => {
@@ -392,14 +363,14 @@ function renderSSR(strat, main) {
 
     return `<div class="table-wrap">
       <div class="table-toolbar">
-        <span class="table-title">精選觀察</span>
+        <span class="table-title">標的池</span>
         <div class="toolbar-right">
           <span class="updated-tag">顯示 ${filteredFocus.length} / ${momentumData.summary?.total || focusRows.length}</span>
           <span class="updated-tag">更新：${(momentumData.updated || '').slice(0, 10) || strat.dataUpdated}</span>
         </div>
       </div>
       <div style="padding:10px 14px;border-bottom:1px solid var(--border);font-size:12px;color:var(--text3);line-height:1.7">
-        以 A 級候選為基礎，保留量增回測 / 再啟動，並要求大戶或突破追蹤脈絡；排除過熱與已延伸過遠的標的。
+        以精選候選為基礎，保留量增回測 / 再啟動，並要求大戶或突破追蹤脈絡；排除過熱與已延伸過遠的標的。
       </div>
       <div class="table-scroll ${filteredFocus.length > 10 ? 'table-vscroll' : ''}">
         <table>
@@ -415,7 +386,7 @@ function renderSSR(strat, main) {
               <th>備註</th>
             </tr>
           </thead>
-          <tbody>${rowsHTML || `<tr><td colspan="8" style="text-align:center;color:var(--text3);padding:28px">目前沒有精選觀察標的</td></tr>`}</tbody>
+          <tbody>${rowsHTML || `<tr><td colspan="8" style="text-align:center;color:var(--text3);padding:28px">目前沒有標的池候選</td></tr>`}</tbody>
         </table>
       </div>
     </div>`;
@@ -519,86 +490,9 @@ function renderSSR(strat, main) {
         <div class="strat-title">${strat.icon} ${strat.name}</div>
         <div class="strat-desc">${strat.description}</div>
       </div>
-      <div class="conditions">
-        ${strat.conditions.map(c => `<div class="cond"><span class="cond-dot"></span>${c}</div>`).join('')}
-      </div>
-
-      <div class="summary-row">
-        <div class="summary-card">
-          <div class="summary-label">精選觀察</div>
-          <div class="summary-value green">${focusRows.length}</div>
-          <div class="summary-sub">A 級 + 回測 / 再啟動</div>
-        </div>
-        <div class="summary-card">
-          <div class="summary-label">C5 取 2</div>
-          <div class="summary-value blue">${rows.length}</div>
-          <div class="summary-sub">任兩組以上同時命中</div>
-        </div>
-        <div class="summary-card">
-          <div class="summary-label">三組以上</div>
-          <div class="summary-value green">${tripleCount}</div>
-          <div class="summary-sub">五組策略任三組以上共振</div>
-        </div>
-        <div class="summary-card">
-          <div class="summary-label">大戶 + VCP</div>
-          <div class="summary-value" style="color:var(--amber)">${chipsVcpCount}</div>
-          <div class="summary-sub">籌碼先行搭配型態收斂</div>
-        </div>
-      </div>
 
       ${SHOW_INTRADAY_ALERT_PANEL ? renderIntradaySSRPanel() : ''}
 
-      <div style="display:flex;gap:8px;padding:0 0 10px 0;flex-wrap:wrap">
-        ${ssrFilterButtons}
-      </div>
-
-      ${filter === 'focus' ? renderFocusTable() : (filtered.length === 0 ? emptyHTML : `
-        <div class="table-wrap">
-          <div class="table-toolbar">
-            <span class="table-title">SSR 共振標的池</span>
-            <div class="toolbar-right">
-              <span class="updated-tag">更新：${strat.dataUpdated}</span>
-              <button class="btn-csv" onclick="exportSSRCSV()">匯出 CSV</button>
-            </div>
-          </div>
-          <div class="table-scroll">
-            <table>
-              <thead>
-                <tr>
-                  <th onclick="ssrSort('stock_id')" style="cursor:pointer">代號 / 名稱${sortIcon('stock_id')}</th>
-                  <th onclick="ssrSort('score')" style="cursor:pointer">共振${sortIcon('score')}</th>
-                  <th onclick="ssrSort('strategy_count')" style="cursor:pointer">命中${sortIcon('strategy_count')}</th>
-                  <th onclick="ssrSort('industry')" style="cursor:pointer">產業${sortIcon('industry')}</th>
-                  <th onclick="ssrSort('close')" style="cursor:pointer">收盤${sortIcon('close')}</th>
-                  <th>策略組合</th>
-                  <th>關鍵訊號</th>
-                </tr>
-              </thead>
-              <tbody>
-                ${filtered.map(row => {
-                  const tvSymbol = getTVSymbol(row);
-                  return `<tr>
-                    <td>
-                      <a href="https://www.tradingview.com/chart/?symbol=${tvSymbol}"
-                         onclick="openTV('${tvSymbol}', event)" style="text-decoration:none;display:inline-block">
-                        <div class="stock-code" style="display:flex;align-items:center;gap:5px">
-                          ${row.stock_id}<span style="font-size:9px;opacity:.45;font-family:var(--mono)">↗</span>
-                        </div>
-                        <div class="stock-name">${row.name || '—'}</div>
-                      </a>
-                      <div class="stock-industry" style="font-size:10px;color:var(--text3)">${row.market || '—'}</div>
-                    </td>
-                    <td><span style="font-family:var(--mono);font-size:16px;font-weight:700;color:${row.strategy_count >= 3 ? 'var(--green)' : 'var(--blue)'}">${row.score}</span></td>
-                    <td><span style="font-family:var(--mono);font-weight:700">${row.strategy_count}/5</span></td>
-                    <td><span style="font-size:12px;color:var(--text2)">${row.industry || '—'}</span></td>
-                    <td><span class="price-cell">${fmtNum(row.close)}</span></td>
-                    <td><div class="tag-cell">${strategyBadges(row)}</div></td>
-                    <td><div style="font-size:11px;line-height:1.65;color:var(--text2)">${detailText(row)}</div></td>
-                  </tr>`;
-                }).join('')}
-              </tbody>
-            </table>
-          </div>
-        </div>`)}
+      ${renderFocusTable()}
     </div>`;
 }
