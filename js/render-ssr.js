@@ -137,6 +137,7 @@ function renderSSR(strat, main) {
   const intraday = DATA.intraday_volume_pullback_data || [];
   const intradayMeta = DATA.intraday_volume_pullback_meta || {};
   let filter = 'focus';
+  const poolSourceFilter = window._stockPoolSourceFilter || 'all';
   const sortCol = window._ssrSortCol || 'score';
   const sortAsc = window._ssrSortAsc !== undefined ? window._ssrSortAsc : false;
   const intradaySortCol = window._ssrIntradaySortCol || 'intraday_vol_ratio_to_10d';
@@ -147,6 +148,12 @@ function renderSSR(strat, main) {
     renderStrategy();
   }
   window.setSSRFilter = setSSRFilter;
+
+  function setStockPoolSourceFilter(v) {
+    window._stockPoolSourceFilter = v;
+    renderStrategy();
+  }
+  window.setStockPoolSourceFilter = setStockPoolSourceFilter;
 
   function ssrSort(col) {
     if (window._ssrSortCol === col) window._ssrSortAsc = !window._ssrSortAsc;
@@ -213,8 +220,35 @@ function renderSSR(strat, main) {
     return `<span class="sort-icon">${intradaySortCol === col ? (intradaySortAsc ? '↑' : '↓') : '·'}</span>`;
   }
 
+  function matchesPoolSource(row, sourceFilter) {
+    const sources = new Set(row.sources || []);
+    if (sourceFilter === 'chips') return sources.has('chips');
+    if (sourceFilter === 'volume_signal') return sources.has('volume_signal');
+    if (sourceFilter === 'right_top_track') return sources.has('right_top_track');
+    if (sourceFilter === 'volume_pullback') return sources.has('volume_pullback');
+    return true;
+  }
+
+  function sourceCount(sourceFilter) {
+    return focusRows.filter(row => matchesPoolSource(row, sourceFilter)).length;
+  }
+
+  const poolFilterOptions = [
+    { key: 'all', label: '全部', count: focusRows.length },
+    { key: 'chips', label: '大戶', count: sourceCount('chips') },
+    { key: 'volume_signal', label: '量增', count: sourceCount('volume_signal') },
+    { key: 'right_top_track', label: '突破', count: sourceCount('right_top_track') },
+    { key: 'volume_pullback', label: '回測', count: sourceCount('volume_pullback') },
+  ];
+  const poolFilterButtons = poolFilterOptions.map(opt => `
+    <button class="view-btn ${poolSourceFilter === opt.key ? 'active' : ''}"
+      onclick="setStockPoolSourceFilter('${opt.key}')">${opt.label} ${opt.count}</button>
+  `).join('');
+
   const filtered = rows.filter(matchFilter).sort(compare);
-  const filteredFocus = focusRows.slice().sort(compareFocus);
+  const filteredFocus = focusRows
+    .filter(row => matchesPoolSource(row, poolSourceFilter))
+    .sort(compareFocus);
   const topIndustry = filtered.reduce((acc, row) => {
     const key = row.industry || '未分類';
     acc[key] = (acc[key] || 0) + 1;
@@ -371,6 +405,9 @@ function renderSSR(strat, main) {
       </div>
       <div style="padding:10px 14px;border-bottom:1px solid var(--border);font-size:12px;color:var(--text3);line-height:1.7">
         以精選候選為基礎，保留量增回測 / 再啟動，並要求大戶或突破追蹤脈絡；排除過熱與已延伸過遠的標的。
+      </div>
+      <div style="display:flex;gap:8px;padding:10px 14px;border-bottom:1px solid var(--border);flex-wrap:wrap">
+        ${poolFilterButtons}
       </div>
       <div class="table-scroll ${filteredFocus.length > 10 ? 'table-vscroll' : ''}">
         <table>
