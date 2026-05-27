@@ -16,12 +16,33 @@ function themeHeatSourcePills(labels) {
   )).join('');
 }
 
+function themeLeaderLine(leader) {
+  const up = Number(leader.day_chg_pct) >= 0;
+  const marks = [
+    leader.above_ema20 ? 'EMA20↑' : '',
+    leader.new_high_60d ? '60H' : '',
+  ].filter(Boolean).join(' · ');
+  return `<div class="theme-leader-row">
+    <div>
+      <span class="stock-code">${leader.stock_id}</span>
+      <span class="theme-leader-name">${leader.name || ''}</span>
+    </div>
+    <div class="theme-leader-metrics">
+      <span style="color:${up ? 'var(--market-up)' : 'var(--market-down)'}">${themeHeatPct(leader.day_chg_pct)}</span>
+      <span>5D ${themeHeatPct(leader.chg_5d_pct)}</span>
+      <span>量 ${themeHeatNum(leader.volume_ratio_20d, 2)}x</span>
+      ${marks ? `<span>${marks}</span>` : ''}
+    </div>
+  </div>`;
+}
+
 function renderThemeHeat(strat, main) {
   const data = DATA.theme_heat_data || {};
   const themes = data.themes || [];
   const selected = data.selected || [];
   const topThemes = themes.slice(0, 5);
   const activeTheme = window._themeHeatFilter || (topThemes[0]?.theme || '');
+  const activeThemeRow = themes.find(theme => theme.theme === activeTheme) || topThemes[0] || {};
   const shownRows = selected
     .filter(row => !activeTheme || (row.themes || []).includes(activeTheme))
     .slice(0, 12);
@@ -35,19 +56,25 @@ function renderThemeHeat(strat, main) {
     const reps = (theme.representatives || []).slice(0, 3)
       .map(item => `${item.stock_id} ${item.name || ''}`.trim())
       .join(' / ');
+    const leaders = (theme.market_leaders || []).slice(0, 3)
+      .map(item => `${item.stock_id} ${item.name || ''} ${themeHeatPct(item.day_chg_pct)}`.trim())
+      .join(' / ');
     const isActive = theme.theme === activeTheme;
     return `<button class="theme-card ${isActive ? 'active' : ''}" onclick="setThemeHeatFilter('${theme.theme}')">
       <div class="theme-rank">#${index + 1}</div>
       <div class="theme-name">${theme.theme}</div>
       <div class="theme-score">${themeHeatNum(theme.score, 0)}</div>
       <div class="theme-meta">
-        <span>${theme.count} 檔</span>
-        <span>量比 ${themeHeatNum(theme.avg_volume_ratio, 2)}</span>
-        <span>${themeHeatPct(theme.avg_week_chg_pct)}</span>
+        <span>市場 ${themeHeatNum(theme.market_score, 0)}</span>
+        <span>策略 ${theme.count} 檔</span>
+        <span>風向 ${theme.market_summary?.up_count || 0}/${theme.market_summary?.count || 0}</span>
       </div>
-      <div class="theme-reps">${reps || '等待訊號'}</div>
+      <div class="theme-reps">風向：${leaders || '等待資料'}</div>
+      <div class="theme-reps">候選：${reps || '等待訊號'}</div>
     </button>`;
   }).join('');
+
+  const leaderRows = (activeThemeRow.market_leaders || []).slice(0, 5).map(themeLeaderLine).join('');
 
   const selectedRows = shownRows.map(row => {
     const tvSymbol = getTVSymbol(row);
@@ -82,7 +109,7 @@ function renderThemeHeat(strat, main) {
       <div class="summary-card">
         <div class="summary-label">主線題材</div>
         <div class="summary-value green">${data.summary?.themes ?? 0}</div>
-        <div class="summary-sub">依既有策略結果統計</div>
+        <div class="summary-sub">市場風向 + 策略命中</div>
       </div>
       <div class="summary-card">
         <div class="summary-label">候選標的</div>
@@ -102,6 +129,35 @@ function renderThemeHeat(strat, main) {
     </div>
 
     <div class="theme-grid">${themeCards || '<div class="empty-state">目前沒有題材熱度資料</div>'}</div>
+
+    <div class="theme-split">
+      <div class="theme-section-card">
+        <div class="theme-section-title">${activeTheme || '主線'} 風向股</div>
+        <div class="theme-section-sub">
+          市場分 ${themeHeatNum(activeThemeRow.market_score, 1)} ·
+          平均日漲 ${themeHeatPct(activeThemeRow.market_summary?.avg_day_chg_pct)} ·
+          平均量比 ${themeHeatNum(activeThemeRow.market_summary?.avg_volume_ratio_20d, 2)}x
+        </div>
+        <div class="theme-leader-list">${leaderRows || '<div class="empty-state">尚無風向股價格資料</div>'}</div>
+      </div>
+      <div class="theme-section-card">
+        <div class="theme-section-title">策略候選摘要</div>
+        <div class="theme-section-sub">
+          策略分 ${themeHeatNum(activeThemeRow.strategy_score, 1)} ·
+          候選 ${activeThemeRow.count || 0} 檔 ·
+          回測 ${activeThemeRow.pullback_count || 0} ·
+          突破 ${activeThemeRow.breakout_count || 0} ·
+          大戶 ${activeThemeRow.chips_count || 0}
+        </div>
+        <div class="theme-candidate-reps">
+          ${(activeThemeRow.representatives || []).slice(0, 5).map(item => `
+            <span class="tag-badge" style="color:var(--text2);background:var(--bg3);border-color:var(--border)">
+              ${item.stock_id} ${item.name || ''}
+            </span>
+          `).join('') || '<span style="color:var(--text3);font-size:12px">尚無策略候選</span>'}
+        </div>
+      </div>
+    </div>
 
     <div class="table-wrap">
       <div class="table-toolbar">

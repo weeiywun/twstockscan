@@ -14,11 +14,15 @@ import os
 from datetime import datetime, timedelta, timezone
 from typing import Any
 
+import pandas as pd
+
 SCRIPT_DIR = os.path.dirname(os.path.abspath(__file__))
 DATA_DIR = os.path.join(SCRIPT_DIR, "..", "data")
 
 CONFIG_PATH = os.path.join(DATA_DIR, "theme_config.json")
 OUTPUT_PATH = os.path.join(DATA_DIR, "theme_heat.json")
+PRICE_CACHE_PATH = os.path.join(DATA_DIR, "price_cache.parquet")
+STOCK_LIST_PATH = os.path.join(DATA_DIR, "stock_list_cache.json")
 
 SOURCE_FILES = {
     "momentum_candidates": os.path.join(DATA_DIR, "momentum_candidates.json"),
@@ -57,6 +61,13 @@ def load_json(path: str, default: Any) -> Any:
         return json.load(f)
 
 
+def load_stock_meta() -> dict[str, dict[str, Any]]:
+    rows = load_json(STOCK_LIST_PATH, [])
+    if not isinstance(rows, list):
+        return {}
+    return {str(row.get("stock_id")): row for row in rows if row.get("stock_id")}
+
+
 def num(value: Any, default: float = 0.0) -> float:
     try:
         if value is None:
@@ -75,8 +86,119 @@ def round_or_none(value: Any, digits: int = 2) -> float | None:
         return None
 
 
+def pct_change(current: Any, base: Any) -> float | None:
+    current_num = num(current)
+    base_num = num(base)
+    if base_num == 0:
+        return None
+    return round((current_num / base_num - 1) * 100, 2)
+
+
 def now_tw() -> str:
     return datetime.now(TW_TZ).strftime("%Y-%m-%dT%H:%M:%S+08:00")
+
+
+def load_price_cache() -> pd.DataFrame | None:
+    if not os.path.exists(PRICE_CACHE_PATH):
+        return None
+    df = pd.read_parquet(PRICE_CACHE_PATH)
+    if df.empty:
+        return None
+    df = df.copy()
+    df["stock_id"] = df["stock_id"].astype(str)
+    df["date"] = pd.to_datetime(df["date"])
+    return df.sort_values(["stock_id", "date"])
+
+
+def leader_metrics(stock_id: str, price_df: pd.DataFrame | None, stock_meta: dict[str, dict[str, Any]]) -> dict[str, Any] | None:
+    if price_df is None:
+        return None
+    hist = price_df[price_df["stock_id"] == str(stock_id)].sort_values("date")
+    if len(hist) < 21:
+        return None
+    latest = hist.iloc[-1]
+    prev = hist.iloc[-2] if len(hist) >= 2 else None
+    close = float(latest["close"])
+    prev_close = float(prev["close"]) if prev is not None else None
+    close_5 = float(hist.iloc[-6]["close"]) if len(hist) >= 6 else None
+    close_20 = float(hist.iloc[-21]["close"]) if len(hist) >= 21 else None
+    vol20 = float(hist["volume_lots"].tail(21).head(20).mean())
+    ema20 = float(hist["close"].ewm(span=20, adjust=False).mean().iloc[-1])
+    ema60 = float(hist["close"].ewm(span=60, adjust=False).mean().iloc[-1]) if len(hist) >= 60 else None
+    high60 = float(hist["close"].tail(min(len(hist), 60)).max())
+    volume = float(latest["volume_lots"])
+    volume_ratio = volume / vol20 if vol20 else None
+    meta = stock_meta.get(str(stock_id), {})
+    day_chg = pct_change(close, prev_close)
+    chg_5d = pct_change(close, close_5)
+    chg_20d = pct_change(close, close_20)
+    leader_score = 0.0
+    if day_chg is not None and day_chg > 0:
+      leader_score += min(day_chg * 2, 12)
+    if chg_5d is not None and chg_5d > 0:
+      leader_score += min(chg_5d, 14)
+    if chg_20d is not None and chg_20d > 0:
+      leader_score += min(chg_20d / 2, 16)
+    if volume_ratio is not None and volume_ratio > 1:
+      leader_score += min((volume_ratio - 1) * 8, 12)
+    if close >= ema20:
+      leader_score += 8
+    if ema60 is not None and close >= ema60:
+      leader_score += 5
+    if close >= high60:
+      leader_score += 10
+    return {
+        "stock_id": str(stock_id),
+        "name": meta.get("name", ""),
+        "industry": meta.get("industry", ""),
+        "market": meta.get("market", ""),
+        "date": latest["date"].strftime("%Y-%m-%d"),
+        "close": round(close, 2),
+        "day_chg_pct": day_chg,
+        "chg_5d_pct": chg_5d,
+        "chg_20d_pct": chg_20d,
+        "volume_lots": int(volume),
+        "volume_ratio_20d": round(volume_ratio, 2) if volume_ratio is not None else None,
+        "above_ema20": close >= ema20,
+        "above_ema60": bool(ema60 is not None and close >= ema60),
+        "new_high_60d": close >= high60,
+        "leader_score": round(leader_score, 1),
+    }
+
+
+def theme_leader_rows(theme: dict[str, Any], price_df: pd.DataFrame | None, stock_meta: dict[str, dict[str, Any]]) -> list[dict[str, Any]]:
+    ids = list(dict.fromkeys((theme.get("leaders") or []) + (theme.get("stock_ids") or [])[:3]))
+    rows = [leader_metrics(stock_id, price_df, stock_meta) for stock_id in ids]
+    return sorted([row for row in rows if row], key=lambda row: (-num(row.get("leader_score")), row["stock_id"]))[:5]
+
+
+def leader_summary(rows: list[dict[str, Any]]) -> dict[str, Any]:
+    if not rows:
+        return {
+            "count": 0,
+            "score": 0,
+            "avg_day_chg_pct": None,
+            "avg_volume_ratio_20d": None,
+            "up_count": 0,
+            "above_ema20_count": 0,
+            "new_high_60d_count": 0,
+        }
+    day = [num(r.get("day_chg_pct")) for r in rows if r.get("day_chg_pct") is not None]
+    vol = [num(r.get("volume_ratio_20d")) for r in rows if r.get("volume_ratio_20d") is not None]
+    up_count = sum(1 for r in rows if num(r.get("day_chg_pct")) > 0)
+    above_ema20 = sum(1 for r in rows if r.get("above_ema20"))
+    new_high = sum(1 for r in rows if r.get("new_high_60d"))
+    avg_score = sum(num(r.get("leader_score")) for r in rows) / len(rows)
+    breadth_score = (up_count / len(rows)) * 18 + (above_ema20 / len(rows)) * 16 + (new_high / len(rows)) * 10
+    return {
+        "count": len(rows),
+        "score": round(avg_score + breadth_score, 1),
+        "avg_day_chg_pct": round(sum(day) / len(day), 2) if day else None,
+        "avg_volume_ratio_20d": round(sum(vol) / len(vol), 2) if vol else None,
+        "up_count": up_count,
+        "above_ema20_count": above_ema20,
+        "new_high_60d_count": new_high,
+    }
 
 
 def normalize_row(item: dict[str, Any], source: str) -> dict[str, Any] | None:
@@ -209,6 +331,9 @@ def stock_theme_score(row: dict[str, Any]) -> float:
 
 def build() -> dict[str, Any]:
     config = load_json(CONFIG_PATH, {"themes": [], "excluded_industries": []})
+    stock_meta = load_stock_meta()
+    price_df = load_price_cache()
+    theme_config_by_name = {theme["name"]: theme for theme in config.get("themes", [])}
     stocks: dict[str, dict[str, Any]] = {}
     source_counts: dict[str, int] = {}
     source_dates: list[str] = []
@@ -274,6 +399,9 @@ def build() -> dict[str, Any]:
 
     theme_rows = []
     for bucket in themes.values():
+        theme_config = theme_config_by_name.get(bucket["theme"], {})
+        market_leaders = theme_leader_rows(theme_config, price_df, stock_meta)
+        market_summary = leader_summary(market_leaders)
         stocks_in_theme = sorted(bucket["stocks"], key=lambda r: (-num(r.get("theme_score")), r["stock_id"]))
         ratios = [num(r.get("volume_ratio")) for r in stocks_in_theme if r.get("volume_ratio") is not None]
         week = [num(r.get("week_chg_pct")) for r in stocks_in_theme if r.get("week_chg_pct") is not None]
@@ -284,22 +412,27 @@ def build() -> dict[str, Any]:
         )
         breakout_count = sum(1 for r in stocks_in_theme if "right_top" in r.get("sources", []))
         chips_count = sum(1 for r in stocks_in_theme if "chips" in r.get("sources", []))
-        score = (
-            count * 10
-            + min(sum(num(r.get("theme_score")) for r in stocks_in_theme[:5]) / 5, 70)
-            + pullback_count * 5
-            + breakout_count * 4
-            + chips_count * 3
+        strategy_score = (
+            count * 8
+            + min(sum(num(r.get("theme_score")) for r in stocks_in_theme[:5]) / 5, 60)
+            + pullback_count * 4
+            + breakout_count * 3
+            + chips_count * 2
         )
+        score = market_summary["score"] * 0.55 + strategy_score * 0.45
         if bucket["theme"] in broad_themes:
             score *= 0.45
         theme_rows.append({
             "theme": bucket["theme"],
             "score": round(score, 1),
+            "market_score": market_summary["score"],
+            "strategy_score": round(strategy_score, 1),
             "count": count,
             "pullback_count": pullback_count,
             "breakout_count": breakout_count,
             "chips_count": chips_count,
+            "market_leaders": market_leaders,
+            "market_summary": market_summary,
             "avg_volume_ratio": round(sum(ratios) / len(ratios), 2) if ratios else None,
             "avg_week_chg_pct": round(sum(week) / len(week), 2) if week else None,
             "representatives": [
@@ -333,6 +466,11 @@ def build() -> dict[str, Any]:
         "source_date": latest_date,
         "model": {
             "definition": "Use existing scan outputs only; no extra quote or FinMind requests.",
+            "market_leader_source": "price_cache.parquet",
+            "score_weights": {
+                "market_leaders": 0.55,
+                "strategy_candidates": 0.45,
+            },
             "excluded_industries": excluded,
             "source_weights": SOURCE_WEIGHTS,
         },
