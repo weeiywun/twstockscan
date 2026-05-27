@@ -32,7 +32,7 @@ const STRATEGIES = [
     name: "資金主線",
     shortName: "資金主線",
     icon: "◆",
-    group: "ssr",
+    group: "decision",
     available: true,
     description: "用既有策略結果統計題材熱度，預設排除金融、食品與低動能傳產雜訊，協助每天先判斷熱錢集中在哪些領域。",
     conditions: [
@@ -47,10 +47,10 @@ const STRATEGIES = [
   },
   {
     id: "ssr",
-    name: "SSR 交集雷達",
-    shortName: "SSR",
+    name: "精選觀察",
+    shortName: "精選觀察",
     icon: "✦",
-    group: "ssr",
+    group: "decision",
     available: true,
     description: "目前聚焦籌碼集中與突破策略，找出大戶追蹤與價格突破同時命中的標的。VCP / 法人動能暫停備用勿刪。",
     conditions: [
@@ -68,7 +68,7 @@ const STRATEGIES = [
     name: "籌碼集中",
     shortName: "籌碼集中",
     icon: "◈",
-    group: "chips",
+    group: "source",
     available: true,
     description: "週末籌碼海選：追蹤千張大戶與 400 張大戶持股相對成長率（R），標記持續成長、雙軌觸發、單周增幅三類標籤，篩選低基期且量能充足的標的。",
     conditions: [
@@ -86,6 +86,10 @@ const STRATEGIES = [
   },
   {
     id: "volume_signal",
+    // SOURCE / BACKUP - DO NOT DELETE:
+    // Daily volume signal remains a model input, but it is hidden from the main nav
+    // so the dashboard stays focused on decision-ready views.
+    hidden: true,
     name: "量增訊號",
     shortName: "量增訊號",
     icon: "◆",
@@ -103,10 +107,14 @@ const STRATEGIES = [
   },
   {
     id: "volume_pullback",
+    // SOURCE / BACKUP - DO NOT DELETE:
+    // Volume pullback remains part of 精選觀察 and LINE candidates. Hide the raw
+    // tab to reduce duplicate daily decision surfaces.
+    hidden: true,
     name: "量增回測",
     shortName: "量增回測",
     icon: "◎",
-    group: "ssr",
+    group: "decision",
     available: true,
     description: "追蹤放量突破後回測不破的標的，鎖定點火後回穩與再啟動。",
     conditions: [
@@ -145,7 +153,7 @@ const STRATEGIES = [
     name: "量增訊號標的追蹤",
     shortName: "標的追蹤",
     icon: "◎",
-    group: "chips",
+    group: "decision",
     available: true,
     description: "籌碼集中入池標的首次觸發量增訊號後，維護月營收評級、現價損益與 10 個交易日觀察期。",
     conditions: [],
@@ -178,7 +186,7 @@ const STRATEGIES = [
     name: "突破策略",
     shortName: "突破策略",
     icon: "▲",
-    group: "right_top",
+    group: "source",
     available: true,
     description: "整合盤整突破、動能突破與價格突破，區分低波動打底、日線啟動與強勢股續創新高。",
     conditions: [
@@ -199,7 +207,7 @@ const STRATEGIES = [
     name: "標的追蹤",
     shortName: "標的追蹤",
     icon: "◉",
-    group: "right_top",
+    group: "decision",
     available: true,
     description: "突破策略觸發標的的後續追蹤，記錄入選收盤、現價、損益，觀察期 10 個交易日。",
     conditions: [],
@@ -267,7 +275,7 @@ let DATE_LABELS = [];
 // ════════════════════════════════════════════════════
 //  STATE
 // ════════════════════════════════════════════════════
-let activeStratId = (PERF_UNLOCKED ? STRATEGIES[0] : (STRATEGIES.find(s => s.id !== "performance") || STRATEGIES[0])).id;
+let activeStratId = (PERF_UNLOCKED ? STRATEGIES[0] : (STRATEGIES.find(s => s.id === "theme_heat") || STRATEGIES.find(s => s.id !== "performance") || STRATEGIES[0])).id;
 let sortCol = "chg_2w_1000";
 let sortAsc = false;
 let chipsViewMode = "stock"; // "stock" | "industry"
@@ -381,6 +389,9 @@ function trendBars(trend, label, colorClass) {
 //  RENDER STRATEGY TABS
 // ════════════════════════════════════════════════════
 const NAV_GROUP_LABELS = {
+  decision:  '每日決策',
+  source:    '策略來源',
+  backup:    '備用觀察',
   ssr:       'SSR',
   chips:     '籌碼選股',
   vcp:       'VCP',
