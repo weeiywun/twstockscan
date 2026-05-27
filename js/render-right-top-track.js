@@ -22,6 +22,7 @@ function renderRightTopTrack(strat, main) {
 
   // ── 排序輔助 ──
   function getValue(s, col) {
+    if (col === 'score') return s.unified_score ?? s.score ?? -1;
     if (col === 'trigger_date') return s.trigger_date || '';
     return s[col] ?? '';
   }
@@ -76,10 +77,11 @@ function renderRightTopTrack(strat, main) {
 
   // ── CSV 匯出 ──
   window.exportRttCSV = () => {
-    const headers = ['代號', '名稱', '產業', '市場', '觸發日', '入選收盤', '現價', '損益%', '量比', '釘選'];
+    const headers = ['代號', '名稱', '產業', '市場', '觸發日', '分數', '入選收盤', '現價', '損益%', '量比', '釘選'];
     const rows = (trackData.expired || []).map(s => [
       s.stock_id, s.name, s.industry || '', s.market || '',
       s.trigger_date || '',
+      s.unified_score ?? s.score ?? '',
       s.entry_price   != null ? s.entry_price.toFixed(2)   : '',
       s.current_price != null ? s.current_price.toFixed(2) : '',
       s.pnl_pct       != null ? s.pnl_pct.toFixed(2)       : '',
@@ -167,6 +169,10 @@ function renderRightTopTrack(strat, main) {
           <div style="font-size:10px;color:var(--text3)">${s.industry || ''}</div>
         </td>
         <td style="font-family:var(--mono);font-size:12px;color:var(--text3)">${s.trigger_date || '—'}</td>
+        <td>
+          <span style="font-family:var(--mono);font-size:12px;font-weight:700;color:var(--green)">${s.unified_score != null ? s.unified_score.toFixed(1) : (s.score ?? '—')}</span>
+          <span style="font-size:10px;color:var(--text3);margin-left:4px">${s.unified_score_grade || ''}</span>
+        </td>
         <td style="font-family:var(--mono);font-size:12px">${s.entry_price?.toFixed(2) ?? '—'}</td>
         <td style="font-family:var(--mono);font-size:12px">${s.current_price?.toFixed(2) ?? '—'}</td>
         <td><span class="${pnlCls(s.pnl_pct)}" style="font-family:var(--mono);font-size:12px">${pnlStr(s.pnl_pct)}</span></td>
@@ -183,6 +189,7 @@ function renderRightTopTrack(strat, main) {
             <th style="width:28px">#</th>
             <th>代號 / 名稱</th>
             <th onclick="rttActSort('trigger_date')" style="cursor:pointer">觸發日${sortIcon(aC, aA, 'trigger_date')}</th>
+            <th onclick="rttActSort('score')" style="cursor:pointer">分數${sortIcon(aC, aA, 'score')}</th>
             <th onclick="rttActSort('entry_price')" style="cursor:pointer">入選收盤${sortIcon(aC, aA, 'entry_price')}</th>
             <th onclick="rttActSort('current_price')" style="cursor:pointer">現價${sortIcon(aC, aA, 'current_price')}</th>
             <th onclick="rttActSort('pnl_pct')" style="cursor:pointer">損益${sortIcon(aC, aA, 'pnl_pct')}</th>
@@ -213,6 +220,10 @@ function renderRightTopTrack(strat, main) {
           <div style="font-size:10px;color:var(--text3)">${s.industry || ''}</div>
         </td>
         <td style="font-family:var(--mono);font-size:12px;color:var(--text3)">${s.trigger_date || '—'}</td>
+        <td>
+          <span style="font-family:var(--mono);font-size:12px;font-weight:700;color:var(--green)">${s.unified_score != null ? s.unified_score.toFixed(1) : (s.score ?? '—')}</span>
+          <span style="font-size:10px;color:var(--text3);margin-left:4px">${s.unified_score_grade || ''}</span>
+        </td>
         <td style="font-family:var(--mono);font-size:12px">${s.entry_price?.toFixed(2) ?? '—'}</td>
         <td style="font-family:var(--mono);font-size:12px">${s.current_price?.toFixed(2) ?? '—'}</td>
         <td><span class="${pnlCls(s.pnl_pct)}" style="font-family:var(--mono);font-size:12px">${pnlStr(s.pnl_pct)}</span></td>
@@ -237,6 +248,7 @@ function renderRightTopTrack(strat, main) {
           <thead><tr>
             <th onclick="rttHistSort('stock_id')" style="cursor:pointer">代號 / 名稱${sortIcon(hC, hA, 'stock_id')}</th>
             <th onclick="rttHistSort('trigger_date')" style="cursor:pointer">觸發日${sortIcon(hC, hA, 'trigger_date')}</th>
+            <th onclick="rttHistSort('score')" style="cursor:pointer">分數${sortIcon(hC, hA, 'score')}</th>
             <th onclick="rttHistSort('entry_price')" style="cursor:pointer">入選收盤${sortIcon(hC, hA, 'entry_price')}</th>
             <th onclick="rttHistSort('current_price')" style="cursor:pointer">現價${sortIcon(hC, hA, 'current_price')}</th>
             <th onclick="rttHistSort('pnl_pct')" style="cursor:pointer">損益${sortIcon(hC, hA, 'pnl_pct')}</th>

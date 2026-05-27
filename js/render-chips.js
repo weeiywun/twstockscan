@@ -63,6 +63,7 @@ function renderChipsHolder(strat, main) {
       : null;
   }
   function sortValue(d, col) {
+    if (col === 'score') return d.unified_score ?? d.score ?? d.tag_score;
     if (col === 'chg_1w_1000') return latestWeekChange(d, '1000');
     if (col === 'chg_1w_400') return latestWeekChange(d, '400');
     return d[col];
@@ -142,7 +143,10 @@ function renderChipsHolder(strat, main) {
         <td><span class="big-pct ${chg1w1000 != null && chg1w1000 >= 0 ? 'pos' : 'neg'}">${chg1w1000 != null ? (chg1w1000 > 0 ? '+' : '') + chg1w1000.toFixed(2) + '%' : '—'}</span></td>
         <td><span class="big-pct ${chg1w400 != null && chg1w400 >= 0 ? 'pos' : 'neg'}">${chg1w400 != null ? (chg1w400 > 0 ? '+' : '') + chg1w400.toFixed(2) + '%' : '—'}</span></td>
         <td><div class="spark">${sparkBars(d.big_trend_1000 || [])}</div></td>
-        <td><div class="tag-cell">${tagBadges(d.tags)}</div></td>
+        <td>
+          <span style="font-family:var(--mono);font-weight:700;color:var(--green)">${d.unified_score != null ? d.unified_score.toFixed(1) : '—'}</span>
+          <span style="font-size:10px;color:var(--text3);margin-left:4px">${d.unified_score_grade || ''}</span>
+        </td>
       </tr>
       <tr class="expand-row" id="expand-${d.stock_id}" style="display:none">
         <td colspan="10">
@@ -265,7 +269,7 @@ function renderChipsHolder(strat, main) {
               <th onclick="chipsSort('chg_1w_1000')" data-tip="千張大戶持股% 最近一期 − 前一期差值（百分點）">千張${sortIcon('chg_1w_1000')}</th>
               <th onclick="chipsSort('chg_1w_400')" data-tip="400張大戶持股% 最近一期 − 前一期差值（百分點）">400張${sortIcon('chg_1w_400')}</th>
               <th>趨勢</th>
-              <th onclick="chipsSort('tag_score')" data-tip="籌碼條件與法人連買標籤；排序分數採單周增幅+5、雙軌觸發+3、持續成長+1">籌碼/法人標籤${sortIcon('tag_score')}</th>
+              <th onclick="chipsSort('score')" data-tip="統一分數：籌碼、動能、量能、結構、主線加權後的 0-100 分">分數${sortIcon('score')}</th>
             </tr>
           </thead>
           <tbody>${tableBody}</tbody>

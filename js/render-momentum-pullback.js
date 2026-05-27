@@ -22,6 +22,7 @@ function renderMomentumPullback(strat, main) {
   }
 
   function sortValue(row, col) {
+    if (col === 'score') return row.unified_score ?? row.score;
     if (col === 'ma_confluence') return Math.abs(Number(row.ma_distance_pct ?? 999));
     if (col === 'fib_zone') return { '23.6%-38.2%': 1, '38.2%-50%': 2, '50%-61.8%': 3 }[row.fib_zone] || 9;
     return row[col];
@@ -79,7 +80,10 @@ function renderMomentumPullback(strat, main) {
         </a>
         <div class="stock-industry">${row.industry || (row.sources || []).join(' / ')}</div>
       </td>
-      <td><span style="font-family:var(--mono);font-weight:700;color:var(--green)">${row.score ?? '—'}</span></td>
+      <td>
+        <span style="font-family:var(--mono);font-weight:700;color:var(--green)">${fmt(row.unified_score ?? row.score, 1)}</span>
+        <span style="font-size:10px;color:var(--text3);margin-left:4px">${row.unified_score_grade || ''}</span>
+      </td>
       <td><span style="font-family:var(--mono);font-size:12px;font-weight:700">${fmt(row.close, 1)}</span></td>
       <td><span style="font-family:var(--mono);font-size:12px;color:var(--text)">${Number(row.volume_lots || 0).toLocaleString()} 張</span></td>
       <td><span style="font-family:var(--mono);font-size:12px;color:var(--text2)">${Number(row.vol20 || 0).toLocaleString()} 張</span></td>

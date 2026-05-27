@@ -33,8 +33,12 @@ function renderRightTop(strat, main) {
   const rtFilter = window._rtFilter || 'all';
 
   function rtCompare(a, b) {
-    const va = a[rtSortCol] != null ? a[rtSortCol] : '';
-    const vb = b[rtSortCol] != null ? b[rtSortCol] : '';
+    const va = rtSortCol === 'score'
+      ? (a.unified_score ?? a.score ?? a.quality_score ?? '')
+      : (a[rtSortCol] != null ? a[rtSortCol] : '');
+    const vb = rtSortCol === 'score'
+      ? (b.unified_score ?? b.score ?? b.quality_score ?? '')
+      : (b[rtSortCol] != null ? b[rtSortCol] : '');
     const isDate = /^\d{4}-\d{2}-\d{2}/.test(va) || /^\d{4}-\d{2}-\d{2}/.test(vb);
     const numA = parseFloat(va);
     const numB = parseFloat(vb);
@@ -62,7 +66,7 @@ function renderRightTop(strat, main) {
 
   function setRtFilter(v) {
     window._rtFilter = v;
-    window._rtSortCol = window._rtSortCol || 'quality_score';
+    window._rtSortCol = window._rtSortCol || 'score';
     renderStrategy();
   }
   window.setRtFilter = setRtFilter;
@@ -127,7 +131,7 @@ function renderRightTop(strat, main) {
   function exportRtCSV() {
     const typeLabels = { consolidation: '盤整突破', momentum: '動能突破', price: '價格突破' };
     const headers = [
-      '代號', '名稱', '產業', '市場', '訊號類型', '品質分數', '標籤',
+      '代號', '名稱', '產業', '市場', '訊號類型', '分數', '舊品質', '標籤',
       '收盤', '週量比', '週漲幅(%)', '10週前高',
       '日量比', '價格量比', 'MA20乖離(%)', 'EMA20乖離(%)', 'MA20', 'MA60', 'EMA20', 'EMA60', 'EMA120', '60日前高',
       '千張大戶連增', '400張同步', '千張3週變化', '400張3週變化', '訊號日'
@@ -135,6 +139,7 @@ function renderRightTop(strat, main) {
     const rows = data.map(d => [
       d.stock_id, d.name, d.industry, d.market,
       (d.signal_types || []).map(t => typeLabels[t] || t).join(' / '),
+      d.unified_score ?? d.score ?? '',
       d.quality_score ?? '',
       (d.tags || []).join(' / '),
       d.close ?? '',
@@ -183,7 +188,7 @@ function renderRightTop(strat, main) {
             <thead>
               <tr>
                 <th onclick="rtSort('stock_id')" style="cursor:pointer">代號 / 名稱${sortIcon('stock_id')}</th>
-                <th onclick="rtSort('quality_score')" style="cursor:pointer">品質${sortIcon('quality_score')}</th>
+                <th onclick="rtSort('score')" style="cursor:pointer">分數${sortIcon('score')}</th>
                 <th onclick="rtSort('industry')" style="cursor:pointer">產業${sortIcon('industry')}</th>
                 <th onclick="rtSort('close')" style="cursor:pointer">收盤${sortIcon('close')}</th>
                 <th onclick="rtSort('vol_ratio')" style="cursor:pointer" data-tip="最新週量 ÷ 前20週均量">週量比${sortIcon('vol_ratio')}</th>
@@ -211,7 +216,8 @@ function renderRightTop(strat, main) {
                     <div class="stock-industry" style="font-size:10px;color:var(--text3)">${d.market || '—'}</div>
                   </td>
                   <td>
-                    <span style="font-family:var(--mono);font-size:16px;font-weight:700;color:var(--green)">${d.quality_score ?? '—'}</span>
+                    <span style="font-family:var(--mono);font-size:16px;font-weight:700;color:var(--green)">${fmtNum(d.unified_score ?? d.score, 1)}</span>
+                    <span style="font-size:10px;color:var(--text3);margin-left:4px">${d.unified_score_grade || ''}</span>
                   </td>
                   <td><span style="font-size:12px;color:var(--text2)">${d.industry || '—'}</span></td>
                   <td><span class="price-cell">${fmtNum(d.close)}</span></td>
