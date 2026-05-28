@@ -1,6 +1,6 @@
 {
   "strategy_id": "theme_heat",
-  "updated": "2026-05-28T17:15:30+08:00",
+  "updated": "2026-05-28T22:17:13+08:00",
   "source_date": "2026-05-28",
   "model": {
     "definition": "Use existing scan outputs only; no extra quote or FinMind requests.",
@@ -32,30 +32,47 @@
   },
   "summary": {
     "themes": 10,
-    "stocks": 176,
+    "stocks": 179,
     "selected": 30,
     "excluded_by_industry": 4,
-    "unclassified": 116,
+    "unclassified": 117,
     "source_counts": {
-      "momentum_candidates": 90,
+      "momentum_candidates": 92,
       "momentum_pullback": 40,
-      "right_top": 54,
+      "right_top": 57,
       "chips": 37,
-      "volume_pullback": 97,
-      "volume_signal": 10
+      "volume_pullback": 99,
+      "volume_signal": 11
     }
   },
   "themes": [
     {
       "theme": "網通",
-      "score": 144.4,
-      "market_score": 69.5,
-      "strategy_score": 236,
+      "score": 144.5,
+      "market_score": 66.4,
+      "strategy_score": 240,
       "count": 14,
-      "pullback_count": 10,
+      "pullback_count": 11,
       "breakout_count": 6,
       "chips_count": 3,
       "market_leaders": [
+        {
+          "stock_id": "3558",
+          "name": "神準",
+          "industry": "通信網路業",
+          "market": "TPEX",
+          "date": "2026-05-28",
+          "close": 141.5,
+          "day_chg_pct": 4.81,
+          "chg_5d_pct": 20.43,
+          "chg_20d_pct": 29.22,
+          "volume_lots": 2254,
+          "volume_ratio_20d": 6.94,
+          "above_ema20": true,
+          "above_ema60": true,
+          "new_high_60d": false,
+          "leader_score": 63.2
+        },
         {
           "stock_id": "3704",
           "name": "合勤控",
@@ -72,23 +89,6 @@
           "above_ema60": true,
           "new_high_60d": true,
           "leader_score": 54.0
-        },
-        {
-          "stock_id": "3558",
-          "name": "神準",
-          "industry": "通信網路業",
-          "market": "TPEX",
-          "date": "2026-05-26",
-          "close": 135.0,
-          "day_chg_pct": -2.17,
-          "chg_5d_pct": 14.89,
-          "chg_20d_pct": 20.54,
-          "volume_lots": 784,
-          "volume_ratio_20d": 2.68,
-          "above_ema20": true,
-          "above_ema60": true,
-          "new_high_60d": false,
-          "leader_score": 49.3
         },
         {
           "stock_id": "3025",
@@ -112,17 +112,17 @@
           "name": "立端",
           "industry": "通信網路業",
           "market": "TPEX",
-          "date": "2026-05-26",
-          "close": 90.9,
-          "day_chg_pct": 1.22,
-          "chg_5d_pct": 12.36,
-          "chg_20d_pct": 9.92,
-          "volume_lots": 1920,
-          "volume_ratio_20d": 1.18,
+          "date": "2026-05-28",
+          "close": 86.1,
+          "day_chg_pct": -5.28,
+          "chg_5d_pct": 4.24,
+          "chg_20d_pct": 6.17,
+          "volume_lots": 2381,
+          "volume_ratio_20d": 1.51,
           "above_ema20": true,
           "above_ema60": true,
-          "new_high_60d": true,
-          "leader_score": 44.2
+          "new_high_60d": false,
+          "leader_score": 24.4
         },
         {
           "stock_id": "2345",
@@ -144,14 +144,14 @@
       ],
       "market_summary": {
         "count": 5,
-        "score": 69.5,
-        "avg_day_chg_pct": -2.0,
-        "avg_volume_ratio_20d": 1.67,
+        "score": 66.4,
+        "avg_day_chg_pct": -1.9,
+        "avg_volume_ratio_20d": 2.59,
         "up_count": 2,
         "above_ema20_count": 5,
-        "new_high_60d_count": 2
+        "new_high_60d_count": 1
       },
-      "avg_volume_ratio": 2.83,
+      "avg_volume_ratio": 3.15,
       "avg_week_chg_pct": 2.22,
       "representatives": [
         {
@@ -159,7 +159,7 @@
           "name": "友訊",
           "industry": "通信",
           "close": 16.0,
-          "theme_score": 114.4,
+          "theme_score": 110.9,
           "source_labels": [
             "price_breakout_track",
             "right_top_track",
@@ -187,22 +187,6 @@
           "week_chg_pct": null
         },
         {
-          "stock_id": "3558",
-          "name": "神準",
-          "industry": "通信網路業",
-          "close": 135.0,
-          "theme_score": 97.3,
-          "source_labels": [
-            "price_breakout_track",
-            "right_top_track",
-            "價格突破",
-            "精選候選"
-          ],
-          "status": "再啟動",
-          "volume_ratio": 4.43,
-          "week_chg_pct": null
-        },
-        {
           "stock_id": "2439",
           "name": "美律",
           "industry": "通信網路業",
@@ -219,31 +203,47 @@
           "week_chg_pct": null
         },
         {
+          "stock_id": "3558",
+          "name": "神準",
+          "industry": "通信網路業",
+          "close": 141.5,
+          "theme_score": 86.9,
+          "source_labels": [
+            "price_breakout_track",
+            "right_top_track",
+            "價格突破",
+            "精選候選"
+          ],
+          "status": "點火",
+          "volume_ratio": 4.63,
+          "week_chg_pct": null
+        },
+        {
           "stock_id": "3564",
           "name": "其陽",
           "industry": "通信網路業",
-          "close": 46.8,
-          "theme_score": 69.3,
+          "close": 48.15,
+          "theme_score": 70.1,
           "source_labels": [
             "price_breakout_track",
             "right_top_track",
             "精選候選",
             "量增回測"
           ],
-          "status": "回穩觀察",
-          "volume_ratio": 2.55,
+          "status": "點火",
+          "volume_ratio": 3.36,
           "week_chg_pct": null
         }
       ]
     },
     {
       "theme": "功率元件",
-      "score": 118.3,
+      "score": 117.0,
       "market_score": 94.0,
-      "strategy_score": 148,
+      "strategy_score": 145,
       "count": 7,
       "pullback_count": 5,
-      "breakout_count": 4,
+      "breakout_count": 3,
       "chips_count": 0,
       "market_leaders": [
         {
@@ -268,13 +268,13 @@
           "name": "力士",
           "industry": "半導體業",
           "market": "TPEX",
-          "date": "2026-05-26",
-          "close": 45.15,
-          "day_chg_pct": 9.99,
-          "chg_5d_pct": 26.83,
-          "chg_20d_pct": 35.59,
-          "volume_lots": 2277,
-          "volume_ratio_20d": 3.23,
+          "date": "2026-05-28",
+          "close": 48.85,
+          "day_chg_pct": 8.19,
+          "chg_5d_pct": 30.09,
+          "chg_20d_pct": 45.82,
+          "volume_lots": 5910,
+          "volume_ratio_20d": 7.23,
           "above_ema20": true,
           "above_ema60": true,
           "new_high_60d": true,
@@ -335,31 +335,15 @@
       "market_summary": {
         "count": 5,
         "score": 94.0,
-        "avg_day_chg_pct": 1.97,
-        "avg_volume_ratio_20d": 2.52,
+        "avg_day_chg_pct": 1.61,
+        "avg_volume_ratio_20d": 3.32,
         "up_count": 3,
         "above_ema20_count": 5,
         "new_high_60d_count": 3
       },
-      "avg_volume_ratio": 3.41,
+      "avg_volume_ratio": 3.4,
       "avg_week_chg_pct": null,
       "representatives": [
-        {
-          "stock_id": "4923",
-          "name": "力士",
-          "industry": "半導體業",
-          "close": 45.15,
-          "theme_score": 98.1,
-          "source_labels": [
-            "price_breakout_track",
-            "right_top_track",
-            "價格突破",
-            "精選候選"
-          ],
-          "status": "再啟動",
-          "volume_ratio": 4.75,
-          "week_chg_pct": null
-        },
         {
           "stock_id": "3016",
           "name": "嘉晶",
@@ -406,6 +390,22 @@
           ],
           "status": "回穩觀察",
           "volume_ratio": 4.09,
+          "week_chg_pct": null
+        },
+        {
+          "stock_id": "4923",
+          "name": "力士",
+          "industry": "半導體業",
+          "close": 48.85,
+          "theme_score": 73.4,
+          "source_labels": [
+            "price_breakout_track",
+            "right_top_track",
+            "精選候選",
+            "量增回測"
+          ],
+          "status": "點火",
+          "volume_ratio": 4.25,
           "week_chg_pct": null
         },
         {
@@ -703,7 +703,7 @@
         "above_ema20_count": 5,
         "new_high_60d_count": 0
       },
-      "avg_volume_ratio": 4.57,
+      "avg_volume_ratio": 4.93,
       "avg_week_chg_pct": null,
       "representatives": [
         {
@@ -720,22 +720,6 @@
           ],
           "status": "再啟動",
           "volume_ratio": 7.09,
-          "week_chg_pct": null
-        },
-        {
-          "stock_id": "4923",
-          "name": "力士",
-          "industry": "半導體業",
-          "close": 45.15,
-          "theme_score": 98.1,
-          "source_labels": [
-            "price_breakout_track",
-            "right_top_track",
-            "價格突破",
-            "精選候選"
-          ],
-          "status": "再啟動",
-          "volume_ratio": 4.75,
           "week_chg_pct": null
         },
         {
@@ -784,6 +768,22 @@
           ],
           "status": "點火",
           "volume_ratio": 5.67,
+          "week_chg_pct": null
+        },
+        {
+          "stock_id": "6548",
+          "name": "長科*",
+          "industry": "半導體業",
+          "close": 66.4,
+          "theme_score": 86.2,
+          "source_labels": [
+            "price_breakout_track",
+            "right_top_track",
+            "價格突破",
+            "精選候選"
+          ],
+          "status": "點火",
+          "volume_ratio": 4.44,
           "week_chg_pct": null
         }
       ]
@@ -927,135 +927,119 @@
       ]
     },
     {
-      "theme": "散熱",
-      "score": 57.3,
-      "market_score": 50.8,
-      "strategy_score": 65.2,
-      "count": 2,
-      "pullback_count": 2,
-      "breakout_count": 1,
-      "chips_count": 1,
+      "theme": "電子零組件",
+      "score": 58.4,
+      "market_score": 53.5,
+      "strategy_score": 223,
+      "count": 13,
+      "pullback_count": 11,
+      "breakout_count": 5,
+      "chips_count": 0,
       "market_leaders": [
         {
-          "stock_id": "6125",
-          "name": "廣運",
-          "industry": "光電業",
-          "market": "TPEX",
-          "date": "2026-05-26",
-          "close": 68.4,
-          "day_chg_pct": 4.59,
-          "chg_5d_pct": 20.63,
-          "chg_20d_pct": 19.79,
-          "volume_lots": 8832,
-          "volume_ratio_20d": 4.12,
+          "stock_id": "2327",
+          "name": "國巨*",
+          "industry": "電子工業",
+          "market": "TWSE",
+          "date": "2026-05-28",
+          "close": 742.0,
+          "day_chg_pct": 5.85,
+          "chg_5d_pct": 29.72,
+          "chg_20d_pct": 149.83,
+          "volume_lots": 25023,
+          "volume_ratio_20d": 0.48,
           "above_ema20": true,
           "above_ema60": true,
           "new_high_60d": true,
-          "leader_score": 68.1
+          "leader_score": 64.7
         },
         {
-          "stock_id": "3324",
-          "name": "雙鴻",
-          "industry": "其他電子類",
-          "market": "TPEX",
-          "date": "2026-05-26",
-          "close": 1040.0,
-          "day_chg_pct": 2.97,
-          "chg_5d_pct": 7.66,
-          "chg_20d_pct": -9.96,
-          "volume_lots": 2791,
-          "volume_ratio_20d": 0.59,
-          "above_ema20": true,
-          "above_ema60": true,
-          "new_high_60d": false,
-          "leader_score": 26.6
-        },
-        {
-          "stock_id": "2421",
-          "name": "建準",
+          "stock_id": "3037",
+          "name": "欣興",
           "industry": "電子工業",
           "market": "TWSE",
           "date": "2026-05-28",
-          "close": 156.5,
-          "day_chg_pct": -3.4,
-          "chg_5d_pct": 2.96,
-          "chg_20d_pct": 7.56,
-          "volume_lots": 7620,
-          "volume_ratio_20d": 1.21,
+          "close": 1025.0,
+          "day_chg_pct": -5.09,
+          "chg_5d_pct": 13.26,
+          "chg_20d_pct": 22.17,
+          "volume_lots": 25167,
+          "volume_ratio_20d": 0.85,
           "above_ema20": true,
           "above_ema60": true,
           "new_high_60d": false,
-          "leader_score": 21.4
+          "leader_score": 37.3
         },
         {
-          "stock_id": "3017",
-          "name": "奇鋐",
+          "stock_id": "2308",
+          "name": "台達電",
           "industry": "電子工業",
           "market": "TWSE",
           "date": "2026-05-28",
-          "close": 2580.0,
-          "day_chg_pct": -4.44,
-          "chg_5d_pct": 3.41,
-          "chg_20d_pct": -8.99,
-          "volume_lots": 5073,
-          "volume_ratio_20d": 0.89,
+          "close": 2390.0,
+          "day_chg_pct": -5.16,
+          "chg_5d_pct": 17.73,
+          "chg_20d_pct": 10.39,
+          "volume_lots": 11657,
+          "volume_ratio_20d": 1.0,
           "above_ema20": true,
           "above_ema60": true,
           "new_high_60d": false,
-          "leader_score": 16.4
+          "leader_score": 32.2
         },
         {
-          "stock_id": "3653",
-          "name": "健策",
+          "stock_id": "2383",
+          "name": "台光電",
           "industry": "電子工業",
           "market": "TWSE",
           "date": "2026-05-28",
-          "close": 3500.0,
-          "day_chg_pct": -4.63,
-          "chg_5d_pct": 5.11,
-          "chg_20d_pct": -29.44,
-          "volume_lots": 2200,
-          "volume_ratio_20d": 1.79,
+          "close": 5055.0,
+          "day_chg_pct": -4.71,
+          "chg_5d_pct": 7.78,
+          "chg_20d_pct": 12.96,
+          "volume_lots": 2088,
+          "volume_ratio_20d": 0.71,
+          "above_ema20": true,
+          "above_ema60": true,
+          "new_high_60d": false,
+          "leader_score": 27.3
+        },
+        {
+          "stock_id": "2313",
+          "name": "華通",
+          "industry": "電子工業",
+          "market": "TWSE",
+          "date": "2026-05-28",
+          "close": 259.0,
+          "day_chg_pct": -8.16,
+          "chg_5d_pct": 0.39,
+          "chg_20d_pct": 12.61,
+          "volume_lots": 110453,
+          "volume_ratio_20d": 1.27,
           "above_ema20": false,
-          "above_ema60": false,
+          "above_ema60": true,
           "new_high_60d": false,
-          "leader_score": 11.4
+          "leader_score": 13.9
         }
       ],
       "market_summary": {
         "count": 5,
-        "score": 50.8,
-        "avg_day_chg_pct": -0.98,
-        "avg_volume_ratio_20d": 1.72,
-        "up_count": 2,
+        "score": 53.5,
+        "avg_day_chg_pct": -3.45,
+        "avg_volume_ratio_20d": 0.86,
+        "up_count": 1,
         "above_ema20_count": 4,
         "new_high_60d_count": 1
       },
-      "avg_volume_ratio": 3.22,
-      "avg_week_chg_pct": 2.96,
+      "avg_volume_ratio": 3.33,
+      "avg_week_chg_pct": null,
       "representatives": [
         {
-          "stock_id": "2421",
-          "name": "建準",
-          "industry": "電零",
-          "close": 156.5,
-          "theme_score": 98.6,
-          "source_labels": [
-            "price_breakout_track",
-            "right_top_track",
-            "stock_analysis",
-            "大戶"
-          ],
-          "status": "回穩觀察",
-          "volume_ratio": 3.05,
-          "week_chg_pct": 2.96
-        },
-        {
-          "stock_id": "6125",
-          "name": "廣運",
-          "industry": "光電業",
-          "close": 68.4,
-          "theme_score": 82.2,
+          "stock_id": "8182",
+          "name": "加高",
+          "industry": "電子零組件業",
+          "close": 47.5,
+          "theme_score": 87.2,
           "source_labels": [
             "price_breakout_track",
             "right_top_track",
@@ -1063,7 +1047,70 @@
             "精選候選"
           ],
           "status": "點火",
-          "volume_ratio": 3.39,
+          "volume_ratio": 6.35,
+          "week_chg_pct": null
+        },
+        {
+          "stock_id": "4974",
+          "name": "亞泰",
+          "industry": "電子零組件業",
+          "close": 77.8,
+          "theme_score": 82.7,
+          "source_labels": [
+            "price_breakout_track",
+            "right_top_track",
+            "價格突破",
+            "精選候選"
+          ],
+          "status": "點火",
+          "volume_ratio": 3.51,
+          "week_chg_pct": null
+        },
+        {
+          "stock_id": "6194",
+          "name": "育富",
+          "industry": "電子零組件業",
+          "close": 34.55,
+          "theme_score": 79.0,
+          "source_labels": [
+            "price_breakout_track",
+            "right_top_track",
+            "精選候選",
+            "量增回測"
+          ],
+          "status": "回穩觀察",
+          "volume_ratio": 11.57,
+          "week_chg_pct": null
+        },
+        {
+          "stock_id": "3114",
+          "name": "好德",
+          "industry": "電子零組件業",
+          "close": 28.45,
+          "theme_score": 69.5,
+          "source_labels": [
+            "price_breakout_track",
+            "right_top_track",
+            "精選候選",
+            "量增回測"
+          ],
+          "status": "回穩觀察",
+          "volume_ratio": 2.59,
+          "week_chg_pct": null
+        },
+        {
+          "stock_id": "5328",
+          "name": "華容",
+          "industry": "電子零組件業",
+          "close": 36.0,
+          "theme_score": 59.0,
+          "source_labels": [
+            "price_breakout_track",
+            "價格突破",
+            "量增回測"
+          ],
+          "status": "再啟動",
+          "volume_ratio": 2.0,
           "week_chg_pct": null
         }
       ]
@@ -1192,191 +1239,140 @@
       ]
     },
     {
-      "theme": "電子零組件",
-      "score": 51.1,
-      "market_score": 53.5,
-      "strategy_score": 187,
-      "count": 10,
-      "pullback_count": 8,
-      "breakout_count": 5,
-      "chips_count": 0,
+      "theme": "散熱",
+      "score": 38.4,
+      "market_score": 28.6,
+      "strategy_score": 50.3,
+      "count": 2,
+      "pullback_count": 1,
+      "breakout_count": 1,
+      "chips_count": 1,
       "market_leaders": [
         {
-          "stock_id": "2327",
-          "name": "國巨*",
-          "industry": "電子工業",
-          "market": "TWSE",
+          "stock_id": "6125",
+          "name": "廣運",
+          "industry": "光電業",
+          "market": "TPEX",
           "date": "2026-05-28",
-          "close": 742.0,
-          "day_chg_pct": 5.85,
-          "chg_5d_pct": 29.72,
-          "chg_20d_pct": 149.83,
-          "volume_lots": 25023,
-          "volume_ratio_20d": 0.48,
-          "above_ema20": true,
-          "above_ema60": true,
-          "new_high_60d": true,
-          "leader_score": 64.7
-        },
-        {
-          "stock_id": "3037",
-          "name": "欣興",
-          "industry": "電子工業",
-          "market": "TWSE",
-          "date": "2026-05-28",
-          "close": 1025.0,
-          "day_chg_pct": -5.09,
-          "chg_5d_pct": 13.26,
-          "chg_20d_pct": 22.17,
-          "volume_lots": 25167,
-          "volume_ratio_20d": 0.85,
+          "close": 65.6,
+          "day_chg_pct": -4.09,
+          "chg_5d_pct": 19.93,
+          "chg_20d_pct": 13.49,
+          "volume_lots": 4066,
+          "volume_ratio_20d": 1.62,
           "above_ema20": true,
           "above_ema60": true,
           "new_high_60d": false,
-          "leader_score": 37.3
+          "leader_score": 38.7
         },
         {
-          "stock_id": "2308",
-          "name": "台達電",
+          "stock_id": "2421",
+          "name": "建準",
           "industry": "電子工業",
           "market": "TWSE",
           "date": "2026-05-28",
-          "close": 2390.0,
-          "day_chg_pct": -5.16,
-          "chg_5d_pct": 17.73,
-          "chg_20d_pct": 10.39,
-          "volume_lots": 11657,
-          "volume_ratio_20d": 1.0,
+          "close": 156.5,
+          "day_chg_pct": -3.4,
+          "chg_5d_pct": 2.96,
+          "chg_20d_pct": 7.56,
+          "volume_lots": 7620,
+          "volume_ratio_20d": 1.21,
           "above_ema20": true,
           "above_ema60": true,
           "new_high_60d": false,
-          "leader_score": 32.2
+          "leader_score": 21.4
         },
         {
-          "stock_id": "2383",
-          "name": "台光電",
+          "stock_id": "3017",
+          "name": "奇鋐",
           "industry": "電子工業",
           "market": "TWSE",
           "date": "2026-05-28",
-          "close": 5055.0,
-          "day_chg_pct": -4.71,
-          "chg_5d_pct": 7.78,
-          "chg_20d_pct": 12.96,
-          "volume_lots": 2088,
-          "volume_ratio_20d": 0.71,
+          "close": 2580.0,
+          "day_chg_pct": -4.44,
+          "chg_5d_pct": 3.41,
+          "chg_20d_pct": -8.99,
+          "volume_lots": 5073,
+          "volume_ratio_20d": 0.89,
           "above_ema20": true,
           "above_ema60": true,
           "new_high_60d": false,
-          "leader_score": 27.3
+          "leader_score": 16.4
         },
         {
-          "stock_id": "2313",
-          "name": "華通",
+          "stock_id": "3653",
+          "name": "健策",
           "industry": "電子工業",
           "market": "TWSE",
           "date": "2026-05-28",
-          "close": 259.0,
-          "day_chg_pct": -8.16,
-          "chg_5d_pct": 0.39,
-          "chg_20d_pct": 12.61,
-          "volume_lots": 110453,
-          "volume_ratio_20d": 1.27,
+          "close": 3500.0,
+          "day_chg_pct": -4.63,
+          "chg_5d_pct": 5.11,
+          "chg_20d_pct": -29.44,
+          "volume_lots": 2200,
+          "volume_ratio_20d": 1.79,
           "above_ema20": false,
-          "above_ema60": true,
+          "above_ema60": false,
           "new_high_60d": false,
-          "leader_score": 13.9
+          "leader_score": 11.4
+        },
+        {
+          "stock_id": "3324",
+          "name": "雙鴻",
+          "industry": "其他電子類",
+          "market": "TPEX",
+          "date": "2026-05-28",
+          "close": 1005.0,
+          "day_chg_pct": -3.37,
+          "chg_5d_pct": 7.03,
+          "chg_20d_pct": -9.05,
+          "volume_lots": 3212,
+          "volume_ratio_20d": 0.74,
+          "above_ema20": false,
+          "above_ema60": false,
+          "new_high_60d": false,
+          "leader_score": 7.0
         }
       ],
       "market_summary": {
         "count": 5,
-        "score": 53.5,
-        "avg_day_chg_pct": -3.45,
-        "avg_volume_ratio_20d": 0.86,
-        "up_count": 1,
-        "above_ema20_count": 4,
-        "new_high_60d_count": 1
+        "score": 28.6,
+        "avg_day_chg_pct": -3.99,
+        "avg_volume_ratio_20d": 1.25,
+        "up_count": 0,
+        "above_ema20_count": 3,
+        "new_high_60d_count": 0
       },
-      "avg_volume_ratio": 3.69,
-      "avg_week_chg_pct": null,
+      "avg_volume_ratio": 2.5,
+      "avg_week_chg_pct": 2.96,
       "representatives": [
         {
-          "stock_id": "4974",
-          "name": "亞泰",
-          "industry": "電子零組件業",
-          "close": 77.8,
-          "theme_score": 82.7,
+          "stock_id": "2421",
+          "name": "建準",
+          "industry": "電零",
+          "close": 156.5,
+          "theme_score": 98.6,
           "source_labels": [
             "price_breakout_track",
             "right_top_track",
-            "價格突破",
-            "精選候選"
-          ],
-          "status": "點火",
-          "volume_ratio": 3.51,
-          "week_chg_pct": null
-        },
-        {
-          "stock_id": "8182",
-          "name": "加高",
-          "industry": "電子零組件業",
-          "close": 45.65,
-          "theme_score": 82.3,
-          "source_labels": [
-            "price_breakout_track",
-            "right_top_track",
-            "價格突破",
-            "精選候選"
-          ],
-          "status": "點火",
-          "volume_ratio": 3.42,
-          "week_chg_pct": null
-        },
-        {
-          "stock_id": "6194",
-          "name": "育富",
-          "industry": "電子零組件業",
-          "close": 34.55,
-          "theme_score": 79.0,
-          "source_labels": [
-            "price_breakout_track",
-            "right_top_track",
-            "精選候選",
-            "量增回測"
+            "stock_analysis",
+            "大戶"
           ],
           "status": "回穩觀察",
-          "volume_ratio": 11.57,
-          "week_chg_pct": null
+          "volume_ratio": 3.05,
+          "week_chg_pct": 2.96
         },
         {
-          "stock_id": "6175",
-          "name": "立敦",
-          "industry": "電子零組件業",
-          "close": 92.7,
-          "theme_score": 70.2,
+          "stock_id": "6125",
+          "name": "廣運",
+          "industry": "光電業",
+          "close": 65.6,
+          "theme_score": 28.1,
           "source_labels": [
-            "price_breakout_track",
-            "right_top_track",
-            "精選候選",
-            "量增回測"
+            "價格突破"
           ],
-          "status": "回穩觀察",
-          "volume_ratio": 2.79,
-          "week_chg_pct": null
-        },
-        {
-          "stock_id": "3114",
-          "name": "好德",
-          "industry": "電子零組件業",
-          "close": 28.45,
-          "theme_score": 69.5,
-          "source_labels": [
-            "price_breakout_track",
-            "right_top_track",
-            "精選候選",
-            "量增回測"
-          ],
-          "status": "回穩觀察",
-          "volume_ratio": 2.59,
+          "status": "",
+          "volume_ratio": 1.94,
           "week_chg_pct": null
         }
       ]
@@ -1509,8 +1505,8 @@
     },
     {
       "theme": "車用電子",
-      "score": 26.7,
-      "market_score": 31.0,
+      "score": 31.6,
+      "market_score": 39.9,
       "strategy_score": 21.4,
       "count": 1,
       "pullback_count": 1,
@@ -1539,17 +1535,17 @@
           "name": "胡連",
           "industry": "電子零組件業",
           "market": "TPEX",
-          "date": "2026-05-26",
-          "close": 117.0,
-          "day_chg_pct": -1.68,
-          "chg_5d_pct": 3.08,
-          "chg_20d_pct": 6.36,
-          "volume_lots": 996,
-          "volume_ratio_20d": 0.98,
+          "date": "2026-05-28",
+          "close": 122.5,
+          "day_chg_pct": 4.7,
+          "chg_5d_pct": 4.26,
+          "chg_20d_pct": 13.95,
+          "volume_lots": 3133,
+          "volume_ratio_20d": 3.0,
           "above_ema20": true,
           "above_ema60": true,
           "new_high_60d": false,
-          "leader_score": 19.3
+          "leader_score": 45.6
         },
         {
           "stock_id": "1536",
@@ -1605,10 +1601,10 @@
       ],
       "market_summary": {
         "count": 5,
-        "score": 31.0,
-        "avg_day_chg_pct": 0.2,
-        "avg_volume_ratio_20d": 1.79,
-        "up_count": 1,
+        "score": 39.9,
+        "avg_day_chg_pct": 1.48,
+        "avg_volume_ratio_20d": 2.2,
+        "up_count": 2,
         "above_ema20_count": 2,
         "new_high_60d_count": 0
       },
@@ -1639,7 +1635,7 @@
       "industry": "通信",
       "market": "TWSE",
       "close": 16.0,
-      "score": 105.0,
+      "score": 77.0,
       "source_count": 5,
       "sources": [
         "chips",
@@ -1671,7 +1667,7 @@
       "volume_ratio": 2.84,
       "week_chg_pct": 9.59,
       "track_pnl_pct": null,
-      "theme_score": 114.4,
+      "theme_score": 110.9,
       "themes": [
         "網通"
       ]
@@ -1747,80 +1743,6 @@
       "theme_score": 98.9,
       "themes": [
         "半導體"
-      ]
-    },
-    {
-      "stock_id": "4923",
-      "name": "力士",
-      "industry": "半導體業",
-      "market": "TPEX",
-      "close": 45.15,
-      "score": 111.0,
-      "source_count": 2,
-      "sources": [
-        "momentum_candidates",
-        "price_breakout_track",
-        "right_top",
-        "right_top_track",
-        "volume_pullback"
-      ],
-      "source_labels": [
-        "price_breakout_track",
-        "right_top_track",
-        "價格突破",
-        "精選候選",
-        "量增回測"
-      ],
-      "tags": [
-        "60日新高",
-        "EMA多頭",
-        "價格突破",
-        "量能續航"
-      ],
-      "status": "再啟動",
-      "priority_level": "A",
-      "volume_ratio": 4.75,
-      "week_chg_pct": null,
-      "track_pnl_pct": null,
-      "theme_score": 98.1,
-      "themes": [
-        "功率元件",
-        "半導體"
-      ]
-    },
-    {
-      "stock_id": "3558",
-      "name": "神準",
-      "industry": "通信網路業",
-      "market": "TPEX",
-      "close": 135.0,
-      "score": 115.0,
-      "source_count": 2,
-      "sources": [
-        "momentum_candidates",
-        "price_breakout_track",
-        "right_top",
-        "right_top_track",
-        "volume_pullback"
-      ],
-      "source_labels": [
-        "price_breakout_track",
-        "right_top_track",
-        "價格突破",
-        "精選候選",
-        "量增回測"
-      ],
-      "tags": [
-        "盤整突破"
-      ],
-      "status": "再啟動",
-      "priority_level": "A",
-      "volume_ratio": 4.43,
-      "week_chg_pct": null,
-      "track_pnl_pct": null,
-      "theme_score": 97.3,
-      "themes": [
-        "網通"
       ]
     },
     {
@@ -2035,6 +1957,79 @@
       "week_chg_pct": null,
       "track_pnl_pct": 9.7,
       "theme_score": 87.2,
+      "themes": [
+        "半導體"
+      ]
+    },
+    {
+      "stock_id": "3558",
+      "name": "神準",
+      "industry": "通信網路業",
+      "market": "TPEX",
+      "close": 141.5,
+      "score": 88.0,
+      "source_count": 2,
+      "sources": [
+        "momentum_candidates",
+        "price_breakout_track",
+        "right_top",
+        "right_top_track",
+        "volume_pullback"
+      ],
+      "source_labels": [
+        "price_breakout_track",
+        "right_top_track",
+        "價格突破",
+        "精選候選",
+        "量增回測"
+      ],
+      "tags": [
+        "盤整突破",
+        "週量強放大"
+      ],
+      "status": "點火",
+      "priority_level": "B",
+      "volume_ratio": 4.63,
+      "week_chg_pct": null,
+      "track_pnl_pct": 4.81,
+      "theme_score": 86.9,
+      "themes": [
+        "網通"
+      ]
+    },
+    {
+      "stock_id": "6548",
+      "name": "長科*",
+      "industry": "半導體業",
+      "market": "TPEX",
+      "close": 66.4,
+      "score": 87.0,
+      "source_count": 2,
+      "sources": [
+        "momentum_candidates",
+        "price_breakout_track",
+        "right_top",
+        "right_top_track",
+        "volume_pullback"
+      ],
+      "source_labels": [
+        "price_breakout_track",
+        "right_top_track",
+        "價格突破",
+        "精選候選",
+        "量增回測"
+      ],
+      "tags": [
+        "60日新高",
+        "EMA多頭",
+        "價格突破"
+      ],
+      "status": "點火",
+      "priority_level": "B",
+      "volume_ratio": 4.44,
+      "week_chg_pct": null,
+      "track_pnl_pct": null,
+      "theme_score": 86.2,
       "themes": [
         "半導體"
       ]
@@ -2277,6 +2272,38 @@
       ]
     },
     {
+      "stock_id": "4923",
+      "name": "力士",
+      "industry": "半導體業",
+      "market": "TPEX",
+      "close": 48.85,
+      "score": 85.0,
+      "source_count": 2,
+      "sources": [
+        "momentum_candidates",
+        "price_breakout_track",
+        "right_top_track",
+        "volume_pullback"
+      ],
+      "source_labels": [
+        "price_breakout_track",
+        "right_top_track",
+        "精選候選",
+        "量增回測"
+      ],
+      "tags": [],
+      "status": "點火",
+      "priority_level": "B",
+      "volume_ratio": 4.25,
+      "week_chg_pct": null,
+      "track_pnl_pct": 8.19,
+      "theme_score": 73.4,
+      "themes": [
+        "功率元件",
+        "半導體"
+      ]
+    },
+    {
       "stock_id": "3041",
       "name": "揚智",
       "industry": "半導體業",
@@ -2308,12 +2335,12 @@
       ]
     },
     {
-      "stock_id": "5236",
-      "name": "凌陽創新",
-      "industry": "半導體業",
+      "stock_id": "3564",
+      "name": "其陽",
+      "industry": "通信網路業",
       "market": "TPEX",
-      "close": 185.5,
-      "score": 96.0,
+      "close": 48.15,
+      "score": 80.0,
       "source_count": 2,
       "sources": [
         "momentum_candidates",
@@ -2328,14 +2355,14 @@
         "量增回測"
       ],
       "tags": [],
-      "status": "回穩觀察",
+      "status": "點火",
       "priority_level": "B",
-      "volume_ratio": 2.92,
+      "volume_ratio": 3.36,
       "week_chg_pct": null,
-      "track_pnl_pct": 2.49,
-      "theme_score": 70.8,
+      "track_pnl_pct": 6.29,
+      "theme_score": 70.1,
       "themes": [
-        "半導體"
+        "網通"
       ]
     },
     {
@@ -2368,37 +2395,6 @@
       "themes": [
         "功率元件",
         "半導體"
-      ]
-    },
-    {
-      "stock_id": "3564",
-      "name": "其陽",
-      "industry": "通信網路業",
-      "market": "TPEX",
-      "close": 46.8,
-      "score": 93.0,
-      "source_count": 2,
-      "sources": [
-        "momentum_candidates",
-        "price_breakout_track",
-        "right_top_track",
-        "volume_pullback"
-      ],
-      "source_labels": [
-        "price_breakout_track",
-        "right_top_track",
-        "精選候選",
-        "量增回測"
-      ],
-      "tags": [],
-      "status": "回穩觀察",
-      "priority_level": "B",
-      "volume_ratio": 2.55,
-      "week_chg_pct": null,
-      "track_pnl_pct": 3.31,
-      "theme_score": 69.3,
-      "themes": [
-        "網通"
       ]
     },
     {
@@ -2470,12 +2466,46 @@
       ]
     },
     {
+      "stock_id": "3221",
+      "name": "台嘉碩",
+      "industry": "通信網路業",
+      "market": "TPEX",
+      "close": 60.2,
+      "score": 97.0,
+      "source_count": 1,
+      "sources": [
+        "price_breakout_track",
+        "right_top",
+        "volume_pullback"
+      ],
+      "source_labels": [
+        "price_breakout_track",
+        "價格突破",
+        "量增回測"
+      ],
+      "tags": [
+        "60日新高",
+        "EMA多頭",
+        "價格突破",
+        "量能續航"
+      ],
+      "status": "再啟動",
+      "priority_level": "C",
+      "volume_ratio": 1.69,
+      "week_chg_pct": null,
+      "track_pnl_pct": null,
+      "theme_score": 57.2,
+      "themes": [
+        "網通"
+      ]
+    },
+    {
       "stock_id": "6411",
       "name": "晶焱",
       "industry": "半導體業",
       "market": "TPEX",
-      "close": 100.5,
-      "score": 123.0,
+      "close": 111.0,
+      "score": 81.0,
       "source_count": 1,
       "sources": [
         "price_breakout_track",
@@ -2486,12 +2516,12 @@
         "量增回測"
       ],
       "tags": [],
-      "status": "再啟動",
+      "status": "點火",
       "priority_level": "",
-      "volume_ratio": 2.13,
+      "volume_ratio": 3.56,
       "week_chg_pct": null,
       "track_pnl_pct": null,
-      "theme_score": 48.4,
+      "theme_score": 48.8,
       "themes": [
         "半導體"
       ]
@@ -2502,7 +2532,7 @@
       "industry": "通信",
       "market": "TWSE",
       "close": 136.5,
-      "score": 62.2,
+      "score": 62.0,
       "source_count": 2,
       "sources": [
         "chips",
@@ -2533,7 +2563,7 @@
       "industry": "通信",
       "market": "TWSE",
       "close": 111.0,
-      "score": 41.8,
+      "score": 43.9,
       "source_count": 2,
       "sources": [
         "chips",
@@ -2553,36 +2583,9 @@
       "volume_ratio": 1.19,
       "week_chg_pct": -2.2,
       "track_pnl_pct": -3.48,
-      "theme_score": 44.8,
+      "theme_score": 45.1,
       "themes": [
         "網通"
-      ]
-    },
-    {
-      "stock_id": "5425",
-      "name": "台半",
-      "industry": "半導體業",
-      "market": "TPEX",
-      "close": 100.5,
-      "score": 105.0,
-      "source_count": 1,
-      "sources": [
-        "price_breakout_track",
-        "volume_pullback"
-      ],
-      "source_labels": [
-        "price_breakout_track",
-        "量增回測"
-      ],
-      "tags": [],
-      "status": "再啟動",
-      "priority_level": "",
-      "volume_ratio": 1.05,
-      "week_chg_pct": null,
-      "track_pnl_pct": null,
-      "theme_score": 44.3,
-      "themes": [
-        "半導體"
       ]
     },
     {
@@ -2613,28 +2616,28 @@
       ]
     },
     {
-      "stock_id": "3221",
-      "name": "台嘉碩",
+      "stock_id": "2455",
+      "name": "全新",
       "industry": "通信網路業",
-      "market": "TPEX",
-      "close": 59.3,
-      "score": 95.0,
+      "market": "TWSE",
+      "close": 391.5,
+      "score": 107.0,
       "source_count": 1,
       "sources": [
-        "price_breakout_track",
-        "volume_pullback"
+        "momentum_pullback",
+        "標的追蹤"
       ],
       "source_labels": [
-        "price_breakout_track",
-        "量增回測"
+        "動能回測",
+        "標的追蹤"
       ],
       "tags": [],
-      "status": "回穩觀察",
+      "status": "",
       "priority_level": "",
-      "volume_ratio": 1.29,
+      "volume_ratio": null,
       "week_chg_pct": null,
       "track_pnl_pct": null,
-      "theme_score": 43.7,
+      "theme_score": 43.4,
       "themes": [
         "網通"
       ]
