@@ -10,8 +10,11 @@ from __future__ import annotations
 
 import json
 import os
-from datetime import datetime, timedelta, timezone
+from datetime import date, datetime, timedelta, timezone
 from typing import Any
+
+from finmind_client import load_price_cache, get_stock_price_from_cache
+import pattern_detect
 
 SCRIPT_DIR = os.path.dirname(os.path.abspath(__file__))
 DATA_DIR = os.path.join(SCRIPT_DIR, "..", "data")
@@ -38,6 +41,7 @@ HOT_INDUSTRY_KEYWORDS = (
     "通信",
 )
 MAX_EXTENDED_PCT = 15.0
+PRICE_LOOKBACK_DAYS = 200  # ≈130 trading days
 PRIORITY_RANK = {"A": 1, "B": 2, "C": 3}
 FOCUS_VOL_MIN = 1.2
 FOCUS_VOL_MAX = 5.0
@@ -339,6 +343,8 @@ def scan() -> dict[str, Any]:
         add_score(row, "follow", score)
 
     candidates = []
+    cache = load_price_cache()
+    start_date_130 = (date.today() - timedelta(days=PRICE_LOOKBACK_DAYS)).strftime("%Y-%m-%d")
     for sid, row in rows.items():
         row["close"] = row.get("close") or prices.get(sid)
         industry = row.get("industry", "")
@@ -350,21 +356,54 @@ def scan() -> dict[str, Any]:
         extended = max(track_pnl, pullback_pct, ai_pnl) > MAX_EXTENDED_PCT
         if extended:
             continue
-        score = sum(num(v) for v in row["score_parts"].values()) + source_bonus + industry_bonus
-        if score < 35:
+        context_score = sum(num(v) for v in row["score_parts"].values()) + source_bonus + industry_bonus
+        if context_score < 35:
             continue
-        row["score"] = round(score, 1)
+        row["context_score"] = round(context_score, 1)
         row["source_count"] = len(row["sources"])
         row["risk_flags"] = []
         set_priority(row)
+
+        # Pattern analysis — state is primary sort key, context_score kept for reference
+        pr = None
+        if cache is not None:
+            df = get_stock_price_from_cache(cache, sid, start_date_130)
+            if df is not None:
+                m = row.get("metrics", {})
+                tags_set = set(row.get("tags", []))
+                pr = pattern_detect.analyze(
+                    df,
+                    stock_id=sid,
+                    track_pnl_pct=num(m.get("track_pnl_pct")),
+                    big_trend_up=num(m.get("chip_score", 0)) >= 5,
+                    inst_buying="外資連買" in tags_set or "投信連買" in tags_set,
+                    source_count=len(row["sources"]),
+                    vcp_hit="vcp" in row.get("sources", []),
+                )
+        if pr:
+            row.update(pr.as_dict())
+        else:
+            row.update({
+                "pattern_state": "先觀察",
+                "pattern_score": 0.0,
+                "pattern_subs": {},
+                "pattern_tags": [],
+                "patterns": [],
+                "key_level": None,
+                "invalidation": None,
+                "pattern_confidence": 1.0,
+            })
+
         candidates.append(row)
 
-    candidates.sort(key=lambda r: (r.get("priority_rank", 9), -num(r["score"]), r.get("status_rank", 9), r["stock_id"]))
-    focus_results = []
-    for row in candidates:
-        row["focus_candidate"] = is_focus_candidate(row)
-        if row["focus_candidate"]:
-            focus_results.append(row)
+    candidates.sort(key=lambda r: (
+        pattern_detect.STATE_ORDER.get(r.get("pattern_state", "先觀察"), 9),
+        -num(r.get("pattern_score", 0)),
+        -len(r.get("sources", [])),
+    ))
+    focus_results = [r for r in candidates if r.get("pattern_state") == "值得看圖"]
+    for r in candidates:
+        r["focus_candidate"] = r.get("pattern_state") == "值得看圖"
 
     return {
         "strategy_id": "momentum_candidates",
@@ -402,6 +441,10 @@ def scan() -> dict[str, Any]:
         "summary": {
             "total": len(candidates),
             "top10": len(candidates[:10]),
+            "pattern_watch": sum(1 for r in candidates if r.get("pattern_state") == "值得看圖"),
+            "pattern_observe": sum(1 for r in candidates if r.get("pattern_state") == "先觀察"),
+            "pattern_extended": sum(1 for r in candidates if r.get("pattern_state") == "太遠不追"),
+            "pattern_broken": sum(1 for r in candidates if r.get("pattern_state") == "型態破壞"),
             "priority_a": sum(1 for r in candidates if r.get("priority_level") == "A"),
             "priority_b": sum(1 for r in candidates if r.get("priority_level") == "B"),
             "priority_c": sum(1 for r in candidates if r.get("priority_level") == "C"),
@@ -420,7 +463,8 @@ def main() -> int:
     with open(OUTPUT_PATH, "w", encoding="utf-8") as f:
         json.dump(output, f, ensure_ascii=False, indent=2)
         f.write("\n")
-    print(f"短線強勢雷達：{output['summary']['total']} 檔")
+    s = output["summary"]
+    print(f"短線強勢雷達：{s['total']} 檔  值得看圖 {s['pattern_watch']} / 先觀察 {s['pattern_observe']}")
     return 0
 
 
