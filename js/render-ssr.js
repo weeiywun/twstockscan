@@ -207,9 +207,18 @@ function renderSSR(strat, main) {
     return `<span class="sort-icon">${sortCol === col ? (sortAsc ? '↑' : '↓') : '·'}</span>`;
   }
 
+  const PSTATE_ORDER = { '值得看圖': 0, '先觀察': 1, '太遠不追': 2, '型態破壞': 3 };
+  function patternStateColor(state) {
+    if (state === '值得看圖') return 'var(--green)';
+    if (state === '太遠不追') return 'var(--amber)';
+    if (state === '型態破壞') return '#dc2626';
+    return 'var(--text2)';
+  }
+
   function focusValue(row, col) {
     const m = row.metrics || {};
-    if (col === 'score') return row.unified_score ?? row.score ?? 0;
+    if (col === 'score') return row.pattern_score ?? row.unified_score ?? row.score ?? 0;
+    if (col === 'pattern_state') return PSTATE_ORDER[row.pattern_state] ?? 1;
     if (col === 'primary_metric') return m.ignition_vol_ratio ?? m.today_vol_ratio ?? m.track_vol_ratio ?? 0;
     if (col === 'track_pnl_pct') return m.track_pnl_pct ?? -999;
     return row[col] ?? m[col];
@@ -391,11 +400,16 @@ function renderSSR(strat, main) {
     const rowsHTML = filteredFocus.map(row => {
       const m = row.metrics || {};
       const tvSymbol = getTVSymbol(row);
+      const patState = row.pattern_state || '先觀察';
+      const patScore = row.pattern_score ?? 0;
+      const patTags = (row.pattern_tags || []).join(' ');
+      const patternList = (row.patterns || []).join(' / ');
+      const keyLvl = row.key_level;
+      const inval = row.invalidation;
+      const stateColor = patternStateColor(patState);
+      const ctxScore = row.context_score ?? row.unified_score ?? row.score ?? 0;
       const vol = m.today_vol_ratio ?? m.ignition_vol_ratio ?? m.track_vol_ratio;
       const track = m.track_pnl_pct;
-      const statusColor = row.status === '再啟動'
-        ? 'var(--green)'
-        : (row.status === '點火首日' ? 'var(--amber)' : 'var(--text)');
       return `<tr>
         <td>
           <a href="https://www.tradingview.com/chart/?symbol=${tvSymbol}"
@@ -407,16 +421,29 @@ function renderSSR(strat, main) {
           </a>
           <div class="stock-industry" style="font-size:10px;color:var(--text3)">${row.industry || '—'}</div>
         </td>
-        <td><span class="tag-badge" style="color:${statusColor};border-color:rgba(80,90,110,.35)">${row.status || '—'}</span></td>
+        <td><span class="tag-badge" style="color:${stateColor};border-color:rgba(80,90,110,.35)">${patState}</span></td>
         <td>
-          <span style="font-family:var(--mono);font-weight:700;color:var(--green)">${fmtNum(row.unified_score ?? row.score, 0)}</span>
-          <span style="font-size:10px;color:var(--text3);margin-left:4px">${row.unified_score_grade || ''}</span>
+          <span style="font-family:var(--mono);font-weight:700;color:${stateColor}">${Number(patScore).toFixed(1)}</span>
+          ${row.pattern_confidence != null && Number(row.pattern_confidence) < 0.9
+            ? `<br><span style="font-size:10px;color:var(--text3)">cf ${Number(row.pattern_confidence).toFixed(2)}</span>`
+            : ''}
+        </td>
+        <td style="font-size:11px;line-height:1.5;max-width:120px">
+          ${patTags ? `<span style="color:var(--text)">${patTags}</span>` : ''}
+          ${patternList ? `<br><span style="color:var(--text3)">${patternList}</span>` : ''}
+          ${!patTags && !patternList ? '—' : ''}
+        </td>
+        <td style="font-family:var(--mono);font-size:12px;white-space:nowrap">
+          ${keyLvl != null ? `<span style="color:var(--green);font-weight:700">${Number(keyLvl).toFixed(2)}</span>` : '—'}
+          ${inval != null ? `<br><span style="font-size:10px;color:#dc2626">↓${Number(inval).toFixed(2)}</span>` : ''}
         </td>
         <td><span class="price-cell">${fmtNum(row.close, 1)}</span></td>
-        <td><span style="font-family:var(--mono);color:var(--amber);font-weight:700">${vol != null ? Number(vol).toFixed(2) + 'x' : '—'}</span></td>
-        <td><span class="${Number(track || 0) >= 0 ? 'pos' : 'neg'}" style="font-family:var(--mono)">${track != null ? fmtPct(track, 1) : '—'}</span></td>
-        <td>${(row.sources || []).map(s => `<span class="tag-badge" style="color:var(--text2);border-color:rgba(80,90,110,.35)">${focusSourceLabel(s)}</span>`).join('')}</td>
-        <td style="font-size:11px;color:var(--text2);line-height:1.6">${focusMetricText(row)}</td>
+        <td style="font-size:11px;color:var(--text2);line-height:1.6">
+          <span style="font-family:var(--mono)">${Number(ctxScore).toFixed(0)}</span> ctx
+          ${vol != null ? `· 量${Number(vol).toFixed(2)}x` : ''}
+          ${track != null ? `· <span class="${Number(track) >= 0 ? 'pos' : 'neg'}">${fmtPct(track, 1)}</span>` : ''}
+          <br>${(row.sources || []).map(s => `<span class="tag-badge" style="color:var(--text3);border-color:rgba(80,90,110,.25)">${focusSourceLabel(s)}</span>`).join('')}
+        </td>
       </tr>`;
     }).join('');
 
@@ -424,13 +451,13 @@ function renderSSR(strat, main) {
       <div class="table-toolbar">
         <span class="table-title">標的池</span>
         <div class="toolbar-right">
-          <span class="updated-tag">顯示 ${filteredFocus.length} / ${momentumData.summary?.total || focusRows.length}</span>
+          <span class="updated-tag">值得看圖 ${momentumData.summary?.pattern_watch ?? focusRows.length} / 共 ${momentumData.summary?.total || focusRows.length}</span>
           <span class="updated-tag">更新：${(momentumData.updated || '').slice(0, 10) || strat.dataUpdated}</span>
           <button class="btn-csv" onclick="exportFocusCSV()">匯出 CSV</button>
         </div>
       </div>
       <div style="padding:10px 14px;border-bottom:1px solid var(--border);font-size:12px;color:var(--text3);line-height:1.7">
-        以精選候選為基礎，保留量增回測 / 再啟動，並要求大戶或突破追蹤脈絡；排除過熱與已延伸過遠的標的。
+        僅顯示 pattern_state＝值得看圖 的標的，依型態分排序；context_score 與來源標籤為次要參考。
       </div>
       <div style="display:flex;gap:8px;padding:10px 14px;border-bottom:1px solid var(--border);flex-wrap:wrap">
         ${poolFilterButtons}
@@ -440,16 +467,15 @@ function renderSSR(strat, main) {
           <thead>
             <tr>
               <th onclick="ssrSort('stock_id')" style="cursor:pointer">代號 / 名稱${sortIcon('stock_id')}</th>
-              <th onclick="ssrSort('status')" style="cursor:pointer">狀態${sortIcon('status')}</th>
-              <th onclick="ssrSort('score')" style="cursor:pointer">分數${sortIcon('score')}</th>
+              <th onclick="ssrSort('pattern_state')" style="cursor:pointer">型態狀態${sortIcon('pattern_state')}</th>
+              <th onclick="ssrSort('score')" style="cursor:pointer">型態分${sortIcon('score')}</th>
+              <th>型態標籤</th>
+              <th>關鍵 / 失效</th>
               <th onclick="ssrSort('close')" style="cursor:pointer">收盤${sortIcon('close')}</th>
-              <th onclick="ssrSort('primary_metric')" style="cursor:pointer">量比${sortIcon('primary_metric')}</th>
-              <th onclick="ssrSort('track_pnl_pct')" style="cursor:pointer">追蹤${sortIcon('track_pnl_pct')}</th>
-              <th>來源</th>
-              <th>備註</th>
+              <th>來源 / 背景</th>
             </tr>
           </thead>
-          <tbody>${rowsHTML || `<tr><td colspan="8" style="text-align:center;color:var(--text3);padding:28px">目前沒有標的池候選</td></tr>`}</tbody>
+          <tbody>${rowsHTML || `<tr><td colspan="7" style="text-align:center;color:var(--text3);padding:28px">目前沒有標的池候選（型態狀態＝值得看圖）</td></tr>`}</tbody>
         </table>
       </div>
     </div>`;
@@ -549,19 +575,14 @@ function renderSSR(strat, main) {
       stock_analysis: '標的追蹤',
     };
     const headers = [
-      '代號', '名稱', '產業', '市場', '狀態',
-      '分數', '等級',
+      '代號', '名稱', '產業', '市場',
+      '型態狀態', '型態分', '型態標籤', '關鍵價', '失效價', '型態可信度',
       '收盤',
-      '量比',
-      '追蹤損益(%)',
-      '週漲跌(%)', 'BBW', 'BBW狀態',
-      '來源',
-      '籌碼分', '動能分', '量能分', '結構分', '主線分', '乘數',
+      '量比', '追蹤損益(%)', '週漲跌(%)', 'BBW',
+      'context_score', '來源',
     ];
     const csvRows = filteredFocus.map(row => {
       const m = row.metrics || {};
-      const sc = (row.score_breakdown || {}).components || {};
-      const mul = row.score_breakdown?.source_multiplier ?? '';
       const vol = m.today_vol_ratio ?? m.ignition_vol_ratio ?? m.track_vol_ratio;
       const sources = (row.sources || []).map(s => sourceLabels[s] || s).join(' / ');
       return [
@@ -569,22 +590,19 @@ function renderSSR(strat, main) {
         row.name || '',
         row.industry || '',
         row.market || '',
-        row.status || '',
-        row.unified_score ?? row.score ?? '',
-        row.unified_score_grade || '',
+        row.pattern_state || '',
+        row.pattern_score != null ? Number(row.pattern_score).toFixed(1) : '',
+        (row.pattern_tags || []).join(' '),
+        row.key_level != null ? Number(row.key_level).toFixed(2) : '',
+        row.invalidation != null ? Number(row.invalidation).toFixed(2) : '',
+        row.pattern_confidence != null ? Number(row.pattern_confidence).toFixed(2) : '',
         row.close ?? '',
         vol != null ? Number(vol).toFixed(2) : '',
         m.track_pnl_pct != null ? Number(m.track_pnl_pct).toFixed(2) : '',
         m.week_chg_pct != null ? Number(m.week_chg_pct).toFixed(2) : '',
         m.bbw != null ? Number(m.bbw).toFixed(1) : '',
-        m.bbw_status || '',
+        row.context_score ?? row.unified_score ?? row.score ?? '',
         sources,
-        sc.chip != null ? Number(sc.chip).toFixed(0) : '',
-        sc.momentum != null ? Number(sc.momentum).toFixed(0) : '',
-        sc.volume != null ? Number(sc.volume).toFixed(0) : '',
-        sc.structure != null ? Number(sc.structure).toFixed(0) : '',
-        sc.theme != null ? Number(sc.theme).toFixed(0) : '',
-        mul !== '' ? Number(mul).toFixed(2) : '',
       ];
     });
     const csv = [headers, ...csvRows]

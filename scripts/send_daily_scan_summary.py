@@ -141,7 +141,7 @@ def build_focus_items() -> list[dict[str, Any]]:
     rows = data.get("focus_results") or [
         row for row in data.get("results", []) if row.get("focus_candidate")
     ]
-    rows.sort(key=lambda row: (-(num(row.get("unified_score"), num(row.get("score"), 0)) or 0), row.get("priority_rank", 9), row.get("stock_id", "")))
+    rows.sort(key=lambda row: -(num(row.get("pattern_score"), num(row.get("score"), 0)) or 0))
     return rows[:MAX_FOCUS]
 
 
@@ -205,10 +205,10 @@ def holding_row(item: dict[str, Any]) -> dict:
 
 
 def focus_row(item: dict[str, Any]) -> dict:
-    metrics = item.get("metrics", {})
-    vol_ratio = metrics.get("today_vol_ratio") or metrics.get("ignition_vol_ratio") or metrics.get("track_vol_ratio")
-    score = num(item.get("unified_score"), num(item.get("score")))
-    status = item.get("status") or "觀察"
+    pat_score = num(item.get("pattern_score"), num(item.get("score")))
+    pat_state = item.get("pattern_state") or item.get("status") or "觀察"
+    pat_tags = " ".join((item.get("pattern_tags") or [])[:2])
+    key_level = item.get("key_level")
     return {
         "type": "box",
         "layout": "horizontal",
@@ -220,7 +220,7 @@ def focus_row(item: dict[str, Any]) -> dict:
                 "flex": 3,
                 "contents": [
                     flex_text(f"{item.get('stock_id', '')} {item.get('name', '')}", "sm", FLEX_TEXT, weight="bold"),
-                    flex_text(status, "xxs", FLEX_ACCENT),
+                    flex_text(f"{pat_state}{'  ' + pat_tags if pat_tags else ''}", "xxs", FLEX_ACCENT),
                 ],
             },
             {
@@ -229,7 +229,7 @@ def focus_row(item: dict[str, Any]) -> dict:
                 "flex": 2,
                 "contents": [
                     flex_text(fmt_price(item.get("close")), "sm", FLEX_TEXT, weight="bold", align="center"),
-                    flex_text("收盤", "xxs", FLEX_LIGHT, align="center"),
+                    flex_text(f"關鍵 {fmt_price(key_level)}" if key_level else "收盤", "xxs", FLEX_LIGHT, align="center"),
                 ],
             },
             {
@@ -237,8 +237,8 @@ def focus_row(item: dict[str, Any]) -> dict:
                 "layout": "vertical",
                 "flex": 2,
                 "contents": [
-                    flex_text(f"{score:.1f}" if score is not None else "--", "sm", FLEX_PRIMARY, weight="bold", align="center"),
-                    flex_text(f"量比 {num(vol_ratio, 0):.2f}x" if vol_ratio is not None else "量比 --", "xxs", FLEX_MUTED, align="center"),
+                    flex_text(f"{pat_score:.1f}" if pat_score is not None else "--", "sm", FLEX_PRIMARY, weight="bold", align="center"),
+                    flex_text("型態分", "xxs", FLEX_MUTED, align="center"),
                 ],
             },
         ],
