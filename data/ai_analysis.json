@@ -9,8 +9,8 @@
       "expire_date": "2026-05-28",
       "days_remaining": 1,
       "entry_price": 104,
-      "current_price": 134.0,
-      "pnl_pct": 28.85,
+      "current_price": 137.5,
+      "pnl_pct": 32.21,
       "rev_grade": "B",
       "quant_scores": {
         "trend_score": 0,
@@ -2921,6 +2921,28 @@
           "theme": []
         }
       }
+    },
+    {
+      "ticker": "3293",
+      "name": "鈊象",
+      "industry": "櫃文創",
+      "trigger_date": "2026-05-28",
+      "expire_date": "2026-06-11",
+      "days_remaining": 11,
+      "entry_price": 749.0,
+      "current_price": 749.0,
+      "pnl_pct": 0.0,
+      "rev_grade": "B",
+      "quant_scores": {
+        "trend_score": 0.0,
+        "chip_score": 8.4,
+        "rev_score": 6.0
+      },
+      "pinned": false,
+      "priority_level": "B",
+      "priority_reason": [
+        "籌碼分數>=6"
+      ]
     }
   ],
   "expired": [
@@ -3520,8 +3542,8 @@
       "expire_date": "2026-05-11",
       "days_remaining": 0,
       "entry_price": 14,
-      "current_price": 16.35,
-      "pnl_pct": 16.79,
+      "current_price": 18.0,
+      "pnl_pct": 28.57,
       "repeat": false,
       "repeat_count": 1,
       "ai_analysis_date": "2026-04-27",
@@ -4099,8 +4121,8 @@
       "expire_date": "2026-05-20",
       "days_remaining": 0,
       "entry_price": 35.1,
-      "current_price": 35.8,
-      "pnl_pct": 1.99,
+      "current_price": 35.5,
+      "pnl_pct": 1.14,
       "rev_grade": "C",
       "quant_scores": {
         "trend_score": 1.8,
@@ -4486,8 +4508,8 @@
       "expire_date": "2026-05-22",
       "days_remaining": 0,
       "entry_price": 390,
-      "current_price": 394.5,
-      "pnl_pct": 1.15,
+      "current_price": 387.5,
+      "pnl_pct": -0.64,
       "rev_grade": "A",
       "quant_scores": {
         "trend_score": 2.8,
@@ -4652,8 +4674,8 @@
       "expire_date": "2026-05-25",
       "days_remaining": 0,
       "entry_price": 103.5,
-      "current_price": 120.5,
-      "pnl_pct": 16.43,
+      "current_price": 121.0,
+      "pnl_pct": 16.91,
       "rev_grade": "A",
       "quant_scores": {
         "trend_score": 0.2,
@@ -4829,8 +4851,8 @@
       "expire_date": "2026-05-25",
       "days_remaining": 0,
       "entry_price": 21,
-      "current_price": 23.95,
-      "pnl_pct": 14.05,
+      "current_price": 24.7,
+      "pnl_pct": 17.62,
       "rev_grade": "S",
       "quant_scores": {
         "trend_score": 0,
@@ -6011,9 +6033,5 @@
       "entry_date": "2026-05-13",
       "remove_date": "2026-06-04"
     }
-  ],
-  "unified_score_model": {
-    "version": "unified_score_v1",
-    "applied_at": "2026-05-28T22:17:13+08:00"
-  }
+  ]
 }
