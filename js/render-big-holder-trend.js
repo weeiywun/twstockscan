@@ -16,9 +16,18 @@ function renderBigHolderTrend(strat, main) {
   const fmtPct = v => v == null || Number.isNaN(Number(v)) ? '—' : `${Number(v) > 0 ? '+' : ''}${Number(v).toFixed(2)}%`;
   const fmtLots = v => v == null || Number.isNaN(Number(v)) ? '—' : Math.round(Number(v)).toLocaleString();
   const sortIcon = col => `<span class="sort-icon">${bigHolderTrendSortCol === col ? (bigHolderTrendSortAsc ? '↑' : '↓') : '·'}</span>`;
+  const trendLine = (label, values) => {
+    const parts = Array.isArray(values) && values.length
+      ? values.map(v => `${fmt(v)}%`).join(' → ')
+      : '—';
+    return `<div style="white-space:nowrap"><span style="color:var(--text3);margin-right:4px">${label}</span>${parts}</div>`;
+  };
   const sortValue = row => {
     if (bigHolderTrendSortCol === 'score') return row.unified_score ?? row.score ?? 0;
-    if (bigHolderTrendSortCol === 'chip_1w') return Math.max(row.chg_1w_1000 ?? -999, row.chg_1w_400 ?? -999);
+    if (bigHolderTrendSortCol === 'entry_close') return row.entry_close ?? row.close ?? 0;
+    if (bigHolderTrendSortCol === 'latest_close') return row.latest_close ?? row.close ?? 0;
+    if (bigHolderTrendSortCol === 'since_entry_pct') return row.since_entry_pct ?? 0;
+    if (bigHolderTrendSortCol === 'week_chg_pct') return row.week_chg_pct ?? 0;
     return row[bigHolderTrendSortCol];
   };
   const rows = data.slice().sort((a, b) => {
@@ -33,14 +42,17 @@ function renderBigHolderTrend(strat, main) {
   });
 
   const avgScore = rows.reduce((sum, row) => sum + Number(row.unified_score ?? row.score ?? 0), 0) / rows.length;
-  const topGain = Math.max(...rows.map(row => Number(row.max_gain_60d || 0)));
+  const avgReturn = rows.reduce((sum, row) => sum + Number(row.since_entry_pct ?? 0), 0) / rows.length;
   const sourceDate = strat.dataUpdated || '—';
+  const priceUpdated = DATA.big_holder_trend_meta?.price_updated || rows[0]?.latest_price_date || sourceDate;
 
   const tableRows = rows.map(row => {
     const score = row.unified_score ?? row.score;
     const grade = row.unified_score_grade || '';
-    const chip1000Class = (row.chg_1w_1000 ?? 0) >= 0 ? 'pos' : 'neg';
-    const chip400Class = (row.chg_1w_400 ?? 0) >= 0 ? 'pos' : 'neg';
+    const entryClose = row.entry_close ?? row.close;
+    const latestClose = row.latest_close ?? row.close;
+    const sinceEntryClass = (row.since_entry_pct ?? 0) >= 0 ? 'pos' : 'neg';
+    const weekClass = (row.week_chg_pct ?? 0) >= 0 ? 'pos' : 'neg';
     const tags = (row.tags || []).map(tag => `<span class="tag-badge">${tag}</span>`).join('');
     return `<tr>
       <td>
@@ -58,21 +70,23 @@ function renderBigHolderTrend(strat, main) {
         <span style="font-family:var(--mono);font-weight:700;color:var(--green)">${score != null ? fmt(score, 1) : '—'}</span>
         <span style="font-size:10px;color:var(--text3);margin-left:4px">${grade}</span>
       </td>
-      <td><span class="price-cell">${fmt(row.close, 1)}</span></td>
       <td>
-        <span class="deviation pos">${fmtPct(row.max_gain_60d)}</span><br>
-        <span style="font-size:11px;color:var(--text3)">回高 ${fmtPct(row.pullback_from_60d_high_pct)}</span>
+        <span class="price-cell">${fmt(entryClose, 1)}</span><br>
+        <span style="font-size:11px;color:var(--text3)">${row.entry_date || sourceDate}</span>
       </td>
+      <td>
+        <span class="price-cell">${fmt(latestClose, 1)}</span><br>
+        <span style="font-size:11px;color:var(--text3)">${row.latest_price_date || priceUpdated}</span>
+      </td>
+      <td><span class="deviation ${sinceEntryClass}">${fmtPct(row.since_entry_pct)}</span></td>
       <td><span style="font-family:var(--mono);font-size:12px">${fmtLots(row.vol_20d_avg)}</span></td>
-      <td>
-        <span class="big-pct">${fmt(row.big_pct_1000)}%</span><br>
-        <span style="font-size:11px;color:var(--text3)">400張 ${fmt(row.big_pct_400)}%</span>
-      </td>
-      <td>
-        <span class="big-pct ${chip1000Class}">${fmtPct(row.chg_1w_1000)}</span><br>
-        <span class="big-pct ${chip400Class}" style="font-size:11px">${fmtPct(row.chg_1w_400)}</span>
-      </td>
+      <td><span class="deviation pos">${fmtPct(row.max_gain_60d)}</span></td>
+      <td><span class="deviation ${weekClass}">${fmtPct(row.week_chg_pct)}</span></td>
       <td><div style="display:flex;gap:4px;flex-wrap:wrap">${tags}</div></td>
+      <td style="font-family:var(--mono);font-size:11px;line-height:1.7">
+        ${trendLine('千張', row.big_trend_1000)}
+        ${trendLine('400', row.big_trend_400)}
+      </td>
     </tr>`;
   }).join('');
 
@@ -89,7 +103,7 @@ function renderBigHolderTrend(strat, main) {
         <div class="summary-card">
           <div class="summary-label">入池標的</div>
           <div class="summary-value green">${rows.length}</div>
-          <div class="summary-sub">排除60日漲幅超過100%</div>
+          <div class="summary-sub">週六固定名單</div>
         </div>
         <div class="summary-card">
           <div class="summary-label">平均分數</div>
@@ -97,21 +111,21 @@ function renderBigHolderTrend(strat, main) {
           <div class="summary-sub">統一分數模型</div>
         </div>
         <div class="summary-card">
-          <div class="summary-label">最高60日漲幅</div>
-          <div class="summary-value">${fmtPct(topGain)}</div>
-          <div class="summary-sub">仍低於翻倍門檻</div>
+          <div class="summary-label">入池後平均漲幅</div>
+          <div class="summary-value ${avgReturn >= 0 ? 'green' : 'red'}">${fmtPct(avgReturn)}</div>
+          <div class="summary-sub">即時價 vs 入池現價</div>
         </div>
         <div class="summary-card">
           <div class="summary-label">資料日期</div>
           <div class="summary-value" style="font-size:16px;font-family:var(--mono)">${sourceDate}</div>
-          <div class="summary-sub">${strat.dataSource}</div>
+          <div class="summary-sub">收盤更新 ${priceUpdated}</div>
         </div>
       </div>
       <div class="table-wrap">
         <div class="table-toolbar">
           <span class="table-title">篩選結果</span>
           <div class="toolbar-right">
-            <span class="updated-tag">更新：${sourceDate}</span>
+            <span class="updated-tag">篩選：${sourceDate}　收盤：${priceUpdated}</span>
             <button class="btn-csv" onclick="exportCSVBigHolderTrend()" title="匯出 CSV">↥ 匯出 CSV</button>
           </div>
         </div>
@@ -121,12 +135,14 @@ function renderBigHolderTrend(strat, main) {
               <tr>
                 <th onclick="bigHolderTrendSort('stock_id')">代號 / 名稱${sortIcon('stock_id')}</th>
                 <th onclick="bigHolderTrendSort('score')">分數${sortIcon('score')}</th>
-                <th onclick="bigHolderTrendSort('close')">收盤${sortIcon('close')}</th>
+                <th onclick="bigHolderTrendSort('entry_close')">現價${sortIcon('entry_close')}</th>
+                <th onclick="bigHolderTrendSort('latest_close')">即時${sortIcon('latest_close')}</th>
+                <th onclick="bigHolderTrendSort('since_entry_pct')">漲幅${sortIcon('since_entry_pct')}</th>
+                <th onclick="bigHolderTrendSort('vol_20d_avg')">20均量${sortIcon('vol_20d_avg')}</th>
                 <th onclick="bigHolderTrendSort('max_gain_60d')">60日漲幅${sortIcon('max_gain_60d')}</th>
-                <th onclick="bigHolderTrendSort('vol_20d_avg')">20日均量${sortIcon('vol_20d_avg')}</th>
-                <th onclick="bigHolderTrendSort('big_pct_1000')">大戶比例${sortIcon('big_pct_1000')}</th>
-                <th onclick="bigHolderTrendSort('chip_1w')">單周增幅${sortIcon('chip_1w')}</th>
+                <th onclick="bigHolderTrendSort('week_chg_pct')">單周增幅${sortIcon('week_chg_pct')}</th>
                 <th>訊號</th>
+                <th>大戶比例</th>
               </tr>
             </thead>
             <tbody>${tableRows}</tbody>
@@ -150,24 +166,25 @@ function exportCSVBigHolderTrend() {
   const data = DATA.big_holder_trend_data || [];
   if (!data.length) return;
   const headers = [
-    '代號', '名稱', '產業', '分數', '收盤', '60日漲幅(%)', '距60日高點(%)',
-    '20日均量', '千張大戶比例(%)', '400張大戶比例(%)',
-    '千張單周增幅(%)', '400張單周增幅(%)', '訊號',
+    '代號', '名稱', '產業', '分數', '現價', '現價日期', '即時', '即時日期', '漲幅(%)',
+    '20均量', '60日漲幅(%)', '單周增幅(%)', '訊號', '千張近四週', '400張近四週',
   ];
   const rows = data.map(row => [
     row.stock_id || '',
     row.name || '',
     row.industry || '',
     row.unified_score ?? row.score ?? '',
-    row.close ?? '',
-    row.max_gain_60d ?? '',
-    row.pullback_from_60d_high_pct ?? '',
+    row.entry_close ?? row.close ?? '',
+    row.entry_date ?? '',
+    row.latest_close ?? row.close ?? '',
+    row.latest_price_date ?? '',
+    row.since_entry_pct ?? '',
     row.vol_20d_avg ?? '',
-    row.big_pct_1000 ?? '',
-    row.big_pct_400 ?? '',
-    row.chg_1w_1000 ?? '',
-    row.chg_1w_400 ?? '',
+    row.max_gain_60d ?? '',
+    row.week_chg_pct ?? '',
     (row.tags || []).join(' / '),
+    (row.big_trend_1000 || []).join(' / '),
+    (row.big_trend_400 || []).join(' / '),
   ]);
   const csv = [headers, ...rows].map(r => r.map(v => `"${String(v).replace(/"/g, '""')}"`).join(',')).join('\r\n');
   const blob = new Blob(['\uFEFF' + csv], { type: 'text/csv;charset=utf-8' });

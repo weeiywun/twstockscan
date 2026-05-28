@@ -265,6 +265,7 @@ const DATA = {
   theme_heat_data:        null,
   chips_big_holder_data:  [],
   big_holder_trend_data:  [],
+  big_holder_trend_meta:  null,
   volume_signal_data:     [],
   volume_pullback_data:    null,
   momentum_pullback_data:  null,
@@ -718,6 +719,7 @@ async function loadData() {
 
     if (bhtRes && bhtRes.results) {
       DATA.big_holder_trend_data = bhtRes.results;
+      DATA.big_holder_trend_meta = bhtRes;
       const strat = STRATEGIES.find(s => s.id === 'big_holder_trend');
       if (strat) strat.dataUpdated = (bhtRes.source_date || bhtRes.updated || '').slice(0, 10) || strat.dataUpdated;
     }

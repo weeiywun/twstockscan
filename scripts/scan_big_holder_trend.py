@@ -108,6 +108,11 @@ def price_features(price_df: pd.DataFrame, stock_id: str) -> dict[str, Any] | No
     return {
         "price_date": str(hist["date"].iloc[-1])[:10],
         "close": round(close_now, 2),
+        "entry_date": str(hist["date"].iloc[-1])[:10],
+        "entry_close": round(close_now, 2),
+        "latest_price_date": str(hist["date"].iloc[-1])[:10],
+        "latest_close": round(close_now, 2),
+        "since_entry_pct": 0.0,
         "ema5": round(float(ema5.iloc[-1]), 2),
         "ema60": round(float(ema60.iloc[-1]), 2),
         "ema120": round(float(ema120.iloc[-1]), 2),
