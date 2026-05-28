@@ -16,18 +16,33 @@ function renderBigHolderTrend(strat, main) {
   const fmtPct = v => v == null || Number.isNaN(Number(v)) ? '—' : `${Number(v) > 0 ? '+' : ''}${Number(v).toFixed(2)}%`;
   const fmtLots = v => v == null || Number.isNaN(Number(v)) ? '—' : Math.round(Number(v)).toLocaleString();
   const sortIcon = col => `<span class="sort-icon">${bigHolderTrendSortCol === col ? (bigHolderTrendSortAsc ? '↑' : '↓') : '·'}</span>`;
-  const trendLine = (label, values) => {
-    const parts = Array.isArray(values) && values.length
-      ? values.map(v => `${fmt(v)}%`).join(' → ')
-      : '—';
-    return `<div style="white-space:nowrap"><span style="color:var(--text3);margin-right:4px">${label}</span>${parts}</div>`;
+  const shortSignalTag = tag => {
+    if (String(tag).includes('400')) return String(tag).includes('單') ? '400單週' : '400 4週增';
+    return String(tag).includes('單') ? '千單週' : '千4週增';
+  };
+  const trendCells = values => {
+    const latestFirst = Array.isArray(values) ? values.slice(-4).reverse() : [];
+    return latestFirst.length
+      ? latestFirst.map(v => `<span>${fmt(v)}%</span>`).join('')
+      : '<span>—</span>';
+  };
+  const trendBlock = row => {
+    const tags = (row.tags || [])
+      .map(tag => `<span class="tag-badge compact" title="${String(tag).replace(/"/g, '&quot;')}">${shortSignalTag(tag)}</span>`)
+      .join('');
+    return `<div class="holder-trend-cell">
+      <div class="holder-trend-grid">
+        <span class="trend-label">千張</span>${trendCells(row.big_trend_1000)}
+        <span class="trend-label">400</span>${trendCells(row.big_trend_400)}
+      </div>
+      <div class="holder-signal-tags">${tags}</div>
+    </div>`;
   };
   const sortValue = row => {
     if (bigHolderTrendSortCol === 'score') return row.unified_score ?? row.score ?? 0;
     if (bigHolderTrendSortCol === 'entry_close') return row.entry_close ?? row.close ?? 0;
     if (bigHolderTrendSortCol === 'latest_close') return row.latest_close ?? row.close ?? 0;
     if (bigHolderTrendSortCol === 'since_entry_pct') return row.since_entry_pct ?? 0;
-    if (bigHolderTrendSortCol === 'week_chg_pct') return row.week_chg_pct ?? 0;
     return row[bigHolderTrendSortCol];
   };
   const rows = data.slice().sort((a, b) => {
@@ -52,8 +67,6 @@ function renderBigHolderTrend(strat, main) {
     const entryClose = row.entry_close ?? row.close;
     const latestClose = row.latest_close ?? row.close;
     const sinceEntryClass = (row.since_entry_pct ?? 0) >= 0 ? 'pos' : 'neg';
-    const weekClass = (row.week_chg_pct ?? 0) >= 0 ? 'pos' : 'neg';
-    const tags = (row.tags || []).map(tag => `<span class="tag-badge">${tag}</span>`).join('');
     return `<tr>
       <td>
         <a href="https://www.tradingview.com/chart/?symbol=${getTVSymbol(row)}"
@@ -81,12 +94,7 @@ function renderBigHolderTrend(strat, main) {
       <td><span class="deviation ${sinceEntryClass}">${fmtPct(row.since_entry_pct)}</span></td>
       <td><span style="font-family:var(--mono);font-size:12px">${fmtLots(row.vol_20d_avg)}</span></td>
       <td><span class="deviation pos">${fmtPct(row.max_gain_60d)}</span></td>
-      <td><span class="deviation ${weekClass}">${fmtPct(row.week_chg_pct)}</span></td>
-      <td><div style="display:flex;gap:4px;flex-wrap:wrap">${tags}</div></td>
-      <td style="font-family:var(--mono);font-size:11px;line-height:1.7">
-        ${trendLine('千張', row.big_trend_1000)}
-        ${trendLine('400', row.big_trend_400)}
-      </td>
+      <td>${trendBlock(row)}</td>
     </tr>`;
   }).join('');
 
@@ -135,14 +143,12 @@ function renderBigHolderTrend(strat, main) {
               <tr>
                 <th onclick="bigHolderTrendSort('stock_id')">代號 / 名稱${sortIcon('stock_id')}</th>
                 <th onclick="bigHolderTrendSort('score')">分數${sortIcon('score')}</th>
-                <th onclick="bigHolderTrendSort('entry_close')">現價${sortIcon('entry_close')}</th>
-                <th onclick="bigHolderTrendSort('latest_close')">即時${sortIcon('latest_close')}</th>
+                <th onclick="bigHolderTrendSort('entry_close')">入選收盤${sortIcon('entry_close')}</th>
+                <th onclick="bigHolderTrendSort('latest_close')">現價${sortIcon('latest_close')}</th>
                 <th onclick="bigHolderTrendSort('since_entry_pct')">漲幅${sortIcon('since_entry_pct')}</th>
                 <th onclick="bigHolderTrendSort('vol_20d_avg')">20均量${sortIcon('vol_20d_avg')}</th>
                 <th onclick="bigHolderTrendSort('max_gain_60d')">60日漲幅${sortIcon('max_gain_60d')}</th>
-                <th onclick="bigHolderTrendSort('week_chg_pct')">單周增幅${sortIcon('week_chg_pct')}</th>
-                <th>訊號</th>
-                <th>大戶比例</th>
+                <th>大戶比例 / 訊號</th>
               </tr>
             </thead>
             <tbody>${tableRows}</tbody>
@@ -166,8 +172,8 @@ function exportCSVBigHolderTrend() {
   const data = DATA.big_holder_trend_data || [];
   if (!data.length) return;
   const headers = [
-    '代號', '名稱', '產業', '分數', '現價', '現價日期', '即時', '即時日期', '漲幅(%)',
-    '20均量', '60日漲幅(%)', '單周增幅(%)', '訊號', '千張近四週', '400張近四週',
+    '代號', '名稱', '產業', '分數', '入選收盤', '入選日期', '現價', '現價日期', '漲幅(%)',
+    '20均量', '60日漲幅(%)', '訊號', '千張近四週', '400張近四週',
   ];
   const rows = data.map(row => [
     row.stock_id || '',
@@ -181,7 +187,6 @@ function exportCSVBigHolderTrend() {
     row.since_entry_pct ?? '',
     row.vol_20d_avg ?? '',
     row.max_gain_60d ?? '',
-    row.week_chg_pct ?? '',
     (row.tags || []).join(' / '),
     (row.big_trend_1000 || []).join(' / '),
     (row.big_trend_400 || []).join(' / '),
