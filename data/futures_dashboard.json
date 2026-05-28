@@ -1,6 +1,6 @@
 {
-  "date": "2026-05-28",
-  "updated": "2026-05-28T22:15:46.750028+08:00",
+  "date": "2026-05-29",
+  "updated": "2026-05-29T07:25:11.926953+08:00",
   "source": "taifex_futContractsDate+taifex_futContractsDateAh+taifex_futDataDown+taifex_open_data+twse_bfi82u+cnn_fear_greed",
   "market": {
     "TX": {
@@ -170,10 +170,10 @@
   },
   "us_sentiment": {
     "fear_greed": {
-      "score": 59.89,
+      "score": 60.23,
       "rating": "greed",
       "rating_zh": "貪婪",
-      "timestamp": "2026-05-28T14:11:17+00:00",
+      "timestamp": "2026-05-28T21:50:05+00:00",
       "history": {
         "previous_close": 60.69,
         "1w": 58.06,
@@ -183,25 +183,25 @@
       "indicators": {
         "market_momentum_sp500": {
           "label": "Market Momentum",
-          "score": 97.2,
+          "score": 98.4,
           "rating": "extreme greed",
           "rating_zh": "極度貪婪"
         },
         "stock_price_strength": {
           "label": "Stock Price Strength",
-          "score": 39.0,
+          "score": 41.4,
           "rating": "fear",
           "rating_zh": "恐懼"
         },
         "stock_price_breadth": {
           "label": "Stock Price Breadth",
-          "score": 31.6,
+          "score": 32.8,
           "rating": "fear",
           "rating_zh": "恐懼"
         },
         "put_call_options": {
           "label": "Put/Call Options",
-          "score": 98.0,
+          "score": 95.8,
           "rating": "extreme greed",
           "rating_zh": "極度貪婪"
         },
@@ -213,13 +213,13 @@
         },
         "junk_bond_demand": {
           "label": "Junk Bond Demand",
-          "score": 24.2,
+          "score": 21.8,
           "rating": "extreme fear",
           "rating_zh": "極度恐懼"
         },
         "safe_haven_demand": {
           "label": "Safe Haven Demand",
-          "score": 79.8,
+          "score": 81.4,
           "rating": "extreme greed",
           "rating_zh": "極度貪婪"
         }
@@ -429,14 +429,14 @@
     },
     "night_session": {
       "tx": {
-        "date": "2026-05-28",
+        "date": "2026-05-29",
         "product": "臺股期貨",
         "traders": {
           "dealer": {
             "label": "自營商",
-            "buy_lots": 3059,
-            "sell_lots": 2355,
-            "net_lots": 704
+            "buy_lots": 1620,
+            "sell_lots": 2586,
+            "net_lots": -966
           },
           "investment_trust": {
             "label": "投信",
@@ -446,15 +446,15 @@
           },
           "foreign": {
             "label": "外資",
-            "buy_lots": 41448,
-            "sell_lots": 44082,
-            "net_lots": -2634
+            "buy_lots": 31434,
+            "sell_lots": 32660,
+            "net_lots": -1226
           },
           "total": {
             "label": "三大法人合計",
-            "buy_lots": 44507,
-            "sell_lots": 46437,
-            "net_lots": -1930,
+            "buy_lots": 33054,
+            "sell_lots": 35246,
+            "net_lots": -2192,
             "oi_long_lots": null,
             "oi_short_lots": null,
             "oi_net_lots": null
@@ -463,14 +463,14 @@
         "source": "taifex_futContractsDateAh"
       },
       "mtx": {
-        "date": "2026-05-28",
+        "date": "2026-05-29",
         "product": "小型臺指期貨",
         "traders": {
           "dealer": {
             "label": "自營商",
-            "buy_lots": 8163,
-            "sell_lots": 8651,
-            "net_lots": -488
+            "buy_lots": 6724,
+            "sell_lots": 5966,
+            "net_lots": 758
           },
           "investment_trust": {
             "label": "投信",
@@ -480,15 +480,15 @@
           },
           "foreign": {
             "label": "外資",
-            "buy_lots": 103474,
-            "sell_lots": 107405,
-            "net_lots": -3931
+            "buy_lots": 77299,
+            "sell_lots": 75234,
+            "net_lots": 2065
           },
           "total": {
             "label": "三大法人合計",
-            "buy_lots": 111637,
-            "sell_lots": 116056,
-            "net_lots": -4419,
+            "buy_lots": 84023,
+            "sell_lots": 81200,
+            "net_lots": 2823,
             "oi_long_lots": null,
             "oi_short_lots": null,
             "oi_net_lots": null
@@ -497,14 +497,14 @@
         "source": "taifex_futContractsDateAh"
       },
       "tmf": {
-        "date": "2026-05-28",
+        "date": "2026-05-29",
         "product": "微型臺指期貨",
         "traders": {
           "dealer": {
             "label": "自營商",
-            "buy_lots": 12387,
-            "sell_lots": 18537,
-            "net_lots": -6150
+            "buy_lots": 17079,
+            "sell_lots": 6743,
+            "net_lots": 10336
           },
           "investment_trust": {
             "label": "投信",
@@ -514,15 +514,15 @@
           },
           "foreign": {
             "label": "外資",
-            "buy_lots": 136701,
-            "sell_lots": 140569,
-            "net_lots": -3868
+            "buy_lots": 99927,
+            "sell_lots": 97577,
+            "net_lots": 2350
           },
           "total": {
             "label": "三大法人合計",
-            "buy_lots": 149088,
-            "sell_lots": 159106,
-            "net_lots": -10018,
+            "buy_lots": 117006,
+            "sell_lots": 104320,
+            "net_lots": 12686,
             "oi_long_lots": null,
             "oi_short_lots": null,
             "oi_net_lots": null
@@ -864,9 +864,9 @@
     "bias": "中性",
     "market_bias": {
       "label": "中性",
-      "score": -7.2,
-      "gauge": 46.4,
-      "confidence": 7.2,
+      "score": -7.7,
+      "gauge": 46.1,
+      "confidence": 7.7,
       "components": [
         {
           "key": "retail_ratio",
@@ -898,10 +898,10 @@
         {
           "key": "cnn_fear_greed",
           "label": "CNN Fear & Greed",
-          "value": 59.89,
+          "value": 60.23,
           "unit": "分",
           "weight": 12,
-          "score": 19.78,
+          "score": 20.459999999999994,
           "note": "美股風險偏好；高分代表市場處於貪婪／風險偏好狀態，低分代表恐慌收縮。"
         },
         {
@@ -916,10 +916,10 @@
         {
           "key": "night_session",
           "label": "夜盤三大法人買賣超",
-          "value": -1930,
+          "value": -2192,
           "unit": "口",
           "weight": 10,
-          "score": -38.6,
+          "score": -43.84,
           "note": "夜盤反映美股時段後的短線部位變化。"
         }
       ],
