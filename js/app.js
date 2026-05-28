@@ -84,6 +84,26 @@ const STRATEGIES = [
     dataKey: "chips_big_holder_data",
   },
   {
+    id: "big_holder_trend",
+    name: "大戶趨勢池",
+    shortName: "大戶趨勢",
+    icon: "◆",
+    group: "source",
+    available: true,
+    description: "放寬原籌碼集中乖離與 BBW 限制，先找出大戶持股趨勢明確、短線仍站上 EMA5 且長期均線上揚的第二階段候選池。",
+    conditions: [
+      "千張大戶比例 > 30%",
+      "千張或 400 張大戶連續 4 週增加，或千張 / 400 張本週增加超過 3%",
+      "20 日均量 > 500 張",
+      "收盤價 > EMA5",
+      "EMA60 / EMA120 / EMA200 最近 5 日上揚",
+      "近 60 日最大漲幅 <= 100%，排除過度延伸股",
+    ],
+    dataUpdated: "載入中...",
+    dataSource: "集保大戶資料 + price_cache",
+    dataKey: "big_holder_trend_data",
+  },
+  {
     id: "volume_signal",
     // SOURCE / BACKUP - DO NOT DELETE:
     // Daily volume signal remains a model input, but it is hidden from the main nav
@@ -244,6 +264,7 @@ const STRATEGIES = [
 const DATA = {
   theme_heat_data:        null,
   chips_big_holder_data:  [],
+  big_holder_trend_data:  [],
   volume_signal_data:     [],
   volume_pullback_data:    null,
   momentum_pullback_data:  null,
@@ -497,6 +518,7 @@ function renderStrategy() {
   if (strat.id === 'theme_heat')       { renderThemeHeat(strat, main);       return; }
   if (strat.id === 'ssr')              { renderSSR(strat, main);             return; }
   if (strat.id === 'chips_big_holder') { renderChipsHolder(strat, main);    return; }
+  if (strat.id === 'big_holder_trend') { renderBigHolderTrend(strat, main); return; }
   if (strat.id === 'volume_signal')    { renderVolumeSignal(strat, main);   return; }
   if (strat.id === 'volume_pullback')  { renderVolumePullback(strat, main); return; }
   if (strat.id === 'momentum_pullback'){ renderMomentumPullback(strat, main); return; }
@@ -648,9 +670,10 @@ async function loadData() {
   const timestamp = new Date().getTime();
 
   try {
-    const [themeRes, chipsRes, vsRes, vpbRes, mpbRes, ivpbRes, mcRes, aiRes, saRes, perfRes, miRes, fdRes, mbRes, vcpRes, rtRes, rttRes, tmRes] = await Promise.all([
+    const [themeRes, chipsRes, bhtRes, vsRes, vpbRes, mpbRes, ivpbRes, mcRes, aiRes, saRes, perfRes, miRes, fdRes, mbRes, vcpRes, rtRes, rttRes, tmRes] = await Promise.all([
       fetch(`data/theme_heat.json?t=${timestamp}`,          { cache: 'no-store' }).then(r => r.ok ? r.json() : null).catch(() => null),
       fetch(`data/chips_big_holder.json?t=${timestamp}`,   { cache: 'no-store' }).then(r => r.ok ? r.json() : null).catch(() => null),
+      fetch(`data/big_holder_trend.json?t=${timestamp}`,   { cache: 'no-store' }).then(r => r.ok ? r.json() : null).catch(() => null),
       fetch(`data/volume_signal.json?t=${timestamp}`,      { cache: 'no-store' }).then(r => r.ok ? r.json() : null).catch(() => null),
       fetch(`data/volume_pullback.json?t=${timestamp}`,     { cache: 'no-store' }).then(r => r.ok ? r.json() : null).catch(() => null),
       fetch(`data/momentum_pullback.json?t=${timestamp}`,   { cache: 'no-store' }).then(r => r.ok ? r.json() : null).catch(() => null),
@@ -691,6 +714,12 @@ async function loadData() {
         strat.dataUpdated  = (chipsRes.updated      || '').slice(0, 10) || strat.dataUpdated;
         strat.priceUpdated = (chipsRes.price_updated || '').slice(0, 10) || '';
       }
+    }
+
+    if (bhtRes && bhtRes.results) {
+      DATA.big_holder_trend_data = bhtRes.results;
+      const strat = STRATEGIES.find(s => s.id === 'big_holder_trend');
+      if (strat) strat.dataUpdated = (bhtRes.source_date || bhtRes.updated || '').slice(0, 10) || strat.dataUpdated;
     }
 
     if (vsRes && vsRes.results) {

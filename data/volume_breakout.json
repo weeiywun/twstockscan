@@ -94,49 +94,53 @@
       "stock_id": "5410",
       "name": "國眾",
       "market": "TPEX",
-      "unified_score": 30.4,
+      "unified_score": 39.6,
       "unified_score_grade": "D",
       "score_breakdown": {
         "version": "unified_score_v2_momentum_first_stock_level",
-        "total": 30.4,
+        "total": 39.6,
         "grade": "D",
-        "base": 30.4,
+        "base": 37.7,
         "components": {
-          "chip": 0.0,
-          "momentum": 56.2,
+          "chip": 48.6,
+          "momentum": 61.6,
           "volume": 20.5,
           "structure": 0.0,
           "theme": 0.0
         },
-        "source_count": 1,
-        "source_multiplier": 1.0,
+        "source_count": 2,
+        "source_multiplier": 1.05,
         "sources": [
+          "big_holder_trend",
           "volume_breakout"
         ],
         "aggregation": "max_component_by_stock"
       },
-      "score": 30.4,
+      "score": 39.6,
       "legacy_score": 0.0,
-      "context_unified_score": 30.4,
+      "context_unified_score": 37.0,
       "context_score_breakdown": {
         "version": "unified_score_v2_momentum_first_stock_level",
-        "total": 30.4,
+        "total": 37.0,
         "grade": "D",
-        "base": 30.4,
+        "base": 35.3,
         "components": {
-          "chip": 0.0,
+          "chip": 48.6,
           "momentum": 56.2,
           "volume": 20.5,
           "structure": 0.0,
           "theme": 0.0
         },
-        "source_count": 1,
-        "source_multiplier": 1.0,
+        "source_count": 2,
+        "source_multiplier": 1.05,
         "sources": [
+          "big_holder_trend",
           "volume_breakout"
         ],
         "reasons": {
-          "chip": [],
+          "chip": [
+            "千張增 +3.4%"
+          ],
           "momentum": [
             "週漲 +19.1%",
             "日漲 +1.6%"
@@ -223,6 +227,6 @@
   ],
   "unified_score_model": {
     "version": "unified_score_v1",
-    "applied_at": "2026-05-27T17:20:50+08:00"
+    "applied_at": "2026-05-28T16:19:08+08:00"
   }
 }

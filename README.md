@@ -10,7 +10,7 @@
 
 `scripts/enrich_candidate_features.py` 會先把各策略篩出的股票代號彙整成 `data/candidate_features.json`，並從本地 `price_cache.parquet`、大戶籌碼、回測模型、題材熱度等既有資料補齊共用特徵，不額外呼叫外部 API。
 
-`scripts/unified_scoring.py` 是目前所有策略共用的 0-100 分數模型，權重集中在 `data/unified_score_config.json`。每日掃描與週六大戶掃描完成後，會先執行共用特徵補齊，再執行 `scripts/apply_unified_scores.py`，替 `chips_big_holder`、`right_top`、`volume_signal`、`volume_pullback`、`momentum_pullback`、`momentum_candidates`、`performance` 等資料補上：
+`scripts/unified_scoring.py` 是目前所有策略共用的 0-100 分數模型，權重集中在 `data/unified_score_config.json`。每日掃描與週六大戶掃描完成後，會先執行共用特徵補齊，再執行 `scripts/apply_unified_scores.py`，替 `chips_big_holder`、`big_holder_trend`、`right_top`、`volume_signal`、`volume_pullback`、`momentum_pullback`、`momentum_candidates`、`performance` 等資料補上：
 
 - `score` / `unified_score`：統一後的總分，上限 100。
 - `legacy_score`：調整前各策略自己的原始分數，方便回頭比較。
@@ -29,6 +29,7 @@ js/
   render-ssr.js               ← SSR 交集雷達渲染
   render-futures.js           ← FUTURE DASHBOARD 渲染
   render-chips.js             ← 籌碼集中渲染
+  render-big-holder-trend.js  ← 大戶趨勢池渲染
   render-volume.js            ← 量增訊號渲染
   render-volume-pullback.js   ← 量增回測渲染
   render-momentum-pullback.js ← 動能回測渲染
@@ -44,6 +45,7 @@ data/
   price_cache.parquet         ← 全市場日線快取（FinMind，主要 API 請求入口）
   stock_list_cache.json       ← 上市上櫃股票清單快取
   chips_big_holder.json       ← 籌碼集中掃描結果
+  big_holder_trend.json       ← 大戶趨勢池掃描結果
   volume_signal.json          ← 量增訊號掃描結果
   volume_pullback.json        ← 量增回測候選池
   momentum_pullback.json      ← 動能回測候選池
@@ -71,6 +73,7 @@ scripts/
   scan_right_top.py           ← 突破策略掃描
   track_right_top.py          ← 突破策略標的追蹤更新
   scan_trust_momentum.py      ← 法人動能掃描（投信 / 外資，不逐檔查 FinMind）
+  scan_big_holder_trend.py    ← 大戶趨勢池掃描
   scan_volume_signal.py       ← 量增訊號掃描（含 LINE 推播）
   scan_volume_pullback.py     ← 量增回測模型
   scan_momentum_pullback.py   ← 動能回測模型
@@ -105,6 +108,9 @@ Future Dashboard 改為市場背景儀表板：上層分成台股盤面與美股
 
 ### 籌碼集中
 每週末掃描全市場，追蹤千張大戶與 400 張大戶持股相對成長率（R），篩選低基期且量能充足的標的，標記「持續成長」「雙軌觸發」「單周增幅」三類標籤。
+
+### 大戶趨勢池
+從 TDCC 大戶資料中篩出千張大戶比例大於 30%，且千張或 400 張大戶連續 4 週增加，或單週增加超過 3% 的標的。此策略不限制 EMA120 乖離與 BBW，只要求 20 日均量大於 500 張、收盤站上 EMA5、EMA60 / EMA120 / EMA200 最近 5 日上揚，並排除近 60 日最大漲幅超過 100% 的過度延伸股，用於觀察可能進入第二階段的候選池。
 
 ### SSR 交集雷達
 彙整籌碼集中、VCP、突破策略、投信動能、外資動能五組核心選股，單獨列出同時符合 2 組以上策略的標的，支援 C5 取 2、三組以上、投信 + 外資、大戶 + VCP、投信 + VCP、外資 + 突破等視角。
@@ -142,7 +148,7 @@ Future Dashboard 改為市場背景儀表板：上層分成台股盤面與美股
 |------|----------|----------|------|
 | 每個交易日 17:00 | Google Apps Script → repository_dispatch | `daily_scan.yml` | 價格快取、大盤指數、期貨儀錶板、VCP、突破策略、法人動能、量增訊號、量增回測、動能回測 |
 | daily_scan 成功後 | workflow_run | `stock_analysis.yml` | 量增訊號標的追蹤、營收評級、AI 排名 |
-| 每週六或手動 | Google Apps Script → repository_dispatch / workflow_dispatch | `holdings_scan.yml` | TDCC 股權分散、籌碼集中掃描 |
+| 每週六或手動 | Google Apps Script → repository_dispatch / workflow_dispatch | `holdings_scan.yml` | TDCC 股權分散、籌碼集中與大戶趨勢池掃描 |
 | 手動執行 | workflow_dispatch | `institutional_tags.yml` | 三大法人標籤 |
 | 前端按鈕 | workflow_dispatch | `update_current_prices.yml` | 即時現價更新 |
 

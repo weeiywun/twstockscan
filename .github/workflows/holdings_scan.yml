@@ -58,11 +58,14 @@ jobs:
           LINE_USER_IDS: ${{ secrets.LINE_USER_IDS }}
         run: python scripts/fetch_holdings_twsthr.py
 
+      - name: Run big holder trend scan
+        run: python scripts/scan_big_holder_trend.py
+
       - name: Commit and push results
         run: |
           git config user.name  "github-actions[bot]"
           git config user.email "github-actions[bot]@users.noreply.github.com"
-          git add data/chips_big_holder.json
+          git add data/chips_big_holder.json data/big_holder_trend.json
 
           if ! git diff --staged --quiet; then
             git commit -m "data: chips_big_holder update $(date -u +%Y-%m-%d)"
@@ -120,7 +123,7 @@ jobs:
         run: |
           git config user.name  "github-actions[bot]"
           git config user.email "github-actions[bot]@users.noreply.github.com"
-          git add data/volume_signal.json data/volume_pullback.json data/momentum_pullback.json data/momentum_candidates.json data/candidate_features.json data/performance.json data/chips_big_holder.json data/current_prices.json data/ai_analysis.json data/intraday_volume_pullback.json data/right_top.json data/right_top_track.json data/trust_momentum.json data/vcp.json data/volume_breakout.json assets/line/performance-latest.png
+          git add data/volume_signal.json data/volume_pullback.json data/momentum_pullback.json data/momentum_candidates.json data/candidate_features.json data/performance.json data/chips_big_holder.json data/big_holder_trend.json data/current_prices.json data/ai_analysis.json data/intraday_volume_pullback.json data/right_top.json data/right_top_track.json data/trust_momentum.json data/vcp.json data/volume_breakout.json assets/line/performance-latest.png
 
           if ! git diff --staged --quiet; then
             git commit -m "data: post-holdings scan refresh $(date -u +%Y-%m-%d)"

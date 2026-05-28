@@ -235,6 +235,7 @@ def main() -> int:
     targets = [
         ("ai_analysis.json", ["active", "expired"], "stock_analysis"),
         ("chips_big_holder.json", ["results"], "chips"),
+        ("big_holder_trend.json", ["results"], "big_holder_trend"),
         ("intraday_volume_pullback.json", ["results", "skipped"], "intraday_volume_pullback"),
         ("right_top.json", ["results"], "right_top"),
         ("right_top_track.json", ["active", "expired"], "right_top_track"),
