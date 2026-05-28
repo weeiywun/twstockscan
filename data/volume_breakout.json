@@ -94,17 +94,17 @@
       "stock_id": "5410",
       "name": "國眾",
       "market": "TPEX",
-      "unified_score": 39.6,
+      "unified_score": 40.9,
       "unified_score_grade": "D",
       "score_breakdown": {
         "version": "unified_score_v2_momentum_first_stock_level",
-        "total": 39.6,
+        "total": 40.9,
         "grade": "D",
-        "base": 37.7,
+        "base": 39.0,
         "components": {
           "chip": 48.6,
-          "momentum": 61.6,
-          "volume": 20.5,
+          "momentum": 62.1,
+          "volume": 24.6,
           "structure": 0.0,
           "theme": 0.0
         },
@@ -116,18 +116,18 @@
         ],
         "aggregation": "max_component_by_stock"
       },
-      "score": 39.6,
+      "score": 40.9,
       "legacy_score": 0.0,
-      "context_unified_score": 37.0,
+      "context_unified_score": 38.0,
       "context_score_breakdown": {
         "version": "unified_score_v2_momentum_first_stock_level",
-        "total": 37.0,
+        "total": 38.0,
         "grade": "D",
-        "base": 35.3,
+        "base": 36.2,
         "components": {
           "chip": 48.6,
-          "momentum": 56.2,
-          "volume": 20.5,
+          "momentum": 56.7,
+          "volume": 23.4,
           "structure": 0.0,
           "theme": 0.0
         },
@@ -142,12 +142,12 @@
             "千張增 +3.4%"
           ],
           "momentum": [
-            "週漲 +19.1%",
-            "日漲 +1.6%"
+            "週漲 +22.6%",
+            "日漲 +1.7%"
           ],
           "volume": [
-            "量比 0.88x",
-            "5/20 均量 0.88x"
+            "量比 1.24x",
+            "5/20 均量 0.86x"
           ],
           "structure": [],
           "theme": []
@@ -227,6 +227,6 @@
   ],
   "unified_score_model": {
     "version": "unified_score_v1",
-    "applied_at": "2026-05-28T16:44:02+08:00"
+    "applied_at": "2026-05-28T17:15:31+08:00"
   }
 }
