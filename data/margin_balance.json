@@ -1,6 +1,6 @@
 {
   "date": "2026-05-28",
-  "updated": "2026-05-29T07:25:34.372681+08:00",
+  "updated": "2026-05-29T17:15:09.412097+08:00",
   "source": "twse_mi_margn+tpex_margin_balance",
   "summary": {
     "date": "2026-05-28",
@@ -149,14 +149,14 @@
     },
     {
       "date": "2026-05-18",
-      "total_finance_balance_lots": 9149159,
-      "total_change_lots": 110464,
-      "total_finance_balance_thousand_twd": 501619604,
-      "total_change_thousand_twd": 8822467,
+      "total_finance_balance_lots": 11543197,
+      "total_change_lots": 125699,
+      "total_finance_balance_thousand_twd": 698121516,
+      "total_change_thousand_twd": 10296804,
       "twse_finance_balance_lots": 9149159,
-      "tpex_finance_balance_lots": null,
+      "tpex_finance_balance_lots": 2394038,
       "twse_finance_balance_thousand_twd": 501619604,
-      "tpex_finance_balance_thousand_twd": null,
+      "tpex_finance_balance_thousand_twd": 196501912,
       "twse": {
         "date": "20260518",
         "market": "TWSE",
@@ -171,18 +171,31 @@
         "stock_count": null,
         "source": "twse_mi_margn"
       },
-      "tpex": null
+      "tpex": {
+        "date": "20260518",
+        "market": "TPEX",
+        "finance_balance_lots": 2394038,
+        "previous_balance_lots": 2378803,
+        "finance_buy_lots": 105038,
+        "finance_sell_lots": 88331,
+        "finance_balance_thousand_twd": 196501912,
+        "previous_balance_thousand_twd": 195027575,
+        "finance_buy_thousand_twd": 11100774,
+        "finance_sell_thousand_twd": 9498010,
+        "stock_count": 897,
+        "source": "tpex_margin_balance"
+      }
     },
     {
       "date": "2026-05-19",
-      "total_finance_balance_lots": 9076489,
-      "total_change_lots": -72668,
-      "total_finance_balance_thousand_twd": 496887083,
-      "total_change_thousand_twd": -4732521,
+      "total_finance_balance_lots": 11463762,
+      "total_change_lots": -79433,
+      "total_finance_balance_thousand_twd": 691661367,
+      "total_change_thousand_twd": -6460149,
       "twse_finance_balance_lots": 9076489,
-      "tpex_finance_balance_lots": null,
+      "tpex_finance_balance_lots": 2387273,
       "twse_finance_balance_thousand_twd": 496887083,
-      "tpex_finance_balance_thousand_twd": null,
+      "tpex_finance_balance_thousand_twd": 194774284,
       "twse": {
         "date": "20260519",
         "market": "TWSE",
@@ -197,7 +210,20 @@
         "stock_count": null,
         "source": "twse_mi_margn"
       },
-      "tpex": null
+      "tpex": {
+        "date": "20260519",
+        "market": "TPEX",
+        "finance_balance_lots": 2387273,
+        "previous_balance_lots": 2394038,
+        "finance_buy_lots": 97659,
+        "finance_sell_lots": 103151,
+        "finance_balance_thousand_twd": 194774284,
+        "previous_balance_thousand_twd": 196501912,
+        "finance_buy_thousand_twd": 10607541,
+        "finance_sell_thousand_twd": 12151808,
+        "stock_count": 897,
+        "source": "tpex_margin_balance"
+      }
     },
     {
       "date": "2026-05-20",
