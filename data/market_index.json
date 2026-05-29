@@ -1,61 +1,58 @@
 {
   "date": "2026-05-29",
-  "updated": "2026-05-29T17:11:31.784317+08:00",
+  "updated": "2026-05-30T07:19:47.724348+08:00",
   "source": "twse+twse_mis+yahoo_futures+yfinance",
   "indices": {
     "TAIEX": {
       "name": "台灣加權指數",
-      "close": 10642.86,
-      "date": "2017-12-29",
+      "close": 44732.94,
+      "date": "2026-05-29",
       "source": "twse",
-      "change": 75.22,
-      "change_pct": 0.71,
-      "previous_close": 10567.64
+      "change": 1096.5,
+      "change_pct": 2.51,
+      "previous_close": 43636.44
     },
     "TPEX": {
       "name": "櫃買加權指數",
-      "close": 443.64,
+      "close": 432.48,
       "date": "2026-05-29",
-      "source": "twse_mis",
-      "change": 11.16,
-      "change_pct": 2.58,
-      "previous_close": 432.48
+      "source": "twse_mis"
     },
     "TXF_NEAR": {
       "name": "台指近全",
-      "close": 45532.0,
+      "close": 45069.0,
       "date": "2026-05-29",
       "source": "yahoo_futures",
-      "change": 217.0,
-      "change_pct": 0.48,
-      "time": "17:14:25"
+      "change": 246.0,
+      "change_pct": 0.54,
+      "time": "04:59:59"
     },
     "NASDAQ": {
       "name": "那斯達克",
-      "close": 26917.47,
-      "date": "2026-05-28",
+      "close": 26972.62,
+      "date": "2026-05-29",
       "source": "yfinance",
-      "change": 242.74,
-      "change_pct": 0.91,
-      "previous_close": 26674.73
+      "change": 55.15,
+      "change_pct": 0.2,
+      "previous_close": 26917.47
     },
     "DOW": {
       "name": "道瓊",
-      "close": 50668.97,
-      "date": "2026-05-28",
+      "close": 51032.46,
+      "date": "2026-05-29",
       "source": "yfinance",
-      "change": 24.69,
-      "change_pct": 0.05,
-      "previous_close": 50644.28
+      "change": 363.49,
+      "change_pct": 0.72,
+      "previous_close": 50668.97
     },
     "SOX": {
       "name": "費半",
-      "close": 12829.14,
-      "date": "2026-05-28",
+      "close": 12829.38,
+      "date": "2026-05-29",
       "source": "yfinance",
-      "change": 126.95,
-      "change_pct": 1.0,
-      "previous_close": 12702.19
+      "change": 0.24,
+      "change_pct": 0.0,
+      "previous_close": 12829.14
     }
   },
   "history": {
@@ -125,7 +122,7 @@
       "2026-05-26": 434.99,
       "2026-05-27": 439.3,
       "2026-05-28": 440.19,
-      "2026-05-29": 443.64
+      "2026-05-29": 432.48
     }
   }
 }

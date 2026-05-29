@@ -1,6 +1,6 @@
 {
-  "date": "2026-05-29",
-  "updated": "2026-05-29T17:14:40.353941+08:00",
+  "date": "2026-06-01",
+  "updated": "2026-05-30T07:21:10.124791+08:00",
   "source": "taifex_futContractsDate+taifex_futContractsDateAh+taifex_futDataDown+taifex_open_data+twse_bfi82u+cnn_fear_greed",
   "market": {
     "TX": {
@@ -45,27 +45,27 @@
         "traders": {
           "foreign": {
             "label": "外資",
-            "buy_amount": 957113985463,
-            "sell_amount": 876758404323,
-            "net_amount": 80355581140
+            "buy_amount": 1000865803058,
+            "sell_amount": 920720341918,
+            "net_amount": 80145461140
           },
           "investment_trust": {
             "label": "投信",
-            "buy_amount": 43587519393,
-            "sell_amount": 37490809721,
-            "net_amount": 6096709672
+            "buy_amount": 46339805106,
+            "sell_amount": 39321737488,
+            "net_amount": 7018067618
           },
           "dealer": {
             "label": "自營商",
-            "buy_amount": 62649560022,
-            "sell_amount": 47222902473,
-            "net_amount": 15426657549
+            "buy_amount": 62859932349,
+            "sell_amount": 47252722800,
+            "net_amount": 15607209549
           },
           "total": {
             "label": "三大法人合計",
-            "buy_amount": 1063351064878,
-            "sell_amount": 961472116517,
-            "net_amount": 101878948361
+            "buy_amount": 1110065540513,
+            "sell_amount": 1007294802206,
+            "net_amount": 102770738307
           }
         },
         "source": "twse_bfi82u",
@@ -170,10 +170,10 @@
   },
   "us_sentiment": {
     "fear_greed": {
-      "score": 60.31,
+      "score": 60.17,
       "rating": "greed",
       "rating_zh": "貪婪",
-      "timestamp": "2026-05-29T08:55:16+00:00",
+      "timestamp": "2026-05-29T23:01:26+00:00",
       "history": {
         "previous_close": 60.23,
         "1w": 58.97,
@@ -183,7 +183,7 @@
       "indicators": {
         "market_momentum_sp500": {
           "label": "Market Momentum",
-          "score": 98.4,
+          "score": 98.2,
           "rating": "extreme greed",
           "rating_zh": "極度貪婪"
         },
@@ -195,13 +195,13 @@
         },
         "stock_price_breadth": {
           "label": "Stock Price Breadth",
-          "score": 35.4,
+          "score": 33.4,
           "rating": "fear",
           "rating_zh": "恐懼"
         },
         "put_call_options": {
           "label": "Put/Call Options",
-          "score": 95.8,
+          "score": 97.8,
           "rating": "extreme greed",
           "rating_zh": "極度貪婪"
         },
@@ -213,13 +213,13 @@
         },
         "junk_bond_demand": {
           "label": "Junk Bond Demand",
-          "score": 21.8,
+          "score": 22.8,
           "rating": "extreme fear",
           "rating_zh": "極度恐懼"
         },
         "safe_haven_demand": {
           "label": "Safe Haven Demand",
-          "score": 81.4,
+          "score": 79.6,
           "rating": "extreme greed",
           "rating_zh": "極度貪婪"
         }
@@ -429,14 +429,14 @@
     },
     "night_session": {
       "tx": {
-        "date": "2026-05-29",
+        "date": "2026-06-01",
         "product": "臺股期貨",
         "traders": {
           "dealer": {
             "label": "自營商",
-            "buy_lots": 1620,
-            "sell_lots": 2586,
-            "net_lots": -966
+            "buy_lots": 1929,
+            "sell_lots": 1528,
+            "net_lots": 401
           },
           "investment_trust": {
             "label": "投信",
@@ -446,15 +446,15 @@
           },
           "foreign": {
             "label": "外資",
-            "buy_lots": 31434,
-            "sell_lots": 32660,
-            "net_lots": -1226
+            "buy_lots": 28036,
+            "sell_lots": 29950,
+            "net_lots": -1914
           },
           "total": {
             "label": "三大法人合計",
-            "buy_lots": 33054,
-            "sell_lots": 35246,
-            "net_lots": -2192,
+            "buy_lots": 29965,
+            "sell_lots": 31478,
+            "net_lots": -1513,
             "oi_long_lots": null,
             "oi_short_lots": null,
             "oi_net_lots": null
@@ -463,14 +463,14 @@
         "source": "taifex_futContractsDateAh"
       },
       "mtx": {
-        "date": "2026-05-29",
+        "date": "2026-06-01",
         "product": "小型臺指期貨",
         "traders": {
           "dealer": {
             "label": "自營商",
-            "buy_lots": 6724,
-            "sell_lots": 5966,
-            "net_lots": 758
+            "buy_lots": 5111,
+            "sell_lots": 5919,
+            "net_lots": -808
           },
           "investment_trust": {
             "label": "投信",
@@ -480,15 +480,15 @@
           },
           "foreign": {
             "label": "外資",
-            "buy_lots": 77299,
-            "sell_lots": 75234,
-            "net_lots": 2065
+            "buy_lots": 73961,
+            "sell_lots": 76523,
+            "net_lots": -2562
           },
           "total": {
             "label": "三大法人合計",
-            "buy_lots": 84023,
-            "sell_lots": 81200,
-            "net_lots": 2823,
+            "buy_lots": 79072,
+            "sell_lots": 82442,
+            "net_lots": -3370,
             "oi_long_lots": null,
             "oi_short_lots": null,
             "oi_net_lots": null
@@ -497,14 +497,14 @@
         "source": "taifex_futContractsDateAh"
       },
       "tmf": {
-        "date": "2026-05-29",
+        "date": "2026-06-01",
         "product": "微型臺指期貨",
         "traders": {
           "dealer": {
             "label": "自營商",
-            "buy_lots": 17079,
-            "sell_lots": 6743,
-            "net_lots": 10336
+            "buy_lots": 6322,
+            "sell_lots": 15879,
+            "net_lots": -9557
           },
           "investment_trust": {
             "label": "投信",
@@ -514,15 +514,15 @@
           },
           "foreign": {
             "label": "外資",
-            "buy_lots": 99927,
-            "sell_lots": 97577,
-            "net_lots": 2350
+            "buy_lots": 89459,
+            "sell_lots": 92452,
+            "net_lots": -2993
           },
           "total": {
             "label": "三大法人合計",
-            "buy_lots": 117006,
-            "sell_lots": 104320,
-            "net_lots": 12686,
+            "buy_lots": 95781,
+            "sell_lots": 108331,
+            "net_lots": -12550,
             "oi_long_lots": null,
             "oi_short_lots": null,
             "oi_net_lots": null
@@ -864,9 +864,9 @@
     "bias": "中性",
     "market_bias": {
       "label": "中性",
-      "score": -1.9,
-      "gauge": 49.0,
-      "confidence": 1.9,
+      "score": -0.5,
+      "gauge": 49.8,
+      "confidence": 0.5,
       "components": [
         {
           "key": "retail_ratio",
@@ -889,7 +889,7 @@
         {
           "key": "foreign_stock_flow",
           "label": "外資現貨買賣超",
-          "value": 803.6,
+          "value": 801.5,
           "unit": "億",
           "weight": 15,
           "score": 100.0,
@@ -898,10 +898,10 @@
         {
           "key": "cnn_fear_greed",
           "label": "CNN Fear & Greed",
-          "value": 60.31,
+          "value": 60.17,
           "unit": "分",
           "weight": 12,
-          "score": 20.620000000000005,
+          "score": 20.340000000000003,
           "note": "美股風險偏好；高分代表市場處於貪婪／風險偏好狀態，低分代表恐慌收縮。"
         },
         {
@@ -916,10 +916,10 @@
         {
           "key": "night_session",
           "label": "夜盤三大法人買賣超",
-          "value": -2192,
+          "value": -1513,
           "unit": "口",
           "weight": 10,
-          "score": -43.84,
+          "score": -30.259999999999998,
           "note": "夜盤反映美股時段後的短線部位變化。"
         }
       ],
