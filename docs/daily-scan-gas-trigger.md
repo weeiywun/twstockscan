@@ -75,4 +75,3 @@ function githubHeaders() {
 
 - `daily_scan.yml` 接收 `repository_dispatch` type: `daily_scan_1700`
 - `holdings_scan.yml` 接收 `repository_dispatch` type: `holdings_scan_weekly`
-- `intraday_volume_pullback.yml` 保留備用，接收 `repository_dispatch` type: `intraday_volume_pullback_1000`，目前不由 GAS 觸發。

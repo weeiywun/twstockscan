@@ -1,205 +1,75 @@
-# TW Stock Scan
+# twstockscan
 
-## 資金主線 / 題材熱度
+台股選股工具，以 GitHub Pages 作為前端，GitHub Actions 作為資料更新與掃描引擎。此 repo 目前只維護前端仍在使用的頁面、策略與 workflow。
 
-`scripts/build_theme_heat.py` 會在每日掃描後讀取既有策略輸出，不額外呼叫 FinMind 或即時行情 API，依 `data/theme_config.json` 將標的歸入交易題材並輸出 `data/theme_heat.json`。前端 `js/render-theme-heat.js` 會顯示 Top 主線、代表標的與量比/週漲幅/來源策略，預設把金融、食品與低動能傳產降噪，讓每日觀察先聚焦在市場熱錢集中的領域。
+## 前端頁面
 
-台股選股工具，以 GitHub Pages 為前端、GitHub Actions 為排程引擎，每日自動掃描選股策略並透過 LINE 推播結果。
+主要入口在 `index.html`，分頁註冊在 `js/app.js`。
 
-## 統一分數模型
+- `future_dashboard`：市場背景儀表板，讀取 `futures_dashboard.json`、`market_index.json`、`margin_balance.json`。
+- `ssr`：標的池，讀取 `momentum_candidates.json`。
+- `chips_big_holder`：籌碼集中，讀取 `chips_big_holder.json`。
+- `big_holder_trend`：大戶趨勢池，讀取 `big_holder_trend.json`。
+- `momentum_pullback`：動能回測，讀取 `momentum_pullback.json`。
+- `stock_analysis`：籌碼標的追蹤，讀取 `ai_analysis.json`。
+- `right_top`：突破策略，讀取 `right_top.json`。
+- `right_top_track`：突破標的追蹤，讀取 `right_top_track.json`。
+- `performance`：績效追蹤，需要 URL 解鎖參數才顯示，讀取 `performance.json`。
 
-`scripts/enrich_candidate_features.py` 會先把各策略篩出的股票代號彙整成 `data/candidate_features.json`，並從本地 `price_cache.parquet`、大戶籌碼、回測模型、題材熱度等既有資料補齊共用特徵，不額外呼叫外部 API。
+`volume_signal` 與 `volume_pullback` 不直接出現在導覽列，但仍是標的池與追蹤流程的資料來源，因此保留。
 
-`scripts/unified_scoring.py` 是目前所有策略共用的 0-100 分數模型，權重集中在 `data/unified_score_config.json`。每日掃描與週六大戶掃描完成後，會先執行共用特徵補齊，再執行 `scripts/apply_unified_scores.py`，替 `chips_big_holder`、`big_holder_trend`、`right_top`、`volume_signal`、`volume_pullback`、`momentum_pullback`、`momentum_candidates`、`performance` 等資料補上：
+## 目前資料檔
 
-- `score` / `unified_score`：統一後的總分，上限 100。
-- `legacy_score`：調整前各策略自己的原始分數，方便回頭比較。
-- `score_breakdown`：籌碼、動能、量能、結構、主線五個子分數，以及交叉命中倍率。
+- `price_cache.parquet` / `stock_list_cache.json`：價量與股票清單快取。
+- `current_prices.json`：前端現價快照。
+- `market_index.json`、`futures_dashboard.json`、`margin_balance.json`：市場背景。
+- `chips_big_holder.json`、`big_holder_trend.json`：大戶與籌碼池。
+- `right_top.json`、`right_top_track.json`：突破策略與追蹤。
+- `volume_signal.json`、`volume_pullback.json`：量增訊號與量增回測來源。
+- `momentum_pullback.json`、`momentum_candidates.json`：動能回測與每日標的池。
+- `candidate_features.json`：跨策略候選特徵層。
+- `ai_analysis.json`：量增訊號標的追蹤與營收評級。
+- `performance.json`：績效追蹤資料。
 
-目前權重為籌碼 25%、動能 25%、量能 20%、結構 20%、主線 10%；交叉命中只做有限倍率加成，最高 x1.15，避免舊版分數因來源數量無上限累加。
+## 目前腳本
 
----
+- `update_price_cache.py`：維護全市場價格快取。
+- `update_market_index.py`：更新大盤指數快取。
+- `update_futures_dashboard.py`：更新期貨籌碼、美股與市場情緒儀表板。
+- `update_margin_balance.py`：更新融資餘額。
+- `update_current_prices.py`：更新前端現價。
+- `fetch_tdcc_holdings.py`、`fetch_holdings_twsthr.py`：抓取與分析 TDCC 大戶資料。
+- `scan_big_holder_trend.py`、`update_big_holder_trend_prices.py`：大戶趨勢池與每日追蹤。
+- `scan_right_top.py`、`track_right_top.py`：突破策略與追蹤。
+- `scan_volume_signal.py`、`scan_volume_pullback.py`：量增訊號與量增回測模型。
+- `scan_momentum_pullback.py`：動能回測模型。
+- `scan_momentum_candidates.py`、`pattern_detect.py`：每日標的池與型態評分。
+- `enrich_candidate_features.py`、`unified_scoring.py`、`apply_unified_scores.py`：共用特徵與統一評分。
+- `stock_analysis.py`：量增訊號標的追蹤與營收評級。
+- `generate_line_performance_chart.py`、`send_daily_scan_summary.py`：LINE 推播素材與每日摘要。
+- `update_institutional_tags.py`：手動補籌碼池法人標籤。
 
-## 系統架構
+## GitHub Actions
 
-```
-index.html                    ← 單頁應用程式入口
-js/
-  app.js                      ← 策略註冊、資料載入、導覽列、互動邏輯
-  render-ssr.js               ← SSR 交集雷達渲染
-  render-futures.js           ← FUTURE DASHBOARD 渲染
-  render-chips.js             ← 籌碼集中渲染
-  render-big-holder-trend.js  ← 大戶趨勢池渲染
-  render-volume.js            ← 量增訊號渲染
-  render-volume-pullback.js   ← 量增回測渲染
-  render-momentum-pullback.js ← 動能回測渲染
-  render-analysis.js          ← 量增訊號標的追蹤渲染
-  render-vcp.js               ← VCP / 潛在 VCP 渲染
-  render-right-top.js         ← 突破策略渲染
-  render-right-top-track.js   ← 突破策略標的追蹤渲染
-  render-trust.js             ← 法人動能渲染（投信 / 外資 / 雙法人共振）
-  render-perf.js              ← 績效追蹤渲染
-  render-breakout.js          ← （保留）爆量策略渲染
-  render-ema.js               ← （保留）均線糾結策略渲染
-data/
-  price_cache.parquet         ← 全市場日線快取（FinMind，主要 API 請求入口）
-  stock_list_cache.json       ← 上市上櫃股票清單快取
-  chips_big_holder.json       ← 籌碼集中掃描結果
-  big_holder_trend.json       ← 大戶趨勢池掃描結果
-  volume_signal.json          ← 量增訊號掃描結果
-  volume_pullback.json        ← 量增回測候選池
-  momentum_pullback.json      ← 動能回測候選池
-  intraday_volume_pullback.json ← 10:00 盤中量增回測預警（停用備用）
-  vcp.json                    ← VCP / 潛在 VCP 掃描結果
-  right_top.json              ← 突破策略掃描結果
-  right_top_track.json        ← 突破策略標的追蹤
-  trust_momentum.json         ← 法人動能掃描結果（TWSE/TPEx 官方法人買賣超 + price_cache）
-  futures_dashboard.json      ← FUTURE DASHBOARD（期貨 + VIX + 情緒指標）
-  margin_balance.json         ← 融資餘額金額（TWSE/TPEx 官方資料，前端以億元顯示）
-  market_index.json           ← 大盤指數（加權、櫃買、期貨夜盤）
-  performance.json            ← 績效追蹤（建倉 / 出場紀錄）
-  ai_recommendations.json     ← AI 選股推薦
-  ai_analysis.json            ← 量增訊號標的 AI 分析
-  current_prices.json         ← 前端手動更新的即時現價
-  volume_breakout.json        ← （停用）爆量策略歷史資料
-  ema_tangling.json           ← （停用）均線糾結策略歷史資料
-scripts/
-  update_price_cache.py       ← 維護全市場價格快取（支援 --backfill 回填）
-  update_market_index.py      ← 更新大盤指數快取
-  update_futures_dashboard.py ← 更新期貨籌碼 + VIX + CNN 情緒指標
-  update_margin_balance.py    ← 更新上市 / 上櫃融資餘額快取（官方資料）
-  update_current_prices.py    ← 前端觸發的現價更新
-  scan_vcp.py                 ← VCP / 潛在 VCP 掃描
-  scan_right_top.py           ← 突破策略掃描
-  track_right_top.py          ← 突破策略標的追蹤更新
-  scan_trust_momentum.py      ← 法人動能掃描（投信 / 外資，不逐檔查 FinMind）
-  scan_big_holder_trend.py    ← 大戶趨勢池掃描
-  update_big_holder_trend_prices.py ← 大戶趨勢池每日收盤追蹤更新
-  scan_volume_signal.py       ← 量增訊號掃描（含 LINE 推播）
-  scan_volume_pullback.py     ← 量增回測模型
-  scan_momentum_pullback.py   ← 動能回測模型
-  scan_intraday_volume_pullback.py ← 10:00 盤中量增回測預警（停用備用）
-  realtime_quote.py           ← TWSE MIS 即時行情小批量查詢（停用備用）
-  stock_analysis.py           ← 量增訊號標的追蹤 + 營收評級
-  fetch_tdcc_holdings.py      ← TDCC 股權分散資料下載
-  fetch_holdings_twsthr.py    ← 集保大戶持股資料處理
-  update_institutional_tags.py← 三大法人標籤更新
-  call_ai_ranking.py          ← AI 選股排名（Gemini）
-  generate_line_performance_chart.py ← 產生 LINE 卡片用績效折線圖（覆蓋 latest）
-  send_daily_scan_summary.py  ← 每日掃描完成 LINE 推播摘要（績效圖 + 持倉 + 精選觀察）
-  finmind_client.py           ← FinMind API 封裝
-  requirements.txt            ← Python 相依套件
-.github/workflows/
-  daily_scan.yml              ← 每日主流程（17:00 由 GAS 觸發）
-  intraday_volume_pullback.yml ← 10:00 盤中量增回測預警（停用備用）
-  holdings_scan.yml           ← 每週六籌碼集中掃描
-  stock_analysis.yml          ← 每日主流程成功後自動接續
-  institutional_tags.yml      ← 手動補法人標籤
-  update_current_prices.yml   ← 前端「更新現價」按鈕觸發
-  breakout_scan_manual.yml    ← 手動補跑突破策略
-.github/workflows-disabled/   ← 停用或一次性 workflow（不出現於 Actions 介面）
-```
+- `daily_scan.yml`：每日主流程。由 Google Apps Script 以 `daily_scan_1700` 觸發，也可手動輸入 `RUN_DAILY_SCAN` 執行。
+- `holdings_scan.yml`：週六大戶資料流程。由 Google Apps Script 以 `holdings_scan_weekly` 觸發，也可手動輸入 `RUN_HOLDINGS_SCAN` 執行。
+- `stock_analysis.yml`：每日主流程成功後自動更新 `ai_analysis.json`。
+- `update_current_prices.yml`：前端更新現價按鈕與平日市場快照更新。
+- `institutional_tags.yml`：手動補法人標籤。
 
----
+所有資料寫入 workflow 使用同一個 `data-writes-main` concurrency group，避免同時推送互相覆蓋。
 
-## 策略說明
+## Google Apps Script
 
-### FUTURE DASHBOARD
-Future Dashboard 改為市場背景儀表板：上層分成台股盤面與美股盤面，台股側整合加權 / 櫃買 / 台指期、散戶多空比、PC Ratio 與今日解讀；美股側保留 CNN Fear & Greed 與主要美股指數。下層呈現三大法人現貨買賣超、融資餘額折線圖，以及台指期法人多空（日 / 夜合併）。此頁僅做環境與槓桿溫度判斷，不直接產生個股買賣訊號。
+GAS 腳本位於 `gas/workflow-triggers.gs`：
 
-### 籌碼集中
-每週末掃描全市場，追蹤千張大戶與 400 張大戶持股相對成長率（R），篩選低基期且量能充足的標的，標記「持續成長」「雙軌觸發」「單周增幅」三類標籤。
+- `installDailyScan1700Trigger()`：建立每日 17:00 觸發 `daily_scan_1700`。
+- `installHoldingsScanWeeklyTrigger()`：建立週六觸發 `holdings_scan_weekly`。
 
-### 大戶趨勢池
-從 TDCC 大戶資料中篩出千張大戶比例大於 30%，且千張或 400 張大戶連續 4 週增加，或單週增加超過 3% 的標的。此策略不限制 EMA120 乖離與 BBW，只要求 20 日均量大於 500 張、收盤站上 EMA5、EMA60 / EMA120 / EMA200 最近 5 日上揚，並排除近 60 日最大漲幅超過 100% 的過度延伸股，用於觀察可能進入第二階段的候選池。名單由週六大戶掃描固定產生；每日 17:00 只更新最新收盤價與入池後漲幅，不重新篩選名單。
+## 新增策略
 
-### SSR 交集雷達
-彙整籌碼集中、VCP、突破策略、投信動能、外資動能五組核心選股，單獨列出同時符合 2 組以上策略的標的，支援 C5 取 2、三組以上、投信 + 外資、大戶 + VCP、投信 + VCP、外資 + 突破等視角。
-
-前台預設新增「精選觀察」視角，從 `momentum_candidates.json` 的 A 級候選再收斂，要求命中量增回測或再啟動，並具備大戶或價格突破追蹤脈絡；同時用量比、週漲幅、BBW 與追蹤漲幅過濾過熱標的。這一層用於每日決策與 LINE Top 5 推播，原始策略清單仍保留供回查。
-
-### 量增訊號
-每日盤後針對籌碼集中入池標的掃描量能突破訊號（當日量 ≥ 10 日均量 × 1.5，收盤 > EMA5），捕捉主力啟動時機，觸發時透過 LINE 推播。
-
-### 量增回測
-從籌碼集中、價格突破追蹤與既有量增訊號合併候選池，尋找「放量突破 → 回測支撐 → 再啟動」結構。盤後模型保留為主要使用流程；10:00 盤中預警功能目前停用備用，避免盤中監看分散注意力。
-
-### 動能回測
-尋找已經被市場資金推升、近期出現 60 日高點後回測到 Fib 23.6%~61.8% 的強勢股候選。模型要求 Close > EMA60、EMA20 > EMA60 > EMA120，並標註回測區、均線共振、回測量能、轉強訊號與防守價，方便人工進一步看圖複查；排序偏向風險距離小、回前高空間足、且有既有策略標籤共振的標的。
-
-### 突破策略
-整合盤整突破（週線突破前 10 週高點）、動能突破（日線 Close > MA20 > MA60，突破前 60 日高）與價格突破（Close > EMA20 ≥ EMA60 ≥ EMA120，創前 60 日高且量能續航），區分低波動打底後發動、日線啟動與強勢股續創新高。
-
-### VCP
-掃描 Mark Minervini VCP（Volatility Contraction Pattern）型態，分成「潛在 VCP」與「VCP」兩組。潛在 VCP 先找 Stage 2 上升趨勢、至少 2 段波動收縮、深度遞減與量能萎縮；VCP 進一步要求至少 3 段收縮、最後一段 ≤ 10%、接近 pivot，且近期量能收斂。
-
-### 法人動能
-追蹤投信與外資近 5～10 日買超動能，篩選買超占成交量有感、股價站上 EMA120 的標的，並區分「攻擊」「承接」「雙法人共振」。此策略獨立於大戶持股池，適合觀察主動式 ETF、投信與外資資金流入造成的短中期動能。
-
-### 績效追蹤
-記錄建倉與出場，計算損益、報酬率與整體投組績效。同一標的多批建倉時，前端自動以加權平均成本合併顯示。需 URL 參數 `?unlock=perf` 解鎖。
-
-每日與週六 workflow 會覆蓋產生 `assets/line/performance-latest.png`，作為 LINE Flex Message 上方績效圖。圖片只保留最新版本，LINE 推播以 GitHub Pages 公開網址加日期參數引用，避免快取顯示舊圖。
-
----
-
-## 自動更新排程
-
-| 時間 | 觸發方式 | Workflow | 內容 |
-|------|----------|----------|------|
-| 每個交易日 17:00 | Google Apps Script → repository_dispatch | `daily_scan.yml` | 價格快取、大盤指數、期貨儀錶板、VCP、突破策略、法人動能、量增訊號、量增回測、動能回測 |
-| daily_scan 成功後 | workflow_run | `stock_analysis.yml` | 量增訊號標的追蹤、營收評級、AI 排名 |
-| 每週六或手動 | Google Apps Script → repository_dispatch / workflow_dispatch | `holdings_scan.yml` | TDCC 股權分散、籌碼集中與大戶趨勢池掃描 |
-| 手動執行 | workflow_dispatch | `institutional_tags.yml` | 三大法人標籤 |
-| 前端按鈕 | workflow_dispatch | `update_current_prices.yml` | 即時現價更新 |
-
-失敗時透過 LINE Messaging API 推播通知。
-
-### Trigger 設計
-
-每日主流程不使用 GitHub Actions 內建 `schedule`，避免排程延遲或漏跑；改由 Google Apps Script 在台灣時間 17:00 呼叫 GitHub `repository_dispatch`，事件型別為 `daily_scan_1700`。17:00 通常已可取得 TWSE/TPEx 盤後法人彙總資料，因此法人動能會在同一條每日掃描流程內更新。
-
-10:00 盤中量增回測預警目前停用備用。程式碼與 workflow 保留，GAS 端請不要啟用 `triggerIntradayVolumePullback1000` 觸發器；若未來要恢復，可重新啟用 GAS trigger 並在前端打開 SSR 的盤中面板。
-
-GAS 腳本位於 `gas/workflow-triggers.gs`。首次部署或重建觸發器時，於 Apps Script 執行：
-
-- `installDailyScan1700Trigger()`：建立每日 17:00 觸發 `daily_scan_1700`
-- `installIntradayVolumePullback1000Trigger()`：建立每日 10:00 觸發 `intraday_volume_pullback_1000`（停用備用）
-- `installHoldingsScanWeeklyTrigger()`：建立每週六觸發 `holdings_scan_weekly`
-
----
-
-## 手動觸發
-
-- `daily_scan.yml`：需輸入 `RUN_DAILY_SCAN`；支援 `backfill_month`（格式 `2025-10`）回填歷史資料
-- `intraday_volume_pullback.yml`：手動補跑 10:00 盤中量增回測預警（停用備用）
-- `holdings_scan.yml`：需輸入 `RUN_HOLDINGS_SCAN`
-- `institutional_tags.yml`：手動補上目前 `chips_big_holder.json` 標的的外資 / 投信連買標籤
-
----
-
-## 所需 Secrets
-
-| Secret | 用途 |
-|--------|------|
-| `FINMIND_API_TOKEN` | FinMind 股價、籌碼資料 |
-| `LINE_CHANNEL_ACCESS_TOKEN` | LINE 推播 |
-| `LINE_USER_IDS` | LINE 推播目標（逗號分隔） |
-
----
-
-## 新增選股策略
-
-1. 在 `js/app.js` 的 `STRATEGIES` 陣列加入策略物件（`id`、`name`、`group`、`dataKey` 等）
-2. 新增對應 `render-xxx.js` 渲染函式，並在 `index.html` 引入
-3. 在 `DATA` 物件加入對應 `dataKey`，在 `loadData()` 新增 fetch，在 `renderStrategy()` 新增 dispatch
-4. 新增 Python 掃描腳本至 `scripts/`，加入 `daily_scan.yml` 或另建 workflow
-
----
-
-## 部署
-
-1. Fork 此 repo
-2. Settings → Pages → Source：`main` branch / root
-3. Settings → Secrets → 新增上述三組 Secrets
-4. 完成，GitHub Pages 自動部署
+1. 在 `js/app.js` 的 `STRATEGIES` 加入分頁設定。
+2. 新增對應 renderer，並在 `index.html` 載入。
+3. 在 `DATA`、`loadData()`、`renderStrategy()` 補上資料載入與渲染。
+4. 新增 Python 掃描腳本，並加入適合的 workflow。
+5. 若策略會參與標的池或統一評分，更新 `enrich_candidate_features.py` 與 `apply_unified_scores.py`。

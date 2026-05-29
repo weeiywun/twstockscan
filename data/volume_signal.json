@@ -90,7 +90,8 @@
           ],
           "theme": []
         }
-      }
+      },
+      "legacy_score": 92.0
     },
     {
       "stock_id": "1810",
@@ -182,7 +183,8 @@
           ],
           "theme": []
         }
-      }
+      },
+      "legacy_score": 77.1
     },
     {
       "stock_id": "2332",
@@ -200,19 +202,19 @@
       "vol_ratio": 2.84,
       "ema5": 15.29,
       "signal_date": "2026-05-28",
-      "unified_score": 75.5,
-      "unified_score_grade": "A",
+      "unified_score": 69.7,
+      "unified_score_grade": "B",
       "score_breakdown": {
         "version": "unified_score_v2_momentum_first_stock_level",
-        "total": 75.5,
-        "grade": "A",
-        "base": 65.6,
+        "total": 69.7,
+        "grade": "B",
+        "base": 60.6,
         "components": {
           "chip": 48.4,
           "momentum": 55.7,
           "volume": 74.5,
           "structure": 80.7,
-          "theme": 100.0
+          "theme": 0.0
         },
         "source_count": 8,
         "source_multiplier": 1.15,
@@ -228,19 +230,19 @@
         ],
         "aggregation": "max_component_by_stock"
       },
-      "score": 75.5,
-      "context_unified_score": 74.4,
+      "score": 69.7,
+      "context_unified_score": 68.7,
       "context_score_breakdown": {
         "version": "unified_score_v2_momentum_first_stock_level",
-        "total": 74.4,
+        "total": 68.7,
         "grade": "B",
-        "base": 64.7,
+        "base": 59.7,
         "components": {
           "chip": 48.4,
           "momentum": 55.1,
           "volume": 71.9,
           "structure": 80.7,
-          "theme": 100.0
+          "theme": 0.0
         },
         "source_count": 7,
         "source_multiplier": 1.15,
@@ -272,11 +274,10 @@
             "點火首日",
             "支撐守住"
           ],
-          "theme": [
-            "網通 100.0"
-          ]
+          "theme": []
         }
-      }
+      },
+      "legacy_score": 75.5
     },
     {
       "stock_id": "2618",
@@ -359,7 +360,8 @@
           ],
           "theme": []
         }
-      }
+      },
+      "legacy_score": 58.6
     },
     {
       "stock_id": "6214",
@@ -448,7 +450,8 @@
           ],
           "theme": []
         }
-      }
+      },
+      "legacy_score": 64.4
     },
     {
       "stock_id": "3293",
@@ -466,48 +469,50 @@
       "vol_ratio": 1.77,
       "ema5": 736.92,
       "signal_date": "2026-05-28",
-      "unified_score": 52.1,
+      "unified_score": 52.8,
       "unified_score_grade": "C",
       "score_breakdown": {
         "version": "unified_score_v2_momentum_first_stock_level",
-        "total": 52.1,
+        "total": 52.8,
         "grade": "C",
-        "base": 47.4,
+        "base": 45.9,
         "components": {
           "chip": 47.8,
-          "momentum": 51.0,
+          "momentum": 47.7,
           "volume": 37.8,
           "structure": 68.0,
           "theme": 0.0
         },
-        "source_count": 3,
-        "source_multiplier": 1.1,
+        "source_count": 4,
+        "source_multiplier": 1.15,
         "sources": [
           "chips",
           "momentum_candidates",
+          "stock_analysis",
           "volume_signal"
         ],
         "aggregation": "max_component_by_stock"
       },
-      "score": 52.1,
-      "context_unified_score": 51.0,
+      "score": 52.8,
+      "context_unified_score": 51.8,
       "context_score_breakdown": {
         "version": "unified_score_v2_momentum_first_stock_level",
-        "total": 51.0,
+        "total": 51.8,
         "grade": "C",
-        "base": 46.3,
+        "base": 45.0,
         "components": {
           "chip": 47.8,
-          "momentum": 48.7,
+          "momentum": 45.8,
           "volume": 37.8,
           "structure": 68.0,
           "theme": 0.0
         },
-        "source_count": 3,
-        "source_multiplier": 1.1,
+        "source_count": 4,
+        "source_multiplier": 1.15,
         "sources": [
           "chips",
           "momentum_candidates",
+          "stock_analysis",
           "volume_signal"
         ],
         "reasons": {
@@ -529,7 +534,8 @@
           ],
           "theme": []
         }
-      }
+      },
+      "legacy_score": 52.1
     },
     {
       "stock_id": "3372",
@@ -578,7 +584,7 @@
         "version": "unified_score_v2_momentum_first_stock_level",
         "total": 69.6,
         "grade": "B",
-        "base": 60.6,
+        "base": 60.5,
         "components": {
           "chip": 48.1,
           "momentum": 57.6,
@@ -615,7 +621,8 @@
           ],
           "theme": []
         }
-      }
+      },
+      "legacy_score": 70.2
     },
     {
       "stock_id": "2206",
@@ -700,7 +707,8 @@
           ],
           "theme": []
         }
-      }
+      },
+      "legacy_score": 54.6
     },
     {
       "stock_id": "5522",
@@ -784,7 +792,8 @@
           ],
           "theme": []
         }
-      }
+      },
+      "legacy_score": 56.7
     },
     {
       "stock_id": "2353",
@@ -881,7 +890,8 @@
           ],
           "theme": []
         }
-      }
+      },
+      "legacy_score": 75.7
     },
     {
       "stock_id": "2881",
@@ -899,26 +909,25 @@
       "vol_ratio": 1.56,
       "ema5": 102.47,
       "signal_date": "2026-05-28",
-      "unified_score": 81.6,
+      "unified_score": 81.1,
       "unified_score_grade": "A",
       "score_breakdown": {
         "version": "unified_score_v2_momentum_first_stock_level",
-        "total": 81.6,
+        "total": 81.1,
         "grade": "A",
-        "base": 70.9,
+        "base": 70.5,
         "components": {
           "chip": 56.6,
           "momentum": 78.3,
           "volume": 69.7,
-          "structure": 84.0,
+          "structure": 81.3,
           "theme": 0.0
         },
-        "source_count": 10,
+        "source_count": 9,
         "source_multiplier": 1.15,
         "sources": [
           "big_holder_trend",
           "chips",
-          "intraday_volume_pullback",
           "momentum_candidates",
           "price_breakout_track",
           "right_top",
@@ -929,7 +938,7 @@
         ],
         "aggregation": "max_component_by_stock"
       },
-      "score": 81.6,
+      "score": 81.1,
       "context_unified_score": 74.3,
       "context_score_breakdown": {
         "version": "unified_score_v2_momentum_first_stock_level",
@@ -943,12 +952,11 @@
           "structure": 81.3,
           "theme": 0.0
         },
-        "source_count": 9,
+        "source_count": 8,
         "source_multiplier": 1.15,
         "sources": [
           "big_holder_trend",
           "chips",
-          "intraday_volume_pullback",
           "momentum_candidates",
           "right_top",
           "right_top_track",
@@ -978,11 +986,12 @@
           ],
           "theme": []
         }
-      }
+      },
+      "legacy_score": 81.6
     }
   ],
   "unified_score_model": {
     "version": "unified_score_v1",
-    "applied_at": "2026-05-28T22:17:13+08:00"
+    "applied_at": "2026-05-29T14:56:29+08:00"
   }
 }

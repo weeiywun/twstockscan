@@ -14,8 +14,7 @@
 
 對外主入口：analyze(df, **context) -> PatternResult
 
-注意：嚴格 VCP 段數辨識仍以既有 scan_vcp.py 為準，本模組只做輕量 pivot 收斂判斷；
-      若要更嚴謹，可把 vcp.json 的命中結果用 context 傳進來覆蓋。
+注意：本模組保留輕量 pivot 收斂判斷，作為型態標籤之一。
 """
 from __future__ import annotations
 
@@ -32,21 +31,21 @@ PATTERN_CONF = {
     "long_consolidation_breakout": 1.00,  # 長期盤整後第一根突破，最可靠
     "platform_breakout_retest":    0.95,  # 平台突破後回測守住
     "w_bottom_neckline":           0.80,  # W 底突破頸線
-    "vcp_pivot":                   0.70,  # VCP 收斂接近 pivot（段數辨識雜訊最大）
+    "tight_pivot":                 0.70,
     "box_near_top":                0.60,  # 箱型接近上緣
 }
 PATTERN_BASE = {
     "platform_breakout_retest":    25,
     "long_consolidation_breakout": 24,
     "w_bottom_neckline":           22,
-    "vcp_pivot":                   20,
+    "tight_pivot":                 20,
     "box_near_top":                14,
 }
 PATTERN_LABEL = {
     "long_consolidation_breakout": "長盤突破首日",
     "platform_breakout_retest":    "平台突破回測",
     "w_bottom_neckline":           "W底突破頸線",
-    "vcp_pivot":                   "VCP接近pivot",
+    "tight_pivot":                 "收斂接近pivot",
     "box_near_top":                "箱頂整理",
 }
 
@@ -182,8 +181,8 @@ def _detect_breakout_retest(high, low, close, vol, box_high):
     return bool(broke and near and low_held)
 
 
-def _detect_vcp_pivot(high, low, close, bbw):
-    """輕量 VCP：近期波動收斂(BBW 低且下降) + 貼近近 40 日高點 pivot。"""
+def _detect_tight_pivot(high, low, close, bbw):
+    """近期波動收斂(BBW 低且下降) + 貼近近 40 日高點 pivot。"""
     if len(close) < 40 or np.isnan(bbw[-1]):
         return None
     bbw_falling = bbw[-1] < np.nanmean(bbw[-20:-1])
@@ -282,7 +281,6 @@ def analyze(
     big_trend_up: bool = False,
     inst_buying: bool = False,
     source_count: int = 1,
-    vcp_hit: bool = False,          # 可用 scan_vcp.py 的嚴格結果覆蓋
 ) -> Optional[PatternResult]:
     """df 需 >= 60 根日線；不足回傳 None。"""
     if df is None or len(df) < 60:
@@ -312,7 +310,7 @@ def analyze(
     box_high, box_range, broke_today, near_top = _detect_platform_box(high, low, close)
     w = _detect_w_bottom(high, low, close)
     retest_ok = _detect_breakout_retest(high, low, close, vol, box_high)
-    vcp = _detect_vcp_pivot(high, low, close, bbw)
+    tight_pivot = _detect_tight_pivot(high, low, close, bbw)
 
     patterns, key_level, invalidation = [], None, None
     if broke_today and box_range is not None and box_range <= 25:
@@ -324,11 +322,10 @@ def analyze(
     if w and w["state"] in ("breakout", "retest"):
         patterns.append("w_bottom_neckline")
         key_level, invalidation = w["neckline"], w["neckline"] * 0.97
-    if vcp or vcp_hit:
-        patterns.append("vcp_pivot")
-        if vcp:
-            key_level = key_level or vcp["pivot"]
-            invalidation = invalidation or vcp["pivot"] * 0.93
+    if tight_pivot:
+        patterns.append("tight_pivot")
+        key_level = key_level or tight_pivot["pivot"]
+        invalidation = invalidation or tight_pivot["pivot"] * 0.93
     if not patterns and near_top:
         patterns.append("box_near_top")
         key_level = box_high

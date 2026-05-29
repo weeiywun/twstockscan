@@ -28,28 +28,6 @@ const STRATEGIES = [
     conditions: [],
   },
   {
-    id: "theme_heat",
-    // BACKUP - DO NOT DELETE:
-    // Theme heat remains generated in data/theme_heat.json, but the main workflow
-    // is simplified back to the decision-ready stock pool.
-    hidden: true,
-    name: "資金主線",
-    shortName: "資金主線",
-    icon: "◆",
-    group: "decision",
-    available: true,
-    description: "用既有策略結果統計題材熱度，預設排除金融、食品與低動能傳產雜訊，協助每天先判斷熱錢集中在哪些領域。",
-    conditions: [
-      "資料來源：既有大戶、價格突破、量增、量增回測、動能回測與精選候選結果",
-      "不額外呼叫 FinMind 或即時行情 API",
-      "金融、食品、部分傳產預設降噪；若未來成為主線可再加入題材表",
-      "每個主線只列代表標的，方便人工看圖決策",
-    ],
-    dataUpdated: "載入中...",
-    dataSource: "theme_config + 現有策略輸出",
-    dataKey: "theme_heat_data",
-  },
-  {
     id: "ssr",
     name: "標的池",
     shortName: "標的池",
@@ -179,28 +157,6 @@ const STRATEGIES = [
   },
   // ── 策略二：突破策略 ──
   {
-    id: "vcp",
-    // DISABLED / BACKUP - DO NOT DELETE:
-    // VCP is temporarily hidden while we focus on price breakout and big-holder tracking.
-    hidden: true,
-    name: "VCP 選股",
-    shortName: "VCP",
-    icon: "◈",
-    group: "vcp",
-    available: true,
-    description: "掃描符合 Mark Minervini《超級績效》VCP 型態（Volatility Contraction Pattern）的標的，分成潛在 VCP 與嚴格 VCP：先找 Stage 2 上升趨勢、波動遞減收縮、量能萎縮與緊縮樞紐，再依段數、pivot 位置與量縮品質分級。",
-    conditions: [
-      "潛在 VCP：已完成週 K 出現 2 段以上 H→L 收縮，深度遞減",
-      "VCP：至少 3 段收縮，最後一段 ≤ 10%，且靠近 pivot",
-      "Stage 2：收盤 > MA50 > MA100，且 MA100 在過去 20 個交易日上升",
-      "Pivot：VCP 需在樞紐下方 5% 到上方 3% 內，避免過早或已延伸",
-      "量縮：最後收縮段量 ≤ 第一段 70%，近 5 日均量 ≤ 50 日均量 80%",
-    ],
-    dataUpdated: "載入中...",
-    dataSource: "FinMind（每日盤後）",
-    dataKey: "vcp_data",
-  },
-  {
     id: "right_top",
     name: "突破策略",
     shortName: "突破策略",
@@ -231,30 +187,6 @@ const STRATEGIES = [
     description: "突破策略觸發標的的後續追蹤，記錄入選收盤、現價、損益，觀察期 10 個交易日。",
     conditions: [],
   },
-  // ── 策略三：資金動能 ──
-  {
-    id: "trust_momentum",
-    // DISABLED / BACKUP - DO NOT DELETE:
-    // Institutional momentum is temporarily hidden. Institutional tags remain updated by institutional_tags.yml.
-    hidden: true,
-    name: "法人動能",
-    shortName: "法人動能",
-    icon: "◆",
-    group: "funds",
-    available: true,
-    description: "追蹤投信與外資近 5～10 日買超動能，區分攻擊、承接與雙法人共振。",
-    conditions: [
-      "法人近 5 日買超 ≥ 3 日，或近 10 日買超 ≥ 6 日",
-      "近 5 日與近 10 日法人累計買超皆為正",
-      "法人近 5 日買超 / 近 20 日均量 × 5 ≥ 8%",
-      "20 日均量 ≥ 500 張",
-      "股價需站上 EMA120，避免長期弱勢反彈",
-      "價格同步轉強標記為攻擊，買超但價格走弱標記為承接",
-    ],
-    dataUpdated: "載入中...",
-    dataSource: "TWSE/TPEx 官方三大法人買賣超 + price_cache",
-    dataKey: "trust_momentum_data",
-  },
 ];
 
 
@@ -262,34 +194,21 @@ const STRATEGIES = [
 //  DATA
 // ════════════════════════════════════════════════════
 const DATA = {
-  theme_heat_data:        null,
   chips_big_holder_data:  [],
   big_holder_trend_data:  [],
   big_holder_trend_meta:  null,
   volume_signal_data:     [],
   volume_pullback_data:    null,
   momentum_pullback_data:  null,
-  intraday_volume_pullback_data: [],
-  intraday_volume_pullback_meta: null,
   momentum_candidates_data: null,
   stock_analysis_data:    null,
   performance_data:       null,
   market_index_data:      null,
   futures_dashboard_data: null,
   margin_balance_data:    null,
-  vcp_data:               [],
-  vcp_potential_data:     [],
-  vcp_industry:           [],
-  vcp_potential_industry: [],
   right_top_data:         [],
   right_top_industry:     [],
   right_top_track_data:   null,
-  trust_momentum_data:    [],
-  trust_momentum_industry: [],
-  foreign_momentum_data:  [],
-  foreign_momentum_industry: [],
-  institutional_confluence_data: [],
-  institutional_confluence_industry: [],
 };
 let DATE_LABELS = [];
 
@@ -301,7 +220,6 @@ let sortCol = "chg_2w_1000";
 let sortAsc = false;
 let chipsViewMode = "stock"; // "stock" | "industry"
 let expandedRow = null;
-let aiData = null;
 
 function dateTW(offsetDays = 0) {
   const date = new Date(Date.now() + offsetDays * 86400000);
@@ -416,21 +334,17 @@ const NAV_GROUP_LABELS = {
   backup:    '備用觀察',
   ssr:       'SSR',
   chips:     '籌碼選股',
-  vcp:       'VCP',
   right_top: '突破策略',
-  funds:     '法人動能',
 };
 
 function _navBadge(s) {
   if (!s.available) return '—';
   if (s.id === 'future_dashboard') return DATA.futures_dashboard_data?.us_sentiment?.fear_greed?.score ?? '—';
   if (s.id === 'performance') return (DATA.performance_data?.positions || []).filter(p => !p.confirmed).length;
-  if (s.id === 'theme_heat') return DATA.theme_heat_data?.themes?.slice(0, 5).length ?? '—';
   if (s.id === 'ssr') return DATA.momentum_candidates_data?.focus_results?.length ?? (typeof buildSSRRows === 'function' ? buildSSRRows().length : '—');
   if (s.id === 'stock_analysis') return DATA.stock_analysis_data?.active?.length ?? '—';
   if (s.id === 'volume_pullback') return DATA.volume_pullback_data?.active?.length ?? '—';
   if (s.id === 'momentum_pullback') return DATA.momentum_pullback_data?.results?.length ?? '—';
-  if (s.id === 'vcp')             return (DATA.vcp_data || []).length + (DATA.vcp_potential_data || []).length;
   if (s.id === 'right_top_track') return DATA.right_top_track_data?.active?.length ?? '—';
   return (DATA[s.dataKey] || []).length;
 }
@@ -516,7 +430,6 @@ function renderStrategy() {
 
   if (strat.id !== 'performance' && typeof setPerfSidebarMode === 'function') setPerfSidebarMode(false);
   if (strat.id === 'future_dashboard') { renderFutureDashboard(strat, main); return; }
-  if (strat.id === 'theme_heat')       { renderThemeHeat(strat, main);       return; }
   if (strat.id === 'ssr')              { renderSSR(strat, main);             return; }
   if (strat.id === 'chips_big_holder') { renderChipsHolder(strat, main);    return; }
   if (strat.id === 'big_holder_trend') { renderBigHolderTrend(strat, main); return; }
@@ -524,10 +437,8 @@ function renderStrategy() {
   if (strat.id === 'volume_pullback')  { renderVolumePullback(strat, main); return; }
   if (strat.id === 'momentum_pullback'){ renderMomentumPullback(strat, main); return; }
   if (strat.id === 'stock_analysis')   { renderStockAnalysis(strat, main);  return; }
-  if (strat.id === 'vcp')              { renderVCP(strat, main);               return; }
   if (strat.id === 'right_top')        { renderRightTop(strat, main);          return; }
   if (strat.id === 'right_top_track') { renderRightTopTrack(strat, main);     return; }
-  if (strat.id === 'trust_momentum')   { renderTrustMomentum(strat, main);     return; }
   if (strat.id === 'performance')      { renderPerformance(strat, main);    return; }
 }
 
@@ -535,58 +446,6 @@ function toggleNavGroup(g) {
   const key = `nav_group_collapsed_${g}`;
   localStorage.setItem(key, localStorage.getItem(key) === '1' ? '0' : '1');
   renderNav();
-}
-
-// ════════════════════════════════════════════════════
-//  AI 推薦卡片
-// ════════════════════════════════════════════════════
-function renderAICard() {
-  if (!aiData) {
-    return `<div class="ai-card">
-      <div class="ai-card-header">
-        <span class="ai-card-title">✦ AI 選股推薦</span>
-        <span class="ai-card-meta">尚未載入</span>
-      </div>
-      <div class="ai-card-empty">AI 分析資料尚未產生，下次選股後自動更新</div>
-    </div>`;
-  }
-  if (!aiData.ranked || aiData.ranked.length === 0) {
-    return `<div class="ai-card">
-      <div class="ai-card-header">
-        <span class="ai-card-title">✦ AI 選股推薦</span>
-      </div>
-      <div class="ai-card-empty">本週無推薦標的</div>
-    </div>`;
-  }
-
-  const top3 = aiData.ranked.slice(0, 3);
-  const rankColors  = ['var(--green)', 'var(--amber)', 'var(--blue)'];
-  const genTime = (aiData.generated_at || '').slice(0, 16).replace('T', ' ');
-
-  const itemsHTML = top3.map((item, i) => `
-    <div class="ai-rank-item">
-      <div class="ai-rank-badge" style="color:${rankColors[i]};border-color:${rankColors[i]}">#${item.rank}</div>
-      <div class="ai-rank-info">
-        <div class="ai-rank-stock">
-          <span class="stock-code">${item.stock_id}</span>
-          <span style="font-size:13px;font-weight:500;color:var(--text)">${item.name}</span>
-        </div>
-        <div class="ai-rank-reason">${item.reason}</div>
-      </div>
-      <div class="ai-score">
-        <span class="ai-score-val" style="color:${rankColors[i]}">${item.score}</span>
-        <span class="ai-score-label">分</span>
-      </div>
-    </div>`).join('');
-
-  return `<div class="ai-card">
-    <div class="ai-card-header">
-      <span class="ai-card-title">✦ AI 選股推薦</span>
-      <span class="ai-card-meta">${aiData.model || 'gemini-2.0-flash'} · ${genTime}</span>
-    </div>
-    <div class="ai-card-body">${itemsHTML}</div>
-    <div class="ai-card-footer">依波段偏好排序：大戶增持幅度 · 低乖離 · 基本面獲利能力</div>
-  </div>`;
 }
 
 // ════════════════════════════════════════════════════
@@ -671,34 +530,21 @@ async function loadData() {
   const timestamp = new Date().getTime();
 
   try {
-    const [themeRes, chipsRes, bhtRes, vsRes, vpbRes, mpbRes, ivpbRes, mcRes, aiRes, saRes, perfRes, miRes, fdRes, mbRes, vcpRes, rtRes, rttRes, tmRes] = await Promise.all([
-      fetch(`data/theme_heat.json?t=${timestamp}`,          { cache: 'no-store' }).then(r => r.ok ? r.json() : null).catch(() => null),
+    const [chipsRes, bhtRes, vsRes, vpbRes, mpbRes, mcRes, saRes, perfRes, miRes, fdRes, mbRes, rtRes, rttRes] = await Promise.all([
       fetch(`data/chips_big_holder.json?t=${timestamp}`,   { cache: 'no-store' }).then(r => r.ok ? r.json() : null).catch(() => null),
       fetch(`data/big_holder_trend.json?t=${timestamp}`,   { cache: 'no-store' }).then(r => r.ok ? r.json() : null).catch(() => null),
       fetch(`data/volume_signal.json?t=${timestamp}`,      { cache: 'no-store' }).then(r => r.ok ? r.json() : null).catch(() => null),
       fetch(`data/volume_pullback.json?t=${timestamp}`,     { cache: 'no-store' }).then(r => r.ok ? r.json() : null).catch(() => null),
       fetch(`data/momentum_pullback.json?t=${timestamp}`,   { cache: 'no-store' }).then(r => r.ok ? r.json() : null).catch(() => null),
-      fetch(`data/intraday_volume_pullback.json?t=${timestamp}`, { cache: 'no-store' }).then(r => r.ok ? r.json() : null).catch(() => null),
       fetch(`data/momentum_candidates.json?t=${timestamp}`, { cache: 'no-store' }).then(r => r.ok ? r.json() : null).catch(() => null),
-      fetch(`data/ai_recommendations.json?t=${timestamp}`, { cache: 'no-store' }).then(r => r.ok ? r.json() : null).catch(() => null),
       fetch(`data/ai_analysis.json?t=${timestamp}`,        { cache: 'no-store' }).then(r => r.ok ? r.json() : null).catch(() => null),
       fetch(`data/performance.json?t=${timestamp}`,        { cache: 'no-store' }).then(r => r.ok ? r.json() : null).catch(() => null),
       fetch(`data/market_index.json?t=${timestamp}`,        { cache: 'no-store' }).then(r => r.ok ? r.json() : null).catch(() => null),
       fetch(`data/futures_dashboard.json?t=${timestamp}`,   { cache: 'no-store' }).then(r => r.ok ? r.json() : null).catch(() => null),
       fetch(`data/margin_balance.json?t=${timestamp}`,      { cache: 'no-store' }).then(r => r.ok ? r.json() : null).catch(() => null),
-      // DISABLED / BACKUP - DO NOT DELETE: VCP data loading is paused while the tab is hidden.
-      Promise.resolve(null),
       fetch(`data/right_top.json?t=${timestamp}`,          { cache: 'no-store' }).then(r => r.ok ? r.json() : null).catch(() => null),
       fetch(`data/right_top_track.json?t=${timestamp}`,    { cache: 'no-store' }).then(r => r.ok ? r.json() : null).catch(() => null),
-      // DISABLED / BACKUP - DO NOT DELETE: institutional momentum data loading is paused; tag workflow remains active.
-      Promise.resolve(null),
     ]);
-
-    if (themeRes && themeRes.themes) {
-      DATA.theme_heat_data = themeRes;
-      const strat = STRATEGIES.find(s => s.id === 'theme_heat');
-      if (strat) strat.dataUpdated = (themeRes.source_date || themeRes.updated || '').slice(0, 10) || strat.dataUpdated;
-    }
 
     if (chipsRes && chipsRes.results) {
       DATA.chips_big_holder_data = chipsRes.results.map(d => {
@@ -742,17 +588,8 @@ async function loadData() {
       if (strat) strat.dataUpdated = (mpbRes.source_date || mpbRes.updated || '').slice(0, 10) || strat.dataUpdated;
     }
 
-    if (ivpbRes && ivpbRes.results) {
-      DATA.intraday_volume_pullback_data = ivpbRes.results || [];
-      DATA.intraday_volume_pullback_meta = ivpbRes;
-    }
-
     if (mcRes && mcRes.results) {
       DATA.momentum_candidates_data = mcRes;
-    }
-
-    if (aiRes && aiRes.ranked) {
-      aiData = aiRes;
     }
 
     if (saRes && (saRes.active || saRes.expired)) {
@@ -777,31 +614,11 @@ async function loadData() {
       DATA.margin_balance_data = mbRes;
     }
 
-    if (vcpRes && vcpRes.results) {
-      DATA.vcp_data     = vcpRes.results;
-      DATA.vcp_potential_data = vcpRes.potential_results || [];
-      DATA.vcp_industry = vcpRes.industry_stats || [];
-      DATA.vcp_potential_industry = vcpRes.potential_industry_stats || [];
-      const strat = STRATEGIES.find(s => s.id === 'vcp');
-      if (strat) strat.dataUpdated = (vcpRes.updated || '').slice(0, 10) || strat.dataUpdated;
-    }
-
     if (rtRes && rtRes.results) {
       DATA.right_top_data     = rtRes.results;
       DATA.right_top_industry = rtRes.industry_stats || [];
       const strat = STRATEGIES.find(s => s.id === 'right_top');
       if (strat) strat.dataUpdated = (rtRes.updated || '').slice(0, 10) || strat.dataUpdated;
-    }
-
-    if (tmRes && tmRes.results) {
-      DATA.trust_momentum_data = tmRes.trust_results || tmRes.results || [];
-      DATA.trust_momentum_industry = tmRes.trust_industry_stats || tmRes.industry_stats || [];
-      DATA.foreign_momentum_data = tmRes.foreign_results || [];
-      DATA.foreign_momentum_industry = tmRes.foreign_industry_stats || [];
-      DATA.institutional_confluence_data = tmRes.confluence_results || [];
-      DATA.institutional_confluence_industry = tmRes.confluence_industry_stats || [];
-      const strat = STRATEGIES.find(s => s.id === 'trust_momentum');
-      if (strat) strat.dataUpdated = (tmRes.source_date || tmRes.updated || '').slice(0, 10) || strat.dataUpdated;
     }
 
     const ssrStrat = STRATEGIES.find(s => s.id === 'ssr');

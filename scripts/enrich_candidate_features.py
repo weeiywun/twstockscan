@@ -25,12 +25,8 @@ SOURCE_FILES: list[tuple[str, list[str], str]] = [
     ("ai_analysis.json", ["active", "expired"], "stock_analysis"),
     ("chips_big_holder.json", ["results"], "chips"),
     ("big_holder_trend.json", ["results"], "big_holder_trend"),
-    ("intraday_volume_pullback.json", ["results", "skipped"], "intraday_volume_pullback"),
     ("right_top.json", ["results"], "right_top"),
     ("right_top_track.json", ["active", "expired"], "right_top_track"),
-    ("trust_momentum.json", ["results", "trust_results", "foreign_results", "confluence_results"], "institutional_momentum"),
-    ("vcp.json", ["results", "potential_results"], "vcp"),
-    ("volume_breakout.json", ["results"], "volume_breakout"),
     ("volume_signal.json", ["results"], "volume_signal"),
     ("volume_pullback.json", ["active", "failed", "history"], "volume_pullback"),
     ("momentum_pullback.json", ["results"], "momentum_pullback"),
@@ -263,44 +259,9 @@ def add_price_features(features: dict[str, dict[str, Any]]) -> str | None:
     return latest_date
 
 
-def build_theme_index() -> dict[str, dict[str, Any]]:
-    data = load_json("theme_heat.json")
-    index: dict[str, dict[str, Any]] = {}
-
-    def put(stock: dict[str, Any], theme_name: str, score: float) -> None:
-        sid = sid_of(stock)
-        if not sid:
-            return
-        current = index.get(sid)
-        if current and (current.get("theme_score") or 0) >= score:
-            return
-        index[sid] = {"theme": theme_name, "theme_score": round(score, 1)}
-
-    for theme in data.get("themes", []) or []:
-        theme_name = theme.get("theme") or theme.get("name") or theme.get("industry") or "主線"
-        theme_base = float(theme.get("score") or theme.get("market_score") or 0)
-        for key in ("leaders", "market_leaders", "representatives", "stocks"):
-            for idx, stock in enumerate(theme.get(key, []) or []):
-                raw = stock.get("theme_score") or stock.get("leader_score") or stock.get("score") or theme_base
-                put(stock, theme_name, max(0.0, float(raw or 0) - idx * 4))
-    for stock in data.get("leaders", []) or data.get("top_stocks", []) or []:
-        put(stock, stock.get("theme") or "主線", float(stock.get("theme_score") or stock.get("score") or 0))
-    return index
-
-
-def add_theme_features(features: dict[str, dict[str, Any]]) -> None:
-    theme_index = build_theme_index()
-    for sid, theme in theme_index.items():
-        if sid not in features:
-            continue
-        features[sid]["theme"] = theme.get("theme")
-        features[sid]["theme_score"] = theme.get("theme_score")
-
-
 def main() -> int:
     features = collect_candidates()
     price_date = add_price_features(features)
-    add_theme_features(features)
     rows = sorted(features.values(), key=lambda row: row["stock_id"])
     output = {
         "strategy_id": "candidate_features",
@@ -311,7 +272,6 @@ def main() -> int:
             "total": len(rows),
             "with_price": sum(1 for row in rows if row.get("close") is not None),
             "with_chips": sum(1 for row in rows if row.get("big_pct_1000") is not None),
-            "with_theme": sum(1 for row in rows if row.get("theme_score") is not None),
         },
         "results": rows,
     }

@@ -1,200 +1,71 @@
-// ═══════════════════════════════════════════════════════════════
-//  SSR：Strategy Signal Radar
-//  彙整籌碼集中 / VCP / 突破策略 / 投信動能 / 外資動能，找出跨策略共振標的。
-// ═══════════════════════════════════════════════════════════════
 function buildSSRRows() {
-  const rows = new Map();
-
-  function ensure(stockId, seed = {}) {
-    const id = String(stockId || '').trim();
-    if (!id) return null;
-    if (!rows.has(id)) {
-      rows.set(id, {
-        stock_id: id,
-        name: seed.name || '',
-        industry: seed.industry || '',
-        market: seed.market || guessMarket(id),
-        close: seed.close ?? null,
-        strategies: [],
-        score: 0,
-        chips: null,
-        vcp: null,
-        breakout: null,
-        trust: null,
-        foreign: null,
-        institutional_confluence: null,
-        tags: [],
-        signal_dates: [],
-        unified_scores: [],
-      });
-    }
-    const row = rows.get(id);
-    row.name = row.name || seed.name || '';
-    row.industry = row.industry || seed.industry || '';
-    row.market = row.market || seed.market || guessMarket(id);
-    if (row.close == null && seed.close != null) row.close = seed.close;
-    return row;
-  }
-
-  (DATA.chips_big_holder_data || []).forEach(d => {
-    const row = ensure(d.stock_id, d);
-    if (!row) return;
-    row.chips = d;
-    row.strategies.push('chips');
-    row.score += 35;
-    if (d.quality_score != null) row.score += Math.min(Number(d.quality_score) / 10, 10);
-    if (d.chg_2w_1000 != null && Number(d.chg_2w_1000) > 0) row.score += 4;
-    if (d.chg_2w_400 != null && Number(d.chg_2w_400) > 0) row.score += 3;
-    row.tags.push('籌碼集中');
-    if (d.unified_score != null) row.unified_scores.push(Number(d.unified_score));
-  });
-
-  [...(DATA.vcp_data || []), ...(DATA.vcp_potential_data || [])].forEach(d => {
-    const row = ensure(d.stock_id, d);
-    if (!row) return;
-    row.vcp = d;
-    row.strategies.push('vcp');
-    row.score += d.vcp_tier === 'vcp' ? 40 : 28;
-    if (d.quality_score != null) row.score += Math.min(Number(d.quality_score) / 12, 8);
-    if (d.is_near_pivot) row.score += 5;
-    if (d.dry_up_ratio != null && d.dry_up_ratio <= 0.8) row.score += 5;
-    row.tags.push(d.vcp_tier === 'vcp' ? 'VCP' : '潛在VCP');
-    if (d.unified_score != null) row.unified_scores.push(Number(d.unified_score));
-  });
-
-  (DATA.right_top_data || []).forEach(d => {
-    const row = ensure(d.stock_id, d);
-    if (!row) return;
-    row.breakout = d;
-    row.strategies.push('breakout');
-    row.score += 35;
-    if (d.quality_score != null) row.score += Math.min(Number(d.quality_score) / 10, 10);
-    if (d.is_consolidation_breakout && d.is_momentum_breakout) row.score += 6;
-    row.tags.push(...(d.signal_types || d.tags || ['突破策略']).slice(0, 3));
-    if (d.signal_date || d.week_date) row.signal_dates.push(d.signal_date || d.week_date);
-    if (d.unified_score != null) row.unified_scores.push(Number(d.unified_score));
-  });
-
-  (DATA.trust_momentum_data || []).forEach(d => {
-    const row = ensure(d.stock_id, d);
-    if (!row) return;
-    row.trust = d;
-    row.strategies.push('trust');
-    row.score += 32;
-    if (d.quality_score != null) row.score += Math.min(Number(d.quality_score) / 10, 10);
-    if (d.trust_buy_days_10d >= 8) row.score += 5;
-    if (d.trust_vol_ratio_5d >= 0.2) row.score += 5;
-    row.tags.push('投信動能');
-    if (d.signal_date) row.signal_dates.push(d.signal_date);
-    if (d.unified_score != null) row.unified_scores.push(Number(d.unified_score));
-  });
-
-  (DATA.foreign_momentum_data || []).forEach(d => {
-    const row = ensure(d.stock_id, d);
-    if (!row) return;
-    row.foreign = d;
-    row.strategies.push('foreign');
-    row.score += 30;
-    if (d.quality_score != null) row.score += Math.min(Number(d.quality_score) / 10, 10);
-    if (d.flow_regime === 'attack') row.score += 5;
-    if (d.inst_vol_ratio_5d >= 0.2) row.score += 5;
-    row.tags.push('外資動能');
-    if (d.signal_date) row.signal_dates.push(d.signal_date);
-    if (d.unified_score != null) row.unified_scores.push(Number(d.unified_score));
-  });
-
-  (DATA.institutional_confluence_data || []).forEach(d => {
-    const row = ensure(d.stock_id, d);
-    if (!row) return;
-    row.institutional_confluence = d;
-    row.score += 12;
-    row.tags.push('雙法人共振');
-    if (d.signal_date) row.signal_dates.push(d.signal_date);
-    if (d.unified_score != null) row.unified_scores.push(Number(d.unified_score));
-  });
-
-  return [...rows.values()]
-    .map(row => {
-      row.strategies = [...new Set(row.strategies)];
-      row.strategy_count = row.strategies.length;
-      row.tags = [...new Set(row.tags)];
-      row.signal_dates = [...new Set(row.signal_dates)].filter(Boolean);
-      row.combo_key = [
-        row.chips ? '大戶' : null,
-        row.vcp ? 'VCP' : null,
-        row.breakout ? '突破' : null,
-        row.trust ? '投信' : null,
-        row.foreign ? '外資' : null,
-      ].filter(Boolean).join('+');
-      row.score = row.unified_scores.length
-        ? Math.round(Math.max(...row.unified_scores))
-        : Math.round(row.score);
-      return row;
-    })
-    .filter(row => row.strategy_count >= 2)
-    .sort((a, b) => b.strategy_count - a.strategy_count || b.score - a.score);
+  return DATA.momentum_candidates_data?.focus_results || [];
 }
 
 function renderSSR(strat, main) {
-  const rows = buildSSRRows();
   const momentumData = DATA.momentum_candidates_data || {};
   const focusRows = momentumData.focus_results || [];
-  // DISABLED / BACKUP - DO NOT DELETE:
-  // 10:00 intraday volume alerts are paused. Keep the renderer and data
-  // loading in place so the feature can be restored without rebuilding it.
-  const SHOW_INTRADAY_ALERT_PANEL = false;
-  const intraday = DATA.intraday_volume_pullback_data || [];
-  const intradayMeta = DATA.intraday_volume_pullback_meta || {};
-  let filter = 'focus';
-  const poolSourceFilter = window._stockPoolSourceFilter || 'all';
+  const sourceFilter = window._stockPoolSourceFilter || 'all';
   const sortCol = window._ssrSortCol || 'score';
   const sortAsc = window._ssrSortAsc !== undefined ? window._ssrSortAsc : false;
-  const intradaySortCol = window._ssrIntradaySortCol || 'intraday_vol_ratio_to_10d';
-  const intradaySortAsc = window._ssrIntradaySortAsc !== undefined ? window._ssrIntradaySortAsc : false;
 
-  function setSSRFilter(v) {
-    window._ssrFilter = v;
-    renderStrategy();
-  }
-  window.setSSRFilter = setSSRFilter;
-
-  function setStockPoolSourceFilter(v) {
+  window.setStockPoolSourceFilter = function setStockPoolSourceFilter(v) {
     window._stockPoolSourceFilter = v;
     renderStrategy();
-  }
-  window.setStockPoolSourceFilter = setStockPoolSourceFilter;
+  };
 
-  function ssrSort(col) {
+  window.ssrSort = function ssrSort(col) {
     if (window._ssrSortCol === col) window._ssrSortAsc = !window._ssrSortAsc;
     else { window._ssrSortCol = col; window._ssrSortAsc = false; }
     renderStrategy();
-  }
-  window.ssrSort = ssrSort;
+  };
 
-  function ssrIntradaySort(col) {
-    if (window._ssrIntradaySortCol === col) window._ssrIntradaySortAsc = !window._ssrIntradaySortAsc;
-    else { window._ssrIntradaySortCol = col; window._ssrIntradaySortAsc = false; }
-    renderStrategy();
-  }
-  window.ssrIntradaySort = ssrIntradaySort;
+  const stateOrder = { '值得看圖': 0, '先觀察': 1, '太遠不追': 2, '型態破壞': 3 };
 
-  function matchFilter(row) {
-    if (filter === 'focus') return false;
-    if (filter === 'triple') return row.strategy_count >= 3;
-    if (filter === 'chips_vcp') return row.chips && row.vcp;
-    if (filter === 'chips_breakout') return row.chips && row.breakout;
-    if (filter === 'vcp_breakout') return row.vcp && row.breakout;
-    if (filter === 'trust_vcp') return row.trust && row.vcp;
-    if (filter === 'trust_breakout') return row.trust && row.breakout;
-    if (filter === 'foreign_vcp') return row.foreign && row.vcp;
-    if (filter === 'foreign_breakout') return row.foreign && row.breakout;
-    if (filter === 'inst_confluence') return row.trust && row.foreign;
-    return row.strategy_count >= 2;
+  function fmtNum(v, digits = 2) {
+    return v == null || Number.isNaN(Number(v)) ? '-' : Number(v).toFixed(digits);
+  }
+
+  function fmtPct(v, digits = 2) {
+    return v == null || Number.isNaN(Number(v)) ? '-' : `${Number(v) >= 0 ? '+' : ''}${Number(v).toFixed(digits)}%`;
+  }
+
+  function sourceLabel(src) {
+    return ({
+      chips: '大戶',
+      volume_signal: '量增',
+      right_top_track: '突破追蹤',
+      volume_pullback: '量增回測',
+      stock_analysis: '標的追蹤',
+      momentum_candidates: '標的池',
+    }[src] || src);
+  }
+
+  function matchesSource(row, filter) {
+    const sources = new Set(row.sources || []);
+    if (filter === 'chips') return sources.has('chips');
+    if (filter === 'volume_signal') return sources.has('volume_signal');
+    if (filter === 'right_top_track') return sources.has('right_top_track');
+    if (filter === 'volume_pullback') return sources.has('volume_pullback');
+    return true;
+  }
+
+  function sourceCount(filter) {
+    return focusRows.filter(row => matchesSource(row, filter)).length;
+  }
+
+  function value(row, col) {
+    const m = row.metrics || {};
+    if (col === 'score') return row.pattern_score ?? row.context_score ?? row.unified_score ?? row.score ?? 0;
+    if (col === 'pattern_state') return stateOrder[row.pattern_state] ?? 9;
+    if (col === 'primary_metric') return m.ignition_vol_ratio ?? m.today_vol_ratio ?? m.track_vol_ratio ?? 0;
+    if (col === 'track_pnl_pct') return m.track_pnl_pct ?? -999;
+    return row[col] ?? m[col];
   }
 
   function compare(a, b) {
-    const va = sortCol === 'strategy_count' ? a.strategy_count : a[sortCol];
-    const vb = sortCol === 'strategy_count' ? b.strategy_count : b[sortCol];
+    const va = value(a, sortCol);
+    const vb = value(b, sortCol);
     const na = Number(va);
     const nb = Number(vb);
     const cmp = !Number.isNaN(na) && !Number.isNaN(nb)
@@ -207,384 +78,90 @@ function renderSSR(strat, main) {
     return `<span class="sort-icon">${sortCol === col ? (sortAsc ? '↑' : '↓') : '·'}</span>`;
   }
 
-  const PSTATE_ORDER = { '值得看圖': 0, '先觀察': 1, '太遠不追': 2, '型態破壞': 3 };
-  function patternStateColor(state) {
+  function stateColor(state) {
     if (state === '值得看圖') return 'var(--green)';
     if (state === '太遠不追') return 'var(--amber)';
     if (state === '型態破壞') return '#dc2626';
     return 'var(--text2)';
   }
 
-  function focusValue(row, col) {
-    const m = row.metrics || {};
-    if (col === 'score') return row.pattern_score ?? row.unified_score ?? row.score ?? 0;
-    if (col === 'pattern_state') return PSTATE_ORDER[row.pattern_state] ?? 1;
-    if (col === 'primary_metric') return m.ignition_vol_ratio ?? m.today_vol_ratio ?? m.track_vol_ratio ?? 0;
-    if (col === 'track_pnl_pct') return m.track_pnl_pct ?? -999;
-    return row[col] ?? m[col];
-  }
-
-  function compareFocus(a, b) {
-    const va = focusValue(a, sortCol);
-    const vb = focusValue(b, sortCol);
-    const na = Number(va);
-    const nb = Number(vb);
-    const cmp = !Number.isNaN(na) && !Number.isNaN(nb)
-      ? na - nb
-      : String(va ?? '').localeCompare(String(vb ?? ''));
-    return sortAsc ? cmp : -cmp;
-  }
-
-  function intradaySortIcon(col) {
-    return `<span class="sort-icon">${intradaySortCol === col ? (intradaySortAsc ? '↑' : '↓') : '·'}</span>`;
-  }
-
-  function matchesPoolSource(row, sourceFilter) {
-    const sources = new Set(row.sources || []);
-    if (sourceFilter === 'chips') return sources.has('chips');
-    if (sourceFilter === 'volume_signal') return sources.has('volume_signal');
-    if (sourceFilter === 'right_top_track') return sources.has('right_top_track');
-    if (sourceFilter === 'volume_pullback') return sources.has('volume_pullback');
-    return true;
-  }
-
-  function sourceCount(sourceFilter) {
-    return focusRows.filter(row => matchesPoolSource(row, sourceFilter)).length;
-  }
-
-  const poolFilterOptions = [
+  const filters = [
     { key: 'all', label: '全部', count: focusRows.length },
     { key: 'chips', label: '大戶', count: sourceCount('chips') },
     { key: 'volume_signal', label: '量增', count: sourceCount('volume_signal') },
     { key: 'right_top_track', label: '突破', count: sourceCount('right_top_track') },
     { key: 'volume_pullback', label: '回測', count: sourceCount('volume_pullback') },
   ];
-  const poolFilterButtons = poolFilterOptions.map(opt => `
-    <button class="view-btn ${poolSourceFilter === opt.key ? 'active' : ''}"
+
+  const filterButtons = filters.map(opt => `
+    <button class="view-btn ${sourceFilter === opt.key ? 'active' : ''}"
       onclick="setStockPoolSourceFilter('${opt.key}')">${opt.label} ${opt.count}</button>
   `).join('');
 
-  const filtered = rows.filter(matchFilter).sort(compare);
-  const filteredFocus = focusRows
-    .filter(row => matchesPoolSource(row, poolSourceFilter))
-    .sort(compareFocus);
-  const topIndustry = filtered.reduce((acc, row) => {
-    const key = row.industry || '未分類';
-    acc[key] = (acc[key] || 0) + 1;
-    return acc;
-  }, {});
-  const topIndustryName = Object.entries(topIndustry).sort((a, b) => b[1] - a[1])[0];
+  const rows = focusRows
+    .filter(row => matchesSource(row, sourceFilter))
+    .sort(compare);
 
-  function renderIntradaySSRPanel() {
-    const updated = intradayMeta.updated
-      ? intradayMeta.updated.slice(0, 16).replace('T', ' ')
-      : '';
-    function intradayValue(row, col) {
-      if (col === 'status') return { reentry: 1, pullback: 2, ignition: 3, watch: 4 }[row.status] || 9;
-      return row[col];
-    }
-    function compareIntraday(a, b) {
-      const va = intradayValue(a, intradaySortCol);
-      const vb = intradayValue(b, intradaySortCol);
-      const na = Number(va);
-      const nb = Number(vb);
-      const cmp = !Number.isNaN(na) && !Number.isNaN(nb)
-        ? na - nb
-        : String(va ?? '').localeCompare(String(vb ?? ''));
-      return intradaySortAsc ? cmp : -cmp;
-    }
-    const intradayRows = intraday.slice()
-      .sort(compareIntraday)
-      .map(row => {
-        const statusText = row.status_label || row.status || '預警';
-        const tvSymbol = getTVSymbol(row);
-        return `<tr>
-          <td>
-            <a href="https://www.tradingview.com/chart/?symbol=${tvSymbol}"
-              onclick="openTV('${tvSymbol}', event)"
-              style="text-decoration:none;display:inline-block">
-              <div class="stock-code" style="display:flex;align-items:center;gap:5px">
-                ${row.stock_id}<span style="font-size:9px;opacity:.45;font-family:var(--mono)">↗</span>
-              </div>
-              <div class="stock-name">${row.name || ''}</div>
-            </a>
-            <div class="stock-industry">${row.industry || ''}</div>
-          </td>
-          <td><span class="tag-badge" style="color:var(--green);border-color:rgba(20,160,100,.45)">${statusText}</span></td>
-          <td>
-            <span style="color:var(--green);font-weight:700;font-family:var(--mono)">${row.intraday_vol_ratio_to_10d != null ? Number(row.intraday_vol_ratio_to_10d).toFixed(2) + 'x' : '—'}</span><br>
-            <span style="font-size:11px;color:var(--text3)">${row.intraday_volume_lots?.toLocaleString() || '—'} 張</span>
-          </td>
-          <td>
-            <span class="price-cell">${row.intraday_close != null ? Number(row.intraday_close).toFixed(1) : '—'}</span><br>
-            <span style="font-size:11px;color:var(--text3)">昨收 ${row.yesterday_close != null ? Number(row.yesterday_close).toFixed(1) : '—'}</span>
-          </td>
-          <td>
-            <span style="font-family:var(--mono)">${row.intraday_trigger_volume?.toLocaleString() || '—'} 張</span><br>
-            <span style="font-size:11px;color:var(--text3)">${row.intraday_time || intradayMeta.scan_time || '10:00'}</span>
-          </td>
-        </tr>`;
-      }).join('');
-
-    return `
-      <div class="table-wrap" style="margin-bottom:16px;border-color:${intraday.length ? 'rgba(20,160,100,.35)' : 'var(--border)'}">
-        <div class="table-toolbar">
-          <span class="table-title">10:00 盤中量增預警</span>
-          <div class="toolbar-right">
-            <span class="updated-tag">${updated || '尚未掃描'}</span>
-          </div>
-        </div>
-        ${intraday.length ? `
-          <div class="table-scroll">
-            <table>
-              <thead>
-                <tr>
-                  <th onclick="ssrIntradaySort('stock_id')" style="cursor:pointer">代號 / 名稱${intradaySortIcon('stock_id')}</th>
-                  <th onclick="ssrIntradaySort('status')" style="cursor:pointer">結構${intradaySortIcon('status')}</th>
-                  <th onclick="ssrIntradaySort('intraday_vol_ratio_to_10d')" style="cursor:pointer">盤中量比 / 量${intradaySortIcon('intraday_vol_ratio_to_10d')}</th>
-                  <th onclick="ssrIntradaySort('intraday_close')" style="cursor:pointer">盤中價 / 昨收${intradaySortIcon('intraday_close')}</th>
-                  <th onclick="ssrIntradaySort('intraday_trigger_volume')" style="cursor:pointer">觸發門檻 / 時間${intradaySortIcon('intraday_trigger_volume')}</th>
-                </tr>
-              </thead>
-              <tbody>${intradayRows}</tbody>
-            </table>
-          </div>` : `
-          <div style="padding:16px;color:var(--text3);font-size:13px;line-height:1.8">
-            ${intradayMeta.status === 'ok'
-              ? '今日 10:00 掃描已完成，目前沒有候選標的達到盤中放量門檻。'
-              : '尚未取得今日 10:00 盤中預警結果；workflow 完成後會自動顯示在這裡。'}
-          </div>`}
-      </div>`;
-  }
-
-  function fmtNum(v, digits = 2) {
-    return v == null || Number.isNaN(Number(v)) ? '—' : Number(v).toFixed(digits);
-  }
-
-  function fmtPct(v, digits = 2) {
-    return v == null || Number.isNaN(Number(v)) ? '—' : `${Number(v) >= 0 ? '+' : ''}${Number(v).toFixed(digits)}%`;
-  }
-
-  function focusSourceLabel(src) {
-    return ({
-      chips: '大戶',
-      volume_signal: '量增',
-      right_top_track: '突破追蹤',
-      volume_pullback: '量增回測',
-      stock_analysis: '標的追蹤',
-    }[src] || src);
-  }
-
-  function focusMetricText(row) {
+  const rowsHTML = rows.map(row => {
     const m = row.metrics || {};
-    const parts = [];
-    if (m.week_chg_pct != null) parts.push(`週 ${fmtPct(m.week_chg_pct, 1)}`);
-    if (m.bbw != null) parts.push(`BBW ${fmtNum(m.bbw, 1)}`);
-    if (m.track_pnl_pct != null) parts.push(`追蹤 ${fmtPct(m.track_pnl_pct, 1)}`);
-    const baseText = parts.join(' / ') || '—';
-    const score = row.score_breakdown || {};
-    const c = score.components || {};
-    if (!Object.keys(c).length) return baseText;
-    const detail = [
-      `籌碼 ${fmtNum(c.chip, 0)}`,
-      `動能 ${fmtNum(c.momentum, 0)}`,
-      `量能 ${fmtNum(c.volume, 0)}`,
-      `結構 ${fmtNum(c.structure, 0)}`,
-      `主線 ${fmtNum(c.theme, 0)}`,
-    ].join(' / ');
-    const multiplier = score.source_multiplier ? ` · x${Number(score.source_multiplier).toFixed(2)}` : '';
-    return `${baseText}<br><span style="color:var(--text3)">分解：${detail}${multiplier}</span>`;
-  }
+    const tvSymbol = getTVSymbol(row);
+    const patState = row.pattern_state || '先觀察';
+    const patScore = row.pattern_score ?? 0;
+    const patTags = (row.pattern_tags || []).join(' ');
+    const patternList = (row.patterns || []).join(' / ');
+    const keyLevel = row.key_level;
+    const invalidation = row.invalidation;
+    const ctxScore = row.context_score ?? row.unified_score ?? row.score ?? 0;
+    const vol = m.today_vol_ratio ?? m.ignition_vol_ratio ?? m.track_vol_ratio;
+    const track = m.track_pnl_pct;
+    const color = stateColor(patState);
 
-  function renderFocusTable() {
-    const rowsHTML = filteredFocus.map(row => {
-      const m = row.metrics || {};
-      const tvSymbol = getTVSymbol(row);
-      const patState = row.pattern_state || '先觀察';
-      const patScore = row.pattern_score ?? 0;
-      const patTags = (row.pattern_tags || []).join(' ');
-      const patternList = (row.patterns || []).join(' / ');
-      const keyLvl = row.key_level;
-      const inval = row.invalidation;
-      const stateColor = patternStateColor(patState);
-      const ctxScore = row.context_score ?? row.unified_score ?? row.score ?? 0;
-      const vol = m.today_vol_ratio ?? m.ignition_vol_ratio ?? m.track_vol_ratio;
-      const track = m.track_pnl_pct;
-      return `<tr>
-        <td>
-          <a href="https://www.tradingview.com/chart/?symbol=${tvSymbol}"
-             onclick="openTV('${tvSymbol}', event)" style="text-decoration:none;display:inline-block">
-            <div class="stock-code" style="display:flex;align-items:center;gap:5px">
-              ${row.stock_id}<span style="font-size:9px;opacity:.45;font-family:var(--mono)">↗</span>
-            </div>
-            <div class="stock-name">${row.name || '—'}</div>
-          </a>
-          <div class="stock-industry" style="font-size:10px;color:var(--text3)">${row.industry || '—'}</div>
-        </td>
-        <td><span class="tag-badge" style="color:${stateColor};border-color:rgba(80,90,110,.35)">${patState}</span></td>
-        <td>
-          <span style="font-family:var(--mono);font-weight:700;color:${stateColor}">${Number(patScore).toFixed(1)}</span>
-          ${row.pattern_confidence != null && Number(row.pattern_confidence) < 0.9
-            ? `<br><span style="font-size:10px;color:var(--text3)">cf ${Number(row.pattern_confidence).toFixed(2)}</span>`
-            : ''}
-        </td>
-        <td style="font-size:11px;line-height:1.5;max-width:120px">
-          ${patTags ? `<span style="color:var(--text)">${patTags}</span>` : ''}
-          ${patternList ? `<br><span style="color:var(--text3)">${patternList}</span>` : ''}
-          ${!patTags && !patternList ? '—' : ''}
-        </td>
-        <td style="font-family:var(--mono);font-size:12px;white-space:nowrap">
-          ${keyLvl != null ? `<span style="color:var(--green);font-weight:700">${Number(keyLvl).toFixed(2)}</span>` : '—'}
-          ${inval != null ? `<br><span style="font-size:10px;color:#dc2626">↓${Number(inval).toFixed(2)}</span>` : ''}
-        </td>
-        <td><span class="price-cell">${fmtNum(row.close, 1)}</span></td>
-        <td style="font-size:11px;color:var(--text2);line-height:1.6">
-          <span style="font-family:var(--mono)">${Number(ctxScore).toFixed(0)}</span> ctx
-          ${vol != null ? `· 量${Number(vol).toFixed(2)}x` : ''}
-          ${track != null ? `· <span class="${Number(track) >= 0 ? 'pos' : 'neg'}">${fmtPct(track, 1)}</span>` : ''}
-          <br>${(row.sources || []).map(s => `<span class="tag-badge" style="color:var(--text3);border-color:rgba(80,90,110,.25)">${focusSourceLabel(s)}</span>`).join('')}
-        </td>
-      </tr>`;
-    }).join('');
+    return `<tr>
+      <td>
+        <a href="https://www.tradingview.com/chart/?symbol=${tvSymbol}"
+           onclick="openTV('${tvSymbol}', event)" style="text-decoration:none;display:inline-block">
+          <div class="stock-code" style="display:flex;align-items:center;gap:5px">
+            ${row.stock_id}<span style="font-size:9px;opacity:.45;font-family:var(--mono)">↗</span>
+          </div>
+          <div class="stock-name">${row.name || '-'}</div>
+        </a>
+        <div class="stock-industry" style="font-size:10px;color:var(--text3)">${row.industry || '-'}</div>
+      </td>
+      <td><span class="tag-badge" style="color:${color};border-color:rgba(80,90,110,.35)">${patState}</span></td>
+      <td>
+        <span style="font-family:var(--mono);font-weight:700;color:${color}">${fmtNum(patScore, 1)}</span>
+        ${row.pattern_confidence != null && Number(row.pattern_confidence) < 0.9
+          ? `<br><span style="font-size:10px;color:var(--text3)">cf ${fmtNum(row.pattern_confidence, 2)}</span>`
+          : ''}
+      </td>
+      <td style="font-size:11px;line-height:1.5;max-width:120px">
+        ${patTags ? `<span style="color:var(--text)">${patTags}</span>` : ''}
+        ${patternList ? `<br><span style="color:var(--text3)">${patternList}</span>` : ''}
+        ${!patTags && !patternList ? '-' : ''}
+      </td>
+      <td style="font-family:var(--mono);font-size:12px;white-space:nowrap">
+        ${keyLevel != null ? `<span style="color:var(--green);font-weight:700">${fmtNum(keyLevel, 2)}</span>` : '-'}
+        ${invalidation != null ? `<br><span style="font-size:10px;color:#dc2626">↓ ${fmtNum(invalidation, 2)}</span>` : ''}
+      </td>
+      <td><span class="price-cell">${fmtNum(row.close, 1)}</span></td>
+      <td style="font-size:11px;color:var(--text2);line-height:1.6">
+        <span style="font-family:var(--mono)">${fmtNum(ctxScore, 0)}</span> ctx
+        ${vol != null ? ` · 量 ${fmtNum(vol, 2)}x` : ''}
+        ${track != null ? ` · <span class="${Number(track) >= 0 ? 'pos' : 'neg'}">${fmtPct(track, 1)}</span>` : ''}
+        <br>${(row.sources || []).map(s => `<span class="tag-badge" style="color:var(--text3);border-color:rgba(80,90,110,.25)">${sourceLabel(s)}</span>`).join('')}
+      </td>
+    </tr>`;
+  }).join('');
 
-    return `<div class="table-wrap">
-      <div class="table-toolbar">
-        <span class="table-title">標的池</span>
-        <div class="toolbar-right">
-          <span class="updated-tag">值得看圖 ${momentumData.summary?.pattern_watch ?? focusRows.length} / 共 ${momentumData.summary?.total || focusRows.length}</span>
-          <span class="updated-tag">更新：${(momentumData.updated || '').slice(0, 10) || strat.dataUpdated}</span>
-          <button class="btn-csv" onclick="exportFocusCSV()">匯出 CSV</button>
-        </div>
-      </div>
-      <div style="padding:10px 14px;border-bottom:1px solid var(--border);font-size:12px;color:var(--text3);line-height:1.7">
-        僅顯示 pattern_state＝值得看圖 的標的，依型態分排序；context_score 與來源標籤為次要參考。
-      </div>
-      <div style="display:flex;gap:8px;padding:10px 14px;border-bottom:1px solid var(--border);flex-wrap:wrap">
-        ${poolFilterButtons}
-      </div>
-      <div class="table-scroll ${filteredFocus.length > 10 ? 'table-vscroll' : ''}">
-        <table>
-          <thead>
-            <tr>
-              <th onclick="ssrSort('stock_id')" style="cursor:pointer">代號 / 名稱${sortIcon('stock_id')}</th>
-              <th onclick="ssrSort('pattern_state')" style="cursor:pointer">型態狀態${sortIcon('pattern_state')}</th>
-              <th onclick="ssrSort('score')" style="cursor:pointer">型態分${sortIcon('score')}</th>
-              <th>型態標籤</th>
-              <th>關鍵 / 失效</th>
-              <th onclick="ssrSort('close')" style="cursor:pointer">收盤${sortIcon('close')}</th>
-              <th>來源 / 背景</th>
-            </tr>
-          </thead>
-          <tbody>${rowsHTML || `<tr><td colspan="7" style="text-align:center;color:var(--text3);padding:28px">目前沒有標的池候選（型態狀態＝值得看圖）</td></tr>`}</tbody>
-        </table>
-      </div>
-    </div>`;
-  }
-
-  function strategyBadges(row) {
-    const badges = [];
-    if (row.chips) badges.push(`<span class="tag-badge" style="color:#d97706;border-color:#d977064d">大戶</span>`);
-    if (row.vcp) {
-      const isStrict = row.vcp.vcp_tier === 'vcp';
-      badges.push(`<span class="tag-badge" style="color:${isStrict ? '#3b82f6' : '#0f766e'};border-color:${isStrict ? '#3b82f64d' : '#0f766e4d'}">${isStrict ? 'VCP' : '潛在VCP'}</span>`);
-    }
-    if (row.breakout) badges.push(`<span class="tag-badge" style="color:#dc2626;border-color:#dc26264d">突破</span>`);
-    if (row.trust) badges.push(`<span class="tag-badge" style="color:#0f766e;border-color:#0f766e4d">投信</span>`);
-    if (row.foreign) badges.push(`<span class="tag-badge" style="color:#2563eb;border-color:#2563eb4d">外資</span>`);
-    if (row.institutional_confluence) badges.push(`<span class="tag-badge" style="color:#7c3aed;border-color:#7c3aed4d">雙法人</span>`);
-    return badges.join('');
-  }
-
-  function detailText(row) {
-    const parts = [];
-    if (row.chips) {
-      parts.push(`大戶2週：千張 ${fmtPct(row.chips.chg_2w_1000)} / 400張 ${fmtPct(row.chips.chg_2w_400)}`);
-    }
-    if (row.vcp) {
-      const depths = (row.vcp.contraction_depths || []).join('→');
-      parts.push(`VCP：${row.vcp.contractions || '—'}段 ${depths ? depths + '%' : ''}，距pivot ${fmtPct(row.vcp.pivot_dist_pct, 1)}`);
-    }
-    if (row.breakout) {
-      const typeLabels = { consolidation: '盤整突破', momentum: '動能突破', price: '價格突破' };
-      const types = (row.breakout.signal_types || []).map(t => typeLabels[t] || t).join('、') || '突破策略';
-      parts.push(`突破：${types}`);
-    }
-    if (row.trust) {
-      const trustNet5 = row.trust.inst_net_5d ?? row.trust.trust_net_5d;
-      const trustBuy10 = row.trust.inst_buy_days_10d ?? row.trust.trust_buy_days_10d ?? 0;
-      const trustRatio = row.trust.inst_vol_ratio_5d ?? row.trust.trust_vol_ratio_5d ?? 0;
-      parts.push(`投信：近5日 ${fmtNum(trustNet5, 0)}張，${trustBuy10}/10日買超，占量 ${fmtPct(trustRatio * 100, 1)}`);
-    }
-    if (row.foreign) {
-      const foreignNet5 = row.foreign.inst_net_5d ?? row.foreign.foreign_net_5d;
-      const foreignBuy10 = row.foreign.inst_buy_days_10d ?? row.foreign.foreign_buy_days_10d ?? 0;
-      const foreignRatio = row.foreign.inst_vol_ratio_5d ?? row.foreign.foreign_vol_ratio_5d ?? 0;
-      parts.push(`外資：近5日 ${fmtNum(foreignNet5, 0)}張，${foreignBuy10}/10日買超，占量 ${fmtPct(foreignRatio * 100, 1)}`);
-    }
-    return parts.join('<br>');
-  }
-
-  function exportSSRCSV() {
-    const headers = [
-      '代號', '名稱', '產業', '市場', '共振分數', '命中策略數', '組合',
-      '收盤', '大戶千張2週', '大戶400張2週',
-      'VCP分級', 'VCP段數', '距Pivot(%)',
-      '突破類型', '投信5日買超', '投信10日買超天數', '投信買超占量',
-      '外資5日買超', '外資10日買超天數', '外資買超占量', '標籤'
-    ];
-    const csvRows = filtered.map(row => [
-      row.stock_id,
-      row.name,
-      row.industry || '',
-      row.market || '',
-      row.score,
-      row.strategy_count,
-      row.combo_key,
-      row.close ?? '',
-      row.chips?.chg_2w_1000 ?? '',
-      row.chips?.chg_2w_400 ?? '',
-      row.vcp ? (row.vcp.vcp_tier === 'vcp' ? 'VCP' : '潛在VCP') : '',
-      row.vcp?.contractions ?? '',
-      row.vcp?.pivot_dist_pct ?? '',
-      row.breakout ? ((row.breakout.signal_types || []).map(t => ({ consolidation: '盤整突破', momentum: '動能突破', price: '價格突破' }[t] || t)).join(' / ') || '突破策略') : '',
-      row.trust?.inst_net_5d ?? row.trust?.trust_net_5d ?? '',
-      row.trust?.inst_buy_days_10d ?? row.trust?.trust_buy_days_10d ?? '',
-      row.trust?.inst_vol_ratio_5d ?? row.trust?.trust_vol_ratio_5d ?? '',
-      row.foreign?.inst_net_5d ?? row.foreign?.foreign_net_5d ?? '',
-      row.foreign?.inst_buy_days_10d ?? row.foreign?.foreign_buy_days_10d ?? '',
-      row.foreign?.inst_vol_ratio_5d ?? row.foreign?.foreign_vol_ratio_5d ?? '',
-      row.tags.join(' / '),
-    ]);
-    const csv = [headers, ...csvRows]
-      .map(r => r.map(v => `"${String(v).replace(/"/g, '""')}"`).join(','))
-      .join('\r\n');
-    const blob = new Blob(['\ufeff' + csv], { type: 'text/csv;charset=utf-8' });
-    const url = URL.createObjectURL(blob);
-    const a = Object.assign(document.createElement('a'), { href: url, download: `ssr_${strat.dataUpdated}.csv` });
-    a.click();
-    URL.revokeObjectURL(url);
-  }
-  window.exportSSRCSV = exportSSRCSV;
-
-  function exportFocusCSV() {
-    const sourceLabels = {
-      chips: '大戶',
-      volume_signal: '量增',
-      right_top_track: '突破追蹤',
-      volume_pullback: '量增回測',
-      stock_analysis: '標的追蹤',
-    };
+  window.exportFocusCSV = function exportFocusCSV() {
     const headers = [
       '代號', '名稱', '產業', '市場',
       '型態狀態', '型態分', '型態標籤', '關鍵價', '失效價', '型態可信度',
-      '收盤',
-      '量比', '追蹤損益(%)', '週漲跌(%)', 'BBW',
-      'context_score', '來源',
+      '收盤', '量比', '追蹤損益(%)', '週漲跌(%)', 'BBW', 'context_score', '來源',
     ];
-    const csvRows = filteredFocus.map(row => {
+    const csvRows = rows.map(row => {
       const m = row.metrics || {};
       const vol = m.today_vol_ratio ?? m.ignition_vol_ratio ?? m.track_vol_ratio;
-      const sources = (row.sources || []).map(s => sourceLabels[s] || s).join(' / ');
       return [
         row.stock_id,
         row.name || '',
@@ -602,27 +179,19 @@ function renderSSR(strat, main) {
         m.week_chg_pct != null ? Number(m.week_chg_pct).toFixed(2) : '',
         m.bbw != null ? Number(m.bbw).toFixed(1) : '',
         row.context_score ?? row.unified_score ?? row.score ?? '',
-        sources,
+        (row.sources || []).map(sourceLabel).join(' / '),
       ];
     });
     const csv = [headers, ...csvRows]
       .map(r => r.map(v => `"${String(v).replace(/"/g, '""')}"`).join(','))
       .join('\r\n');
-    const blob = new Blob(['﻿' + csv], { type: 'text/csv;charset=utf-8' });
+    const blob = new Blob(['\uFEFF' + csv], { type: 'text/csv;charset=utf-8' });
     const url = URL.createObjectURL(blob);
     const updated = (momentumData.updated || '').slice(0, 10) || strat.dataUpdated || 'export';
     const a = Object.assign(document.createElement('a'), { href: url, download: `focus_pool_${updated}.csv` });
     a.click();
     URL.revokeObjectURL(url);
-  }
-  window.exportFocusCSV = exportFocusCSV;
-
-  const emptyHTML = `
-    <div class="coming-soon" style="padding:48px 20px">
-      <div class="coming-icon" style="font-size:28px">✦</div>
-      <div class="coming-title">目前沒有交集標的</div>
-      <div class="coming-desc">多組策略同時命中的機率本來就低；等盤後資料更新後，這裡會自動彙整 C5 取 2 與三組以上共振的標的。</div>
-    </div>`;
+  };
 
   main.innerHTML = `
     <div class="strategy-panel active">
@@ -630,9 +199,37 @@ function renderSSR(strat, main) {
         <div class="strat-title">${strat.icon} ${strat.name}</div>
         <div class="strat-desc">${strat.description}</div>
       </div>
-
-      ${SHOW_INTRADAY_ALERT_PANEL ? renderIntradaySSRPanel() : ''}
-
-      ${renderFocusTable()}
+      <div class="table-wrap">
+        <div class="table-toolbar">
+          <span class="table-title">標的池</span>
+          <div class="toolbar-right">
+            <span class="updated-tag">值得看圖 ${momentumData.summary?.pattern_watch ?? focusRows.length} / 全 ${momentumData.summary?.total || focusRows.length}</span>
+            <span class="updated-tag">更新：${(momentumData.updated || '').slice(0, 10) || strat.dataUpdated}</span>
+            <button class="btn-csv" onclick="exportFocusCSV()">匯出 CSV</button>
+          </div>
+        </div>
+        <div style="padding:10px 14px;border-bottom:1px solid var(--border);font-size:12px;color:var(--text3);line-height:1.7">
+          僅顯示 pattern_state＝值得看圖 的標的，依型態分排序；context_score 與來源標籤為次要參考。
+        </div>
+        <div style="display:flex;gap:8px;padding:10px 14px;border-bottom:1px solid var(--border);flex-wrap:wrap">
+          ${filterButtons}
+        </div>
+        <div class="table-scroll ${rows.length > 10 ? 'table-vscroll' : ''}">
+          <table>
+            <thead>
+              <tr>
+                <th onclick="ssrSort('stock_id')" style="cursor:pointer">代號 / 名稱${sortIcon('stock_id')}</th>
+                <th onclick="ssrSort('pattern_state')" style="cursor:pointer">型態狀態${sortIcon('pattern_state')}</th>
+                <th onclick="ssrSort('score')" style="cursor:pointer">型態分${sortIcon('score')}</th>
+                <th>型態標籤</th>
+                <th>關鍵 / 失效</th>
+                <th onclick="ssrSort('close')" style="cursor:pointer">收盤${sortIcon('close')}</th>
+                <th>來源 / 背景</th>
+              </tr>
+            </thead>
+            <tbody>${rowsHTML || `<tr><td colspan="7" style="text-align:center;color:var(--text3);padding:28px">目前沒有標的池候選（型態狀態＝值得看圖）</td></tr>`}</tbody>
+          </table>
+        </div>
+      </div>
     </div>`;
 }

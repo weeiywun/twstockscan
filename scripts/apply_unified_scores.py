@@ -34,33 +34,6 @@ def now_tw() -> str:
     return datetime.now(TW_TZ).strftime("%Y-%m-%dT%H:%M:%S+08:00")
 
 
-def build_theme_index() -> dict[str, dict[str, Any]]:
-    data = load_json("theme_heat.json")
-    index: dict[str, dict[str, Any]] = {}
-
-    def put(stock: dict[str, Any], theme_name: str, score: float) -> None:
-        sid = str(stock.get("stock_id") or stock.get("ticker") or "")
-        if not sid:
-            return
-        current = index.get(sid)
-        if current and (current.get("score") or 0) >= score:
-            return
-        index[sid] = {"theme": theme_name, "score": round(score, 1)}
-
-    for theme in data.get("themes", []) or []:
-        theme_name = theme.get("theme") or theme.get("name") or theme.get("industry") or "主線"
-        theme_base = float(theme.get("score") or theme.get("market_score") or 0)
-        for key in ("leaders", "market_leaders", "representatives", "stocks"):
-            for idx, stock in enumerate(theme.get(key, []) or []):
-                raw = stock.get("theme_score") or stock.get("leader_score") or stock.get("score") or theme_base
-                rank_penalty = idx * 4
-                put(stock, theme_name, max(0.0, float(raw or 0) - rank_penalty))
-    for stock in data.get("leaders", []) or data.get("top_stocks", []) or []:
-        raw = stock.get("theme_score") or stock.get("score") or 0
-        put(stock, stock.get("theme") or "主線", float(raw or 0))
-    return index
-
-
 def load_feature_map() -> dict[str, dict[str, Any]]:
     data = load_json("candidate_features.json")
     return {
@@ -228,7 +201,7 @@ def apply_stock_score_profiles(row_refs: list[dict[str, Any]], profiles: dict[st
 
 
 def main() -> int:
-    theme_index = build_theme_index()
+    theme_index: dict[str, dict[str, Any]] = {}
     feature_map = load_feature_map()
     row_refs: list[dict[str, Any]] = []
     datasets: list[tuple[str, dict[str, Any]]] = []
@@ -236,12 +209,8 @@ def main() -> int:
         ("ai_analysis.json", ["active", "expired"], "stock_analysis"),
         ("chips_big_holder.json", ["results"], "chips"),
         ("big_holder_trend.json", ["results"], "big_holder_trend"),
-        ("intraday_volume_pullback.json", ["results", "skipped"], "intraday_volume_pullback"),
         ("right_top.json", ["results"], "right_top"),
         ("right_top_track.json", ["active", "expired"], "right_top_track"),
-        ("trust_momentum.json", ["results", "trust_results", "foreign_results", "confluence_results"], "institutional_momentum"),
-        ("vcp.json", ["results", "potential_results"], "vcp"),
-        ("volume_breakout.json", ["results"], "volume_breakout"),
         ("volume_signal.json", ["results"], "volume_signal"),
         ("volume_pullback.json", ["active", "failed", "history"], "volume_pullback"),
         ("momentum_pullback.json", ["results"], "momentum_pullback"),

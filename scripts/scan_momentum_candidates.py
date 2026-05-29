@@ -378,7 +378,6 @@ def scan() -> dict[str, Any]:
                     big_trend_up=num(m.get("chip_score", 0)) >= 5,
                     inst_buying="外資連買" in tags_set or "投信連買" in tags_set,
                     source_count=len(row["sources"]),
-                    vcp_hit="vcp" in row.get("sources", []),
                 )
         if pr:
             row.update(pr.as_dict())
@@ -416,7 +415,6 @@ def scan() -> dict[str, Any]:
                 "volume_pullback",
                 "ai_analysis",
             ],
-            "disabled_sources": ["vcp", "trust_momentum"],
             "score_min": 35,
             "max_extended_pct": MAX_EXTENDED_PCT,
             "focus_rules": {

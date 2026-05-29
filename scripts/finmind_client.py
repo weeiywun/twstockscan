@@ -1,7 +1,7 @@
 #!/usr/bin/env python3
 """
 股價資料下載模組（FinMind API 版）
-供 fetch_holdings_twsthr.py、scan_ema_tangling.py、scan_volume_breakout.py 共用。
+供籌碼與價格資料相關腳本共用。
 """
 
 import os

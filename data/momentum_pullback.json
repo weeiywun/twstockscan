@@ -465,7 +465,7 @@
       "industry": "電子零組件業",
       "market": "TPEX",
       "signal_date": "2026-05-28",
-      "score": 65.0,
+      "score": 58.8,
       "close": 188.5,
       "volume_lots": 3316,
       "vol20": 3096.0,
@@ -504,50 +504,45 @@
       ],
       "tags": [],
       "legacy_score": 107,
-      "unified_score": 65.0,
-      "unified_score_grade": "B",
+      "unified_score": 58.8,
+      "unified_score_grade": "C",
       "score_breakdown": {
         "version": "unified_score_v2_momentum_first_stock_level",
-        "total": 65.0,
-        "grade": "B",
-        "base": 56.5,
+        "total": 58.8,
+        "grade": "C",
+        "base": 53.5,
         "components": {
           "chip": 0.0,
           "momentum": 60.9,
-          "volume": 66.7,
-          "structure": 83.1,
+          "volume": 59.4,
+          "structure": 74.8,
           "theme": 0.0
         },
-        "source_count": 6,
-        "source_multiplier": 1.15,
+        "source_count": 3,
+        "source_multiplier": 1.1,
         "sources": [
-          "institutional_momentum",
-          "intraday_volume_pullback",
           "momentum_pullback",
-          "price_breakout_track",
           "right_top_track",
           "標的追蹤"
         ],
         "aggregation": "max_component_by_stock"
       },
-      "context_unified_score": 62.9,
+      "context_unified_score": 58.8,
       "context_score_breakdown": {
         "version": "unified_score_v2_momentum_first_stock_level",
-        "total": 62.9,
+        "total": 58.8,
         "grade": "C",
-        "base": 54.7,
+        "base": 53.5,
         "components": {
           "chip": 0.0,
           "momentum": 60.9,
           "volume": 59.4,
-          "structure": 83.1,
+          "structure": 74.8,
           "theme": 0.0
         },
-        "source_count": 5,
-        "source_multiplier": 1.15,
+        "source_count": 3,
+        "source_multiplier": 1.1,
         "sources": [
-          "institutional_momentum",
-          "intraday_volume_pullback",
           "momentum_pullback",
           "right_top_track",
           "標的追蹤"
@@ -565,9 +560,9 @@
             "回測量縮 63%"
           ],
           "structure": [
-            "reentry",
             "強勢回測區",
-            "均線距離 -1.3%"
+            "均線距離 -1.3%",
+            "防守距離 1.0%"
           ],
           "theme": []
         }
@@ -808,7 +803,7 @@
       "industry": "其他電子類",
       "market": "TPEX",
       "signal_date": "2026-05-28",
-      "score": 66.2,
+      "score": 58.6,
       "close": 101.0,
       "volume_lots": 2809,
       "vol20": 4158.0,
@@ -847,48 +842,45 @@
       ],
       "tags": [],
       "legacy_score": 106,
-      "unified_score": 66.2,
-      "unified_score_grade": "B",
+      "unified_score": 58.6,
+      "unified_score_grade": "C",
       "score_breakdown": {
         "version": "unified_score_v2_momentum_first_stock_level",
-        "total": 66.2,
-        "grade": "B",
-        "base": 57.5,
+        "total": 58.6,
+        "grade": "C",
+        "base": 53.3,
         "components": {
           "chip": 0.0,
           "momentum": 67.1,
-          "volume": 59.4,
-          "structure": 83.3,
+          "volume": 50.9,
+          "structure": 68.9,
           "theme": 0.0
         },
-        "source_count": 5,
-        "source_multiplier": 1.15,
+        "source_count": 3,
+        "source_multiplier": 1.1,
         "sources": [
-          "intraday_volume_pullback",
           "momentum_pullback",
-          "price_breakout_track",
           "right_top_track",
           "標的追蹤"
         ],
         "aggregation": "max_component_by_stock"
       },
-      "context_unified_score": 65.2,
+      "context_unified_score": 57.6,
       "context_score_breakdown": {
         "version": "unified_score_v2_momentum_first_stock_level",
-        "total": 65.2,
-        "grade": "B",
-        "base": 56.7,
+        "total": 57.6,
+        "grade": "C",
+        "base": 52.4,
         "components": {
           "chip": 0.0,
           "momentum": 67.1,
-          "volume": 56.0,
-          "structure": 83.3,
+          "volume": 47.3,
+          "structure": 68.9,
           "theme": 0.0
         },
-        "source_count": 4,
-        "source_multiplier": 1.15,
+        "source_count": 3,
+        "source_multiplier": 1.1,
         "sources": [
-          "intraday_volume_pullback",
           "momentum_pullback",
           "right_top_track",
           "標的追蹤"
@@ -906,9 +898,9 @@
             "回測量縮 65%"
           ],
           "structure": [
-            "reentry",
             "強勢回測區",
-            "均線距離 -2.5%"
+            "均線距離 -2.5%",
+            "防守距離 2.6%"
           ],
           "theme": []
         }
@@ -920,7 +912,7 @@
       "industry": "光電業",
       "market": "TWSE",
       "signal_date": "2026-05-28",
-      "score": 67.6,
+      "score": 60.4,
       "close": 77.1,
       "volume_lots": 1693,
       "vol20": 3049.0,
@@ -959,48 +951,45 @@
       ],
       "tags": [],
       "legacy_score": 106,
-      "unified_score": 67.6,
-      "unified_score_grade": "B",
+      "unified_score": 60.4,
+      "unified_score_grade": "C",
       "score_breakdown": {
         "version": "unified_score_v2_momentum_first_stock_level",
-        "total": 67.6,
-        "grade": "B",
-        "base": 58.8,
+        "total": 60.4,
+        "grade": "C",
+        "base": 54.9,
         "components": {
           "chip": 0.0,
           "momentum": 69.6,
-          "volume": 60.6,
-          "structure": 82.3,
+          "volume": 53.5,
+          "structure": 68.1,
           "theme": 0.0
         },
-        "source_count": 5,
-        "source_multiplier": 1.15,
+        "source_count": 3,
+        "source_multiplier": 1.1,
         "sources": [
-          "intraday_volume_pullback",
           "momentum_pullback",
-          "price_breakout_track",
           "right_top_track",
           "標的追蹤"
         ],
         "aggregation": "max_component_by_stock"
       },
-      "context_unified_score": 65.5,
+      "context_unified_score": 57.6,
       "context_score_breakdown": {
         "version": "unified_score_v2_momentum_first_stock_level",
-        "total": 65.5,
-        "grade": "B",
-        "base": 56.9,
+        "total": 57.6,
+        "grade": "C",
+        "base": 52.4,
         "components": {
           "chip": 0.0,
           "momentum": 69.6,
-          "volume": 53.0,
-          "structure": 82.3,
+          "volume": 43.3,
+          "structure": 68.1,
           "theme": 0.0
         },
-        "source_count": 4,
-        "source_multiplier": 1.15,
+        "source_count": 3,
+        "source_multiplier": 1.1,
         "sources": [
-          "intraday_volume_pullback",
           "momentum_pullback",
           "right_top_track",
           "標的追蹤"
@@ -1018,9 +1007,9 @@
             "回測量縮 82%"
           ],
           "structure": [
-            "reentry",
             "強勢回測區",
-            "均線距離 -1.1%"
+            "均線距離 -1.1%",
+            "防守距離 3.0%"
           ],
           "theme": []
         }
@@ -1197,11 +1186,10 @@
           "structure": 70.8,
           "theme": 0.0
         },
-        "source_count": 5,
+        "source_count": 4,
         "source_multiplier": 1.15,
         "sources": [
           "big_holder_trend",
-          "institutional_momentum",
           "momentum_pullback",
           "right_top_track",
           "標的追蹤"
@@ -1221,11 +1209,10 @@
           "structure": 70.8,
           "theme": 0.0
         },
-        "source_count": 5,
+        "source_count": 4,
         "source_multiplier": 1.15,
         "sources": [
           "big_holder_trend",
-          "institutional_momentum",
           "momentum_pullback",
           "right_top_track",
           "標的追蹤"
@@ -1260,7 +1247,7 @@
       "industry": "其他電子業",
       "market": "TWSE",
       "signal_date": "2026-05-28",
-      "score": 66.5,
+      "score": 59.8,
       "close": 124.5,
       "volume_lots": 3489,
       "vol20": 6014.0,
@@ -1299,48 +1286,45 @@
       ],
       "tags": [],
       "legacy_score": 105,
-      "unified_score": 66.5,
-      "unified_score_grade": "B",
+      "unified_score": 59.8,
+      "unified_score_grade": "C",
       "score_breakdown": {
         "version": "unified_score_v2_momentum_first_stock_level",
-        "total": 66.5,
-        "grade": "B",
-        "base": 57.8,
+        "total": 59.8,
+        "grade": "C",
+        "base": 54.4,
         "components": {
           "chip": 0.0,
           "momentum": 66.6,
-          "volume": 60.4,
-          "structure": 84.9,
+          "volume": 53.2,
+          "structure": 74.1,
           "theme": 0.0
         },
-        "source_count": 5,
-        "source_multiplier": 1.15,
+        "source_count": 3,
+        "source_multiplier": 1.1,
         "sources": [
-          "intraday_volume_pullback",
           "momentum_pullback",
-          "price_breakout_track",
           "right_top_track",
           "標的追蹤"
         ],
         "aggregation": "max_component_by_stock"
       },
-      "context_unified_score": 65.3,
+      "context_unified_score": 58.3,
       "context_score_breakdown": {
         "version": "unified_score_v2_momentum_first_stock_level",
-        "total": 65.3,
-        "grade": "B",
-        "base": 56.8,
+        "total": 58.3,
+        "grade": "C",
+        "base": 53.0,
         "components": {
           "chip": 0.0,
           "momentum": 66.6,
-          "volume": 56.4,
-          "structure": 84.9,
+          "volume": 47.8,
+          "structure": 74.1,
           "theme": 0.0
         },
-        "source_count": 4,
-        "source_multiplier": 1.15,
+        "source_count": 3,
+        "source_multiplier": 1.1,
         "sources": [
-          "intraday_volume_pullback",
           "momentum_pullback",
           "right_top_track",
           "標的追蹤"
@@ -1358,9 +1342,9 @@
             "回測量縮 81%"
           ],
           "structure": [
-            "reentry",
             "強勢回測區",
-            "均線距離 +1.7%"
+            "均線距離 +1.7%",
+            "防守距離 1.7%"
           ],
           "theme": []
         }
@@ -2525,7 +2509,7 @@
       "industry": "電子工業",
       "market": "TWSE",
       "signal_date": "2026-05-28",
-      "score": 69.9,
+      "score": 61.9,
       "close": 61.7,
       "volume_lots": 23172,
       "vol20": 30840.0,
@@ -2564,50 +2548,45 @@
       ],
       "tags": [],
       "legacy_score": 104,
-      "unified_score": 69.9,
-      "unified_score_grade": "B",
+      "unified_score": 61.9,
+      "unified_score_grade": "C",
       "score_breakdown": {
         "version": "unified_score_v2_momentum_first_stock_level",
-        "total": 69.9,
-        "grade": "B",
-        "base": 60.7,
+        "total": 61.9,
+        "grade": "C",
+        "base": 56.3,
         "components": {
           "chip": 0.0,
           "momentum": 73.6,
-          "volume": 63.7,
-          "structure": 78.0,
+          "volume": 51.9,
+          "structure": 68.1,
           "theme": 0.0
         },
-        "source_count": 6,
-        "source_multiplier": 1.15,
+        "source_count": 3,
+        "source_multiplier": 1.1,
         "sources": [
-          "institutional_momentum",
-          "intraday_volume_pullback",
           "momentum_pullback",
-          "price_breakout_track",
           "right_top_track",
           "標的追蹤"
         ],
         "aggregation": "max_component_by_stock"
       },
-      "context_unified_score": 68.6,
+      "context_unified_score": 61.9,
       "context_score_breakdown": {
         "version": "unified_score_v2_momentum_first_stock_level",
-        "total": 68.6,
-        "grade": "B",
-        "base": 59.7,
+        "total": 61.9,
+        "grade": "C",
+        "base": 56.3,
         "components": {
           "chip": 0.0,
           "momentum": 73.6,
-          "volume": 59.4,
-          "structure": 78.0,
+          "volume": 51.9,
+          "structure": 68.1,
           "theme": 0.0
         },
-        "source_count": 5,
-        "source_multiplier": 1.15,
+        "source_count": 3,
+        "source_multiplier": 1.1,
         "sources": [
-          "institutional_momentum",
-          "intraday_volume_pullback",
           "momentum_pullback",
           "right_top_track",
           "標的追蹤"
@@ -2625,9 +2604,9 @@
             "回測量縮 72%"
           ],
           "structure": [
-            "reentry",
             "強勢回測區",
-            "均線距離 +0.3%"
+            "均線距離 +0.3%",
+            "防守距離 4.9%"
           ],
           "theme": []
         }
@@ -2866,7 +2845,7 @@
       "industry": "半導體業",
       "market": "TWSE",
       "signal_date": "2026-05-28",
-      "score": 52.6,
+      "score": 50.6,
       "close": 270.5,
       "volume_lots": 11769,
       "vol20": 16691.0,
@@ -2903,19 +2882,19 @@
       "sources": [],
       "tags": [],
       "legacy_score": 103,
-      "unified_score": 52.6,
+      "unified_score": 50.6,
       "unified_score_grade": "C",
       "score_breakdown": {
         "version": "unified_score_v2_momentum_first_stock_level",
-        "total": 52.6,
+        "total": 50.6,
         "grade": "C",
-        "base": 52.6,
+        "base": 50.6,
         "components": {
           "chip": 0.0,
           "momentum": 64.6,
           "volume": 42.3,
           "structure": 73.1,
-          "theme": 38.9
+          "theme": 0.0
         },
         "source_count": 1,
         "source_multiplier": 1.0,
@@ -2924,18 +2903,18 @@
         ],
         "aggregation": "max_component_by_stock"
       },
-      "context_unified_score": 52.6,
+      "context_unified_score": 50.6,
       "context_score_breakdown": {
         "version": "unified_score_v2_momentum_first_stock_level",
-        "total": 52.6,
+        "total": 50.6,
         "grade": "C",
-        "base": 52.6,
+        "base": 50.6,
         "components": {
           "chip": 0.0,
           "momentum": 64.6,
           "volume": 42.3,
           "structure": 73.1,
-          "theme": 38.9
+          "theme": 0.0
         },
         "source_count": 1,
         "source_multiplier": 1.0,
@@ -2959,9 +2938,7 @@
             "均線距離 -0.2%",
             "防守距離 0.5%"
           ],
-          "theme": [
-            "記憶體 38.9"
-          ]
+          "theme": []
         }
       }
     },
@@ -3176,7 +3153,7 @@
       "industry": "電子工業",
       "market": "TWSE",
       "signal_date": "2026-05-28",
-      "score": 63.5,
+      "score": 57.9,
       "close": 88.6,
       "volume_lots": 752,
       "vol20": 426.0,
@@ -3215,48 +3192,45 @@
       ],
       "tags": [],
       "legacy_score": 103,
-      "unified_score": 63.5,
+      "unified_score": 57.9,
       "unified_score_grade": "C",
       "score_breakdown": {
         "version": "unified_score_v2_momentum_first_stock_level",
-        "total": 63.5,
+        "total": 57.9,
         "grade": "C",
-        "base": 55.3,
+        "base": 52.6,
         "components": {
           "chip": 0.0,
           "momentum": 60.4,
-          "volume": 60.7,
-          "structure": 86.0,
+          "volume": 53.6,
+          "structure": 80.4,
           "theme": 0.0
         },
-        "source_count": 5,
-        "source_multiplier": 1.15,
+        "source_count": 3,
+        "source_multiplier": 1.1,
         "sources": [
-          "intraday_volume_pullback",
           "momentum_pullback",
-          "price_breakout_track",
           "right_top_track",
           "標的追蹤"
         ],
         "aggregation": "max_component_by_stock"
       },
-      "context_unified_score": 63.3,
+      "context_unified_score": 57.6,
       "context_score_breakdown": {
         "version": "unified_score_v2_momentum_first_stock_level",
-        "total": 63.3,
+        "total": 57.6,
         "grade": "C",
-        "base": 55.0,
+        "base": 52.3,
         "components": {
           "chip": 0.0,
           "momentum": 60.4,
-          "volume": 59.8,
-          "structure": 86.0,
+          "volume": 52.4,
+          "structure": 80.4,
           "theme": 0.0
         },
-        "source_count": 4,
-        "source_multiplier": 1.15,
+        "source_count": 3,
+        "source_multiplier": 1.1,
         "sources": [
-          "intraday_volume_pullback",
           "momentum_pullback",
           "right_top_track",
           "標的追蹤"
@@ -3274,9 +3248,9 @@
             "回測量縮 70%"
           ],
           "structure": [
-            "reentry",
             "強勢回測區",
-            "均線距離 -1.1%"
+            "均線距離 -1.1%",
+            "防守距離 1.0%"
           ],
           "theme": []
         }
@@ -3802,7 +3776,7 @@
       "industry": "汽車工業",
       "market": "TWSE",
       "signal_date": "2026-05-28",
-      "score": 57.5,
+      "score": 55.0,
       "close": 21.6,
       "volume_lots": 3780,
       "vol20": 2458.0,
@@ -3841,11 +3815,11 @@
       ],
       "tags": [],
       "legacy_score": 103,
-      "unified_score": 57.5,
+      "unified_score": 55.0,
       "unified_score_grade": "C",
       "score_breakdown": {
         "version": "unified_score_v2_momentum_first_stock_level",
-        "total": 57.5,
+        "total": 55.0,
         "grade": "C",
         "base": 50.0,
         "components": {
@@ -3855,22 +3829,21 @@
           "structure": 66.4,
           "theme": 0.0
         },
-        "source_count": 4,
-        "source_multiplier": 1.15,
+        "source_count": 3,
+        "source_multiplier": 1.1,
         "sources": [
-          "institutional_momentum",
           "momentum_pullback",
           "right_top_track",
           "標的追蹤"
         ],
         "aggregation": "max_component_by_stock"
       },
-      "context_unified_score": 55.5,
+      "context_unified_score": 53.1,
       "context_score_breakdown": {
         "version": "unified_score_v2_momentum_first_stock_level",
-        "total": 55.5,
+        "total": 53.1,
         "grade": "C",
-        "base": 48.3,
+        "base": 48.2,
         "components": {
           "chip": 0.0,
           "momentum": 54.7,
@@ -3878,10 +3851,9 @@
           "structure": 66.4,
           "theme": 0.0
         },
-        "source_count": 4,
-        "source_multiplier": 1.15,
+        "source_count": 3,
+        "source_multiplier": 1.1,
         "sources": [
-          "institutional_momentum",
           "momentum_pullback",
           "right_top_track",
           "標的追蹤"
@@ -3913,7 +3885,7 @@
       "industry": "通信網路業",
       "market": "TWSE",
       "signal_date": "2026-05-28",
-      "score": 76.3,
+      "score": 70.8,
       "close": 75.5,
       "volume_lots": 2257,
       "vol20": 1260.0,
@@ -3952,19 +3924,19 @@
       ],
       "tags": [],
       "legacy_score": 103,
-      "unified_score": 76.3,
-      "unified_score_grade": "A",
+      "unified_score": 70.8,
+      "unified_score_grade": "B",
       "score_breakdown": {
         "version": "unified_score_v2_momentum_first_stock_level",
-        "total": 76.3,
-        "grade": "A",
-        "base": 66.3,
+        "total": 70.8,
+        "grade": "B",
+        "base": 61.6,
         "components": {
           "chip": 0.0,
           "momentum": 72.1,
           "volume": 68.3,
           "structure": 80.5,
-          "theme": 95.0
+          "theme": 0.0
         },
         "source_count": 6,
         "source_multiplier": 1.15,
@@ -3978,18 +3950,18 @@
         ],
         "aggregation": "max_component_by_stock"
       },
-      "context_unified_score": 76.3,
+      "context_unified_score": 70.8,
       "context_score_breakdown": {
         "version": "unified_score_v2_momentum_first_stock_level",
-        "total": 76.3,
-        "grade": "A",
-        "base": 66.3,
+        "total": 70.8,
+        "grade": "B",
+        "base": 61.6,
         "components": {
           "chip": 0.0,
           "momentum": 72.1,
           "volume": 68.3,
           "structure": 80.5,
-          "theme": 95.0
+          "theme": 0.0
         },
         "source_count": 5,
         "source_multiplier": 1.15,
@@ -4017,9 +3989,7 @@
             "強勢回測區",
             "均線距離 +1.4%"
           ],
-          "theme": [
-            "網通 95.0"
-          ]
+          "theme": []
         }
       }
     },
@@ -4270,7 +4240,7 @@
       "industry": "光電業",
       "market": "TPEX",
       "signal_date": "2026-05-28",
-      "score": 70.8,
+      "score": 67.9,
       "close": 38.45,
       "volume_lots": 2865,
       "vol20": 3900.0,
@@ -4309,24 +4279,23 @@
       ],
       "tags": [],
       "legacy_score": 103,
-      "unified_score": 70.8,
+      "unified_score": 67.9,
       "unified_score_grade": "B",
       "score_breakdown": {
         "version": "unified_score_v2_momentum_first_stock_level",
-        "total": 70.8,
+        "total": 67.9,
         "grade": "B",
-        "base": 61.5,
+        "base": 59.0,
         "components": {
           "chip": 0.0,
           "momentum": 72.3,
-          "volume": 69.7,
-          "structure": 77.1,
+          "volume": 63.9,
+          "structure": 70.0,
           "theme": 0.0
         },
-        "source_count": 6,
+        "source_count": 5,
         "source_multiplier": 1.15,
         "sources": [
-          "intraday_volume_pullback",
           "momentum_pullback",
           "price_breakout_track",
           "right_top_track",
@@ -4348,10 +4317,9 @@
           "structure": 70.0,
           "theme": 0.0
         },
-        "source_count": 5,
+        "source_count": 4,
         "source_multiplier": 1.15,
         "sources": [
-          "intraday_volume_pullback",
           "momentum_pullback",
           "right_top_track",
           "volume_pullback",
@@ -4381,6 +4349,6 @@
   ],
   "unified_score_model": {
     "version": "unified_score_v1",
-    "applied_at": "2026-05-28T22:17:13+08:00"
+    "applied_at": "2026-05-29T14:56:29+08:00"
   }
 }

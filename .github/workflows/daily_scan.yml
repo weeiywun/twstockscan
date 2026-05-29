@@ -2,7 +2,7 @@ name: 每日選股掃描
 
 on:
   # 由 Google Apps Script 於台灣時間 17:00 觸發，避免 GitHub schedule 延遲或漏跑。
-  # 17:00 通常已可取得 TWSE/TPEx 盤後法人彙總，供法人動能掃描使用。
+  # 17:00 通常已可取得盤後資料，供每日選股模型使用。
   repository_dispatch:
     types: [daily_scan_1700]
   workflow_dispatch:
@@ -80,14 +80,6 @@ jobs:
             echo "快取無變動，略過提交"
           fi
 
-      - name: VCP 選股掃描 [停用備用勿刪]
-        # DISABLED / BACKUP - DO NOT DELETE:
-        # Temporarily paused while the main workflow focuses on price breakout and big-holder tracking.
-        if: ${{ false }}
-        env:
-          FINMIND_TOKEN: ${{ secrets.FINMIND_API_TOKEN }}
-        run: python scripts/scan_vcp.py
-
       - name: 突破策略掃描
         env:
           FINMIND_TOKEN: ${{ secrets.FINMIND_API_TOKEN }}
@@ -97,12 +89,6 @@ jobs:
         env:
           FINMIND_TOKEN: ${{ secrets.FINMIND_API_TOKEN }}
         run: python scripts/track_right_top.py
-
-      - name: 法人動能掃描 [停用備用勿刪]
-        # DISABLED / BACKUP - DO NOT DELETE:
-        # Temporarily paused as a strategy scan. Institutional labels continue through institutional_tags.yml.
-        if: ${{ false }}
-        run: python scripts/scan_trust_momentum.py
 
       - name: 量增訊號掃描
         env:
@@ -131,9 +117,6 @@ jobs:
       - name: 短線強勢雷達
         run: python scripts/scan_momentum_candidates.py
 
-      - name: Build theme heat map
-        run: python scripts/build_theme_heat.py
-
       - name: Enrich candidate features
         run: python scripts/enrich_candidate_features.py
 
@@ -144,7 +127,7 @@ jobs:
         run: |
           git config user.name  "github-actions[bot]"
           git config user.email "github-actions[bot]@users.noreply.github.com"
-          git add data/right_top.json data/right_top_track.json data/volume_signal.json data/volume_pullback.json data/momentum_pullback.json data/momentum_candidates.json data/theme_heat.json data/candidate_features.json data/performance.json data/chips_big_holder.json data/big_holder_trend.json data/current_prices.json data/ai_analysis.json data/intraday_volume_pullback.json data/trust_momentum.json data/vcp.json data/volume_breakout.json assets/line/performance-latest.png
+          git add data/right_top.json data/right_top_track.json data/volume_signal.json data/volume_pullback.json data/momentum_pullback.json data/momentum_candidates.json data/candidate_features.json data/performance.json data/chips_big_holder.json data/big_holder_trend.json data/current_prices.json data/ai_analysis.json assets/line/performance-latest.png
           if ! git diff --staged --quiet; then
             git commit -m "data: daily scan update $(date -u +%Y-%m-%d)"
             for i in {1..4}; do
