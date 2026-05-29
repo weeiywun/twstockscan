@@ -1,548 +1,16 @@
 {
-  "last_updated": "2026-05-28",
+  "last_updated": "2026-05-29",
   "active": [
-    {
-      "ticker": "3479",
-      "name": "安勤",
-      "industry": "櫃電腦",
-      "trigger_date": "2026-05-14",
-      "expire_date": "2026-05-28",
-      "days_remaining": 1,
-      "entry_price": 104,
-      "current_price": 137.5,
-      "pnl_pct": 32.21,
-      "rev_grade": "B",
-      "quant_scores": {
-        "trend_score": 0,
-        "chip_score": 2.5,
-        "rev_score": 6
-      },
-      "pinned": true,
-      "priority_level": "B",
-      "priority_reason": [
-        "單一品質條件達標"
-      ],
-      "unified_score": 83.4,
-      "unified_score_grade": "A",
-      "score_breakdown": {
-        "version": "unified_score_v2_momentum_first_stock_level",
-        "total": 83.4,
-        "grade": "A",
-        "base": 72.5,
-        "components": {
-          "chip": 47.9,
-          "momentum": 77.4,
-          "volume": 85.1,
-          "structure": 77.5,
-          "theme": 0.0
-        },
-        "source_count": 5,
-        "source_multiplier": 1.15,
-        "sources": [
-          "price_breakout_track",
-          "right_top",
-          "right_top_track",
-          "stock_analysis",
-          "volume_pullback"
-        ],
-        "aggregation": "max_component_by_stock"
-      },
-      "score": 83.4,
-      "legacy_score": 21.2,
-      "context_unified_score": 75.9,
-      "context_score_breakdown": {
-        "version": "unified_score_v2_momentum_first_stock_level",
-        "total": 75.9,
-        "grade": "A",
-        "base": 66.0,
-        "components": {
-          "chip": 47.9,
-          "momentum": 71.3,
-          "volume": 70.1,
-          "structure": 77.5,
-          "theme": 0.0
-        },
-        "source_count": 4,
-        "source_multiplier": 1.15,
-        "sources": [
-          "right_top",
-          "right_top_track",
-          "stock_analysis",
-          "volume_pullback"
-        ],
-        "reasons": {
-          "chip": [],
-          "momentum": [
-            "週漲 +50.8%",
-            "日漲 +2.6%",
-            "追蹤 +32.2%"
-          ],
-          "volume": [
-            "量比 2.02x",
-            "5/20 均量 2.61x",
-            "回測量縮"
-          ],
-          "structure": [
-            "reentry",
-            "支撐守住"
-          ],
-          "theme": []
-        }
-      }
-    },
-    {
-      "ticker": "3290",
-      "name": "東浦",
-      "industry": "櫃電零",
-      "trigger_date": "2026-05-14",
-      "expire_date": "2026-05-28",
-      "days_remaining": 1,
-      "entry_price": 48.4,
-      "current_price": 47.95,
-      "pnl_pct": -0.93,
-      "rev_grade": "S",
-      "quant_scores": {
-        "trend_score": 5.5,
-        "chip_score": 10,
-        "rev_score": 10
-      },
-      "pinned": false,
-      "priority_level": "A",
-      "priority_reason": [
-        "營收分數>=8",
-        "籌碼分數>=6",
-        "趨勢分數>=4"
-      ],
-      "unified_score": 31.1,
-      "unified_score_grade": "D",
-      "score_breakdown": {
-        "version": "unified_score_v2_momentum_first_stock_level",
-        "total": 31.1,
-        "grade": "D",
-        "base": 31.1,
-        "components": {
-          "chip": 0.0,
-          "momentum": 54.5,
-          "volume": 26.3,
-          "structure": 0.0,
-          "theme": 0.0
-        },
-        "source_count": 1,
-        "source_multiplier": 1.0,
-        "sources": [
-          "stock_analysis"
-        ],
-        "aggregation": "max_component_by_stock"
-      },
-      "score": 31.1,
-      "legacy_score": 7.2,
-      "context_unified_score": 31.1,
-      "context_score_breakdown": {
-        "version": "unified_score_v2_momentum_first_stock_level",
-        "total": 31.1,
-        "grade": "D",
-        "base": 31.1,
-        "components": {
-          "chip": 0.0,
-          "momentum": 54.5,
-          "volume": 26.3,
-          "structure": 0.0,
-          "theme": 0.0
-        },
-        "source_count": 1,
-        "source_multiplier": 1.0,
-        "sources": [
-          "stock_analysis"
-        ],
-        "reasons": {
-          "chip": [],
-          "momentum": [
-            "週漲 +4.0%",
-            "日漲 +1.1%",
-            "收盤站上 EMA120"
-          ],
-          "volume": [
-            "量比 0.87x",
-            "5/20 均量 1.08x"
-          ],
-          "structure": [],
-          "theme": []
-        }
-      }
-    },
-    {
-      "ticker": "2027",
-      "name": "大成鋼",
-      "industry": "鋼鐵",
-      "trigger_date": "2026-05-14",
-      "expire_date": "2026-05-28",
-      "days_remaining": 1,
-      "entry_price": 39.8,
-      "current_price": 41.75,
-      "pnl_pct": 4.9,
-      "rev_grade": "S",
-      "quant_scores": {
-        "trend_score": 5.4,
-        "chip_score": 10,
-        "rev_score": 10
-      },
-      "pinned": false,
-      "priority_level": "A",
-      "priority_reason": [
-        "營收分數>=8",
-        "籌碼分數>=6",
-        "趨勢分數>=4"
-      ],
-      "unified_score": 68.2,
-      "unified_score_grade": "B",
-      "score_breakdown": {
-        "version": "unified_score_v2_momentum_first_stock_level",
-        "total": 68.2,
-        "grade": "B",
-        "base": 59.3,
-        "components": {
-          "chip": 72.3,
-          "momentum": 65.4,
-          "volume": 41.6,
-          "structure": 81.4,
-          "theme": 0.0
-        },
-        "source_count": 5,
-        "source_multiplier": 1.15,
-        "sources": [
-          "big_holder_trend",
-          "momentum_pullback",
-          "right_top_track",
-          "stock_analysis",
-          "標的追蹤"
-        ],
-        "aggregation": "max_component_by_stock"
-      },
-      "score": 68.2,
-      "legacy_score": 10.7,
-      "context_unified_score": 66.1,
-      "context_score_breakdown": {
-        "version": "unified_score_v2_momentum_first_stock_level",
-        "total": 66.1,
-        "grade": "B",
-        "base": 57.5,
-        "components": {
-          "chip": 72.3,
-          "momentum": 61.5,
-          "volume": 41.6,
-          "structure": 81.4,
-          "theme": 0.0
-        },
-        "source_count": 4,
-        "source_multiplier": 1.15,
-        "sources": [
-          "big_holder_trend",
-          "momentum_pullback",
-          "right_top_track",
-          "stock_analysis"
-        ],
-        "reasons": {
-          "chip": [
-            "大戶占比 68.8%",
-            "千張增 +3.5%"
-          ],
-          "momentum": [
-            "週漲 +10.5%",
-            "追蹤 +4.9%",
-            "收盤站上 EMA120"
-          ],
-          "volume": [
-            "量比 0.55x",
-            "5/20 均量 0.87x",
-            "回測量縮 63%"
-          ],
-          "structure": [
-            "強勢回測區",
-            "均線距離 +0.5%",
-            "防守距離 0.7%"
-          ],
-          "theme": []
-        }
-      }
-    },
-    {
-      "ticker": "1563",
-      "name": "巧新",
-      "industry": "汽車",
-      "trigger_date": "2026-05-14",
-      "expire_date": "2026-05-28",
-      "days_remaining": 1,
-      "entry_price": 45.4,
-      "current_price": 61.1,
-      "pnl_pct": 34.58,
-      "rev_grade": "B",
-      "quant_scores": {
-        "trend_score": 0,
-        "chip_score": 0.1,
-        "rev_score": 6
-      },
-      "pinned": false,
-      "priority_level": "B",
-      "priority_reason": [
-        "單一品質條件達標"
-      ],
-      "unified_score": 77.1,
-      "unified_score_grade": "A",
-      "score_breakdown": {
-        "version": "unified_score_v2_momentum_first_stock_level",
-        "total": 77.1,
-        "grade": "A",
-        "base": 67.0,
-        "components": {
-          "chip": 40.0,
-          "momentum": 61.8,
-          "volume": 92.5,
-          "structure": 80.7,
-          "theme": 0.0
-        },
-        "source_count": 5,
-        "source_multiplier": 1.15,
-        "sources": [
-          "big_holder_trend",
-          "price_breakout_track",
-          "right_top_track",
-          "stock_analysis",
-          "volume_pullback"
-        ],
-        "aggregation": "max_component_by_stock"
-      },
-      "score": 77.1,
-      "legacy_score": 17.7,
-      "context_unified_score": 77.1,
-      "context_score_breakdown": {
-        "version": "unified_score_v2_momentum_first_stock_level",
-        "total": 77.1,
-        "grade": "A",
-        "base": 67.0,
-        "components": {
-          "chip": 40.0,
-          "momentum": 61.8,
-          "volume": 92.5,
-          "structure": 80.7,
-          "theme": 0.0
-        },
-        "source_count": 4,
-        "source_multiplier": 1.15,
-        "sources": [
-          "big_holder_trend",
-          "right_top_track",
-          "stock_analysis",
-          "volume_pullback"
-        ],
-        "reasons": {
-          "chip": [
-            "千張增 +1.7%"
-          ],
-          "momentum": [
-            "週漲 +61.1%",
-            "日漲 +9.2%",
-            "追蹤 +34.6%"
-          ],
-          "volume": [
-            "量比 8.22x",
-            "5/20 均量 2.60x"
-          ],
-          "structure": [
-            "ignition",
-            "支撐守住"
-          ],
-          "theme": []
-        }
-      }
-    },
-    {
-      "ticker": "3413",
-      "name": "京鼎",
-      "industry": "半導",
-      "trigger_date": "2026-05-14",
-      "expire_date": "2026-05-28",
-      "days_remaining": 1,
-      "entry_price": 321,
-      "current_price": 318.0,
-      "pnl_pct": -0.93,
-      "rev_grade": "B",
-      "quant_scores": {
-        "trend_score": 9.6,
-        "chip_score": 2.6,
-        "rev_score": 6
-      },
-      "pinned": false,
-      "priority_level": "B",
-      "priority_reason": [
-        "趨勢分數>=4"
-      ],
-      "unified_score": 42.4,
-      "unified_score_grade": "D",
-      "score_breakdown": {
-        "version": "unified_score_v2_momentum_first_stock_level",
-        "total": 42.4,
-        "grade": "D",
-        "base": 36.9,
-        "components": {
-          "chip": 63.9,
-          "momentum": 43.2,
-          "volume": 44.1,
-          "structure": 0.0,
-          "theme": 0.0
-        },
-        "source_count": 4,
-        "source_multiplier": 1.15,
-        "sources": [
-          "chips",
-          "momentum_candidates",
-          "right_top_track",
-          "stock_analysis"
-        ],
-        "aggregation": "max_component_by_stock"
-      },
-      "score": 42.4,
-      "legacy_score": 14.3,
-      "context_unified_score": 40.6,
-      "context_score_breakdown": {
-        "version": "unified_score_v2_momentum_first_stock_level",
-        "total": 40.6,
-        "grade": "D",
-        "base": 35.3,
-        "components": {
-          "chip": 63.9,
-          "momentum": 39.7,
-          "volume": 44.1,
-          "structure": 0.0,
-          "theme": 0.0
-        },
-        "source_count": 4,
-        "source_multiplier": 1.15,
-        "sources": [
-          "chips",
-          "momentum_candidates",
-          "right_top_track",
-          "stock_analysis"
-        ],
-        "reasons": {
-          "chip": [
-            "大戶占比 39.5%",
-            "千張增 +3.6%",
-            "籌碼標籤加分"
-          ],
-          "momentum": [
-            "週漲 +4.1%",
-            "日漲 +0.6%",
-            "收盤站上 EMA120"
-          ],
-          "volume": [
-            "量比 0.82x",
-            "5/20 均量 1.70x"
-          ],
-          "structure": [],
-          "theme": []
-        }
-      }
-    },
-    {
-      "ticker": "3704",
-      "name": "合勤控",
-      "industry": "通信",
-      "trigger_date": "2026-05-14",
-      "expire_date": "2026-05-28",
-      "days_remaining": 1,
-      "entry_price": 36.7,
-      "current_price": 45.35,
-      "pnl_pct": 23.57,
-      "rev_grade": "S",
-      "quant_scores": {
-        "trend_score": 0.9,
-        "chip_score": 10,
-        "rev_score": 10
-      },
-      "pinned": true,
-      "priority_level": "A",
-      "priority_reason": [
-        "營收分數>=8",
-        "籌碼分數>=6"
-      ],
-      "unified_score": 64.5,
-      "unified_score_grade": "C",
-      "score_breakdown": {
-        "version": "unified_score_v2_momentum_first_stock_level",
-        "total": 64.5,
-        "grade": "C",
-        "base": 56.0,
-        "components": {
-          "chip": 74.6,
-          "momentum": 81.2,
-          "volume": 48.2,
-          "structure": 0.0,
-          "theme": 0.0
-        },
-        "source_count": 5,
-        "source_multiplier": 1.15,
-        "sources": [
-          "big_holder_trend",
-          "holding",
-          "right_top",
-          "right_top_track",
-          "stock_analysis"
-        ],
-        "aggregation": "max_component_by_stock"
-      },
-      "score": 64.5,
-      "legacy_score": 28.2,
-      "context_unified_score": 56.0,
-      "context_score_breakdown": {
-        "version": "unified_score_v2_momentum_first_stock_level",
-        "total": 56.0,
-        "grade": "C",
-        "base": 48.7,
-        "components": {
-          "chip": 74.6,
-          "momentum": 69.8,
-          "volume": 39.4,
-          "structure": 0.0,
-          "theme": 0.0
-        },
-        "source_count": 5,
-        "source_multiplier": 1.15,
-        "sources": [
-          "big_holder_trend",
-          "holding",
-          "right_top",
-          "right_top_track",
-          "stock_analysis"
-        ],
-        "reasons": {
-          "chip": [
-            "大戶占比 54.0%",
-            "千張增 +5.7%"
-          ],
-          "momentum": [
-            "週漲 +32.6%",
-            "日漲 +2.2%",
-            "追蹤 +23.6%"
-          ],
-          "volume": [
-            "量比 1.12x",
-            "5/20 均量 1.45x"
-          ],
-          "structure": [],
-          "theme": []
-        }
-      }
-    },
     {
       "ticker": "2882",
       "name": "國泰金",
       "industry": "金融",
       "trigger_date": "2026-05-15",
       "expire_date": "2026-05-29",
-      "days_remaining": 2,
+      "days_remaining": 1,
       "entry_price": 77.9,
-      "current_price": 84.8,
-      "pnl_pct": 8.86,
+      "current_price": 85.7,
+      "pnl_pct": 10.01,
       "rev_grade": "S",
       "quant_scores": {
         "trend_score": 0.6,
@@ -623,10 +91,10 @@
       "industry": "鋼鐵",
       "trigger_date": "2026-05-15",
       "expire_date": "2026-05-29",
-      "days_remaining": 2,
+      "days_remaining": 1,
       "entry_price": 121,
-      "current_price": 118.0,
-      "pnl_pct": -2.48,
+      "current_price": 123.5,
+      "pnl_pct": 2.07,
       "rev_grade": "B",
       "quant_scores": {
         "trend_score": 7.1,
@@ -704,10 +172,10 @@
       "industry": "航運",
       "trigger_date": "2026-05-20",
       "expire_date": "2026-06-03",
-      "days_remaining": 5,
+      "days_remaining": 4,
       "entry_price": 212.5,
-      "current_price": 211.0,
-      "pnl_pct": -0.71,
+      "current_price": 213.0,
+      "pnl_pct": 0.24,
       "rev_grade": "S",
       "quant_scores": {
         "trend_score": 4.1,
@@ -786,10 +254,10 @@
       "industry": "航運",
       "trigger_date": "2026-05-21",
       "expire_date": "2026-06-04",
-      "days_remaining": 6,
+      "days_remaining": 5,
       "entry_price": 162.5,
-      "current_price": 164.0,
-      "pnl_pct": 0.92,
+      "current_price": 166.5,
+      "pnl_pct": 2.46,
       "rev_grade": "A",
       "quant_scores": {
         "trend_score": 1.2,
@@ -876,10 +344,10 @@
       "industry": "電腦",
       "trigger_date": "2026-05-22",
       "expire_date": "2026-06-05",
-      "days_remaining": 7,
+      "days_remaining": 6,
       "entry_price": 28.75,
-      "current_price": 27.65,
-      "pnl_pct": -3.83,
+      "current_price": 28.9,
+      "pnl_pct": 0.52,
       "rev_grade": "D",
       "quant_scores": {
         "trend_score": 0.3,
@@ -956,10 +424,10 @@
       "industry": "電腦",
       "trigger_date": "2026-05-22",
       "expire_date": "2026-06-05",
-      "days_remaining": 7,
+      "days_remaining": 6,
       "entry_price": 144.5,
-      "current_price": 144.5,
-      "pnl_pct": 0.0,
+      "current_price": 158.5,
+      "pnl_pct": 9.69,
       "rev_grade": "B",
       "quant_scores": {
         "trend_score": 10,
@@ -1039,10 +507,10 @@
       "industry": "櫃半導",
       "trigger_date": "2026-05-25",
       "expire_date": "2026-06-08",
-      "days_remaining": 8,
+      "days_remaining": 7,
       "entry_price": 21.95,
-      "current_price": 21.5,
-      "pnl_pct": -2.05,
+      "current_price": 21.75,
+      "pnl_pct": -0.91,
       "rev_grade": "A",
       "quant_scores": {
         "trend_score": 1.0,
@@ -1131,10 +599,10 @@
       "industry": "化學",
       "trigger_date": "2026-05-25",
       "expire_date": "2026-06-08",
-      "days_remaining": 8,
+      "days_remaining": 7,
       "entry_price": 19.15,
-      "current_price": 19.6,
-      "pnl_pct": 2.35,
+      "current_price": 19.4,
+      "pnl_pct": 1.31,
       "rev_grade": "B",
       "quant_scores": {
         "trend_score": 0.3,
@@ -1228,10 +696,10 @@
       "industry": "電零",
       "trigger_date": "2026-05-25",
       "expire_date": "2026-06-08",
-      "days_remaining": 8,
+      "days_remaining": 7,
       "entry_price": 220.5,
-      "current_price": 205.0,
-      "pnl_pct": -7.03,
+      "current_price": 202.5,
+      "pnl_pct": -8.16,
       "rev_grade": "C",
       "quant_scores": {
         "trend_score": 0.0,
@@ -1311,10 +779,10 @@
       "industry": "電零",
       "trigger_date": "2026-05-25",
       "expire_date": "2026-06-08",
-      "days_remaining": 8,
+      "days_remaining": 7,
       "entry_price": 162.5,
-      "current_price": 156.5,
-      "pnl_pct": -3.69,
+      "current_price": 159.0,
+      "pnl_pct": -2.15,
       "rev_grade": "B",
       "quant_scores": {
         "trend_score": 0.0,
@@ -1401,10 +869,10 @@
       "industry": "航運",
       "trigger_date": "2026-05-25",
       "expire_date": "2026-06-08",
-      "days_remaining": 8,
+      "days_remaining": 7,
       "entry_price": 35.45,
-      "current_price": 35.3,
-      "pnl_pct": -0.42,
+      "current_price": 36.05,
+      "pnl_pct": 1.69,
       "rev_grade": "S",
       "quant_scores": {
         "trend_score": 1.5,
@@ -1500,10 +968,10 @@
       "industry": "通信",
       "trigger_date": "2026-05-25",
       "expire_date": "2026-06-08",
-      "days_remaining": 8,
+      "days_remaining": 7,
       "entry_price": 15.7,
-      "current_price": 16.0,
-      "pnl_pct": 1.91,
+      "current_price": 16.95,
+      "pnl_pct": 7.96,
       "rev_grade": "B",
       "quant_scores": {
         "trend_score": 5.3,
@@ -1598,10 +1066,10 @@
       "industry": "他電",
       "trigger_date": "2026-05-25",
       "expire_date": "2026-06-08",
-      "days_remaining": 8,
+      "days_remaining": 7,
       "entry_price": 16.65,
-      "current_price": 16.05,
-      "pnl_pct": -3.6,
+      "current_price": 16.25,
+      "pnl_pct": -2.4,
       "rev_grade": "S",
       "quant_scores": {
         "trend_score": 3.7,
@@ -1680,10 +1148,10 @@
       "industry": "紡織",
       "trigger_date": "2026-05-25",
       "expire_date": "2026-06-08",
-      "days_remaining": 8,
+      "days_remaining": 7,
       "entry_price": 17.6,
-      "current_price": 20.75,
-      "pnl_pct": 17.9,
+      "current_price": 22.8,
+      "pnl_pct": 29.55,
       "rev_grade": "S",
       "quant_scores": {
         "trend_score": 0.7,
@@ -1774,10 +1242,10 @@
       "industry": "塑膠",
       "trigger_date": "2026-05-25",
       "expire_date": "2026-06-08",
-      "days_remaining": 8,
+      "days_remaining": 7,
       "entry_price": 14.05,
-      "current_price": 13.85,
-      "pnl_pct": -1.42,
+      "current_price": 14.05,
+      "pnl_pct": 0.0,
       "rev_grade": "S",
       "quant_scores": {
         "trend_score": 4.3,
@@ -1864,10 +1332,10 @@
       "industry": "生技",
       "trigger_date": "2026-05-26",
       "expire_date": "2026-06-09",
-      "days_remaining": 9,
+      "days_remaining": 8,
       "entry_price": 325.0,
-      "current_price": 319.0,
-      "pnl_pct": -1.85,
+      "current_price": 321.5,
+      "pnl_pct": -1.08,
       "rev_grade": "S",
       "quant_scores": {
         "trend_score": 0.0,
@@ -1952,10 +1420,10 @@
       "industry": "航運",
       "trigger_date": "2026-05-26",
       "expire_date": "2026-06-09",
-      "days_remaining": 9,
+      "days_remaining": 8,
       "entry_price": 70.0,
-      "current_price": 70.9,
-      "pnl_pct": 1.29,
+      "current_price": 69.0,
+      "pnl_pct": -1.43,
       "rev_grade": "S",
       "quant_scores": {
         "trend_score": 4.8,
@@ -2049,10 +1517,10 @@
       "industry": "食品",
       "trigger_date": "2026-05-26",
       "expire_date": "2026-06-09",
-      "days_remaining": 9,
+      "days_remaining": 8,
       "entry_price": 142.5,
-      "current_price": 127.5,
-      "pnl_pct": -10.53,
+      "current_price": 125.0,
+      "pnl_pct": -12.28,
       "rev_grade": "D",
       "quant_scores": {
         "trend_score": 2.2,
@@ -2129,10 +1597,10 @@
       "industry": "綠能",
       "trigger_date": "2026-05-26",
       "expire_date": "2026-06-09",
-      "days_remaining": 9,
+      "days_remaining": 8,
       "entry_price": 131.5,
-      "current_price": 124.0,
-      "pnl_pct": -5.7,
+      "current_price": 124.5,
+      "pnl_pct": -5.32,
       "rev_grade": "C",
       "quant_scores": {
         "trend_score": 7.2,
@@ -2224,10 +1692,10 @@
       "industry": "電腦",
       "trigger_date": "2026-05-26",
       "expire_date": "2026-06-09",
-      "days_remaining": 9,
+      "days_remaining": 8,
       "entry_price": 31.9,
-      "current_price": 32.0,
-      "pnl_pct": 0.31,
+      "current_price": 35.2,
+      "pnl_pct": 10.34,
       "rev_grade": "S",
       "quant_scores": {
         "trend_score": 7.9,
@@ -2320,7 +1788,7 @@
       "industry": "金融",
       "trigger_date": "2026-05-26",
       "expire_date": "2026-06-09",
-      "days_remaining": 9,
+      "days_remaining": 8,
       "entry_price": 103.5,
       "current_price": 110.0,
       "pnl_pct": 6.28,
@@ -2420,10 +1888,10 @@
       "industry": "玻璃",
       "trigger_date": "2026-05-27",
       "expire_date": "2026-06-10",
-      "days_remaining": 10,
+      "days_remaining": 9,
       "entry_price": 19.9,
-      "current_price": 20.0,
-      "pnl_pct": 0.5,
+      "current_price": 19.5,
+      "pnl_pct": -2.01,
       "rev_grade": "C",
       "quant_scores": {
         "trend_score": 3.0,
@@ -2511,10 +1979,10 @@
       "industry": "電器",
       "trigger_date": "2026-05-27",
       "expire_date": "2026-06-10",
-      "days_remaining": 10,
+      "days_remaining": 9,
       "entry_price": 36.9,
-      "current_price": 36.75,
-      "pnl_pct": -0.41,
+      "current_price": 37.25,
+      "pnl_pct": 0.95,
       "rev_grade": "B",
       "quant_scores": {
         "trend_score": 0.8,
@@ -2604,10 +2072,10 @@
       "industry": "汽車",
       "trigger_date": "2026-05-27",
       "expire_date": "2026-06-10",
-      "days_remaining": 10,
+      "days_remaining": 9,
       "entry_price": 59.8,
-      "current_price": 60.0,
-      "pnl_pct": 0.33,
+      "current_price": 60.6,
+      "pnl_pct": 1.34,
       "rev_grade": "D",
       "quant_scores": {
         "trend_score": 0.3,
@@ -2695,10 +2163,10 @@
       "industry": "資服",
       "trigger_date": "2026-05-28",
       "expire_date": "2026-06-11",
-      "days_remaining": 11,
+      "days_remaining": 10,
       "entry_price": 129.0,
-      "current_price": 129.0,
-      "pnl_pct": 0.0,
+      "current_price": 131.0,
+      "pnl_pct": 1.55,
       "rev_grade": "B",
       "quant_scores": {
         "trend_score": 3.1,
@@ -2782,10 +2250,10 @@
       "industry": "營建",
       "trigger_date": "2026-05-28",
       "expire_date": "2026-06-11",
-      "days_remaining": 11,
+      "days_remaining": 10,
       "entry_price": 72.0,
-      "current_price": 72.0,
-      "pnl_pct": 0.0,
+      "current_price": 72.7,
+      "pnl_pct": 0.97,
       "rev_grade": "B",
       "quant_scores": {
         "trend_score": 0.0,
@@ -2872,7 +2340,7 @@
       "industry": "櫃文創",
       "trigger_date": "2026-05-28",
       "expire_date": "2026-06-11",
-      "days_remaining": 11,
+      "days_remaining": 10,
       "entry_price": 749.0,
       "current_price": 749.0,
       "pnl_pct": 0.0,
@@ -2954,6 +2422,116 @@
         }
       },
       "legacy_score": 52.8
+    },
+    {
+      "ticker": "2362",
+      "name": "藍天",
+      "industry": "電腦",
+      "trigger_date": "2026-05-29",
+      "expire_date": "2026-06-12",
+      "days_remaining": 11,
+      "entry_price": 44.05,
+      "current_price": 44.05,
+      "pnl_pct": 0.0,
+      "rev_grade": "S",
+      "quant_scores": {
+        "trend_score": 0.2,
+        "chip_score": 2.3,
+        "rev_score": 10.0
+      },
+      "pinned": false,
+      "priority_level": "B",
+      "priority_reason": [
+        "營收分數>=8"
+      ]
+    },
+    {
+      "ticker": "2886",
+      "name": "兆豐金",
+      "industry": "金融",
+      "trigger_date": "2026-05-29",
+      "expire_date": "2026-06-12",
+      "days_remaining": 11,
+      "entry_price": 40.0,
+      "current_price": 40.0,
+      "pnl_pct": 0.0,
+      "rev_grade": "S",
+      "quant_scores": {
+        "trend_score": 0.6,
+        "chip_score": 0.0,
+        "rev_score": 10.0
+      },
+      "pinned": false,
+      "priority_level": "B",
+      "priority_reason": [
+        "營收分數>=8"
+      ]
+    },
+    {
+      "ticker": "2597",
+      "name": "潤弘",
+      "industry": "營建",
+      "trigger_date": "2026-05-29",
+      "expire_date": "2026-06-12",
+      "days_remaining": 11,
+      "entry_price": 166.0,
+      "current_price": 166.0,
+      "pnl_pct": 0.0,
+      "rev_grade": "S",
+      "quant_scores": {
+        "trend_score": 2.2,
+        "chip_score": 3.5,
+        "rev_score": 10.0
+      },
+      "pinned": false,
+      "priority_level": "B",
+      "priority_reason": [
+        "營收分數>=8"
+      ]
+    },
+    {
+      "ticker": "5876",
+      "name": "上海商銀",
+      "industry": "金融",
+      "trigger_date": "2026-05-29",
+      "expire_date": "2026-06-12",
+      "days_remaining": 11,
+      "entry_price": 39.75,
+      "current_price": 39.75,
+      "pnl_pct": 0.0,
+      "rev_grade": "D",
+      "quant_scores": {
+        "trend_score": 0.7,
+        "chip_score": 0.0,
+        "rev_score": 0.0
+      },
+      "pinned": false,
+      "priority_level": "C",
+      "priority_reason": [
+        "品質條件待觀察"
+      ]
+    },
+    {
+      "ticker": "2412",
+      "name": "中華電",
+      "industry": "通信",
+      "trigger_date": "2026-05-29",
+      "expire_date": "2026-06-12",
+      "days_remaining": 11,
+      "entry_price": 137.0,
+      "current_price": 137.0,
+      "pnl_pct": 0.0,
+      "rev_grade": "B",
+      "quant_scores": {
+        "trend_score": 1.2,
+        "chip_score": 1.4,
+        "rev_score": 6.0
+      },
+      "pinned": false,
+      "priority_level": "B",
+      "priority_reason": [
+        "單一品質條件達標"
+      ]
     }
   ],
   "expired": [
@@ -2962,8 +2540,8 @@
       "name": "茂矽",
       "entry_date": "2026-04-19",
       "entry_price": 30.5,
-      "current_price": 42.4,
-      "pnl_pct": 39.02,
+      "current_price": 42.8,
+      "pnl_pct": 40.33,
       "composite_score": 29,
       "recommendation": "avoid",
       "repeat": false,
@@ -3037,8 +2615,8 @@
       "name": "川湖",
       "entry_date": "2026-04-19",
       "entry_price": 3640,
-      "current_price": 4700.0,
-      "pnl_pct": 29.12,
+      "current_price": 5065.0,
+      "pnl_pct": 39.15,
       "composite_score": 71,
       "recommendation": "buy",
       "repeat": false,
@@ -3107,8 +2685,8 @@
       "name": "嘉晶",
       "entry_date": "2026-04-19",
       "entry_price": 63.1,
-      "current_price": 134.5,
-      "pnl_pct": 113.15,
+      "current_price": 138.0,
+      "pnl_pct": 118.7,
       "composite_score": 68,
       "recommendation": "watch",
       "repeat": false,
@@ -3190,8 +2768,8 @@
       "name": "宇隆",
       "entry_date": "2026-04-20",
       "entry_price": 244.5,
-      "current_price": 351.5,
-      "pnl_pct": 43.76,
+      "current_price": 353.0,
+      "pnl_pct": 44.38,
       "composite_score": 47,
       "recommendation": "avoid",
       "repeat": false,
@@ -3267,8 +2845,8 @@
       "name": "緯創",
       "entry_date": "2026-04-20",
       "entry_price": 140.5,
-      "current_price": 144.5,
-      "pnl_pct": 2.85,
+      "current_price": 158.5,
+      "pnl_pct": 12.81,
       "composite_score": 80,
       "recommendation": "buy",
       "repeat": false,
@@ -3344,8 +2922,8 @@
       "expire_date": "2026-05-07",
       "days_remaining": 0,
       "entry_price": 126,
-      "current_price": 132.0,
-      "pnl_pct": 4.76,
+      "current_price": 135.5,
+      "pnl_pct": 7.54,
       "repeat": false,
       "repeat_count": 1,
       "ai_analysis_date": "2026-04-23",
@@ -3446,8 +3024,8 @@
       "expire_date": "2026-05-11",
       "days_remaining": 0,
       "entry_price": 295,
-      "current_price": 370.0,
-      "pnl_pct": 25.42,
+      "current_price": 369.0,
+      "pnl_pct": 25.08,
       "repeat": false,
       "repeat_count": 1,
       "ai_analysis_date": "2026-04-27",
@@ -3632,167 +3210,6 @@
       }
     },
     {
-      "ticker": "2352",
-      "name": "佳世達",
-      "industry": "電腦",
-      "trigger_date": "2026-05-06",
-      "expire_date": "2026-05-20",
-      "days_remaining": 0,
-      "entry_price": 25.85,
-      "current_price": 27.65,
-      "pnl_pct": 6.96,
-      "rev_grade": "S",
-      "quant_scores": {
-        "trend_score": 1,
-        "chip_score": 8.5,
-        "rev_score": 10
-      },
-      "entry_date": "2026-05-06",
-      "remove_date": "2026-05-28",
-      "pinned": false,
-      "unified_score": 39.7,
-      "unified_score_grade": "D",
-      "score_breakdown": {
-        "version": "unified_score_v2_momentum_first_stock_level",
-        "total": 39.7,
-        "grade": "D",
-        "base": 37.8,
-        "components": {
-          "chip": 0.0,
-          "momentum": 63.1,
-          "volume": 37.6,
-          "structure": 0.0,
-          "theme": 0.0
-        },
-        "source_count": 2,
-        "source_multiplier": 1.05,
-        "sources": [
-          "right_top_track",
-          "stock_analysis"
-        ],
-        "aggregation": "max_component_by_stock"
-      },
-      "score": 39.7,
-      "legacy_score": 15.2,
-      "context_unified_score": 39.7,
-      "context_score_breakdown": {
-        "version": "unified_score_v2_momentum_first_stock_level",
-        "total": 39.7,
-        "grade": "D",
-        "base": 37.8,
-        "components": {
-          "chip": 0.0,
-          "momentum": 63.1,
-          "volume": 37.6,
-          "structure": 0.0,
-          "theme": 0.0
-        },
-        "source_count": 2,
-        "source_multiplier": 1.05,
-        "sources": [
-          "right_top_track",
-          "stock_analysis"
-        ],
-        "reasons": {
-          "chip": [],
-          "momentum": [
-            "週漲 +20.9%",
-            "日漲 +4.5%",
-            "追蹤 +7.0%"
-          ],
-          "volume": [
-            "量比 1.48x",
-            "5/20 均量 1.27x"
-          ],
-          "structure": [],
-          "theme": []
-        }
-      }
-    },
-    {
-      "ticker": "2851",
-      "name": "中再保",
-      "industry": "金融",
-      "trigger_date": "2026-05-06",
-      "expire_date": "2026-05-20",
-      "days_remaining": 0,
-      "entry_price": 31.3,
-      "current_price": 35.2,
-      "pnl_pct": 12.46,
-      "rev_grade": "D",
-      "quant_scores": {
-        "trend_score": 0.2,
-        "chip_score": 9.1,
-        "rev_score": 0
-      },
-      "entry_date": "2026-05-06",
-      "remove_date": "2026-05-28",
-      "pinned": false,
-      "unified_score": 47.4,
-      "unified_score_grade": "D",
-      "score_breakdown": {
-        "version": "unified_score_v2_momentum_first_stock_level",
-        "total": 47.4,
-        "grade": "D",
-        "base": 43.1,
-        "components": {
-          "chip": 60.7,
-          "momentum": 69.9,
-          "volume": 22.4,
-          "structure": 0.0,
-          "theme": 0.0
-        },
-        "source_count": 3,
-        "source_multiplier": 1.1,
-        "sources": [
-          "big_holder_trend",
-          "right_top_track",
-          "stock_analysis"
-        ],
-        "aggregation": "max_component_by_stock"
-      },
-      "score": 47.4,
-      "legacy_score": 18.5,
-      "context_unified_score": 46.1,
-      "context_score_breakdown": {
-        "version": "unified_score_v2_momentum_first_stock_level",
-        "total": 46.1,
-        "grade": "D",
-        "base": 41.9,
-        "components": {
-          "chip": 60.7,
-          "momentum": 69.9,
-          "volume": 17.5,
-          "structure": 0.0,
-          "theme": 0.0
-        },
-        "source_count": 3,
-        "source_multiplier": 1.1,
-        "sources": [
-          "big_holder_trend",
-          "right_top_track",
-          "stock_analysis"
-        ],
-        "reasons": {
-          "chip": [
-            "大戶占比 67.6%",
-            "千張增 +0.9%"
-          ],
-          "momentum": [
-            "週漲 +14.3%",
-            "追蹤 +12.5%",
-            "收盤站上 EMA120"
-          ],
-          "volume": [
-            "量比 0.66x",
-            "5/20 均量 0.76x"
-          ],
-          "structure": [],
-          "theme": []
-        }
-      }
-    },
-    {
       "ticker": "3034",
       "name": "聯詠",
       "industry": "半導",
@@ -3800,8 +3217,8 @@
       "expire_date": "2026-05-20",
       "days_remaining": 0,
       "entry_price": 441.5,
-      "current_price": 478.5,
-      "pnl_pct": 8.38,
+      "current_price": 477.0,
+      "pnl_pct": 8.04,
       "rev_grade": "C",
       "quant_scores": {
         "trend_score": 4.4,
@@ -3869,316 +3286,6 @@
       }
     },
     {
-      "ticker": "1101",
-      "name": "台泥",
-      "industry": "水泥",
-      "trigger_date": "2026-05-06",
-      "expire_date": "2026-05-20",
-      "days_remaining": 0,
-      "entry_price": 25.05,
-      "current_price": 23.65,
-      "pnl_pct": -5.59,
-      "rev_grade": "C",
-      "quant_scores": {
-        "trend_score": 0.5,
-        "chip_score": 10,
-        "rev_score": 4
-      },
-      "entry_date": "2026-05-06",
-      "remove_date": "2026-05-28",
-      "pinned": false,
-      "unified_score": 29.0,
-      "unified_score_grade": "D",
-      "score_breakdown": {
-        "version": "unified_score_v2_momentum_first_stock_level",
-        "total": 29.0,
-        "grade": "D",
-        "base": 29.0,
-        "components": {
-          "chip": 0.0,
-          "momentum": 43.9,
-          "volume": 37.1,
-          "structure": 0.0,
-          "theme": 0.0
-        },
-        "source_count": 1,
-        "source_multiplier": 1.0,
-        "sources": [
-          "stock_analysis"
-        ],
-        "aggregation": "max_component_by_stock"
-      },
-      "score": 29.0,
-      "legacy_score": 3.1,
-      "context_unified_score": 29.0,
-      "context_score_breakdown": {
-        "version": "unified_score_v2_momentum_first_stock_level",
-        "total": 29.0,
-        "grade": "D",
-        "base": 29.0,
-        "components": {
-          "chip": 0.0,
-          "momentum": 43.9,
-          "volume": 37.1,
-          "structure": 0.0,
-          "theme": 0.0
-        },
-        "source_count": 1,
-        "source_multiplier": 1.0,
-        "sources": [
-          "stock_analysis"
-        ],
-        "reasons": {
-          "chip": [],
-          "momentum": [
-            "日漲 +3.2%",
-            "收盤站上 EMA120"
-          ],
-          "volume": [
-            "量比 1.64x",
-            "5/20 均量 1.20x"
-          ],
-          "structure": [],
-          "theme": []
-        }
-      }
-    },
-    {
-      "ticker": "1460",
-      "name": "宏遠",
-      "industry": "紡織",
-      "trigger_date": "2026-05-06",
-      "expire_date": "2026-05-20",
-      "days_remaining": 0,
-      "entry_price": 7.12,
-      "current_price": 6.93,
-      "pnl_pct": -2.67,
-      "rev_grade": "C",
-      "quant_scores": {
-        "trend_score": 3.2,
-        "chip_score": 10,
-        "rev_score": 4
-      },
-      "entry_date": "2026-05-06",
-      "remove_date": "2026-05-28",
-      "pinned": false,
-      "unified_score": 34.7,
-      "unified_score_grade": "D",
-      "score_breakdown": {
-        "version": "unified_score_v2_momentum_first_stock_level",
-        "total": 34.7,
-        "grade": "D",
-        "base": 31.5,
-        "components": {
-          "chip": 56.8,
-          "momentum": 45.4,
-          "volume": 21.7,
-          "structure": 0.0,
-          "theme": 0.0
-        },
-        "source_count": 3,
-        "source_multiplier": 1.1,
-        "sources": [
-          "chips",
-          "right_top_track",
-          "stock_analysis"
-        ],
-        "aggregation": "max_component_by_stock"
-      },
-      "score": 34.7,
-      "legacy_score": 4.9,
-      "context_unified_score": 34.4,
-      "context_score_breakdown": {
-        "version": "unified_score_v2_momentum_first_stock_level",
-        "total": 34.4,
-        "grade": "D",
-        "base": 31.2,
-        "components": {
-          "chip": 56.8,
-          "momentum": 45.4,
-          "volume": 20.5,
-          "structure": 0.0,
-          "theme": 0.0
-        },
-        "source_count": 3,
-        "source_multiplier": 1.1,
-        "sources": [
-          "chips",
-          "right_top_track",
-          "stock_analysis"
-        ],
-        "reasons": {
-          "chip": [
-            "大戶占比 64.7%",
-            "千張增 +0.2%",
-            "籌碼標籤加分"
-          ],
-          "momentum": [
-            "日漲 +0.1%",
-            "收盤站上 EMA120"
-          ],
-          "volume": [
-            "量比 0.95x",
-            "5/20 均量 0.85x"
-          ],
-          "structure": [],
-          "theme": []
-        }
-      }
-    },
-    {
-      "ticker": "2548",
-      "name": "華固",
-      "industry": "營建",
-      "trigger_date": "2026-05-06",
-      "expire_date": "2026-05-20",
-      "days_remaining": 0,
-      "entry_price": 125,
-      "current_price": 121.0,
-      "pnl_pct": -3.2,
-      "rev_grade": "S",
-      "quant_scores": {
-        "trend_score": 0,
-        "chip_score": 10,
-        "rev_score": 10
-      },
-      "entry_date": "2026-05-06",
-      "remove_date": "2026-05-28",
-      "pinned": false,
-      "unified_score": 31.0,
-      "unified_score_grade": "D",
-      "score_breakdown": {
-        "version": "unified_score_v2_momentum_first_stock_level",
-        "total": 31.0,
-        "grade": "D",
-        "base": 31.0,
-        "components": {
-          "chip": 0.0,
-          "momentum": 41.3,
-          "volume": 49.8,
-          "structure": 0.0,
-          "theme": 0.0
-        },
-        "source_count": 1,
-        "source_multiplier": 1.0,
-        "sources": [
-          "stock_analysis"
-        ],
-        "aggregation": "max_component_by_stock"
-      },
-      "score": 31.0,
-      "legacy_score": 4.2,
-      "context_unified_score": 31.0,
-      "context_score_breakdown": {
-        "version": "unified_score_v2_momentum_first_stock_level",
-        "total": 31.0,
-        "grade": "D",
-        "base": 31.0,
-        "components": {
-          "chip": 0.0,
-          "momentum": 41.3,
-          "volume": 49.8,
-          "structure": 0.0,
-          "theme": 0.0
-        },
-        "source_count": 1,
-        "source_multiplier": 1.0,
-        "sources": [
-          "stock_analysis"
-        ],
-        "reasons": {
-          "chip": [],
-          "momentum": [
-            "收盤站上 EMA120"
-          ],
-          "volume": [
-            "量比 2.28x",
-            "5/20 均量 1.43x"
-          ],
-          "structure": [],
-          "theme": []
-        }
-      }
-    },
-    {
-      "ticker": "5009",
-      "name": "榮剛",
-      "industry": "櫃鋼鐵",
-      "trigger_date": "2026-05-06",
-      "expire_date": "2026-05-20",
-      "days_remaining": 0,
-      "entry_price": 35.1,
-      "current_price": 35.5,
-      "pnl_pct": 1.14,
-      "rev_grade": "C",
-      "quant_scores": {
-        "trend_score": 1.8,
-        "chip_score": 9.2,
-        "rev_score": 4
-      },
-      "entry_date": "2026-05-06",
-      "remove_date": "2026-05-28",
-      "pinned": false,
-      "unified_score": 34.8,
-      "unified_score_grade": "D",
-      "score_breakdown": {
-        "version": "unified_score_v2_momentum_first_stock_level",
-        "total": 34.8,
-        "grade": "D",
-        "base": 33.1,
-        "components": {
-          "chip": 0.0,
-          "momentum": 59.6,
-          "volume": 25.3,
-          "structure": 0.0,
-          "theme": 0.0
-        },
-        "source_count": 2,
-        "source_multiplier": 1.05,
-        "sources": [
-          "right_top_track",
-          "stock_analysis"
-        ],
-        "aggregation": "max_component_by_stock"
-      },
-      "score": 34.8,
-      "legacy_score": 8.9,
-      "context_unified_score": 32.8,
-      "context_score_breakdown": {
-        "version": "unified_score_v2_momentum_first_stock_level",
-        "total": 32.8,
-        "grade": "D",
-        "base": 31.2,
-        "components": {
-          "chip": 0.0,
-          "momentum": 59.6,
-          "volume": 17.5,
-          "structure": 0.0,
-          "theme": 0.0
-        },
-        "source_count": 2,
-        "source_multiplier": 1.05,
-        "sources": [
-          "right_top_track",
-          "stock_analysis"
-        ],
-        "reasons": {
-          "chip": [],
-          "momentum": [
-            "週漲 +13.2%",
-            "追蹤 +1.1%",
-            "收盤站上 EMA120"
-          ],
-          "volume": [
-            "量比 0.65x",
-            "5/20 均量 0.65x"
-          ],
-          "structure": [],
-          "theme": []
-        }
-      }
-    },
-    {
       "ticker": "2328",
       "name": "廣宇",
       "industry": "電零",
@@ -4186,8 +3293,8 @@
       "expire_date": "2026-05-21",
       "days_remaining": 0,
       "entry_price": 54.2,
-      "current_price": 53.0,
-      "pnl_pct": -2.21,
+      "current_price": 55.5,
+      "pnl_pct": 2.4,
       "rev_grade": "C",
       "quant_scores": {
         "trend_score": 0.7,
@@ -4262,8 +3369,8 @@
       "expire_date": "2026-05-21",
       "days_remaining": 0,
       "entry_price": 114,
-      "current_price": 144.0,
-      "pnl_pct": 26.32,
+      "current_price": 158.0,
+      "pnl_pct": 38.6,
       "rev_grade": "S",
       "quant_scores": {
         "trend_score": 1.3,
@@ -4338,8 +3445,8 @@
       "expire_date": "2026-05-21",
       "days_remaining": 0,
       "entry_price": 7.81,
-      "current_price": 7.44,
-      "pnl_pct": -4.74,
+      "current_price": 7.52,
+      "pnl_pct": -3.71,
       "rev_grade": "D",
       "quant_scores": {
         "trend_score": 2.3,
@@ -4412,8 +3519,8 @@
       "expire_date": "2026-05-21",
       "days_remaining": 0,
       "entry_price": 16.4,
-      "current_price": 17.75,
-      "pnl_pct": 8.23,
+      "current_price": 17.95,
+      "pnl_pct": 9.45,
       "rev_grade": "S",
       "quant_scores": {
         "trend_score": 4.2,
@@ -4572,8 +3679,8 @@
       "expire_date": "2026-05-22",
       "days_remaining": 0,
       "entry_price": 170,
-      "current_price": 170.0,
-      "pnl_pct": 0.0,
+      "current_price": 172.5,
+      "pnl_pct": 1.47,
       "rev_grade": "D",
       "quant_scores": {
         "trend_score": 6.4,
@@ -4742,8 +3849,8 @@
       "expire_date": "2026-05-25",
       "days_remaining": 0,
       "entry_price": 32.9,
-      "current_price": 34.6,
-      "pnl_pct": 5.17,
+      "current_price": 35.6,
+      "pnl_pct": 8.21,
       "rev_grade": "S",
       "quant_scores": {
         "trend_score": 1.7,
@@ -4912,8 +4019,8 @@
       "expire_date": "2026-05-25",
       "days_remaining": 0,
       "entry_price": 706,
-      "current_price": 862.0,
-      "pnl_pct": 22.1,
+      "current_price": 930.0,
+      "pnl_pct": 31.73,
       "rev_grade": "S",
       "quant_scores": {
         "trend_score": 0,
@@ -5000,8 +4107,8 @@
       "expire_date": "2026-05-25",
       "days_remaining": 0,
       "entry_price": 28.8,
-      "current_price": 32.0,
-      "pnl_pct": 11.11,
+      "current_price": 35.2,
+      "pnl_pct": 22.22,
       "rev_grade": "S",
       "quant_scores": {
         "trend_score": 4.3,
@@ -5200,8 +4307,8 @@
       "expire_date": "2026-05-25",
       "days_remaining": 0,
       "entry_price": 20.15,
-      "current_price": 35.7,
-      "pnl_pct": 77.17,
+      "current_price": 37.5,
+      "pnl_pct": 86.1,
       "rev_grade": "S",
       "quant_scores": {
         "trend_score": 0.1,
@@ -5283,8 +4390,8 @@
       "expire_date": "2026-05-25",
       "days_remaining": 0,
       "entry_price": 10.25,
-      "current_price": 9.94,
-      "pnl_pct": -3.02,
+      "current_price": 9.9,
+      "pnl_pct": -3.41,
       "rev_grade": "S",
       "quant_scores": {
         "trend_score": 0.5,
@@ -5361,8 +4468,8 @@
       "expire_date": "2026-05-25",
       "days_remaining": 0,
       "entry_price": 39.95,
-      "current_price": 41.0,
-      "pnl_pct": 2.63,
+      "current_price": 44.05,
+      "pnl_pct": 10.26,
       "rev_grade": "S",
       "quant_scores": {
         "trend_score": 0.3,
@@ -5462,8 +4569,8 @@
       "expire_date": "2026-05-25",
       "days_remaining": 0,
       "entry_price": 80.8,
-      "current_price": 82.8,
-      "pnl_pct": 2.48,
+      "current_price": 82.3,
+      "pnl_pct": 1.86,
       "rev_grade": "S",
       "quant_scores": {
         "trend_score": 0,
@@ -5549,8 +4656,8 @@
       "expire_date": "2026-05-25",
       "days_remaining": 0,
       "entry_price": 50.6,
-      "current_price": 49.5,
-      "pnl_pct": -2.17,
+      "current_price": 50.3,
+      "pnl_pct": -0.59,
       "rev_grade": "A",
       "quant_scores": {
         "trend_score": 0,
@@ -5630,8 +4737,8 @@
       "expire_date": "2026-05-25",
       "days_remaining": 0,
       "entry_price": 121.5,
-      "current_price": 124.0,
-      "pnl_pct": 2.06,
+      "current_price": 124.5,
+      "pnl_pct": 2.47,
       "rev_grade": "C",
       "quant_scores": {
         "trend_score": 9,
@@ -5727,8 +4834,8 @@
       "expire_date": "2026-05-26",
       "days_remaining": 0,
       "entry_price": 14.75,
-      "current_price": 16.6,
-      "pnl_pct": 12.54,
+      "current_price": 17.55,
+      "pnl_pct": 18.98,
       "rev_grade": "D",
       "quant_scores": {
         "trend_score": 2.8,
@@ -5814,8 +4921,8 @@
       "expire_date": "2026-05-26",
       "days_remaining": 0,
       "entry_price": 135,
-      "current_price": 132.0,
-      "pnl_pct": -2.22,
+      "current_price": 135.5,
+      "pnl_pct": 0.37,
       "rev_grade": "D",
       "quant_scores": {
         "trend_score": 2.1,
@@ -5987,10 +5094,550 @@
       },
       "entry_date": "2026-05-13",
       "remove_date": "2026-06-04"
+    },
+    {
+      "ticker": "3479",
+      "name": "安勤",
+      "industry": "櫃電腦",
+      "trigger_date": "2026-05-14",
+      "expire_date": "2026-05-28",
+      "days_remaining": 0,
+      "entry_price": 104,
+      "current_price": 137.5,
+      "pnl_pct": 32.21,
+      "rev_grade": "B",
+      "quant_scores": {
+        "trend_score": 0,
+        "chip_score": 2.5,
+        "rev_score": 6
+      },
+      "pinned": true,
+      "priority_level": "B",
+      "priority_reason": [
+        "單一品質條件達標"
+      ],
+      "unified_score": 83.4,
+      "unified_score_grade": "A",
+      "score_breakdown": {
+        "version": "unified_score_v2_momentum_first_stock_level",
+        "total": 83.4,
+        "grade": "A",
+        "base": 72.5,
+        "components": {
+          "chip": 47.9,
+          "momentum": 77.4,
+          "volume": 85.1,
+          "structure": 77.5,
+          "theme": 0.0
+        },
+        "source_count": 5,
+        "source_multiplier": 1.15,
+        "sources": [
+          "price_breakout_track",
+          "right_top",
+          "right_top_track",
+          "stock_analysis",
+          "volume_pullback"
+        ],
+        "aggregation": "max_component_by_stock"
+      },
+      "score": 83.4,
+      "legacy_score": 21.2,
+      "context_unified_score": 75.9,
+      "context_score_breakdown": {
+        "version": "unified_score_v2_momentum_first_stock_level",
+        "total": 75.9,
+        "grade": "A",
+        "base": 66.0,
+        "components": {
+          "chip": 47.9,
+          "momentum": 71.3,
+          "volume": 70.1,
+          "structure": 77.5,
+          "theme": 0.0
+        },
+        "source_count": 4,
+        "source_multiplier": 1.15,
+        "sources": [
+          "right_top",
+          "right_top_track",
+          "stock_analysis",
+          "volume_pullback"
+        ],
+        "reasons": {
+          "chip": [],
+          "momentum": [
+            "週漲 +50.8%",
+            "日漲 +2.6%",
+            "追蹤 +32.2%"
+          ],
+          "volume": [
+            "量比 2.02x",
+            "5/20 均量 2.61x",
+            "回測量縮"
+          ],
+          "structure": [
+            "reentry",
+            "支撐守住"
+          ],
+          "theme": []
+        }
+      },
+      "entry_date": "2026-05-14",
+      "remove_date": "2026-06-05"
+    },
+    {
+      "ticker": "3290",
+      "name": "東浦",
+      "industry": "櫃電零",
+      "trigger_date": "2026-05-14",
+      "expire_date": "2026-05-28",
+      "days_remaining": 0,
+      "entry_price": 48.4,
+      "current_price": 48.5,
+      "pnl_pct": 0.21,
+      "rev_grade": "S",
+      "quant_scores": {
+        "trend_score": 5.5,
+        "chip_score": 10,
+        "rev_score": 10
+      },
+      "pinned": false,
+      "priority_level": "A",
+      "priority_reason": [
+        "營收分數>=8",
+        "籌碼分數>=6",
+        "趨勢分數>=4"
+      ],
+      "unified_score": 31.1,
+      "unified_score_grade": "D",
+      "score_breakdown": {
+        "version": "unified_score_v2_momentum_first_stock_level",
+        "total": 31.1,
+        "grade": "D",
+        "base": 31.1,
+        "components": {
+          "chip": 0.0,
+          "momentum": 54.5,
+          "volume": 26.3,
+          "structure": 0.0,
+          "theme": 0.0
+        },
+        "source_count": 1,
+        "source_multiplier": 1.0,
+        "sources": [
+          "stock_analysis"
+        ],
+        "aggregation": "max_component_by_stock"
+      },
+      "score": 31.1,
+      "legacy_score": 7.2,
+      "context_unified_score": 31.1,
+      "context_score_breakdown": {
+        "version": "unified_score_v2_momentum_first_stock_level",
+        "total": 31.1,
+        "grade": "D",
+        "base": 31.1,
+        "components": {
+          "chip": 0.0,
+          "momentum": 54.5,
+          "volume": 26.3,
+          "structure": 0.0,
+          "theme": 0.0
+        },
+        "source_count": 1,
+        "source_multiplier": 1.0,
+        "sources": [
+          "stock_analysis"
+        ],
+        "reasons": {
+          "chip": [],
+          "momentum": [
+            "週漲 +4.0%",
+            "日漲 +1.1%",
+            "收盤站上 EMA120"
+          ],
+          "volume": [
+            "量比 0.87x",
+            "5/20 均量 1.08x"
+          ],
+          "structure": [],
+          "theme": []
+        }
+      },
+      "entry_date": "2026-05-14",
+      "remove_date": "2026-06-05"
+    },
+    {
+      "ticker": "2027",
+      "name": "大成鋼",
+      "industry": "鋼鐵",
+      "trigger_date": "2026-05-14",
+      "expire_date": "2026-05-28",
+      "days_remaining": 0,
+      "entry_price": 39.8,
+      "current_price": 41.65,
+      "pnl_pct": 4.65,
+      "rev_grade": "S",
+      "quant_scores": {
+        "trend_score": 5.4,
+        "chip_score": 10,
+        "rev_score": 10
+      },
+      "pinned": false,
+      "priority_level": "A",
+      "priority_reason": [
+        "營收分數>=8",
+        "籌碼分數>=6",
+        "趨勢分數>=4"
+      ],
+      "unified_score": 68.2,
+      "unified_score_grade": "B",
+      "score_breakdown": {
+        "version": "unified_score_v2_momentum_first_stock_level",
+        "total": 68.2,
+        "grade": "B",
+        "base": 59.3,
+        "components": {
+          "chip": 72.3,
+          "momentum": 65.4,
+          "volume": 41.6,
+          "structure": 81.4,
+          "theme": 0.0
+        },
+        "source_count": 5,
+        "source_multiplier": 1.15,
+        "sources": [
+          "big_holder_trend",
+          "momentum_pullback",
+          "right_top_track",
+          "stock_analysis",
+          "標的追蹤"
+        ],
+        "aggregation": "max_component_by_stock"
+      },
+      "score": 68.2,
+      "legacy_score": 10.7,
+      "context_unified_score": 66.1,
+      "context_score_breakdown": {
+        "version": "unified_score_v2_momentum_first_stock_level",
+        "total": 66.1,
+        "grade": "B",
+        "base": 57.5,
+        "components": {
+          "chip": 72.3,
+          "momentum": 61.5,
+          "volume": 41.6,
+          "structure": 81.4,
+          "theme": 0.0
+        },
+        "source_count": 4,
+        "source_multiplier": 1.15,
+        "sources": [
+          "big_holder_trend",
+          "momentum_pullback",
+          "right_top_track",
+          "stock_analysis"
+        ],
+        "reasons": {
+          "chip": [
+            "大戶占比 68.8%",
+            "千張增 +3.5%"
+          ],
+          "momentum": [
+            "週漲 +10.5%",
+            "追蹤 +4.9%",
+            "收盤站上 EMA120"
+          ],
+          "volume": [
+            "量比 0.55x",
+            "5/20 均量 0.87x",
+            "回測量縮 63%"
+          ],
+          "structure": [
+            "強勢回測區",
+            "均線距離 +0.5%",
+            "防守距離 0.7%"
+          ],
+          "theme": []
+        }
+      },
+      "entry_date": "2026-05-14",
+      "remove_date": "2026-06-05"
+    },
+    {
+      "ticker": "1563",
+      "name": "巧新",
+      "industry": "汽車",
+      "trigger_date": "2026-05-14",
+      "expire_date": "2026-05-28",
+      "days_remaining": 0,
+      "entry_price": 45.4,
+      "current_price": 66.7,
+      "pnl_pct": 46.92,
+      "rev_grade": "B",
+      "quant_scores": {
+        "trend_score": 0,
+        "chip_score": 0.1,
+        "rev_score": 6
+      },
+      "pinned": false,
+      "priority_level": "B",
+      "priority_reason": [
+        "單一品質條件達標"
+      ],
+      "unified_score": 77.1,
+      "unified_score_grade": "A",
+      "score_breakdown": {
+        "version": "unified_score_v2_momentum_first_stock_level",
+        "total": 77.1,
+        "grade": "A",
+        "base": 67.0,
+        "components": {
+          "chip": 40.0,
+          "momentum": 61.8,
+          "volume": 92.5,
+          "structure": 80.7,
+          "theme": 0.0
+        },
+        "source_count": 5,
+        "source_multiplier": 1.15,
+        "sources": [
+          "big_holder_trend",
+          "price_breakout_track",
+          "right_top_track",
+          "stock_analysis",
+          "volume_pullback"
+        ],
+        "aggregation": "max_component_by_stock"
+      },
+      "score": 77.1,
+      "legacy_score": 17.7,
+      "context_unified_score": 77.1,
+      "context_score_breakdown": {
+        "version": "unified_score_v2_momentum_first_stock_level",
+        "total": 77.1,
+        "grade": "A",
+        "base": 67.0,
+        "components": {
+          "chip": 40.0,
+          "momentum": 61.8,
+          "volume": 92.5,
+          "structure": 80.7,
+          "theme": 0.0
+        },
+        "source_count": 4,
+        "source_multiplier": 1.15,
+        "sources": [
+          "big_holder_trend",
+          "right_top_track",
+          "stock_analysis",
+          "volume_pullback"
+        ],
+        "reasons": {
+          "chip": [
+            "千張增 +1.7%"
+          ],
+          "momentum": [
+            "週漲 +61.1%",
+            "日漲 +9.2%",
+            "追蹤 +34.6%"
+          ],
+          "volume": [
+            "量比 8.22x",
+            "5/20 均量 2.60x"
+          ],
+          "structure": [
+            "ignition",
+            "支撐守住"
+          ],
+          "theme": []
+        }
+      },
+      "entry_date": "2026-05-14",
+      "remove_date": "2026-06-05"
+    },
+    {
+      "ticker": "3413",
+      "name": "京鼎",
+      "industry": "半導",
+      "trigger_date": "2026-05-14",
+      "expire_date": "2026-05-28",
+      "days_remaining": 0,
+      "entry_price": 321,
+      "current_price": 320.0,
+      "pnl_pct": -0.31,
+      "rev_grade": "B",
+      "quant_scores": {
+        "trend_score": 9.6,
+        "chip_score": 2.6,
+        "rev_score": 6
+      },
+      "pinned": false,
+      "priority_level": "B",
+      "priority_reason": [
+        "趨勢分數>=4"
+      ],
+      "unified_score": 42.4,
+      "unified_score_grade": "D",
+      "score_breakdown": {
+        "version": "unified_score_v2_momentum_first_stock_level",
+        "total": 42.4,
+        "grade": "D",
+        "base": 36.9,
+        "components": {
+          "chip": 63.9,
+          "momentum": 43.2,
+          "volume": 44.1,
+          "structure": 0.0,
+          "theme": 0.0
+        },
+        "source_count": 4,
+        "source_multiplier": 1.15,
+        "sources": [
+          "chips",
+          "momentum_candidates",
+          "right_top_track",
+          "stock_analysis"
+        ],
+        "aggregation": "max_component_by_stock"
+      },
+      "score": 42.4,
+      "legacy_score": 14.3,
+      "context_unified_score": 40.6,
+      "context_score_breakdown": {
+        "version": "unified_score_v2_momentum_first_stock_level",
+        "total": 40.6,
+        "grade": "D",
+        "base": 35.3,
+        "components": {
+          "chip": 63.9,
+          "momentum": 39.7,
+          "volume": 44.1,
+          "structure": 0.0,
+          "theme": 0.0
+        },
+        "source_count": 4,
+        "source_multiplier": 1.15,
+        "sources": [
+          "chips",
+          "momentum_candidates",
+          "right_top_track",
+          "stock_analysis"
+        ],
+        "reasons": {
+          "chip": [
+            "大戶占比 39.5%",
+            "千張增 +3.6%",
+            "籌碼標籤加分"
+          ],
+          "momentum": [
+            "週漲 +4.1%",
+            "日漲 +0.6%",
+            "收盤站上 EMA120"
+          ],
+          "volume": [
+            "量比 0.82x",
+            "5/20 均量 1.70x"
+          ],
+          "structure": [],
+          "theme": []
+        }
+      },
+      "entry_date": "2026-05-14",
+      "remove_date": "2026-06-05"
+    },
+    {
+      "ticker": "3704",
+      "name": "合勤控",
+      "industry": "通信",
+      "trigger_date": "2026-05-14",
+      "expire_date": "2026-05-28",
+      "days_remaining": 0,
+      "entry_price": 36.7,
+      "current_price": 46.35,
+      "pnl_pct": 26.29,
+      "rev_grade": "S",
+      "quant_scores": {
+        "trend_score": 0.9,
+        "chip_score": 10,
+        "rev_score": 10
+      },
+      "pinned": true,
+      "priority_level": "A",
+      "priority_reason": [
+        "營收分數>=8",
+        "籌碼分數>=6"
+      ],
+      "unified_score": 64.5,
+      "unified_score_grade": "C",
+      "score_breakdown": {
+        "version": "unified_score_v2_momentum_first_stock_level",
+        "total": 64.5,
+        "grade": "C",
+        "base": 56.0,
+        "components": {
+          "chip": 74.6,
+          "momentum": 81.2,
+          "volume": 48.2,
+          "structure": 0.0,
+          "theme": 0.0
+        },
+        "source_count": 5,
+        "source_multiplier": 1.15,
+        "sources": [
+          "big_holder_trend",
+          "holding",
+          "right_top",
+          "right_top_track",
+          "stock_analysis"
+        ],
+        "aggregation": "max_component_by_stock"
+      },
+      "score": 64.5,
+      "legacy_score": 28.2,
+      "context_unified_score": 56.0,
+      "context_score_breakdown": {
+        "version": "unified_score_v2_momentum_first_stock_level",
+        "total": 56.0,
+        "grade": "C",
+        "base": 48.7,
+        "components": {
+          "chip": 74.6,
+          "momentum": 69.8,
+          "volume": 39.4,
+          "structure": 0.0,
+          "theme": 0.0
+        },
+        "source_count": 5,
+        "source_multiplier": 1.15,
+        "sources": [
+          "big_holder_trend",
+          "holding",
+          "right_top",
+          "right_top_track",
+          "stock_analysis"
+        ],
+        "reasons": {
+          "chip": [
+            "大戶占比 54.0%",
+            "千張增 +5.7%"
+          ],
+          "momentum": [
+            "週漲 +32.6%",
+            "日漲 +2.2%",
+            "追蹤 +23.6%"
+          ],
+          "volume": [
+            "量比 1.12x",
+            "5/20 均量 1.45x"
+          ],
+          "structure": [],
+          "theme": []
+        }
+      },
+      "entry_date": "2026-05-14",
+      "remove_date": "2026-06-05"
     }
-  ],
-  "unified_score_model": {
-    "version": "unified_score_v1",
-    "applied_at": "2026-05-29T17:16:47+08:00"
-  }
+  ]
 }
