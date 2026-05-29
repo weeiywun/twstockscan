@@ -1,0 +1,124 @@
+{
+  "strategy_id": "trend_follow",
+  "last_updated": "2026-05-29",
+  "model": {
+    "source": "momentum_candidates.trend_results",
+    "trigger": "pool_type=trend and volume_alert=true",
+    "observe_trading_days": 10,
+    "history_keep_trading_days": 5,
+    "pattern_score": "locked from first stock-pool entry"
+  },
+  "active": [
+    {
+      "stock_id": "1810",
+      "name": "和成",
+      "industry": "玻璃",
+      "market": "",
+      "trigger_date": "2026-05-29",
+      "expire_date": "2026-06-12",
+      "days_remaining": 11,
+      "entry_price": 20.0,
+      "current_price": 20.0,
+      "pnl_pct": 0.0,
+      "volume_alert": true,
+      "vol_ratio": 3.86,
+      "pattern_locked_at": "2026-05-29T15:40:09+08:00",
+      "pattern_state": "值得看圖",
+      "pattern_score": 64.6,
+      "pattern_tags": [
+        "均線多頭",
+        "W底突破頸線"
+      ],
+      "patterns": [
+        "w_bottom_neckline"
+      ],
+      "key_level": 20.0,
+      "invalidation": 19.4,
+      "pattern_confidence": 0.8,
+      "pinned": false
+    },
+    {
+      "stock_id": "2353",
+      "name": "宏卅卅",
+      "industry": "電腦",
+      "market": "",
+      "trigger_date": "2026-05-29",
+      "expire_date": "2026-06-12",
+      "days_remaining": 11,
+      "entry_price": 32.0,
+      "current_price": 32.0,
+      "pnl_pct": 0.0,
+      "volume_alert": true,
+      "vol_ratio": 1.59,
+      "pattern_locked_at": "2026-05-29T15:40:09+08:00",
+      "pattern_state": "先觀察",
+      "pattern_score": 52.6,
+      "pattern_tags": [
+        "均線多頭",
+        "W底突破頸線"
+      ],
+      "patterns": [
+        "w_bottom_neckline"
+      ],
+      "key_level": 29.1,
+      "invalidation": 28.23,
+      "pattern_confidence": 0.8,
+      "pinned": false
+    },
+    {
+      "stock_id": "2881",
+      "name": "富邦金",
+      "industry": "金融",
+      "market": "",
+      "trigger_date": "2026-05-29",
+      "expire_date": "2026-06-12",
+      "days_remaining": 11,
+      "entry_price": 110.0,
+      "current_price": 110.0,
+      "pnl_pct": 0.0,
+      "volume_alert": true,
+      "vol_ratio": 1.56,
+      "pattern_locked_at": "2026-05-29T15:40:09+08:00",
+      "pattern_state": "先觀察",
+      "pattern_score": 40.0,
+      "pattern_tags": [
+        "均線多頭"
+      ],
+      "patterns": [],
+      "key_level": null,
+      "invalidation": null,
+      "pattern_confidence": 1.0,
+      "pinned": false
+    },
+    {
+      "stock_id": "1409",
+      "name": "新纖",
+      "industry": "紡織",
+      "market": "",
+      "trigger_date": "2026-05-29",
+      "expire_date": "2026-06-12",
+      "days_remaining": 11,
+      "entry_price": 20.75,
+      "current_price": 20.75,
+      "pnl_pct": 0.0,
+      "volume_alert": true,
+      "vol_ratio": 6.3,
+      "pattern_locked_at": "2026-05-29T15:40:09+08:00",
+      "pattern_state": "太遠不追",
+      "pattern_score": 56.6,
+      "pattern_tags": [
+        "均線多頭",
+        "W底突破頸線",
+        "已延伸/過熱"
+      ],
+      "patterns": [
+        "w_bottom_neckline"
+      ],
+      "key_level": 17.8,
+      "invalidation": 17.27,
+      "pattern_confidence": 0.8,
+      "pinned": false
+    }
+  ],
+  "expired": []
+}

@@ -30,7 +30,6 @@ SOURCE_FILES: list[tuple[str, list[str], str]] = [
     ("volume_signal.json", ["results"], "volume_signal"),
     ("volume_pullback.json", ["active", "failed", "history"], "volume_pullback"),
     ("momentum_pullback.json", ["results"], "momentum_pullback"),
-    ("momentum_candidates.json", ["focus_results", "results"], "momentum_candidates"),
     ("performance.json", ["positions"], "holding"),
 ]
 

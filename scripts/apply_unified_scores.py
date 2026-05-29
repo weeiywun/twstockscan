@@ -214,7 +214,6 @@ def main() -> int:
         ("volume_signal.json", ["results"], "volume_signal"),
         ("volume_pullback.json", ["active", "failed", "history"], "volume_pullback"),
         ("momentum_pullback.json", ["results"], "momentum_pullback"),
-        ("momentum_candidates.json", ["focus_results", "results"], "momentum_candidates"),
     ]
     total = 0
     for filename, keys, source in targets:

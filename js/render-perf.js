@@ -5,6 +5,7 @@ const GH_REPO  = 'twstockscan';
 const GH_PERF  = 'data/performance.json';
 const GH_RTT_TRACK = 'data/right_top_track.json';
 const GH_AI_ANALYSIS = 'data/ai_analysis.json';
+const GH_TREND_FOLLOW = 'data/trend_follow.json';
 
 function ghToken() { return localStorage.getItem('gh_token') || ''; }
 

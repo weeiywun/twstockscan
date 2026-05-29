@@ -117,6 +117,9 @@ jobs:
       - name: 短線強勢雷達
         run: python scripts/scan_momentum_candidates.py
 
+      - name: Track trend candidates
+        run: python scripts/track_trend_candidates.py
+
       - name: Enrich candidate features
         run: python scripts/enrich_candidate_features.py
 
@@ -127,7 +130,7 @@ jobs:
         run: |
           git config user.name  "github-actions[bot]"
           git config user.email "github-actions[bot]@users.noreply.github.com"
-          git add data/right_top.json data/right_top_track.json data/volume_signal.json data/volume_pullback.json data/momentum_pullback.json data/momentum_candidates.json data/candidate_features.json data/performance.json data/chips_big_holder.json data/big_holder_trend.json data/current_prices.json data/ai_analysis.json assets/line/performance-latest.png
+          git add data/right_top.json data/right_top_track.json data/volume_signal.json data/volume_pullback.json data/momentum_pullback.json data/momentum_candidates.json data/trend_follow.json data/candidate_features.json data/performance.json data/chips_big_holder.json data/big_holder_trend.json data/current_prices.json data/ai_analysis.json assets/line/performance-latest.png
           if ! git diff --staged --quiet; then
             git commit -m "data: daily scan update $(date -u +%Y-%m-%d)"
             for i in {1..4}; do

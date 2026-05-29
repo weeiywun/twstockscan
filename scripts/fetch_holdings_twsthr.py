@@ -163,6 +163,9 @@ def enrich_with_price(stock_id, token, cache=None):
         return None
     closes  = df["close"].tolist()
     volumes = df["volume_lots"].tolist()
+    ema5    = _calc_ema(closes, 5)
+    ema20   = _calc_ema(closes, 20)
+    ema60   = _calc_ema(closes, 60)
     ema120  = _calc_ema(closes, EMA_PERIOD)
     if ema120 is None:
         return None
@@ -175,6 +178,10 @@ def enrich_with_price(stock_id, token, cache=None):
     bbw       = _calc_bbw(closes)
     return {
         "close": round(close_now, 2), "ema120": round(ema120, 2),
+        "ema5": round(ema5, 2) if ema5 is not None else None,
+        "ema20": round(ema20, 2) if ema20 is not None else None,
+        "ema60": round(ema60, 2) if ema60 is not None else None,
+        "ema_bull": bool(ema5 is not None and ema20 is not None and ema60 is not None and ema5 > ema20 > ema60),
         "deviation": deviation, "vol_5d_avg": int(vol_5d), "vol_20d_avg": int(vol_20d),
         "week_chg_pct": week_chg, "bbw": bbw,
     }
@@ -371,13 +378,24 @@ def main():
         price = enrich_with_price(c["stock_id"], finmind_token, cache=price_cache)
         if price is None:
             fail += 1
-        elif (price["vol_5d_avg"] < VOL_MIN_LOTS
-              or not (DEV_MIN <= price["deviation"] <= DEV_MAX)
-              or (price["bbw"] is not None and price["bbw"] > BBW_MAX)):
-            pass
         else:
-            ok += 1
-            results.append({**c, **price})
+            is_low_base = (
+                DEV_MIN <= price["deviation"] <= DEV_MAX
+                and (price["bbw"] is None or price["bbw"] <= BBW_MAX)
+            )
+            is_trend = bool(price.get("ema_bull"))
+            if price["vol_5d_avg"] < VOL_MIN_LOTS or not (is_low_base or is_trend):
+                pass
+            else:
+                ok += 1
+                results.append({
+                    **c,
+                    **price,
+                    "pool_flags": {
+                        "low_base": is_low_base,
+                        "trend": is_trend,
+                    },
+                })
         if i % 50 == 0:
             print(f"  進度：{i}/{len(candidates)}，通過 {len(results)} / 失敗 {fail}")
         if price_cache is None:
