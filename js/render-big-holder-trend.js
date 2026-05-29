@@ -7,7 +7,7 @@ function renderBigHolderTrend(strat, main) {
     main.innerHTML = `<div class="coming-soon">
       <div class="coming-icon">${strat.icon}</div>
       <div class="coming-title">${strat.name}</div>
-      <div class="coming-desc">尚未產生大戶趨勢池資料。請先執行每週大戶掃描。</div>
+      <div class="coming-desc">尚未產生趨勢大戶資料。請先執行每週大戶掃描。</div>
     </div>`;
     return;
   }

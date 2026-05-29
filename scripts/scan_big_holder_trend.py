@@ -1,11 +1,12 @@
 #!/usr/bin/env python3
-"""Scan the big-holder trend pool.
+"""趨勢大戶池掃描
 
-This model is intentionally looser than chips_big_holder:
-- no EMA120 deviation cap
-- no BBW cap
-- only keeps liquid names with short-term price strength
-- excludes stocks that already doubled within the latest 60 trading days
+篩選條件（與低基期大戶獨立，直接從 big1000/big400 CSV + price_cache 抓取）：
+- 千張大戶比例 > 30%
+- 籌碼訊號：千張或 400 張連續 4 週增加，或單週激增 > 3%
+- 20 日均量 > 500 張
+- 均線多頭排列：EMA20 > EMA60 > EMA120 > EMA200
+- 不限制股價乖離（短期整理震盪可接受）
 """
 
 from __future__ import annotations
@@ -30,7 +31,6 @@ TW_TZ = timezone(timedelta(hours=8))
 
 BIG_PCT_MIN = 30.0
 VOL20_MIN_LOTS = 500
-MAX_GAIN_60D = 100.0
 
 
 def now_tw() -> str:
@@ -84,7 +84,7 @@ def price_features(price_df: pd.DataFrame, stock_id: str) -> dict[str, Any] | No
 
     close = hist["close"].astype(float)
     volume = hist["volume_lots"].astype(float)
-    ema5 = ema(close, 5)
+    ema20 = ema(close, 20)
     ema60 = ema(close, 60)
     ema120 = ema(close, 120)
     ema200 = ema(close, 200)
@@ -97,11 +97,12 @@ def price_features(price_df: pd.DataFrame, stock_id: str) -> dict[str, Any] | No
     if low60 <= 0 or high60 <= 0:
         return None
 
-    slope_ok = (
-        ema60.iloc[-1] > ema60.iloc[-6]
-        and ema120.iloc[-1] > ema120.iloc[-6]
-        and ema200.iloc[-1] > ema200.iloc[-6]
-    )
+    ema20_val = float(ema20.iloc[-1])
+    ema60_val = float(ema60.iloc[-1])
+    ema120_val = float(ema120.iloc[-1])
+    ema200_val = float(ema200.iloc[-1])
+    bullish_aligned = ema20_val > ema60_val > ema120_val > ema200_val
+
     max_gain_60d = (high60 - low60) / low60 * 100.0
     week_ago = float(close.iloc[-6]) if len(close) >= 6 else float(close.iloc[0])
 
@@ -113,25 +114,18 @@ def price_features(price_df: pd.DataFrame, stock_id: str) -> dict[str, Any] | No
         "latest_price_date": str(hist["date"].iloc[-1])[:10],
         "latest_close": round(close_now, 2),
         "since_entry_pct": 0.0,
-        "ema5": round(float(ema5.iloc[-1]), 2),
-        "ema60": round(float(ema60.iloc[-1]), 2),
-        "ema120": round(float(ema120.iloc[-1]), 2),
-        "ema200": round(float(ema200.iloc[-1]), 2),
-        "ema60_slope_5d": round((float(ema60.iloc[-1]) - float(ema60.iloc[-6])) / float(ema60.iloc[-6]) * 100, 2),
-        "ema120_slope_5d": round((float(ema120.iloc[-1]) - float(ema120.iloc[-6])) / float(ema120.iloc[-6]) * 100, 2),
-        "ema200_slope_5d": round((float(ema200.iloc[-1]) - float(ema200.iloc[-6])) / float(ema200.iloc[-6]) * 100, 2),
+        "ema20": round(ema20_val, 2),
+        "ema60": round(ema60_val, 2),
+        "ema120": round(ema120_val, 2),
+        "ema200": round(ema200_val, 2),
+        "bullish_aligned": bullish_aligned,
         "high_60d": round(high60, 2),
         "low_60d": round(low60, 2),
         "max_gain_60d": round(max_gain_60d, 2),
         "pullback_from_60d_high_pct": round((close_now - high60) / high60 * 100.0, 2),
         "vol_20d_avg": int(round(vol20, 0)),
         "week_chg_pct": round((close_now - week_ago) / week_ago * 100.0, 2) if week_ago else None,
-        "price_filter_pass": (
-            vol20 > VOL20_MIN_LOTS
-            and close_now > float(ema5.iloc[-1])
-            and slope_ok
-            and max_gain_60d <= MAX_GAIN_60D
-        ),
+        "price_filter_pass": vol20 > VOL20_MIN_LOTS and bullish_aligned,
     }
 
 
@@ -148,7 +142,7 @@ def build_results() -> dict[str, Any]:
     counts = {
         "big_pct_gt_30": 0,
         "chip_signal": 0,
-        "trend_pool_before_gain_cap": 0,
+        "bullish_aligned": 0,
         "results": 0,
     }
 
@@ -175,14 +169,8 @@ def build_results() -> dict[str, Any]:
         price = price_features(price_df, stock_id)
         if price is None:
             continue
-        if (
-            price["vol_20d_avg"] > VOL20_MIN_LOTS
-            and price["close"] > price["ema5"]
-            and price["ema60_slope_5d"] > 0
-            and price["ema120_slope_5d"] > 0
-            and price["ema200_slope_5d"] > 0
-        ):
-            counts["trend_pool_before_gain_cap"] += 1
+        if price["bullish_aligned"]:
+            counts["bullish_aligned"] += 1
         if not price["price_filter_pass"]:
             continue
 
@@ -227,9 +215,7 @@ def build_results() -> dict[str, Any]:
             "big_pct_1000_gt": BIG_PCT_MIN,
             "chip_signal": "千張或400張連續4週增加，或千張/400張本週增加超過3%",
             "vol_20d_avg_gt": VOL20_MIN_LOTS,
-            "close_gt": "EMA5",
-            "long_ema_slope": "EMA60/EMA120/EMA200 最近5日上揚",
-            "max_gain_60d_lte": MAX_GAIN_60D,
+            "bullish_alignment": "EMA20 > EMA60 > EMA120 > EMA200",
         },
         "counts": counts,
         "results": results,
@@ -241,8 +227,8 @@ def main() -> int:
     with open(OUTPUT_PATH, "w", encoding="utf-8") as f:
         json.dump(data, f, ensure_ascii=False, indent=2)
         f.write("\n")
-    print(f"[big-holder-trend] wrote {len(data['results'])} rows -> {OUTPUT_PATH}")
-    print(f"[big-holder-trend] counts: {data['counts']}")
+    print(f"[趨勢大戶] wrote {len(data['results'])} rows -> {OUTPUT_PATH}")
+    print(f"[趨勢大戶] counts: {data['counts']}")
     return 0
 
 
