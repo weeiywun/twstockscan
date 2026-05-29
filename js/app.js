@@ -157,16 +157,6 @@ const STRATEGIES = [
   },
   // ── 策略二：突破策略 ──
   {
-    id: "trend_follow",
-    name: "趨勢標的",
-    shortName: "趨勢標的",
-    icon: "●",
-    group: "track",
-    available: true,
-    description: "策略二追蹤頁：大戶持股增加且 EMA5 > EMA20 > EMA60 的趨勢池標的，觸發量增提醒後加入 10 個交易日追蹤。",
-    conditions: [],
-  },
-  {
     id: "right_top",
     name: "突破策略",
     shortName: "突破策略",
@@ -212,7 +202,6 @@ const DATA = {
   momentum_pullback_data:  null,
   momentum_candidates_data: null,
   stock_analysis_data:    null,
-  trend_follow_data:      null,
   performance_data:       null,
   market_index_data:      null,
   futures_dashboard_data: null,
@@ -352,7 +341,6 @@ function _navBadge(s) {
   if (!s.available) return '—';
   if (s.id === 'future_dashboard') return DATA.futures_dashboard_data?.us_sentiment?.fear_greed?.score ?? '—';
   if (s.id === 'performance') return (DATA.performance_data?.positions || []).filter(p => !p.confirmed).length;
-  if (s.id === 'trend_follow') return DATA.trend_follow_data?.active?.length ?? '—';
   if (s.id === 'ssr') return DATA.momentum_candidates_data?.focus_results?.length ?? (typeof buildSSRRows === 'function' ? buildSSRRows().length : '—');
   if (s.id === 'stock_analysis') return DATA.stock_analysis_data?.active?.length ?? '—';
   if (s.id === 'volume_pullback') return DATA.volume_pullback_data?.active?.length ?? '—';
@@ -449,7 +437,6 @@ function renderStrategy() {
   if (strat.id === 'volume_pullback')  { renderVolumePullback(strat, main); return; }
   if (strat.id === 'momentum_pullback'){ renderMomentumPullback(strat, main); return; }
   if (strat.id === 'stock_analysis')   { renderStockAnalysis(strat, main);  return; }
-  if (strat.id === 'trend_follow')      { renderTrendFollow(strat, main);    return; }
   if (strat.id === 'right_top')        { renderRightTop(strat, main);          return; }
   if (strat.id === 'right_top_track') { renderRightTopTrack(strat, main);     return; }
   if (strat.id === 'performance')      { renderPerformance(strat, main);    return; }
@@ -543,7 +530,7 @@ async function loadData() {
   const timestamp = new Date().getTime();
 
   try {
-    const [chipsRes, bhtRes, vsRes, vpbRes, mpbRes, mcRes, saRes, tfRes, perfRes, miRes, fdRes, mbRes, rtRes, rttRes] = await Promise.all([
+    const [chipsRes, bhtRes, vsRes, vpbRes, mpbRes, mcRes, saRes, perfRes, miRes, fdRes, mbRes, rtRes, rttRes] = await Promise.all([
       fetch(`data/chips_big_holder.json?t=${timestamp}`,   { cache: 'no-store' }).then(r => r.ok ? r.json() : null).catch(() => null),
       fetch(`data/big_holder_trend.json?t=${timestamp}`,   { cache: 'no-store' }).then(r => r.ok ? r.json() : null).catch(() => null),
       fetch(`data/volume_signal.json?t=${timestamp}`,      { cache: 'no-store' }).then(r => r.ok ? r.json() : null).catch(() => null),
@@ -551,7 +538,6 @@ async function loadData() {
       fetch(`data/momentum_pullback.json?t=${timestamp}`,   { cache: 'no-store' }).then(r => r.ok ? r.json() : null).catch(() => null),
       fetch(`data/momentum_candidates.json?t=${timestamp}`, { cache: 'no-store' }).then(r => r.ok ? r.json() : null).catch(() => null),
       fetch(`data/ai_analysis.json?t=${timestamp}`,        { cache: 'no-store' }).then(r => r.ok ? r.json() : null).catch(() => null),
-      fetch(`data/trend_follow.json?t=${timestamp}`,       { cache: 'no-store' }).then(r => r.ok ? r.json() : null).catch(() => null),
       fetch(`data/performance.json?t=${timestamp}`,        { cache: 'no-store' }).then(r => r.ok ? r.json() : null).catch(() => null),
       fetch(`data/market_index.json?t=${timestamp}`,        { cache: 'no-store' }).then(r => r.ok ? r.json() : null).catch(() => null),
       fetch(`data/futures_dashboard.json?t=${timestamp}`,   { cache: 'no-store' }).then(r => r.ok ? r.json() : null).catch(() => null),
@@ -608,10 +594,6 @@ async function loadData() {
 
     if (saRes && (saRes.active || saRes.expired)) {
       DATA.stock_analysis_data = saRes;
-    }
-
-    if (tfRes && (tfRes.active || tfRes.expired)) {
-      DATA.trend_follow_data = tfRes;
     }
 
     if (perfRes) {

@@ -54,7 +54,6 @@ def collect_stock_ids() -> set:
     _load(os.path.join(DATA_DIR, "right_top_track.json"),  "active", "history")
     _load(os.path.join(DATA_DIR, "performance.json"),      "positions")
     _load(os.path.join(DATA_DIR, "ai_analysis.json"),      "active", "history")
-    _load(os.path.join(DATA_DIR, "trend_follow.json"),     "active", "expired")
     return ids
 
 

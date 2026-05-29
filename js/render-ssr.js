@@ -4,16 +4,13 @@ function buildSSRRows() {
 
 function renderSSR(strat, main) {
   const momentumData = DATA.momentum_candidates_data || {};
-  const sourceRows = momentumData.results || [];
   const focusRows = momentumData.focus_results || [];
-  const lowBaseRows = momentumData.low_base_results || [];
-  const trendRows = momentumData.trend_results || [];
-  const view = window._stockPoolView || 'focus';
-  const sortCol = window._ssrSortCol || 'pattern_score';
+  const sourceFilter = window._stockPoolSourceFilter || 'all';
+  const sortCol = window._ssrSortCol || 'score';
   const sortAsc = window._ssrSortAsc !== undefined ? window._ssrSortAsc : false;
 
-  window.setStockPoolView = function setStockPoolView(v) {
-    window._stockPoolView = v;
+  window.setStockPoolSourceFilter = function setStockPoolSourceFilter(v) {
+    window._stockPoolSourceFilter = v;
     renderStrategy();
   };
 
@@ -33,19 +30,36 @@ function renderSSR(strat, main) {
     return v == null || Number.isNaN(Number(v)) ? '-' : `${Number(v) >= 0 ? '+' : ''}${Number(v).toFixed(digits)}%`;
   }
 
-  function rowsForView() {
-    if (view === 'low_base') return lowBaseRows;
-    if (view === 'trend') return trendRows;
-    if (view === 'all') return sourceRows;
-    return focusRows;
+  function sourceLabel(src) {
+    return ({
+      chips: '大戶',
+      volume_signal: '量增',
+      right_top_track: '突破追蹤',
+      volume_pullback: '量增回測',
+      stock_analysis: '標的追蹤',
+      momentum_candidates: '標的池',
+    }[src] || src);
+  }
+
+  function matchesSource(row, filter) {
+    const sources = new Set(row.sources || []);
+    if (filter === 'chips') return sources.has('chips');
+    if (filter === 'volume_signal') return sources.has('volume_signal');
+    if (filter === 'right_top_track') return sources.has('right_top_track');
+    if (filter === 'volume_pullback') return sources.has('volume_pullback');
+    return true;
+  }
+
+  function sourceCount(filter) {
+    return focusRows.filter(row => matchesSource(row, filter)).length;
   }
 
   function value(row, col) {
     const m = row.metrics || {};
-    if (col === 'pattern_score') return row.pattern_score ?? 0;
+    if (col === 'score') return row.pattern_score ?? row.context_score ?? row.unified_score ?? row.score ?? 0;
     if (col === 'pattern_state') return stateOrder[row.pattern_state] ?? 9;
-    if (col === 'volume_alert') return row.volume_alert ? 1 : 0;
-    if (col === 'pool_type') return row.pool_type === 'low_base' ? 0 : 1;
+    if (col === 'primary_metric') return m.ignition_vol_ratio ?? m.today_vol_ratio ?? m.track_vol_ratio ?? 0;
+    if (col === 'track_pnl_pct') return m.track_pnl_pct ?? -999;
     return row[col] ?? m[col];
   }
 
@@ -61,8 +75,7 @@ function renderSSR(strat, main) {
   }
 
   function sortIcon(col) {
-    if (sortCol !== col) return '<span class="sort-icon">·</span>';
-    return `<span class="sort-icon">${sortAsc ? '↑' : '↓'}</span>`;
+    return `<span class="sort-icon">${sortCol === col ? (sortAsc ? '↑' : '↓') : '·'}</span>`;
   }
 
   function stateColor(state) {
@@ -72,19 +85,22 @@ function renderSSR(strat, main) {
     return 'var(--text2)';
   }
 
-  const viewOptions = [
-    { key: 'focus', label: '值得看圖', count: focusRows.length },
-    { key: 'low_base', label: '低基期', count: lowBaseRows.length },
-    { key: 'trend', label: '趨勢', count: trendRows.length },
-    { key: 'all', label: '全部', count: sourceRows.length },
+  const filters = [
+    { key: 'all', label: '全部', count: focusRows.length },
+    { key: 'chips', label: '大戶', count: sourceCount('chips') },
+    { key: 'volume_signal', label: '量增', count: sourceCount('volume_signal') },
+    { key: 'right_top_track', label: '突破', count: sourceCount('right_top_track') },
+    { key: 'volume_pullback', label: '回測', count: sourceCount('volume_pullback') },
   ];
 
-  const viewButtons = viewOptions.map(opt => `
-    <button class="view-btn ${view === opt.key ? 'active' : ''}"
-      onclick="setStockPoolView('${opt.key}')">${opt.label} ${opt.count}</button>
+  const filterButtons = filters.map(opt => `
+    <button class="view-btn ${sourceFilter === opt.key ? 'active' : ''}"
+      onclick="setStockPoolSourceFilter('${opt.key}')">${opt.label} ${opt.count}</button>
   `).join('');
 
-  const rows = rowsForView().slice().sort(compare);
+  const rows = focusRows
+    .filter(row => matchesSource(row, sourceFilter))
+    .sort(compare);
 
   const rowsHTML = rows.map(row => {
     const m = row.metrics || {};
@@ -95,9 +111,10 @@ function renderSSR(strat, main) {
     const patternList = (row.patterns || []).join(' / ');
     const keyLevel = row.key_level;
     const invalidation = row.invalidation;
-    const vol = m.today_vol_ratio;
+    const ctxScore = row.context_score ?? row.unified_score ?? row.score ?? 0;
+    const vol = m.today_vol_ratio ?? m.ignition_vol_ratio ?? m.track_vol_ratio;
+    const track = m.track_pnl_pct;
     const color = stateColor(patState);
-    const poolColor = row.pool_type === 'low_base' ? 'var(--green)' : 'var(--blue)';
 
     return `<tr>
       <td>
@@ -110,7 +127,6 @@ function renderSSR(strat, main) {
         </a>
         <div class="stock-industry" style="font-size:10px;color:var(--text3)">${row.industry || '-'}</div>
       </td>
-      <td><span class="tag-badge" style="color:${poolColor};border-color:rgba(80,90,110,.35)">${row.pool_label || '-'}</span></td>
       <td><span class="tag-badge" style="color:${color};border-color:rgba(80,90,110,.35)">${patState}</span></td>
       <td>
         <span style="font-family:var(--mono);font-weight:700;color:${color}">${fmtNum(patScore, 1)}</span>
@@ -129,28 +145,28 @@ function renderSSR(strat, main) {
       </td>
       <td><span class="price-cell">${fmtNum(row.close, 1)}</span></td>
       <td style="font-size:11px;color:var(--text2);line-height:1.6">
-        ${row.volume_alert ? `<span class="tag-badge" style="color:var(--amber);border-color:rgba(80,90,110,.35)">量增</span>` : '<span style="color:var(--text3)">-</span>'}
-        ${vol != null ? `<span style="font-family:var(--mono);margin-left:4px">${fmtNum(vol, 2)}x</span>` : ''}
-        <br>
-        <span style="color:var(--text3)">EMA120 ${fmtPct(m.deviation, 1)} / BBW ${fmtNum(m.bbw, 1)}</span>
+        <span style="font-family:var(--mono)">${fmtNum(ctxScore, 0)}</span> ctx
+        ${vol != null ? ` · 量 ${fmtNum(vol, 2)}x` : ''}
+        ${track != null ? ` · <span class="${Number(track) >= 0 ? 'pos' : 'neg'}">${fmtPct(track, 1)}</span>` : ''}
+        <br>${(row.sources || []).map(s => `<span class="tag-badge" style="color:var(--text3);border-color:rgba(80,90,110,.25)">${sourceLabel(s)}</span>`).join('')}
       </td>
     </tr>`;
   }).join('');
 
   window.exportFocusCSV = function exportFocusCSV() {
     const headers = [
-      '代號', '名稱', '產業', '市場', '類型',
-      '型態狀態', '型態分數', '型態標籤', '關鍵價', '失效價', '型態可信度',
-      '收盤', '量增提醒', '量比', 'EMA120乖離(%)', '週漲跌(%)', 'BBW',
+      '代號', '名稱', '產業', '市場',
+      '型態狀態', '型態分', '型態標籤', '關鍵價', '失效價', '型態可信度',
+      '收盤', '量比', '追蹤損益(%)', '週漲跌(%)', 'BBW', 'context_score', '來源',
     ];
     const csvRows = rows.map(row => {
       const m = row.metrics || {};
+      const vol = m.today_vol_ratio ?? m.ignition_vol_ratio ?? m.track_vol_ratio;
       return [
         row.stock_id,
         row.name || '',
         row.industry || '',
         row.market || '',
-        row.pool_label || '',
         row.pattern_state || '',
         row.pattern_score != null ? Number(row.pattern_score).toFixed(1) : '',
         (row.pattern_tags || []).join(' '),
@@ -158,11 +174,12 @@ function renderSSR(strat, main) {
         row.invalidation != null ? Number(row.invalidation).toFixed(2) : '',
         row.pattern_confidence != null ? Number(row.pattern_confidence).toFixed(2) : '',
         row.close ?? '',
-        row.volume_alert ? 'Y' : '',
-        m.today_vol_ratio != null ? Number(m.today_vol_ratio).toFixed(2) : '',
-        m.deviation != null ? Number(m.deviation).toFixed(2) : '',
+        vol != null ? Number(vol).toFixed(2) : '',
+        m.track_pnl_pct != null ? Number(m.track_pnl_pct).toFixed(2) : '',
         m.week_chg_pct != null ? Number(m.week_chg_pct).toFixed(2) : '',
         m.bbw != null ? Number(m.bbw).toFixed(1) : '',
+        row.context_score ?? row.unified_score ?? row.score ?? '',
+        (row.sources || []).map(sourceLabel).join(' / '),
       ];
     });
     const csv = [headers, ...csvRows]
@@ -171,7 +188,7 @@ function renderSSR(strat, main) {
     const blob = new Blob(['\uFEFF' + csv], { type: 'text/csv;charset=utf-8' });
     const url = URL.createObjectURL(blob);
     const updated = (momentumData.updated || '').slice(0, 10) || strat.dataUpdated || 'export';
-    const a = Object.assign(document.createElement('a'), { href: url, download: `pattern_pool_${updated}.csv` });
+    const a = Object.assign(document.createElement('a'), { href: url, download: `focus_pool_${updated}.csv` });
     a.click();
     URL.revokeObjectURL(url);
   };
@@ -184,34 +201,33 @@ function renderSSR(strat, main) {
       </div>
       <div class="table-wrap">
         <div class="table-toolbar">
-          <span class="table-title">型態標的池</span>
+          <span class="table-title">標的池</span>
           <div class="toolbar-right">
-            <span class="updated-tag">值得看圖 ${momentumData.summary?.focus ?? focusRows.length} / 全部 ${momentumData.summary?.total || sourceRows.length}</span>
+            <span class="updated-tag">值得看圖 ${momentumData.summary?.pattern_watch ?? focusRows.length} / 全 ${momentumData.summary?.total || focusRows.length}</span>
             <span class="updated-tag">更新：${(momentumData.updated || '').slice(0, 10) || strat.dataUpdated}</span>
             <button class="btn-csv" onclick="exportFocusCSV()">匯出 CSV</button>
           </div>
         </div>
         <div style="padding:10px 14px;border-bottom:1px solid var(--border);font-size:12px;color:var(--text3);line-height:1.7">
-          標的池只以型態狀態與型態分數排序；量增只作提醒，低基期與趨勢只作分類。
+          僅顯示 pattern_state＝值得看圖 的標的，依型態分排序；context_score 與來源標籤為次要參考。
         </div>
         <div style="display:flex;gap:8px;padding:10px 14px;border-bottom:1px solid var(--border);flex-wrap:wrap">
-          ${viewButtons}
+          ${filterButtons}
         </div>
         <div class="table-scroll ${rows.length > 10 ? 'table-vscroll' : ''}">
           <table>
             <thead>
               <tr>
                 <th onclick="ssrSort('stock_id')" style="cursor:pointer">代號 / 名稱${sortIcon('stock_id')}</th>
-                <th onclick="ssrSort('pool_type')" style="cursor:pointer">類型${sortIcon('pool_type')}</th>
                 <th onclick="ssrSort('pattern_state')" style="cursor:pointer">型態狀態${sortIcon('pattern_state')}</th>
-                <th onclick="ssrSort('pattern_score')" style="cursor:pointer">型態分數${sortIcon('pattern_score')}</th>
+                <th onclick="ssrSort('score')" style="cursor:pointer">型態分${sortIcon('score')}</th>
                 <th>型態標籤</th>
                 <th>關鍵 / 失效</th>
                 <th onclick="ssrSort('close')" style="cursor:pointer">收盤${sortIcon('close')}</th>
-                <th onclick="ssrSort('volume_alert')" style="cursor:pointer">量增提醒${sortIcon('volume_alert')}</th>
+                <th>來源 / 背景</th>
               </tr>
             </thead>
-            <tbody>${rowsHTML || `<tr><td colspan="8" style="text-align:center;color:var(--text3);padding:28px">目前沒有符合此分類的標的</td></tr>`}</tbody>
+            <tbody>${rowsHTML || `<tr><td colspan="7" style="text-align:center;color:var(--text3);padding:28px">目前沒有標的池候選（型態狀態＝值得看圖）</td></tr>`}</tbody>
           </table>
         </div>
       </div>
