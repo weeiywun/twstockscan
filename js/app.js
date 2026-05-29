@@ -146,12 +146,22 @@ const STRATEGIES = [
   },
   {
     id: "stock_analysis",
-    name: "籌碼標的",
-    shortName: "籌碼標的",
+    name: "低基期標的",
+    shortName: "低基期標的",
     icon: "◎",
     group: "track",
     available: true,
-    description: "籌碼集中入池標的首次觸發量增訊號後，維護月營收評級、現價損益與 10 個交易日觀察期。",
+    description: "低基期大戶入池標的首次觸發量增訊號後，維護月營收評級、現價損益與 10 個交易日觀察期。",
+    conditions: [],
+  },
+  {
+    id: "big_holder_trend_track",
+    name: "趨勢標的",
+    shortName: "趨勢標的",
+    icon: "◉",
+    group: "track",
+    available: true,
+    description: "趨勢大戶入池標的追蹤，記錄入池收盤、現價、損益，觀察期 2 週。釘選標的永久保留。",
     conditions: [],
   },
   // ── 策略二：突破策略 ──
@@ -207,7 +217,8 @@ const DATA = {
   margin_balance_data:    null,
   right_top_data:         [],
   right_top_industry:     [],
-  right_top_track_data:   null,
+  right_top_track_data:         null,
+  big_holder_trend_track_data:  null,
 };
 let DATE_LABELS = [];
 
@@ -435,9 +446,10 @@ function renderStrategy() {
   if (strat.id === 'volume_signal')    { renderVolumeSignal(strat, main);   return; }
   if (strat.id === 'volume_pullback')  { renderVolumePullback(strat, main); return; }
   if (strat.id === 'momentum_pullback'){ renderMomentumPullback(strat, main); return; }
-  if (strat.id === 'stock_analysis')   { renderStockAnalysis(strat, main);  return; }
-  if (strat.id === 'right_top')        { renderRightTop(strat, main);          return; }
-  if (strat.id === 'right_top_track') { renderRightTopTrack(strat, main);     return; }
+  if (strat.id === 'stock_analysis')        { renderStockAnalysis(strat, main);         return; }
+  if (strat.id === 'big_holder_trend_track'){ renderBigHolderTrendTrack(strat, main);   return; }
+  if (strat.id === 'right_top')             { renderRightTop(strat, main);               return; }
+  if (strat.id === 'right_top_track')       { renderRightTopTrack(strat, main);          return; }
   if (strat.id === 'performance')      { renderPerformance(strat, main);    return; }
 }
 
@@ -529,20 +541,21 @@ async function loadData() {
   const timestamp = new Date().getTime();
 
   try {
-    const [chipsRes, bhtRes, vsRes, vpbRes, mpbRes, mcRes, saRes, perfRes, miRes, fdRes, mbRes, rtRes, rttRes] = await Promise.all([
-      fetch(`data/chips_big_holder.json?t=${timestamp}`,   { cache: 'no-store' }).then(r => r.ok ? r.json() : null).catch(() => null),
-      fetch(`data/big_holder_trend.json?t=${timestamp}`,   { cache: 'no-store' }).then(r => r.ok ? r.json() : null).catch(() => null),
-      fetch(`data/volume_signal.json?t=${timestamp}`,      { cache: 'no-store' }).then(r => r.ok ? r.json() : null).catch(() => null),
-      fetch(`data/volume_pullback.json?t=${timestamp}`,     { cache: 'no-store' }).then(r => r.ok ? r.json() : null).catch(() => null),
-      fetch(`data/momentum_pullback.json?t=${timestamp}`,   { cache: 'no-store' }).then(r => r.ok ? r.json() : null).catch(() => null),
-      fetch(`data/momentum_candidates.json?t=${timestamp}`, { cache: 'no-store' }).then(r => r.ok ? r.json() : null).catch(() => null),
-      fetch(`data/ai_analysis.json?t=${timestamp}`,        { cache: 'no-store' }).then(r => r.ok ? r.json() : null).catch(() => null),
-      fetch(`data/performance.json?t=${timestamp}`,        { cache: 'no-store' }).then(r => r.ok ? r.json() : null).catch(() => null),
-      fetch(`data/market_index.json?t=${timestamp}`,        { cache: 'no-store' }).then(r => r.ok ? r.json() : null).catch(() => null),
-      fetch(`data/futures_dashboard.json?t=${timestamp}`,   { cache: 'no-store' }).then(r => r.ok ? r.json() : null).catch(() => null),
-      fetch(`data/margin_balance.json?t=${timestamp}`,      { cache: 'no-store' }).then(r => r.ok ? r.json() : null).catch(() => null),
-      fetch(`data/right_top.json?t=${timestamp}`,          { cache: 'no-store' }).then(r => r.ok ? r.json() : null).catch(() => null),
-      fetch(`data/right_top_track.json?t=${timestamp}`,    { cache: 'no-store' }).then(r => r.ok ? r.json() : null).catch(() => null),
+    const [chipsRes, bhtRes, vsRes, vpbRes, mpbRes, mcRes, saRes, perfRes, miRes, fdRes, mbRes, rtRes, rttRes, bhttRes] = await Promise.all([
+      fetch(`data/chips_big_holder.json?t=${timestamp}`,        { cache: 'no-store' }).then(r => r.ok ? r.json() : null).catch(() => null),
+      fetch(`data/big_holder_trend.json?t=${timestamp}`,        { cache: 'no-store' }).then(r => r.ok ? r.json() : null).catch(() => null),
+      fetch(`data/volume_signal.json?t=${timestamp}`,           { cache: 'no-store' }).then(r => r.ok ? r.json() : null).catch(() => null),
+      fetch(`data/volume_pullback.json?t=${timestamp}`,         { cache: 'no-store' }).then(r => r.ok ? r.json() : null).catch(() => null),
+      fetch(`data/momentum_pullback.json?t=${timestamp}`,       { cache: 'no-store' }).then(r => r.ok ? r.json() : null).catch(() => null),
+      fetch(`data/momentum_candidates.json?t=${timestamp}`,     { cache: 'no-store' }).then(r => r.ok ? r.json() : null).catch(() => null),
+      fetch(`data/ai_analysis.json?t=${timestamp}`,             { cache: 'no-store' }).then(r => r.ok ? r.json() : null).catch(() => null),
+      fetch(`data/performance.json?t=${timestamp}`,             { cache: 'no-store' }).then(r => r.ok ? r.json() : null).catch(() => null),
+      fetch(`data/market_index.json?t=${timestamp}`,            { cache: 'no-store' }).then(r => r.ok ? r.json() : null).catch(() => null),
+      fetch(`data/futures_dashboard.json?t=${timestamp}`,       { cache: 'no-store' }).then(r => r.ok ? r.json() : null).catch(() => null),
+      fetch(`data/margin_balance.json?t=${timestamp}`,          { cache: 'no-store' }).then(r => r.ok ? r.json() : null).catch(() => null),
+      fetch(`data/right_top.json?t=${timestamp}`,               { cache: 'no-store' }).then(r => r.ok ? r.json() : null).catch(() => null),
+      fetch(`data/right_top_track.json?t=${timestamp}`,         { cache: 'no-store' }).then(r => r.ok ? r.json() : null).catch(() => null),
+      fetch(`data/big_holder_trend_track.json?t=${timestamp}`,  { cache: 'no-store' }).then(r => r.ok ? r.json() : null).catch(() => null),
     ]);
 
     if (chipsRes && chipsRes.results) {
@@ -630,6 +643,12 @@ async function loadData() {
 
     if (rttRes && (rttRes.active || rttRes.expired)) {
       DATA.right_top_track_data = rttRes;
+    }
+
+    if (bhttRes && (bhttRes.active || bhttRes.expired)) {
+      DATA.big_holder_trend_track_data = bhttRes;
+      const strat = STRATEGIES.find(s => s.id === 'big_holder_trend_track');
+      if (strat) strat.dataUpdated = (bhttRes.last_updated || '').slice(0, 10) || strat.dataUpdated;
     }
 
   } catch (e) {

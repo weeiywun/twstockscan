@@ -61,11 +61,14 @@ jobs:
       - name: Run big holder trend scan
         run: python scripts/scan_big_holder_trend.py
 
+      - name: Track big holder trend pool
+        run: python scripts/track_big_holder_trend.py
+
       - name: Commit and push results
         run: |
           git config user.name  "github-actions[bot]"
           git config user.email "github-actions[bot]@users.noreply.github.com"
-          git add data/chips_big_holder.json data/big_holder_trend.json
+          git add data/chips_big_holder.json data/big_holder_trend.json data/big_holder_trend_track.json
 
           if ! git diff --staged --quiet; then
             git commit -m "data: chips_big_holder update $(date -u +%Y-%m-%d)"
