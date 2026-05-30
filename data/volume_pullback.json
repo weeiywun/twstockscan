@@ -1,6 +1,6 @@
 {
   "strategy_id": "volume_pullback",
-  "updated": "2026-05-29T17:16:26+08:00",
+  "updated": "2026-05-30T09:04:59+08:00",
   "model": {
     "ignition_vol_ratio_min": 2.5,
     "lookback_days": 5,
@@ -8,28 +8,25 @@
     "reentry_vol_ratio_min": 1.5
   },
   "summary": {
-    "active": 102,
-    "failed": 22,
-    "reentry": 33,
-    "pullback": 25,
-    "ignition": 44
+    "active": 106,
+    "failed": 21,
+    "reentry": 34,
+    "pullback": 26,
+    "ignition": 46
   },
   "active": [
     {
       "stock_id": "1409",
       "name": "新纖",
-      "industry": "紡織",
+      "industry": "紡織纖維",
       "market": "TWSE",
       "sources": [
-        "chips",
         "price_breakout_track"
       ],
-      "source_tags": [
-        "持續成長"
-      ],
+      "source_tags": [],
       "status": "reentry",
       "status_label": "再啟動",
-      "score": 76.0,
+      "score": 64.4,
       "signal_date": "2026-05-29",
       "ignition_date": "2026-05-28",
       "days_since_ignition": 1,
@@ -50,24 +47,23 @@
       "support_ok": true,
       "volume_cools": true,
       "legacy_score": 123,
-      "unified_score": 76.0,
-      "unified_score_grade": "A",
+      "unified_score": 64.4,
+      "unified_score_grade": "C",
       "score_breakdown": {
         "version": "unified_score_v2_momentum_first_stock_level",
-        "total": 76.0,
-        "grade": "A",
-        "base": 66.0,
+        "total": 64.4,
+        "grade": "C",
+        "base": 56.0,
         "components": {
-          "chip": 55.4,
-          "momentum": 72.6,
+          "chip": 0.0,
+          "momentum": 62.6,
           "volume": 65.1,
           "structure": 77.1,
           "theme": 0.0
         },
-        "source_count": 5,
+        "source_count": 4,
         "source_multiplier": 1.15,
         "sources": [
-          "chips",
           "price_breakout_track",
           "right_top_track",
           "stock_analysis",
@@ -75,34 +71,29 @@
         ],
         "aggregation": "max_component_by_stock"
       },
-      "context_unified_score": 70.2,
+      "context_unified_score": 63.8,
       "context_score_breakdown": {
         "version": "unified_score_v2_momentum_first_stock_level",
-        "total": 70.2,
-        "grade": "B",
-        "base": 61.0,
+        "total": 63.8,
+        "grade": "C",
+        "base": 55.5,
         "components": {
-          "chip": 55.4,
+          "chip": 0.0,
           "momentum": 62.6,
           "volume": 63.0,
           "structure": 77.1,
           "theme": 0.0
         },
-        "source_count": 5,
+        "source_count": 4,
         "source_multiplier": 1.15,
         "sources": [
-          "chips",
           "price_breakout_track",
           "right_top_track",
           "stock_analysis",
           "volume_pullback"
         ],
         "reasons": {
-          "chip": [
-            "大戶占比 62.9%",
-            "千張增 +0.1%",
-            "籌碼標籤加分"
-          ],
+          "chip": [],
           "momentum": [
             "週漲 +37.4%",
             "日漲 +9.9%",
@@ -231,7 +222,7 @@
       "source_tags": [],
       "status": "reentry",
       "status_label": "再啟動",
-      "score": 70.7,
+      "score": 78.1,
       "signal_date": "2026-05-28",
       "ignition_date": "2026-05-26",
       "days_since_ignition": 1,
@@ -252,23 +243,24 @@
       "support_ok": true,
       "volume_cools": true,
       "legacy_score": 121,
-      "unified_score": 70.7,
-      "unified_score_grade": "B",
+      "unified_score": 78.1,
+      "unified_score_grade": "A",
       "score_breakdown": {
         "version": "unified_score_v2_momentum_first_stock_level",
-        "total": 70.7,
-        "grade": "B",
-        "base": 61.4,
+        "total": 78.1,
+        "grade": "A",
+        "base": 67.9,
         "components": {
-          "chip": 0.0,
+          "chip": 64.6,
           "momentum": 67.9,
           "volume": 75.2,
           "structure": 80.6,
           "theme": 0.0
         },
-        "source_count": 4,
+        "source_count": 5,
         "source_multiplier": 1.15,
         "sources": [
+          "big_holder_trend",
           "momentum_candidates",
           "price_breakout_track",
           "right_top_track",
@@ -276,29 +268,32 @@
         ],
         "aggregation": "max_component_by_stock"
       },
-      "context_unified_score": 69.6,
+      "context_unified_score": 77.0,
       "context_score_breakdown": {
         "version": "unified_score_v2_momentum_first_stock_level",
-        "total": 69.6,
-        "grade": "B",
-        "base": 60.5,
+        "total": 77.0,
+        "grade": "A",
+        "base": 67.0,
         "components": {
-          "chip": 0.0,
+          "chip": 64.6,
           "momentum": 67.9,
           "volume": 71.5,
           "structure": 80.6,
           "theme": 0.0
         },
-        "source_count": 4,
+        "source_count": 5,
         "source_multiplier": 1.15,
         "sources": [
+          "big_holder_trend",
           "momentum_candidates",
           "price_breakout_track",
           "right_top_track",
           "volume_pullback"
         ],
         "reasons": {
-          "chip": [],
+          "chip": [
+            "千張增 +15.1%"
+          ],
           "momentum": [
             "週漲 +34.1%",
             "追蹤 +2.3%",
@@ -425,7 +420,7 @@
       "source_tags": [],
       "status": "reentry",
       "status_label": "再啟動",
-      "score": 84.4,
+      "score": 88.1,
       "signal_date": "2026-05-29",
       "ignition_date": "2026-05-27",
       "days_since_ignition": 2,
@@ -446,23 +441,24 @@
       "support_ok": true,
       "volume_cools": true,
       "legacy_score": 121,
-      "unified_score": 84.4,
-      "unified_score_grade": "A",
+      "unified_score": 88.1,
+      "unified_score_grade": "A+",
       "score_breakdown": {
         "version": "unified_score_v2_momentum_first_stock_level",
-        "total": 84.4,
-        "grade": "A",
-        "base": 73.4,
+        "total": 88.1,
+        "grade": "A+",
+        "base": 76.7,
         "components": {
-          "chip": 36.8,
+          "chip": 69.8,
           "momentum": 83.2,
           "volume": 76.0,
           "structure": 88.2,
           "theme": 0.0
         },
-        "source_count": 5,
+        "source_count": 6,
         "source_multiplier": 1.15,
         "sources": [
+          "big_holder_trend",
           "momentum_candidates",
           "price_breakout_track",
           "right_top",
@@ -471,22 +467,23 @@
         ],
         "aggregation": "max_component_by_stock"
       },
-      "context_unified_score": 77.8,
+      "context_unified_score": 81.2,
       "context_score_breakdown": {
         "version": "unified_score_v2_momentum_first_stock_level",
-        "total": 77.8,
+        "total": 81.2,
         "grade": "A",
-        "base": 67.7,
+        "base": 70.6,
         "components": {
-          "chip": 34.5,
+          "chip": 63.5,
           "momentum": 75.6,
           "volume": 67.9,
           "structure": 88.2,
           "theme": 0.0
         },
-        "source_count": 5,
+        "source_count": 6,
         "source_multiplier": 1.15,
         "sources": [
+          "big_holder_trend",
           "momentum_candidates",
           "price_breakout_track",
           "right_top",
@@ -494,7 +491,9 @@
           "volume_pullback"
         ],
         "reasons": {
-          "chip": [],
+          "chip": [
+            "千張增 +33.0%"
+          ],
           "momentum": [
             "週漲 +33.4%",
             "日漲 +1.4%",
@@ -819,7 +818,7 @@
       "source_tags": [],
       "status": "reentry",
       "status_label": "再啟動",
-      "score": 93.9,
+      "score": 91.1,
       "signal_date": "2026-05-29",
       "ignition_date": "2026-05-26",
       "days_since_ignition": 3,
@@ -840,23 +839,24 @@
       "support_ok": true,
       "volume_cools": true,
       "legacy_score": 112,
-      "unified_score": 93.9,
+      "unified_score": 91.1,
       "unified_score_grade": "A+",
       "score_breakdown": {
         "version": "unified_score_v2_momentum_first_stock_level",
-        "total": 93.9,
+        "total": 91.1,
         "grade": "A+",
-        "base": 81.6,
+        "base": 79.2,
         "components": {
-          "chip": 89.5,
+          "chip": 65.7,
           "momentum": 83.8,
           "volume": 89.0,
           "structure": 84.7,
           "theme": 0.0
         },
-        "source_count": 5,
+        "source_count": 6,
         "source_multiplier": 1.15,
         "sources": [
+          "big_holder_trend",
           "momentum_candidates",
           "price_breakout_track",
           "right_top",
@@ -865,22 +865,23 @@
         ],
         "aggregation": "max_component_by_stock"
       },
-      "context_unified_score": 82.2,
+      "context_unified_score": 79.5,
       "context_score_breakdown": {
         "version": "unified_score_v2_momentum_first_stock_level",
-        "total": 82.2,
+        "total": 79.5,
         "grade": "A",
-        "base": 71.5,
+        "base": 69.1,
         "components": {
-          "chip": 89.5,
+          "chip": 65.4,
           "momentum": 76.2,
           "volume": 62.3,
           "structure": 84.7,
           "theme": 0.0
         },
-        "source_count": 5,
+        "source_count": 6,
         "source_multiplier": 1.15,
         "sources": [
+          "big_holder_trend",
           "momentum_candidates",
           "price_breakout_track",
           "right_top",
@@ -955,9 +956,10 @@
           "structure": 77.5,
           "theme": 0.0
         },
-        "source_count": 5,
+        "source_count": 6,
         "source_multiplier": 1.15,
         "sources": [
+          "momentum_candidates",
           "price_breakout_track",
           "right_top",
           "right_top_track",
@@ -979,9 +981,10 @@
           "structure": 77.5,
           "theme": 0.0
         },
-        "source_count": 5,
+        "source_count": 6,
         "source_multiplier": 1.15,
         "sources": [
+          "momentum_candidates",
           "price_breakout_track",
           "right_top",
           "right_top_track",
@@ -1019,7 +1022,7 @@
       "source_tags": [],
       "status": "reentry",
       "status_label": "再啟動",
-      "score": 74.9,
+      "score": 75.7,
       "signal_date": "2026-05-28",
       "ignition_date": "2026-05-26",
       "days_since_ignition": 1,
@@ -1040,15 +1043,15 @@
       "support_ok": true,
       "volume_cools": true,
       "legacy_score": 110,
-      "unified_score": 74.9,
-      "unified_score_grade": "B",
+      "unified_score": 75.7,
+      "unified_score_grade": "A",
       "score_breakdown": {
         "version": "unified_score_v2_momentum_first_stock_level",
-        "total": 74.9,
-        "grade": "B",
-        "base": 65.2,
+        "total": 75.7,
+        "grade": "A",
+        "base": 65.8,
         "components": {
-          "chip": 80.7,
+          "chip": 87.5,
           "momentum": 60.6,
           "volume": 70.0,
           "structure": 82.2,
@@ -1064,14 +1067,14 @@
         ],
         "aggregation": "max_component_by_stock"
       },
-      "context_unified_score": 73.0,
+      "context_unified_score": 73.8,
       "context_score_breakdown": {
         "version": "unified_score_v2_momentum_first_stock_level",
-        "total": 73.0,
+        "total": 73.8,
         "grade": "B",
-        "base": 63.5,
+        "base": 64.1,
         "components": {
-          "chip": 80.7,
+          "chip": 87.5,
           "momentum": 60.6,
           "volume": 63.2,
           "structure": 82.2,
@@ -1087,8 +1090,8 @@
         ],
         "reasons": {
           "chip": [
-            "大戶占比 48.9%",
-            "千張增 +8.8%"
+            "大戶占比 55.1%",
+            "千張增 +12.8%"
           ],
           "momentum": [
             "週漲 +56.8%",
@@ -1110,19 +1113,16 @@
     },
     {
       "stock_id": "2353",
-      "name": "宏卅卅",
-      "industry": "電腦",
+      "name": "宏碁",
+      "industry": "電子工業",
       "market": "TWSE",
       "sources": [
-        "chips",
         "price_breakout_track"
       ],
-      "source_tags": [
-        "持續成長"
-      ],
+      "source_tags": [],
       "status": "reentry",
       "status_label": "再啟動",
-      "score": 84.6,
+      "score": 85.0,
       "signal_date": "2026-05-29",
       "ignition_date": "2026-05-26",
       "days_since_ignition": 3,
@@ -1143,24 +1143,23 @@
       "support_ok": true,
       "volume_cools": true,
       "legacy_score": 109,
-      "unified_score": 84.6,
-      "unified_score_grade": "A",
+      "unified_score": 85.0,
+      "unified_score_grade": "A+",
       "score_breakdown": {
         "version": "unified_score_v2_momentum_first_stock_level",
-        "total": 84.6,
-        "grade": "A",
-        "base": 73.6,
+        "total": 85.0,
+        "grade": "A+",
+        "base": 73.9,
         "components": {
-          "chip": 43.1,
+          "chip": 46.7,
           "momentum": 86.2,
           "volume": 75.9,
           "structure": 76.6,
           "theme": 0.0
         },
-        "source_count": 6,
+        "source_count": 5,
         "source_multiplier": 1.15,
         "sources": [
-          "chips",
           "price_breakout_track",
           "right_top",
           "right_top_track",
@@ -1169,23 +1168,22 @@
         ],
         "aggregation": "max_component_by_stock"
       },
-      "context_unified_score": 79.9,
+      "context_unified_score": 80.3,
       "context_score_breakdown": {
         "version": "unified_score_v2_momentum_first_stock_level",
-        "total": 79.9,
+        "total": 80.3,
         "grade": "A",
-        "base": 69.5,
+        "base": 69.8,
         "components": {
-          "chip": 43.1,
+          "chip": 46.7,
           "momentum": 82.5,
           "volume": 66.1,
           "structure": 76.6,
           "theme": 0.0
         },
-        "source_count": 6,
+        "source_count": 5,
         "source_multiplier": 1.15,
         "sources": [
-          "chips",
           "price_breakout_track",
           "right_top",
           "right_top_track",
@@ -1194,9 +1192,7 @@
         ],
         "reasons": {
           "chip": [
-            "大戶占比 36.0%",
-            "千張增 +0.5%",
-            "籌碼標籤加分"
+            "大戶占比 36.0%"
           ],
           "momentum": [
             "週漲 +28.7%",
@@ -1425,7 +1421,7 @@
       "source_tags": [],
       "status": "reentry",
       "status_label": "再啟動",
-      "score": 70.4,
+      "score": 62.7,
       "signal_date": "2026-05-28",
       "ignition_date": "2026-05-22",
       "days_since_ignition": 3,
@@ -1446,24 +1442,23 @@
       "support_ok": true,
       "volume_cools": true,
       "legacy_score": 108,
-      "unified_score": 70.4,
-      "unified_score_grade": "B",
+      "unified_score": 62.7,
+      "unified_score_grade": "C",
       "score_breakdown": {
         "version": "unified_score_v2_momentum_first_stock_level",
-        "total": 70.4,
-        "grade": "B",
-        "base": 61.2,
+        "total": 62.7,
+        "grade": "C",
+        "base": 54.5,
         "components": {
-          "chip": 66.8,
+          "chip": 0.0,
           "momentum": 60.2,
           "volume": 60.0,
           "structure": 82.8,
           "theme": 0.0
         },
-        "source_count": 5,
+        "source_count": 4,
         "source_multiplier": 1.15,
         "sources": [
-          "big_holder_trend",
           "momentum_candidates",
           "price_breakout_track",
           "right_top_track",
@@ -1471,33 +1466,29 @@
         ],
         "aggregation": "max_component_by_stock"
       },
-      "context_unified_score": 69.3,
+      "context_unified_score": 61.6,
       "context_score_breakdown": {
         "version": "unified_score_v2_momentum_first_stock_level",
-        "total": 69.3,
-        "grade": "B",
-        "base": 60.2,
+        "total": 61.6,
+        "grade": "C",
+        "base": 53.6,
         "components": {
-          "chip": 66.8,
+          "chip": 0.0,
           "momentum": 60.2,
           "volume": 56.2,
           "structure": 82.8,
           "theme": 0.0
         },
-        "source_count": 5,
+        "source_count": 4,
         "source_multiplier": 1.15,
         "sources": [
-          "big_holder_trend",
           "momentum_candidates",
           "price_breakout_track",
           "right_top_track",
           "volume_pullback"
         ],
         "reasons": {
-          "chip": [
-            "大戶占比 50.2%",
-            "千張增 +4.0%"
-          ],
+          "chip": [],
           "momentum": [
             "週漲 +14.4%",
             "收盤站上 EMA120"
@@ -1720,7 +1711,7 @@
       "source_tags": [],
       "status": "reentry",
       "status_label": "再啟動",
-      "score": 65.7,
+      "score": 75.0,
       "signal_date": "2026-05-29",
       "ignition_date": "2026-05-28",
       "days_since_ignition": 1,
@@ -1741,23 +1732,24 @@
       "support_ok": true,
       "volume_cools": true,
       "legacy_score": 107,
-      "unified_score": 65.7,
-      "unified_score_grade": "B",
+      "unified_score": 75.0,
+      "unified_score_grade": "A",
       "score_breakdown": {
         "version": "unified_score_v2_momentum_first_stock_level",
-        "total": 65.7,
-        "grade": "B",
-        "base": 57.1,
+        "total": 75.0,
+        "grade": "A",
+        "base": 65.2,
         "components": {
-          "chip": 0.0,
+          "chip": 80.7,
           "momentum": 68.7,
           "volume": 58.5,
           "structure": 77.3,
           "theme": 0.0
         },
-        "source_count": 4,
+        "source_count": 5,
         "source_multiplier": 1.15,
         "sources": [
+          "big_holder_trend",
           "momentum_candidates",
           "price_breakout_track",
           "right_top_track",
@@ -1765,29 +1757,33 @@
         ],
         "aggregation": "max_component_by_stock"
       },
-      "context_unified_score": 64.0,
+      "context_unified_score": 73.3,
       "context_score_breakdown": {
         "version": "unified_score_v2_momentum_first_stock_level",
-        "total": 64.0,
-        "grade": "C",
-        "base": 55.7,
+        "total": 73.3,
+        "grade": "B",
+        "base": 63.7,
         "components": {
-          "chip": 0.0,
+          "chip": 80.7,
           "momentum": 68.7,
           "volume": 52.6,
           "structure": 77.3,
           "theme": 0.0
         },
-        "source_count": 4,
+        "source_count": 5,
         "source_multiplier": 1.15,
         "sources": [
+          "big_holder_trend",
           "momentum_candidates",
           "price_breakout_track",
           "right_top_track",
           "volume_pullback"
         ],
         "reasons": {
-          "chip": [],
+          "chip": [
+            "大戶占比 68.9%",
+            "千張增 +5.4%"
+          ],
           "momentum": [
             "週漲 +68.7%",
             "日漲 +9.7%",
@@ -2009,7 +2005,7 @@
       "source_tags": [],
       "status": "reentry",
       "status_label": "再啟動",
-      "score": 69.7,
+      "score": 81.2,
       "signal_date": "2026-05-29",
       "ignition_date": "2026-05-26",
       "days_since_ignition": 3,
@@ -2030,51 +2026,56 @@
       "support_ok": true,
       "volume_cools": true,
       "legacy_score": 106,
-      "unified_score": 69.7,
-      "unified_score_grade": "B",
+      "unified_score": 81.2,
+      "unified_score_grade": "A",
       "score_breakdown": {
         "version": "unified_score_v2_momentum_first_stock_level",
-        "total": 69.7,
-        "grade": "B",
-        "base": 63.4,
+        "total": 81.2,
+        "grade": "A",
+        "base": 70.6,
         "components": {
-          "chip": 0.0,
+          "chip": 72.3,
           "momentum": 68.4,
           "volume": 81.5,
           "structure": 81.5,
           "theme": 0.0
         },
-        "source_count": 3,
-        "source_multiplier": 1.1,
+        "source_count": 4,
+        "source_multiplier": 1.15,
         "sources": [
+          "big_holder_trend",
           "price_breakout_track",
           "right_top_track",
           "volume_pullback"
         ],
         "aggregation": "max_component_by_stock"
       },
-      "context_unified_score": 64.6,
+      "context_unified_score": 75.8,
       "context_score_breakdown": {
         "version": "unified_score_v2_momentum_first_stock_level",
-        "total": 64.6,
-        "grade": "C",
-        "base": 58.7,
+        "total": 75.8,
+        "grade": "A",
+        "base": 65.9,
         "components": {
-          "chip": 0.0,
+          "chip": 72.3,
           "momentum": 68.4,
           "volume": 62.8,
           "structure": 81.5,
           "theme": 0.0
         },
-        "source_count": 3,
-        "source_multiplier": 1.1,
+        "source_count": 4,
+        "source_multiplier": 1.15,
         "sources": [
+          "big_holder_trend",
           "price_breakout_track",
           "right_top_track",
           "volume_pullback"
         ],
         "reasons": {
-          "chip": [],
+          "chip": [
+            "大戶占比 59.9%",
+            "千張增 +3.3%"
+          ],
           "momentum": [
             "週漲 +36.8%",
             "追蹤 +22.4%",
@@ -2104,7 +2105,7 @@
       "source_tags": [],
       "status": "reentry",
       "status_label": "再啟動",
-      "score": 86.4,
+      "score": 88.0,
       "signal_date": "2026-05-29",
       "ignition_date": "2026-05-27",
       "days_since_ignition": 2,
@@ -2125,15 +2126,15 @@
       "support_ok": true,
       "volume_cools": true,
       "legacy_score": 106,
-      "unified_score": 86.4,
+      "unified_score": 88.0,
       "unified_score_grade": "A+",
       "score_breakdown": {
         "version": "unified_score_v2_momentum_first_stock_level",
-        "total": 86.4,
+        "total": 88.0,
         "grade": "A+",
-        "base": 75.2,
+        "base": 76.5,
         "components": {
-          "chip": 65.1,
+          "chip": 78.7,
           "momentum": 84.7,
           "volume": 70.2,
           "structure": 86.6,
@@ -2151,14 +2152,14 @@
         ],
         "aggregation": "max_component_by_stock"
       },
-      "context_unified_score": 83.2,
+      "context_unified_score": 84.4,
       "context_score_breakdown": {
         "version": "unified_score_v2_momentum_first_stock_level",
-        "total": 83.2,
+        "total": 84.4,
         "grade": "A",
-        "base": 72.3,
+        "base": 73.4,
         "components": {
-          "chip": 65.1,
+          "chip": 75.6,
           "momentum": 81.1,
           "volume": 65.3,
           "structure": 86.6,
@@ -2177,7 +2178,7 @@
         "reasons": {
           "chip": [
             "大戶占比 47.2%",
-            "千張增 +4.0%"
+            "千張增 +7.2%"
           ],
           "momentum": [
             "週漲 +26.2%",
@@ -2504,7 +2505,7 @@
       "source_tags": [],
       "status": "reentry",
       "status_label": "再啟動",
-      "score": 60.1,
+      "score": 73.1,
       "signal_date": "2026-05-28",
       "ignition_date": "2026-05-21",
       "days_since_ignition": 4,
@@ -2525,51 +2526,56 @@
       "support_ok": true,
       "volume_cools": true,
       "legacy_score": 105,
-      "unified_score": 60.1,
-      "unified_score_grade": "C",
+      "unified_score": 73.1,
+      "unified_score_grade": "B",
       "score_breakdown": {
         "version": "unified_score_v2_momentum_first_stock_level",
-        "total": 60.1,
-        "grade": "C",
-        "base": 54.7,
+        "total": 73.1,
+        "grade": "B",
+        "base": 63.6,
         "components": {
-          "chip": 0.0,
+          "chip": 85.6,
           "momentum": 65.2,
-          "volume": 60.7,
+          "volume": 62.1,
           "structure": 67.7,
           "theme": 0.0
         },
-        "source_count": 3,
-        "source_multiplier": 1.1,
+        "source_count": 4,
+        "source_multiplier": 1.15,
         "sources": [
+          "big_holder_trend",
           "price_breakout_track",
           "right_top_track",
           "volume_pullback"
         ],
         "aggregation": "max_component_by_stock"
       },
-      "context_unified_score": 59.7,
+      "context_unified_score": 72.3,
       "context_score_breakdown": {
         "version": "unified_score_v2_momentum_first_stock_level",
-        "total": 59.7,
-        "grade": "C",
-        "base": 54.3,
+        "total": 72.3,
+        "grade": "B",
+        "base": 62.9,
         "components": {
-          "chip": 0.0,
+          "chip": 85.6,
           "momentum": 65.2,
           "volume": 59.2,
           "structure": 67.7,
           "theme": 0.0
         },
-        "source_count": 3,
-        "source_multiplier": 1.1,
+        "source_count": 4,
+        "source_multiplier": 1.15,
         "sources": [
+          "big_holder_trend",
           "price_breakout_track",
           "right_top_track",
           "volume_pullback"
         ],
         "reasons": {
-          "chip": [],
+          "chip": [
+            "大戶占比 60.1%",
+            "千張增 +6.9%"
+          ],
           "momentum": [
             "週漲 +68.5%",
             "日漲 +15.4%",
@@ -2703,7 +2709,7 @@
       ],
       "status": "reentry",
       "status_label": "再啟動",
-      "score": 70.4,
+      "score": 70.6,
       "signal_date": "2026-05-29",
       "ignition_date": "2026-05-27",
       "days_since_ignition": 2,
@@ -2724,15 +2730,15 @@
       "support_ok": true,
       "volume_cools": true,
       "legacy_score": 104,
-      "unified_score": 70.4,
+      "unified_score": 70.6,
       "unified_score_grade": "B",
       "score_breakdown": {
         "version": "unified_score_v2_momentum_first_stock_level",
-        "total": 70.4,
+        "total": 70.6,
         "grade": "B",
-        "base": 61.3,
+        "base": 61.4,
         "components": {
-          "chip": 53.2,
+          "chip": 54.4,
           "momentum": 57.7,
           "volume": 67.4,
           "structure": 87.5,
@@ -2751,14 +2757,14 @@
         ],
         "aggregation": "max_component_by_stock"
       },
-      "context_unified_score": 66.0,
+      "context_unified_score": 66.2,
       "context_score_breakdown": {
         "version": "unified_score_v2_momentum_first_stock_level",
-        "total": 66.0,
+        "total": 66.2,
         "grade": "B",
-        "base": 57.4,
+        "base": 57.5,
         "components": {
-          "chip": 53.2,
+          "chip": 54.4,
           "momentum": 54.3,
           "volume": 58.2,
           "structure": 87.5,
@@ -2777,8 +2783,8 @@
         ],
         "reasons": {
           "chip": [
-            "大戶占比 52.3%",
-            "千張增 +0.1%",
+            "大戶占比 52.7%",
+            "千張增 +0.4%",
             "籌碼標籤加分"
           ],
           "momentum": [
@@ -2810,7 +2816,7 @@
       "source_tags": [],
       "status": "reentry",
       "status_label": "再啟動",
-      "score": 85.7,
+      "score": 84.5,
       "signal_date": "2026-05-28",
       "ignition_date": "2026-05-22",
       "days_since_ignition": 3,
@@ -2831,24 +2837,23 @@
       "support_ok": true,
       "volume_cools": true,
       "legacy_score": 104,
-      "unified_score": 85.7,
-      "unified_score_grade": "A+",
+      "unified_score": 84.5,
+      "unified_score_grade": "A",
       "score_breakdown": {
         "version": "unified_score_v2_momentum_first_stock_level",
-        "total": 85.7,
-        "grade": "A+",
-        "base": 74.5,
+        "total": 84.5,
+        "grade": "A",
+        "base": 73.5,
         "components": {
-          "chip": 78.5,
+          "chip": 77.5,
           "momentum": 80.3,
-          "volume": 69.8,
+          "volume": 66.3,
           "structure": 87.0,
           "theme": 0.0
         },
-        "source_count": 5,
+        "source_count": 4,
         "source_multiplier": 1.15,
         "sources": [
-          "big_holder_trend",
           "price_breakout_track",
           "right_top",
           "right_top_track",
@@ -2856,23 +2861,22 @@
         ],
         "aggregation": "max_component_by_stock"
       },
-      "context_unified_score": 84.0,
+      "context_unified_score": 82.4,
       "context_score_breakdown": {
         "version": "unified_score_v2_momentum_first_stock_level",
-        "total": 84.0,
+        "total": 82.4,
         "grade": "A",
-        "base": 73.1,
+        "base": 71.7,
         "components": {
-          "chip": 78.5,
+          "chip": 64.6,
           "momentum": 80.3,
           "volume": 64.2,
           "structure": 87.0,
           "theme": 0.0
         },
-        "source_count": 5,
+        "source_count": 4,
         "source_multiplier": 1.15,
         "sources": [
-          "big_holder_trend",
           "price_breakout_track",
           "right_top",
           "right_top_track",
@@ -2880,8 +2884,7 @@
         ],
         "reasons": {
           "chip": [
-            "大戶占比 45.0%",
-            "千張增 +19.3%"
+            "大戶占比 45.0%"
           ],
           "momentum": [
             "週漲 +44.0%",
@@ -2891,6 +2894,107 @@
           "volume": [
             "量比 1.67x",
             "5/20 均量 1.81x",
+            "回測量縮"
+          ],
+          "structure": [
+            "reentry",
+            "支撐守住"
+          ],
+          "theme": []
+        }
+      }
+    },
+    {
+      "stock_id": "2387",
+      "name": "精元",
+      "industry": "電腦",
+      "market": "",
+      "sources": [
+        "chips"
+      ],
+      "source_tags": [
+        "持續成長"
+      ],
+      "status": "reentry",
+      "status_label": "再啟動",
+      "score": 65.1,
+      "signal_date": "2026-05-29",
+      "ignition_date": "2026-05-26",
+      "days_since_ignition": 3,
+      "close": 41.1,
+      "high": 41.4,
+      "low": 40.55,
+      "volume_lots": 851,
+      "vol_10d_avg": 704.0,
+      "vol_ratio": 1.21,
+      "ema5": 40.51,
+      "ema20": 40.01,
+      "ignition_close": 41.4,
+      "ignition_high": 41.55,
+      "ignition_low": 40.05,
+      "ignition_volume_lots": 1606,
+      "ignition_vol_ratio": 2.52,
+      "pullback_from_ignition_close_pct": -0.72,
+      "support_ok": true,
+      "volume_cools": true,
+      "legacy_score": 103,
+      "unified_score": 65.1,
+      "unified_score_grade": "B",
+      "score_breakdown": {
+        "version": "unified_score_v2_momentum_first_stock_level",
+        "total": 65.1,
+        "grade": "B",
+        "base": 59.2,
+        "components": {
+          "chip": 52.4,
+          "momentum": 60.2,
+          "volume": 54.8,
+          "structure": 87.8,
+          "theme": 0.0
+        },
+        "source_count": 3,
+        "source_multiplier": 1.1,
+        "sources": [
+          "chips",
+          "momentum_candidates",
+          "volume_pullback"
+        ],
+        "aggregation": "max_component_by_stock"
+      },
+      "context_unified_score": 64.2,
+      "context_score_breakdown": {
+        "version": "unified_score_v2_momentum_first_stock_level",
+        "total": 64.2,
+        "grade": "C",
+        "base": 58.4,
+        "components": {
+          "chip": 52.4,
+          "momentum": 58.5,
+          "volume": 54.5,
+          "structure": 87.8,
+          "theme": 0.0
+        },
+        "source_count": 3,
+        "source_multiplier": 1.1,
+        "sources": [
+          "chips",
+          "momentum_candidates",
+          "volume_pullback"
+        ],
+        "reasons": {
+          "chip": [
+            "大戶占比 51.2%",
+            "千張增 +0.1%",
+            "籌碼標籤加分"
+          ],
+          "momentum": [
+            "週漲 +1.0%",
+            "日漲 +1.9%",
+            "收盤站上 EMA120"
+          ],
+          "volume": [
+            "量比 1.21x",
+            "5/20 均量 1.47x",
             "回測量縮"
           ],
           "structure": [
@@ -3099,120 +3203,6 @@
       }
     },
     {
-      "stock_id": "2881",
-      "name": "富邦金",
-      "industry": "金融",
-      "market": "TWSE",
-      "sources": [
-        "chips",
-        "price_breakout_track",
-        "volume_signal"
-      ],
-      "source_tags": [
-        "持續成長"
-      ],
-      "status": "reentry",
-      "status_label": "再啟動",
-      "score": 84.9,
-      "signal_date": "2026-05-29",
-      "ignition_date": "2026-05-26",
-      "days_since_ignition": 3,
-      "close": 110.0,
-      "high": 111.0,
-      "low": 107.0,
-      "volume_lots": 139032,
-      "vol_10d_avg": 59146.0,
-      "vol_ratio": 2.35,
-      "ema5": 106.65,
-      "ema20": 98.76,
-      "ignition_close": 103.5,
-      "ignition_high": 103.5,
-      "ignition_low": 97.8,
-      "ignition_volume_lots": 103319,
-      "ignition_vol_ratio": 2.67,
-      "pullback_from_ignition_close_pct": 6.28,
-      "support_ok": true,
-      "volume_cools": false,
-      "legacy_score": 96,
-      "unified_score": 84.9,
-      "unified_score_grade": "A",
-      "score_breakdown": {
-        "version": "unified_score_v2_momentum_first_stock_level",
-        "total": 84.9,
-        "grade": "A",
-        "base": 73.8,
-        "components": {
-          "chip": 56.6,
-          "momentum": 78.3,
-          "volume": 83.0,
-          "structure": 81.3,
-          "theme": 0.0
-        },
-        "source_count": 9,
-        "source_multiplier": 1.15,
-        "sources": [
-          "big_holder_trend",
-          "chips",
-          "momentum_candidates",
-          "price_breakout_track",
-          "right_top",
-          "right_top_track",
-          "stock_analysis",
-          "volume_pullback",
-          "volume_signal"
-        ],
-        "aggregation": "max_component_by_stock"
-      },
-      "context_unified_score": 75.0,
-      "context_score_breakdown": {
-        "version": "unified_score_v2_momentum_first_stock_level",
-        "total": 75.0,
-        "grade": "A",
-        "base": 65.2,
-        "components": {
-          "chip": 56.6,
-          "momentum": 71.0,
-          "volume": 61.7,
-          "structure": 81.3,
-          "theme": 0.0
-        },
-        "source_count": 9,
-        "source_multiplier": 1.15,
-        "sources": [
-          "big_holder_trend",
-          "chips",
-          "momentum_candidates",
-          "price_breakout_track",
-          "right_top",
-          "right_top_track",
-          "stock_analysis",
-          "volume_pullback",
-          "volume_signal"
-        ],
-        "reasons": {
-          "chip": [
-            "大戶占比 83.6%",
-            "千張增 +0.1%",
-            "籌碼標籤加分"
-          ],
-          "momentum": [
-            "週漲 +22.2%",
-            "追蹤 +6.3%",
-            "收盤站上 EMA120"
-          ],
-          "volume": [
-            "量比 2.35x",
-            "5/20 均量 1.81x"
-          ],
-          "structure": [
-            "reentry",
-            "支撐守住"
-          ],
-          "theme": []
-        }
-      }
-    },
-    {
       "stock_id": "8255",
       "name": "朋程",
       "industry": "電機機械",
@@ -3223,7 +3213,7 @@
       "source_tags": [],
       "status": "reentry",
       "status_label": "再啟動",
-      "score": 89.1,
+      "score": 87.0,
       "signal_date": "2026-05-29",
       "ignition_date": "2026-05-27",
       "days_since_ignition": 2,
@@ -3244,23 +3234,24 @@
       "support_ok": true,
       "volume_cools": false,
       "legacy_score": 96,
-      "unified_score": 89.1,
+      "unified_score": 87.0,
       "unified_score_grade": "A+",
       "score_breakdown": {
         "version": "unified_score_v2_momentum_first_stock_level",
-        "total": 89.1,
+        "total": 87.0,
         "grade": "A+",
-        "base": 77.5,
+        "base": 75.7,
         "components": {
-          "chip": 70.7,
+          "chip": 52.9,
           "momentum": 78.4,
           "volume": 92.5,
           "structure": 79.9,
           "theme": 0.0
         },
-        "source_count": 4,
+        "source_count": 5,
         "source_multiplier": 1.15,
         "sources": [
+          "big_holder_trend",
           "price_breakout_track",
           "right_top",
           "right_top_track",
@@ -3268,22 +3259,23 @@
         ],
         "aggregation": "max_component_by_stock"
       },
-      "context_unified_score": 78.6,
+      "context_unified_score": 76.5,
       "context_score_breakdown": {
         "version": "unified_score_v2_momentum_first_stock_level",
-        "total": 78.6,
+        "total": 76.5,
         "grade": "A",
-        "base": 68.3,
+        "base": 66.5,
         "components": {
-          "chip": 70.7,
+          "chip": 52.7,
           "momentum": 73.8,
           "volume": 64.3,
           "structure": 79.9,
           "theme": 0.0
         },
-        "source_count": 4,
+        "source_count": 5,
         "source_multiplier": 1.15,
         "sources": [
+          "big_holder_trend",
           "price_breakout_track",
           "right_top",
           "right_top_track",
@@ -3301,6 +3293,111 @@
           "volume": [
             "量比 2.04x",
             "5/20 均量 2.17x"
+          ],
+          "structure": [
+            "reentry",
+            "支撐守住"
+          ],
+          "theme": []
+        }
+      }
+    },
+    {
+      "stock_id": "2881",
+      "name": "富邦金",
+      "industry": "金融保險",
+      "market": "TWSE",
+      "sources": [
+        "price_breakout_track"
+      ],
+      "source_tags": [],
+      "status": "reentry",
+      "status_label": "再啟動",
+      "score": 85.3,
+      "signal_date": "2026-05-29",
+      "ignition_date": "2026-05-26",
+      "days_since_ignition": 3,
+      "close": 110.0,
+      "high": 111.0,
+      "low": 107.0,
+      "volume_lots": 139032,
+      "vol_10d_avg": 59146.0,
+      "vol_ratio": 2.35,
+      "ema5": 106.65,
+      "ema20": 98.76,
+      "ignition_close": 103.5,
+      "ignition_high": 103.5,
+      "ignition_low": 97.8,
+      "ignition_volume_lots": 103319,
+      "ignition_vol_ratio": 2.67,
+      "pullback_from_ignition_close_pct": 6.28,
+      "support_ok": true,
+      "volume_cools": false,
+      "legacy_score": 96,
+      "unified_score": 85.3,
+      "unified_score_grade": "A+",
+      "score_breakdown": {
+        "version": "unified_score_v2_momentum_first_stock_level",
+        "total": 85.3,
+        "grade": "A+",
+        "base": 74.2,
+        "components": {
+          "chip": 60.2,
+          "momentum": 78.3,
+          "volume": 83.0,
+          "structure": 81.3,
+          "theme": 0.0
+        },
+        "source_count": 7,
+        "source_multiplier": 1.15,
+        "sources": [
+          "big_holder_trend",
+          "momentum_candidates",
+          "price_breakout_track",
+          "right_top",
+          "right_top_track",
+          "stock_analysis",
+          "volume_pullback"
+        ],
+        "aggregation": "max_component_by_stock"
+      },
+      "context_unified_score": 75.4,
+      "context_score_breakdown": {
+        "version": "unified_score_v2_momentum_first_stock_level",
+        "total": 75.4,
+        "grade": "A",
+        "base": 65.6,
+        "components": {
+          "chip": 60.2,
+          "momentum": 71.0,
+          "volume": 61.7,
+          "structure": 81.3,
+          "theme": 0.0
+        },
+        "source_count": 7,
+        "source_multiplier": 1.15,
+        "sources": [
+          "big_holder_trend",
+          "momentum_candidates",
+          "price_breakout_track",
+          "right_top",
+          "right_top_track",
+          "stock_analysis",
+          "volume_pullback"
+        ],
+        "reasons": {
+          "chip": [
+            "大戶占比 83.6%",
+            "千張增 +0.5%"
+          ],
+          "momentum": [
+            "週漲 +22.2%",
+            "追蹤 +6.3%",
+            "收盤站上 EMA120"
+          ],
+          "volume": [
+            "量比 2.35x",
+            "5/20 均量 1.81x"
           ],
           "structure": [
             "reentry",
@@ -3911,7 +4008,7 @@
       "source_tags": [],
       "status": "pullback",
       "status_label": "回穩觀察",
-      "score": 68.0,
+      "score": 77.0,
       "signal_date": "2026-05-29",
       "ignition_date": "2026-05-26",
       "days_since_ignition": 3,
@@ -3932,23 +4029,24 @@
       "support_ok": true,
       "volume_cools": true,
       "legacy_score": 102,
-      "unified_score": 68.0,
-      "unified_score_grade": "B",
+      "unified_score": 77.0,
+      "unified_score_grade": "A",
       "score_breakdown": {
         "version": "unified_score_v2_momentum_first_stock_level",
-        "total": 68.0,
-        "grade": "B",
-        "base": 59.1,
+        "total": 77.0,
+        "grade": "A",
+        "base": 67.0,
         "components": {
-          "chip": 0.0,
+          "chip": 79.0,
           "momentum": 67.2,
           "volume": 66.5,
           "structure": 81.5,
           "theme": 0.0
         },
-        "source_count": 4,
+        "source_count": 5,
         "source_multiplier": 1.15,
         "sources": [
+          "big_holder_trend",
           "momentum_candidates",
           "price_breakout_track",
           "right_top_track",
@@ -3956,29 +4054,33 @@
         ],
         "aggregation": "max_component_by_stock"
       },
-      "context_unified_score": 66.1,
+      "context_unified_score": 75.2,
       "context_score_breakdown": {
         "version": "unified_score_v2_momentum_first_stock_level",
-        "total": 66.1,
-        "grade": "B",
-        "base": 57.5,
+        "total": 75.2,
+        "grade": "A",
+        "base": 65.4,
         "components": {
-          "chip": 0.0,
+          "chip": 79.0,
           "momentum": 67.2,
           "volume": 60.0,
           "structure": 81.5,
           "theme": 0.0
         },
-        "source_count": 4,
+        "source_count": 5,
         "source_multiplier": 1.15,
         "sources": [
+          "big_holder_trend",
           "momentum_candidates",
           "price_breakout_track",
           "right_top_track",
           "volume_pullback"
         ],
         "reasons": {
-          "chip": [],
+          "chip": [
+            "大戶占比 46.0%",
+            "千張增 +8.9%"
+          ],
           "momentum": [
             "週漲 +28.5%",
             "收盤站上 EMA120"
@@ -4578,6 +4680,107 @@
       }
     },
     {
+      "stock_id": "2731",
+      "name": "雄獅",
+      "industry": "觀光",
+      "market": "",
+      "sources": [
+        "chips"
+      ],
+      "source_tags": [
+        "持續成長"
+      ],
+      "status": "pullback",
+      "status_label": "回穩觀察",
+      "score": 60.5,
+      "signal_date": "2026-05-29",
+      "ignition_date": "2026-05-26",
+      "days_since_ignition": 3,
+      "close": 167.5,
+      "high": 168.5,
+      "low": 165.5,
+      "volume_lots": 1511,
+      "vol_10d_avg": 1012.0,
+      "vol_ratio": 1.49,
+      "ema5": 165.41,
+      "ema20": 162.47,
+      "ignition_close": 168.0,
+      "ignition_high": 168.0,
+      "ignition_low": 163.0,
+      "ignition_volume_lots": 2764,
+      "ignition_vol_ratio": 3.17,
+      "pullback_from_ignition_close_pct": -0.3,
+      "support_ok": true,
+      "volume_cools": true,
+      "legacy_score": 97,
+      "unified_score": 60.5,
+      "unified_score_grade": "C",
+      "score_breakdown": {
+        "version": "unified_score_v2_momentum_first_stock_level",
+        "total": 60.5,
+        "grade": "C",
+        "base": 55.0,
+        "components": {
+          "chip": 44.2,
+          "momentum": 52.3,
+          "volume": 58.0,
+          "structure": 83.6,
+          "theme": 0.0
+        },
+        "source_count": 3,
+        "source_multiplier": 1.1,
+        "sources": [
+          "chips",
+          "momentum_candidates",
+          "volume_pullback"
+        ],
+        "aggregation": "max_component_by_stock"
+      },
+      "context_unified_score": 60.5,
+      "context_score_breakdown": {
+        "version": "unified_score_v2_momentum_first_stock_level",
+        "total": 60.5,
+        "grade": "C",
+        "base": 55.0,
+        "components": {
+          "chip": 44.2,
+          "momentum": 52.3,
+          "volume": 58.0,
+          "structure": 83.6,
+          "theme": 0.0
+        },
+        "source_count": 3,
+        "source_multiplier": 1.1,
+        "sources": [
+          "chips",
+          "momentum_candidates",
+          "volume_pullback"
+        ],
+        "reasons": {
+          "chip": [
+            "大戶占比 37.3%",
+            "千張增 +0.1%",
+            "籌碼標籤加分"
+          ],
+          "momentum": [
+            "週漲 +5.7%",
+            "日漲 +1.2%",
+            "收盤站上 EMA120"
+          ],
+          "volume": [
+            "量比 1.49x",
+            "5/20 均量 1.55x",
+            "回測量縮"
+          ],
+          "structure": [
+            "pullback",
+            "支撐守住"
+          ],
+          "theme": []
+        }
+      }
+    },
+    {
       "stock_id": "5386",
       "name": "青雲",
       "industry": "電腦及週邊設備業",
@@ -4666,6 +4869,106 @@
           "volume": [
             "量比 1.19x",
             "5/20 均量 1.65x",
+            "回測量縮"
+          ],
+          "structure": [
+            "pullback",
+            "支撐守住"
+          ],
+          "theme": []
+        }
+      }
+    },
+    {
+      "stock_id": "1455",
+      "name": "集盛",
+      "industry": "紡織",
+      "market": "",
+      "sources": [
+        "chips"
+      ],
+      "source_tags": [
+        "持續成長"
+      ],
+      "status": "pullback",
+      "status_label": "回穩觀察",
+      "score": 61.2,
+      "signal_date": "2026-05-29",
+      "ignition_date": "2026-05-28",
+      "days_since_ignition": 1,
+      "close": 8.61,
+      "high": 8.69,
+      "low": 8.45,
+      "volume_lots": 1055,
+      "vol_10d_avg": 830.0,
+      "vol_ratio": 1.27,
+      "ema5": 8.38,
+      "ema20": 8.28,
+      "ignition_close": 8.61,
+      "ignition_high": 8.88,
+      "ignition_low": 8.15,
+      "ignition_volume_lots": 2102,
+      "ignition_vol_ratio": 3.07,
+      "pullback_from_ignition_close_pct": 0.0,
+      "support_ok": true,
+      "volume_cools": true,
+      "legacy_score": 96,
+      "unified_score": 61.2,
+      "unified_score_grade": "C",
+      "score_breakdown": {
+        "version": "unified_score_v2_momentum_first_stock_level",
+        "total": 61.2,
+        "grade": "C",
+        "base": 55.6,
+        "components": {
+          "chip": 55.9,
+          "momentum": 51.8,
+          "volume": 56.6,
+          "structure": 84.0,
+          "theme": 0.0
+        },
+        "source_count": 3,
+        "source_multiplier": 1.1,
+        "sources": [
+          "chips",
+          "momentum_candidates",
+          "volume_pullback"
+        ],
+        "aggregation": "max_component_by_stock"
+      },
+      "context_unified_score": 60.2,
+      "context_score_breakdown": {
+        "version": "unified_score_v2_momentum_first_stock_level",
+        "total": 60.2,
+        "grade": "C",
+        "base": 54.8,
+        "components": {
+          "chip": 55.9,
+          "momentum": 50.2,
+          "volume": 55.9,
+          "structure": 84.0,
+          "theme": 0.0
+        },
+        "source_count": 3,
+        "source_multiplier": 1.1,
+        "sources": [
+          "chips",
+          "momentum_candidates",
+          "volume_pullback"
+        ],
+        "reasons": {
+          "chip": [
+            "大戶占比 62.5%",
+            "千張增 +0.3%",
+            "籌碼標籤加分"
+          ],
+          "momentum": [
+            "週漲 +2.9%",
+            "收盤站上 EMA120"
+          ],
+          "volume": [
+            "量比 1.27x",
+            "5/20 均量 1.52x",
             "回測量縮"
           ],
           "structure": [
@@ -5173,7 +5476,7 @@
       "source_tags": [],
       "status": "pullback",
       "status_label": "回穩觀察",
-      "score": 69.6,
+      "score": 69.2,
       "signal_date": "2026-05-29",
       "ignition_date": "2026-05-27",
       "days_since_ignition": 2,
@@ -5194,15 +5497,15 @@
       "support_ok": true,
       "volume_cools": true,
       "legacy_score": 94,
-      "unified_score": 69.6,
+      "unified_score": 69.2,
       "unified_score_grade": "B",
       "score_breakdown": {
         "version": "unified_score_v2_momentum_first_stock_level",
-        "total": 69.6,
+        "total": 69.2,
         "grade": "B",
-        "base": 60.5,
+        "base": 60.2,
         "components": {
-          "chip": 52.1,
+          "chip": 48.9,
           "momentum": 63.2,
           "volume": 57.3,
           "structure": 83.6,
@@ -5219,14 +5522,14 @@
         ],
         "aggregation": "max_component_by_stock"
       },
-      "context_unified_score": 68.6,
+      "context_unified_score": 68.3,
       "context_score_breakdown": {
         "version": "unified_score_v2_momentum_first_stock_level",
-        "total": 68.6,
+        "total": 68.3,
         "grade": "B",
-        "base": 59.7,
+        "base": 59.4,
         "components": {
-          "chip": 52.1,
+          "chip": 48.9,
           "momentum": 63.2,
           "volume": 54.0,
           "structure": 83.6,
@@ -5564,108 +5867,6 @@
       }
     },
     {
-      "stock_id": "3372",
-      "name": "典範",
-      "industry": "櫃半導",
-      "market": "",
-      "sources": [
-        "chips"
-      ],
-      "source_tags": [
-        "持續成長"
-      ],
-      "status": "pullback",
-      "status_label": "回穩觀察",
-      "score": 69.8,
-      "signal_date": "2026-05-29",
-      "ignition_date": "2026-05-26",
-      "days_since_ignition": 3,
-      "close": 21.75,
-      "high": 22.1,
-      "low": 21.5,
-      "volume_lots": 1338,
-      "vol_10d_avg": 1576.0,
-      "vol_ratio": 0.85,
-      "ema5": 21.51,
-      "ema20": 20.39,
-      "ignition_close": 22.05,
-      "ignition_high": 22.5,
-      "ignition_low": 21.1,
-      "ignition_volume_lots": 2773,
-      "ignition_vol_ratio": 2.52,
-      "pullback_from_ignition_close_pct": -1.36,
-      "support_ok": true,
-      "volume_cools": true,
-      "legacy_score": 93,
-      "unified_score": 69.8,
-      "unified_score_grade": "B",
-      "score_breakdown": {
-        "version": "unified_score_v2_momentum_first_stock_level",
-        "total": 69.8,
-        "grade": "B",
-        "base": 60.7,
-        "components": {
-          "chip": 48.1,
-          "momentum": 61.0,
-          "volume": 64.4,
-          "structure": 82.4,
-          "theme": 0.0
-        },
-        "source_count": 4,
-        "source_multiplier": 1.15,
-        "sources": [
-          "chips",
-          "momentum_candidates",
-          "stock_analysis",
-          "volume_pullback"
-        ],
-        "aggregation": "max_component_by_stock"
-      },
-      "context_unified_score": 69.3,
-      "context_score_breakdown": {
-        "version": "unified_score_v2_momentum_first_stock_level",
-        "total": 69.3,
-        "grade": "B",
-        "base": 60.3,
-        "components": {
-          "chip": 48.1,
-          "momentum": 61.0,
-          "volume": 62.7,
-          "structure": 82.4,
-          "theme": 0.0
-        },
-        "source_count": 4,
-        "source_multiplier": 1.15,
-        "sources": [
-          "chips",
-          "momentum_candidates",
-          "stock_analysis",
-          "volume_pullback"
-        ],
-        "reasons": {
-          "chip": [
-            "大戶占比 44.2%",
-            "籌碼標籤加分"
-          ],
-          "momentum": [
-            "週漲 +15.7%",
-            "日漲 +1.2%",
-            "收盤站上 EMA120"
-          ],
-          "volume": [
-            "量比 0.85x",
-            "5/20 均量 2.02x",
-            "回測量縮"
-          ],
-          "structure": [
-            "pullback",
-            "支撐守住"
-          ],
-          "theme": []
-        }
-      }
-    },
-    {
       "stock_id": "6271",
       "name": "同欣電",
       "industry": "電子工業",
@@ -5676,7 +5877,7 @@
       "source_tags": [],
       "status": "pullback",
       "status_label": "回穩觀察",
-      "score": 81.1,
+      "score": 78.7,
       "signal_date": "2026-05-29",
       "ignition_date": "2026-05-26",
       "days_since_ignition": 3,
@@ -5697,15 +5898,15 @@
       "support_ok": true,
       "volume_cools": true,
       "legacy_score": 93,
-      "unified_score": 81.1,
+      "unified_score": 78.7,
       "unified_score_grade": "A",
       "score_breakdown": {
         "version": "unified_score_v2_momentum_first_stock_level",
-        "total": 81.1,
+        "total": 78.7,
         "grade": "A",
-        "base": 70.5,
+        "base": 68.4,
         "components": {
-          "chip": 77.2,
+          "chip": 56.4,
           "momentum": 79.5,
           "volume": 61.2,
           "structure": 78.0,
@@ -5721,14 +5922,14 @@
         ],
         "aggregation": "max_component_by_stock"
       },
-      "context_unified_score": 80.4,
+      "context_unified_score": 78.0,
       "context_score_breakdown": {
         "version": "unified_score_v2_momentum_first_stock_level",
-        "total": 80.4,
+        "total": 78.0,
         "grade": "A",
-        "base": 69.9,
+        "base": 67.9,
         "components": {
-          "chip": 77.2,
+          "chip": 56.4,
           "momentum": 79.5,
           "volume": 59.0,
           "structure": 78.0,
@@ -5744,8 +5945,8 @@
         ],
         "reasons": {
           "chip": [
-            "大戶占比 41.7%",
-            "千張增 +9.2%"
+            "大戶占比 44.6%",
+            "千張增 +7.1%"
           ],
           "momentum": [
             "週漲 +42.8%",
@@ -5776,7 +5977,7 @@
       "source_tags": [],
       "status": "ignition",
       "status_label": "點火",
-      "score": 77.1,
+      "score": 72.5,
       "signal_date": "2026-05-29",
       "ignition_date": "2026-05-29",
       "days_since_ignition": 0,
@@ -5797,24 +5998,23 @@
       "support_ok": true,
       "volume_cools": false,
       "legacy_score": 95,
-      "unified_score": 77.1,
-      "unified_score_grade": "A",
+      "unified_score": 72.5,
+      "unified_score_grade": "B",
       "score_breakdown": {
         "version": "unified_score_v2_momentum_first_stock_level",
-        "total": 77.1,
-        "grade": "A",
-        "base": 67.0,
+        "total": 72.5,
+        "grade": "B",
+        "base": 63.0,
         "components": {
-          "chip": 40.0,
+          "chip": 0.0,
           "momentum": 61.8,
           "volume": 92.5,
           "structure": 80.7,
           "theme": 0.0
         },
-        "source_count": 5,
+        "source_count": 4,
         "source_multiplier": 1.15,
         "sources": [
-          "big_holder_trend",
           "price_breakout_track",
           "right_top_track",
           "stock_analysis",
@@ -5822,32 +6022,29 @@
         ],
         "aggregation": "max_component_by_stock"
       },
-      "context_unified_score": 77.1,
+      "context_unified_score": 72.5,
       "context_score_breakdown": {
         "version": "unified_score_v2_momentum_first_stock_level",
-        "total": 77.1,
-        "grade": "A",
-        "base": 67.0,
+        "total": 72.5,
+        "grade": "B",
+        "base": 63.0,
         "components": {
-          "chip": 40.0,
+          "chip": 0.0,
           "momentum": 61.8,
           "volume": 92.5,
           "structure": 80.7,
           "theme": 0.0
         },
-        "source_count": 5,
+        "source_count": 4,
         "source_multiplier": 1.15,
         "sources": [
-          "big_holder_trend",
           "price_breakout_track",
           "right_top_track",
           "stock_analysis",
           "volume_pullback"
         ],
         "reasons": {
-          "chip": [
-            "千張增 +1.7%"
-          ],
+          "chip": [],
           "momentum": [
             "週漲 +61.1%",
             "日漲 +9.2%",
@@ -5876,7 +6073,7 @@
       "source_tags": [],
       "status": "ignition",
       "status_label": "點火",
-      "score": 69.8,
+      "score": 81.9,
       "signal_date": "2026-05-29",
       "ignition_date": "2026-05-29",
       "days_since_ignition": 0,
@@ -5897,51 +6094,56 @@
       "support_ok": true,
       "volume_cools": false,
       "legacy_score": 95,
-      "unified_score": 69.8,
-      "unified_score_grade": "B",
+      "unified_score": 81.9,
+      "unified_score_grade": "A",
       "score_breakdown": {
         "version": "unified_score_v2_momentum_first_stock_level",
-        "total": 69.8,
-        "grade": "B",
-        "base": 63.4,
+        "total": 81.9,
+        "grade": "A",
+        "base": 71.2,
         "components": {
-          "chip": 0.0,
+          "chip": 78.0,
           "momentum": 62.7,
           "volume": 92.5,
           "structure": 80.7,
           "theme": 0.0
         },
-        "source_count": 3,
-        "source_multiplier": 1.1,
+        "source_count": 4,
+        "source_multiplier": 1.15,
         "sources": [
+          "big_holder_trend",
           "price_breakout_track",
           "right_top_track",
           "volume_pullback"
         ],
         "aggregation": "max_component_by_stock"
       },
-      "context_unified_score": 69.8,
+      "context_unified_score": 81.9,
       "context_score_breakdown": {
         "version": "unified_score_v2_momentum_first_stock_level",
-        "total": 69.8,
-        "grade": "B",
-        "base": 63.4,
+        "total": 81.9,
+        "grade": "A",
+        "base": 71.2,
         "components": {
-          "chip": 0.0,
+          "chip": 78.0,
           "momentum": 62.7,
           "volume": 92.5,
           "structure": 80.7,
           "theme": 0.0
         },
-        "source_count": 3,
-        "source_multiplier": 1.1,
+        "source_count": 4,
+        "source_multiplier": 1.15,
         "sources": [
+          "big_holder_trend",
           "price_breakout_track",
           "right_top_track",
           "volume_pullback"
         ],
         "reasons": {
-          "chip": [],
+          "chip": [
+            "大戶占比 59.1%",
+            "千張增 +4.3%"
+          ],
           "momentum": [
             "週漲 +59.1%",
             "日漲 +9.9%",
@@ -6159,7 +6361,7 @@
       "source_tags": [],
       "status": "ignition",
       "status_label": "點火",
-      "score": 86.0,
+      "score": 88.0,
       "signal_date": "2026-05-29",
       "ignition_date": "2026-05-29",
       "days_since_ignition": 0,
@@ -6180,23 +6382,24 @@
       "support_ok": true,
       "volume_cools": false,
       "legacy_score": 95,
-      "unified_score": 86.0,
+      "unified_score": 88.0,
       "unified_score_grade": "A+",
       "score_breakdown": {
         "version": "unified_score_v2_momentum_first_stock_level",
-        "total": 86.0,
+        "total": 88.0,
         "grade": "A+",
-        "base": 74.8,
+        "base": 76.5,
         "components": {
-          "chip": 44.3,
+          "chip": 61.1,
           "momentum": 76.0,
           "volume": 92.5,
           "structure": 87.0,
           "theme": 0.0
         },
-        "source_count": 5,
+        "source_count": 6,
         "source_multiplier": 1.15,
         "sources": [
+          "big_holder_trend",
           "momentum_candidates",
           "price_breakout_track",
           "right_top",
@@ -6205,22 +6408,23 @@
         ],
         "aggregation": "max_component_by_stock"
       },
-      "context_unified_score": 81.2,
+      "context_unified_score": 82.9,
       "context_score_breakdown": {
         "version": "unified_score_v2_momentum_first_stock_level",
-        "total": 81.2,
+        "total": 82.9,
         "grade": "A",
-        "base": 70.6,
+        "base": 72.1,
         "components": {
-          "chip": 44.3,
+          "chip": 59.2,
           "momentum": 68.7,
           "volume": 92.5,
           "structure": 80.7,
           "theme": 0.0
         },
-        "source_count": 5,
+        "source_count": 6,
         "source_multiplier": 1.15,
         "sources": [
+          "big_holder_trend",
           "momentum_candidates",
           "price_breakout_track",
           "right_top",
@@ -6228,7 +6432,9 @@
           "volume_pullback"
         ],
         "reasons": {
-          "chip": [],
+          "chip": [
+            "千張增 +3.8%"
+          ],
           "momentum": [
             "週漲 +21.9%",
             "日漲 +0.5%",
@@ -6945,19 +7151,15 @@
     {
       "stock_id": "2362",
       "name": "藍天",
-      "industry": "電腦",
+      "industry": "電子工業",
       "market": "TWSE",
       "sources": [
-        "chips",
-        "price_breakout_track",
-        "volume_signal"
+        "price_breakout_track"
       ],
-      "source_tags": [
-        "持續成長"
-      ],
+      "source_tags": [],
       "status": "ignition",
       "status_label": "點火",
-      "score": 84.5,
+      "score": 89.5,
       "signal_date": "2026-05-29",
       "ignition_date": "2026-05-29",
       "days_since_ignition": 0,
@@ -6978,65 +7180,58 @@
       "support_ok": true,
       "volume_cools": false,
       "legacy_score": 88,
-      "unified_score": 84.5,
-      "unified_score_grade": "A",
+      "unified_score": 89.5,
+      "unified_score_grade": "A+",
       "score_breakdown": {
         "version": "unified_score_v2_momentum_first_stock_level",
-        "total": 84.5,
-        "grade": "A",
-        "base": 73.5,
+        "total": 89.5,
+        "grade": "A+",
+        "base": 77.8,
         "components": {
-          "chip": 56.3,
+          "chip": 90.0,
           "momentum": 72.5,
           "volume": 92.5,
-          "structure": 80.7,
+          "structure": 87.0,
           "theme": 0.0
         },
-        "source_count": 9,
+        "source_count": 6,
         "source_multiplier": 1.15,
         "sources": [
-          "big_holder_trend",
-          "chips",
           "momentum_candidates",
           "price_breakout_track",
           "right_top",
           "right_top_track",
           "stock_analysis",
-          "volume_pullback",
-          "volume_signal"
+          "volume_pullback"
         ],
         "aggregation": "max_component_by_stock"
       },
-      "context_unified_score": 83.3,
+      "context_unified_score": 87.2,
       "context_score_breakdown": {
         "version": "unified_score_v2_momentum_first_stock_level",
-        "total": 83.3,
-        "grade": "A",
-        "base": 72.4,
+        "total": 87.2,
+        "grade": "A+",
+        "base": 75.8,
         "components": {
-          "chip": 56.3,
+          "chip": 90.0,
           "momentum": 72.3,
           "volume": 88.6,
           "structure": 80.7,
           "theme": 0.0
         },
-        "source_count": 9,
+        "source_count": 6,
         "source_multiplier": 1.15,
         "sources": [
-          "big_holder_trend",
-          "chips",
           "momentum_candidates",
           "price_breakout_track",
           "right_top",
           "right_top_track",
           "stock_analysis",
-          "volume_pullback",
-          "volume_signal"
+          "volume_pullback"
         ],
         "reasons": {
           "chip": [
-            "大戶占比 76.5%",
-            "籌碼標籤加分"
+            "大戶占比 76.5%"
           ],
           "momentum": [
             "週漲 +14.7%",
@@ -7166,7 +7361,7 @@
       "source_tags": [],
       "status": "ignition",
       "status_label": "點火",
-      "score": 90.0,
+      "score": 87.7,
       "signal_date": "2026-05-28",
       "ignition_date": "2026-05-28",
       "days_since_ignition": 0,
@@ -7187,23 +7382,24 @@
       "support_ok": true,
       "volume_cools": false,
       "legacy_score": 87,
-      "unified_score": 90.0,
+      "unified_score": 87.7,
       "unified_score_grade": "A+",
       "score_breakdown": {
         "version": "unified_score_v2_momentum_first_stock_level",
-        "total": 90.0,
+        "total": 87.7,
         "grade": "A+",
-        "base": 78.2,
+        "base": 76.3,
         "components": {
-          "chip": 90.0,
+          "chip": 70.2,
           "momentum": 80.1,
           "volume": 80.6,
           "structure": 87.0,
           "theme": 0.0
         },
-        "source_count": 5,
+        "source_count": 6,
         "source_multiplier": 1.15,
         "sources": [
+          "big_holder_trend",
           "momentum_candidates",
           "price_breakout_track",
           "right_top",
@@ -7212,22 +7408,23 @@
         ],
         "aggregation": "max_component_by_stock"
       },
-      "context_unified_score": 87.0,
+      "context_unified_score": 84.7,
       "context_score_breakdown": {
         "version": "unified_score_v2_momentum_first_stock_level",
-        "total": 87.0,
-        "grade": "A+",
-        "base": 75.6,
+        "total": 84.7,
+        "grade": "A",
+        "base": 73.7,
         "components": {
-          "chip": 90.0,
+          "chip": 70.2,
           "momentum": 76.4,
           "volume": 80.6,
           "structure": 80.7,
           "theme": 0.0
         },
-        "source_count": 5,
+        "source_count": 6,
         "source_multiplier": 1.15,
         "sources": [
+          "big_holder_trend",
           "momentum_candidates",
           "price_breakout_track",
           "right_top",
@@ -7236,7 +7433,8 @@
         ],
         "reasons": {
           "chip": [
-            "大戶占比 83.2%"
+            "大戶占比 83.2%",
+            "千張增 +3.1%"
           ],
           "momentum": [
             "週漲 +21.8%",
@@ -7266,7 +7464,7 @@
       "source_tags": [],
       "status": "ignition",
       "status_label": "點火",
-      "score": 88.6,
+      "score": 88.3,
       "signal_date": "2026-05-28",
       "ignition_date": "2026-05-28",
       "days_since_ignition": 0,
@@ -7287,23 +7485,24 @@
       "support_ok": true,
       "volume_cools": false,
       "legacy_score": 86,
-      "unified_score": 88.6,
+      "unified_score": 88.3,
       "unified_score_grade": "A+",
       "score_breakdown": {
         "version": "unified_score_v2_momentum_first_stock_level",
-        "total": 88.6,
+        "total": 88.3,
         "grade": "A+",
-        "base": 77.1,
+        "base": 76.7,
         "components": {
-          "chip": 55.2,
+          "chip": 51.8,
           "momentum": 84.2,
           "volume": 82.5,
           "structure": 87.0,
           "theme": 0.0
         },
-        "source_count": 5,
+        "source_count": 6,
         "source_multiplier": 1.15,
         "sources": [
+          "big_holder_trend",
           "momentum_candidates",
           "price_breakout_track",
           "right_top",
@@ -7312,22 +7511,23 @@
         ],
         "aggregation": "max_component_by_stock"
       },
-      "context_unified_score": 85.2,
+      "context_unified_score": 84.7,
       "context_score_breakdown": {
         "version": "unified_score_v2_momentum_first_stock_level",
-        "total": 85.2,
-        "grade": "A+",
-        "base": 74.1,
+        "total": 84.7,
+        "grade": "A",
+        "base": 73.6,
         "components": {
-          "chip": 55.2,
+          "chip": 50.8,
           "momentum": 79.6,
           "volume": 82.5,
           "structure": 80.7,
           "theme": 0.0
         },
-        "source_count": 5,
+        "source_count": 6,
         "source_multiplier": 1.15,
         "sources": [
+          "big_holder_trend",
           "momentum_candidates",
           "price_breakout_track",
           "right_top",
@@ -7336,7 +7536,8 @@
         ],
         "reasons": {
           "chip": [
-            "大戶占比 37.6%"
+            "大戶占比 37.6%",
+            "千張增 +0.1%"
           ],
           "momentum": [
             "週漲 +37.2%",
@@ -7462,7 +7663,7 @@
       "source_tags": [],
       "status": "ignition",
       "status_label": "點火",
-      "score": 65.8,
+      "score": 77.4,
       "signal_date": "2026-05-29",
       "ignition_date": "2026-05-29",
       "days_since_ignition": 0,
@@ -7483,51 +7684,55 @@
       "support_ok": true,
       "volume_cools": false,
       "legacy_score": 85,
-      "unified_score": 65.8,
-      "unified_score_grade": "B",
+      "unified_score": 77.4,
+      "unified_score_grade": "A",
       "score_breakdown": {
         "version": "unified_score_v2_momentum_first_stock_level",
-        "total": 65.8,
-        "grade": "B",
-        "base": 59.8,
+        "total": 77.4,
+        "grade": "A",
+        "base": 67.3,
         "components": {
-          "chip": 0.0,
+          "chip": 70.9,
           "momentum": 58.8,
-          "volume": 84.9,
+          "volume": 86.5,
           "structure": 80.7,
           "theme": 0.0
         },
-        "source_count": 3,
-        "source_multiplier": 1.1,
+        "source_count": 4,
+        "source_multiplier": 1.15,
         "sources": [
+          "big_holder_trend",
           "price_breakout_track",
           "right_top_track",
           "volume_pullback"
         ],
         "aggregation": "max_component_by_stock"
       },
-      "context_unified_score": 65.8,
+      "context_unified_score": 76.9,
       "context_score_breakdown": {
         "version": "unified_score_v2_momentum_first_stock_level",
-        "total": 65.8,
-        "grade": "B",
-        "base": 59.8,
+        "total": 76.9,
+        "grade": "A",
+        "base": 66.9,
         "components": {
-          "chip": 0.0,
+          "chip": 70.9,
           "momentum": 58.8,
           "volume": 84.9,
           "structure": 80.7,
           "theme": 0.0
         },
-        "source_count": 3,
-        "source_multiplier": 1.1,
+        "source_count": 4,
+        "source_multiplier": 1.15,
         "sources": [
+          "big_holder_trend",
           "price_breakout_track",
           "right_top_track",
           "volume_pullback"
         ],
         "reasons": {
-          "chip": [],
+          "chip": [
+            "大戶占比 62.8%"
+          ],
           "momentum": [
             "週漲 +49.3%",
             "日漲 +3.5%",
@@ -7850,7 +8055,7 @@
       "source_tags": [],
       "status": "ignition",
       "status_label": "點火",
-      "score": 80.6,
+      "score": 80.0,
       "signal_date": "2026-05-28",
       "ignition_date": "2026-05-28",
       "days_since_ignition": 0,
@@ -7871,23 +8076,24 @@
       "support_ok": true,
       "volume_cools": false,
       "legacy_score": 83,
-      "unified_score": 80.6,
+      "unified_score": 80.0,
       "unified_score_grade": "A",
       "score_breakdown": {
         "version": "unified_score_v2_momentum_first_stock_level",
-        "total": 80.6,
+        "total": 80.0,
         "grade": "A",
-        "base": 70.1,
+        "base": 69.6,
         "components": {
-          "chip": 64.6,
+          "chip": 58.9,
           "momentum": 78.7,
           "volume": 60.8,
           "structure": 87.0,
           "theme": 0.0
         },
-        "source_count": 6,
+        "source_count": 7,
         "source_multiplier": 1.15,
         "sources": [
+          "big_holder_trend",
           "momentum_candidates",
           "price_breakout_track",
           "right_top",
@@ -7897,22 +8103,23 @@
         ],
         "aggregation": "max_component_by_stock"
       },
-      "context_unified_score": 78.4,
+      "context_unified_score": 77.6,
       "context_score_breakdown": {
         "version": "unified_score_v2_momentum_first_stock_level",
-        "total": 78.4,
+        "total": 77.6,
         "grade": "A",
-        "base": 68.1,
+        "base": 67.5,
         "components": {
-          "chip": 64.6,
+          "chip": 57.7,
           "momentum": 76.4,
           "volume": 60.8,
           "structure": 80.7,
           "theme": 0.0
         },
-        "source_count": 6,
+        "source_count": 7,
         "source_multiplier": 1.15,
         "sources": [
+          "big_holder_trend",
           "momentum_candidates",
           "price_breakout_track",
           "right_top",
@@ -7922,7 +8129,8 @@
         ],
         "reasons": {
           "chip": [
-            "大戶占比 45.0%"
+            "大戶占比 45.0%",
+            "千張增 +2.3%"
           ],
           "momentum": [
             "週漲 +31.9%",
@@ -7952,7 +8160,7 @@
       "source_tags": [],
       "status": "ignition",
       "status_label": "點火",
-      "score": 78.3,
+      "score": 81.7,
       "signal_date": "2026-05-29",
       "ignition_date": "2026-05-29",
       "days_since_ignition": 0,
@@ -7973,24 +8181,23 @@
       "support_ok": true,
       "volume_cools": false,
       "legacy_score": 83,
-      "unified_score": 78.3,
+      "unified_score": 81.7,
       "unified_score_grade": "A",
       "score_breakdown": {
         "version": "unified_score_v2_momentum_first_stock_level",
-        "total": 78.3,
+        "total": 81.7,
         "grade": "A",
-        "base": 68.1,
+        "base": 71.1,
         "components": {
-          "chip": 60.3,
+          "chip": 89.8,
           "momentum": 76.8,
           "volume": 57.9,
           "structure": 87.0,
           "theme": 0.0
         },
-        "source_count": 6,
+        "source_count": 5,
         "source_multiplier": 1.15,
         "sources": [
-          "big_holder_trend",
           "momentum_candidates",
           "price_breakout_track",
           "right_top",
@@ -7999,23 +8206,22 @@
         ],
         "aggregation": "max_component_by_stock"
       },
-      "context_unified_score": 75.8,
+      "context_unified_score": 79.2,
       "context_score_breakdown": {
         "version": "unified_score_v2_momentum_first_stock_level",
-        "total": 75.8,
+        "total": 79.2,
         "grade": "A",
-        "base": 66.0,
+        "base": 68.9,
         "components": {
-          "chip": 60.3,
+          "chip": 89.8,
           "momentum": 74.1,
           "volume": 57.9,
           "structure": 80.7,
           "theme": 0.0
         },
-        "source_count": 6,
+        "source_count": 5,
         "source_multiplier": 1.15,
         "sources": [
-          "big_holder_trend",
           "momentum_candidates",
           "price_breakout_track",
           "right_top",
@@ -8024,8 +8230,7 @@
         ],
         "reasons": {
           "chip": [
-            "大戶占比 67.1%",
-            "千張增 +0.5%"
+            "大戶占比 67.1%"
           ],
           "momentum": [
             "週漲 +31.7%",
@@ -8058,7 +8263,7 @@
       ],
       "status": "ignition",
       "status_label": "點火",
-      "score": 65.7,
+      "score": 64.2,
       "signal_date": "2026-05-29",
       "ignition_date": "2026-05-29",
       "days_since_ignition": 0,
@@ -8079,55 +8284,57 @@
       "support_ok": true,
       "volume_cools": false,
       "legacy_score": 82,
-      "unified_score": 65.7,
-      "unified_score_grade": "B",
+      "unified_score": 64.2,
+      "unified_score_grade": "C",
       "score_breakdown": {
         "version": "unified_score_v2_momentum_first_stock_level",
-        "total": 65.7,
-        "grade": "B",
-        "base": 57.1,
+        "total": 64.2,
+        "grade": "C",
+        "base": 55.8,
         "components": {
-          "chip": 56.8,
-          "momentum": 48.1,
+          "chip": 56.3,
+          "momentum": 45.3,
           "volume": 70.8,
           "structure": 80.7,
           "theme": 0.0
         },
-        "source_count": 4,
+        "source_count": 5,
         "source_multiplier": 1.15,
         "sources": [
           "chips",
           "momentum_candidates",
+          "stock_analysis",
           "volume_pullback",
           "volume_signal"
         ],
         "aggregation": "max_component_by_stock"
       },
-      "context_unified_score": 65.1,
+      "context_unified_score": 63.6,
       "context_score_breakdown": {
         "version": "unified_score_v2_momentum_first_stock_level",
-        "total": 65.1,
-        "grade": "B",
-        "base": 56.6,
+        "total": 63.6,
+        "grade": "C",
+        "base": 55.3,
         "components": {
-          "chip": 56.8,
-          "momentum": 47.8,
+          "chip": 56.3,
+          "momentum": 45.0,
           "volume": 69.2,
           "structure": 80.7,
           "theme": 0.0
         },
-        "source_count": 4,
+        "source_count": 5,
         "source_multiplier": 1.15,
         "sources": [
           "chips",
           "momentum_candidates",
+          "stock_analysis",
           "volume_pullback",
           "volume_signal"
         ],
         "reasons": {
           "chip": [
             "大戶占比 80.4%",
-            "千張增 +0.2%",
+            "千張增 +0.0%",
             "籌碼標籤加分"
           ],
           "momentum": [
@@ -8339,6 +8546,112 @@
           "volume": [
             "量比 3.60x",
             "5/20 均量 2.11x"
+          ],
+          "structure": [
+            "ignition",
+            "支撐守住"
+          ],
+          "theme": []
+        }
+      }
+    },
+    {
+      "stock_id": "3706",
+      "name": "神達",
+      "industry": "電腦",
+      "market": "",
+      "sources": [
+        "chips",
+        "volume_signal"
+      ],
+      "source_tags": [
+        "持續成長",
+        "雙軌觸發"
+      ],
+      "status": "ignition",
+      "status_label": "點火",
+      "score": 68.4,
+      "signal_date": "2026-05-29",
+      "ignition_date": "2026-05-29",
+      "days_since_ignition": 0,
+      "close": 88.8,
+      "high": 90.5,
+      "low": 84.6,
+      "volume_lots": 61351,
+      "vol_10d_avg": 17921.0,
+      "vol_ratio": 3.42,
+      "ema5": 86.03,
+      "ema20": 84.24,
+      "ignition_close": 88.8,
+      "ignition_high": 90.5,
+      "ignition_low": 84.6,
+      "ignition_volume_lots": 61351,
+      "ignition_vol_ratio": 3.42,
+      "pullback_from_ignition_close_pct": 0.0,
+      "support_ok": true,
+      "volume_cools": false,
+      "legacy_score": 81,
+      "unified_score": 68.4,
+      "unified_score_grade": "B",
+      "score_breakdown": {
+        "version": "unified_score_v2_momentum_first_stock_level",
+        "total": 68.4,
+        "grade": "B",
+        "base": 59.5,
+        "components": {
+          "chip": 55.4,
+          "momentum": 58.7,
+          "volume": 61.7,
+          "structure": 80.7,
+          "theme": 0.0
+        },
+        "source_count": 5,
+        "source_multiplier": 1.15,
+        "sources": [
+          "chips",
+          "holding",
+          "momentum_candidates",
+          "volume_pullback",
+          "volume_signal"
+        ],
+        "aggregation": "max_component_by_stock"
+      },
+      "context_unified_score": 68.4,
+      "context_score_breakdown": {
+        "version": "unified_score_v2_momentum_first_stock_level",
+        "total": 68.4,
+        "grade": "B",
+        "base": 59.5,
+        "components": {
+          "chip": 55.4,
+          "momentum": 58.7,
+          "volume": 61.7,
+          "structure": 80.7,
+          "theme": 0.0
+        },
+        "source_count": 5,
+        "source_multiplier": 1.15,
+        "sources": [
+          "chips",
+          "holding",
+          "momentum_candidates",
+          "volume_pullback",
+          "volume_signal"
+        ],
+        "reasons": {
+          "chip": [
+            "大戶占比 49.4%",
+            "千張增 +0.7%",
+            "籌碼標籤加分"
+          ],
+          "momentum": [
+            "週漲 +9.1%",
+            "日漲 +6.9%",
+            "收盤站上 EMA120"
+          ],
+          "volume": [
+            "量比 3.42x",
+            "5/20 均量 1.46x"
           ],
           "structure": [
             "ignition",
@@ -9247,7 +9560,7 @@
       "source_tags": [],
       "status": "ignition",
       "status_label": "點火",
-      "score": 58.3,
+      "score": 69.3,
       "signal_date": "2026-05-29",
       "ignition_date": "2026-05-29",
       "days_since_ignition": 0,
@@ -9268,51 +9581,56 @@
       "support_ok": true,
       "volume_cools": false,
       "legacy_score": 77,
-      "unified_score": 58.3,
-      "unified_score_grade": "C",
+      "unified_score": 69.3,
+      "unified_score_grade": "B",
       "score_breakdown": {
         "version": "unified_score_v2_momentum_first_stock_level",
-        "total": 58.3,
-        "grade": "C",
-        "base": 53.0,
+        "total": 69.3,
+        "grade": "B",
+        "base": 60.2,
         "components": {
-          "chip": 0.0,
+          "chip": 64.8,
           "momentum": 56.8,
-          "volume": 61.4,
+          "volume": 64.4,
           "structure": 80.7,
           "theme": 0.0
         },
-        "source_count": 3,
-        "source_multiplier": 1.1,
+        "source_count": 4,
+        "source_multiplier": 1.15,
         "sources": [
+          "big_holder_trend",
           "price_breakout_track",
           "right_top_track",
           "volume_pullback"
         ],
         "aggregation": "max_component_by_stock"
       },
-      "context_unified_score": 58.3,
+      "context_unified_score": 68.4,
       "context_score_breakdown": {
         "version": "unified_score_v2_momentum_first_stock_level",
-        "total": 58.3,
-        "grade": "C",
-        "base": 53.0,
+        "total": 68.4,
+        "grade": "B",
+        "base": 59.5,
         "components": {
-          "chip": 0.0,
+          "chip": 64.8,
           "momentum": 56.8,
           "volume": 61.4,
           "structure": 80.7,
           "theme": 0.0
         },
-        "source_count": 3,
-        "source_multiplier": 1.1,
+        "source_count": 4,
+        "source_multiplier": 1.15,
         "sources": [
+          "big_holder_trend",
           "price_breakout_track",
           "right_top_track",
           "volume_pullback"
         ],
         "reasons": {
-          "chip": [],
+          "chip": [
+            "大戶占比 52.6%",
+            "千張增 +3.5%"
+          ],
           "momentum": [
             "週漲 +65.9%",
             "追蹤 +36.5%",
@@ -9531,6 +9849,109 @@
       }
     },
     {
+      "stock_id": "1444",
+      "name": "力麗",
+      "industry": "紡織",
+      "market": "",
+      "sources": [
+        "chips",
+        "volume_signal"
+      ],
+      "source_tags": [
+        "持續成長"
+      ],
+      "status": "ignition",
+      "status_label": "點火",
+      "score": 63.1,
+      "signal_date": "2026-05-29",
+      "ignition_date": "2026-05-29",
+      "days_since_ignition": 0,
+      "close": 6.25,
+      "high": 6.35,
+      "low": 6.0,
+      "volume_lots": 3336,
+      "vol_10d_avg": 1238.0,
+      "vol_ratio": 2.69,
+      "ema5": 6.03,
+      "ema20": 6.02,
+      "ignition_close": 6.25,
+      "ignition_high": 6.35,
+      "ignition_low": 6.0,
+      "ignition_volume_lots": 3336,
+      "ignition_vol_ratio": 2.69,
+      "pullback_from_ignition_close_pct": 0.0,
+      "support_ok": true,
+      "volume_cools": false,
+      "legacy_score": 76,
+      "unified_score": 63.1,
+      "unified_score_grade": "C",
+      "score_breakdown": {
+        "version": "unified_score_v2_momentum_first_stock_level",
+        "total": 63.1,
+        "grade": "C",
+        "base": 54.9,
+        "components": {
+          "chip": 55.4,
+          "momentum": 53.2,
+          "volume": 53.1,
+          "structure": 80.7,
+          "theme": 0.0
+        },
+        "source_count": 4,
+        "source_multiplier": 1.15,
+        "sources": [
+          "chips",
+          "momentum_candidates",
+          "volume_pullback",
+          "volume_signal"
+        ],
+        "aggregation": "max_component_by_stock"
+      },
+      "context_unified_score": 62.1,
+      "context_score_breakdown": {
+        "version": "unified_score_v2_momentum_first_stock_level",
+        "total": 62.1,
+        "grade": "C",
+        "base": 54.0,
+        "components": {
+          "chip": 55.4,
+          "momentum": 51.2,
+          "volume": 53.1,
+          "structure": 80.7,
+          "theme": 0.0
+        },
+        "source_count": 4,
+        "source_multiplier": 1.15,
+        "sources": [
+          "chips",
+          "momentum_candidates",
+          "volume_pullback",
+          "volume_signal"
+        ],
+        "reasons": {
+          "chip": [
+            "大戶占比 60.6%",
+            "千張增 +0.2%",
+            "籌碼標籤加分"
+          ],
+          "momentum": [
+            "週漲 +1.8%",
+            "日漲 +4.0%",
+            "收盤站上 EMA120"
+          ],
+          "volume": [
+            "量比 2.69x",
+            "5/20 均量 1.41x"
+          ],
+          "structure": [
+            "ignition",
+            "支撐守住"
+          ],
+          "theme": []
+        }
+      }
+    },
+    {
       "stock_id": "6224",
       "name": "聚鼎",
       "industry": "電子工業",
@@ -9729,118 +10150,6 @@
       }
     },
     {
-      "stock_id": "2332",
-      "name": "友訊",
-      "industry": "通信",
-      "market": "TWSE",
-      "sources": [
-        "chips",
-        "price_breakout_track",
-        "volume_signal"
-      ],
-      "source_tags": [
-        "雙軌觸發"
-      ],
-      "status": "ignition",
-      "status_label": "點火",
-      "score": 74.2,
-      "signal_date": "2026-05-29",
-      "ignition_date": "2026-05-29",
-      "days_since_ignition": 0,
-      "close": 16.95,
-      "high": 17.35,
-      "low": 16.25,
-      "volume_lots": 16845,
-      "vol_10d_avg": 6626.0,
-      "vol_ratio": 2.54,
-      "ema5": 16.0,
-      "ema20": 14.98,
-      "ignition_close": 16.95,
-      "ignition_high": 17.35,
-      "ignition_low": 16.25,
-      "ignition_volume_lots": 16845,
-      "ignition_vol_ratio": 2.54,
-      "pullback_from_ignition_close_pct": 0.0,
-      "support_ok": true,
-      "volume_cools": false,
-      "legacy_score": 75,
-      "unified_score": 74.2,
-      "unified_score_grade": "B",
-      "score_breakdown": {
-        "version": "unified_score_v2_momentum_first_stock_level",
-        "total": 74.2,
-        "grade": "B",
-        "base": 64.5,
-        "components": {
-          "chip": 48.4,
-          "momentum": 65.2,
-          "volume": 72.9,
-          "structure": 80.7,
-          "theme": 0.0
-        },
-        "source_count": 8,
-        "source_multiplier": 1.15,
-        "sources": [
-          "chips",
-          "momentum_candidates",
-          "price_breakout_track",
-          "right_top",
-          "right_top_track",
-          "stock_analysis",
-          "volume_pullback",
-          "volume_signal"
-        ],
-        "aggregation": "max_component_by_stock"
-      },
-      "context_unified_score": 71.3,
-      "context_score_breakdown": {
-        "version": "unified_score_v2_momentum_first_stock_level",
-        "total": 71.3,
-        "grade": "B",
-        "base": 62.0,
-        "components": {
-          "chip": 48.4,
-          "momentum": 63.2,
-          "volume": 66.5,
-          "structure": 80.7,
-          "theme": 0.0
-        },
-        "source_count": 8,
-        "source_multiplier": 1.15,
-        "sources": [
-          "chips",
-          "momentum_candidates",
-          "price_breakout_track",
-          "right_top",
-          "right_top_track",
-          "stock_analysis",
-          "volume_pullback",
-          "volume_signal"
-        ],
-        "reasons": {
-          "chip": [
-            "大戶占比 38.0%",
-            "千張增 +1.0%",
-            "籌碼標籤加分"
-          ],
-          "momentum": [
-            "週漲 +22.4%",
-            "日漲 +5.9%",
-            "追蹤 +5.9%"
-          ],
-          "volume": [
-            "量比 2.54x",
-            "5/20 均量 1.91x"
-          ],
-          "structure": [
-            "ignition",
-            "支撐守住"
-          ],
-          "theme": []
-        }
-      }
-    },
-    {
       "stock_id": "2618",
       "name": "長榮航",
       "industry": "航運",
@@ -9882,9 +10191,9 @@
         "version": "unified_score_v2_momentum_first_stock_level",
         "total": 66.5,
         "grade": "B",
-        "base": 57.8,
+        "base": 57.9,
         "components": {
-          "chip": 56.3,
+          "chip": 56.7,
           "momentum": 50.3,
           "volume": 69.8,
           "structure": 80.7,
@@ -9909,9 +10218,9 @@
         "version": "unified_score_v2_momentum_first_stock_level",
         "total": 65.6,
         "grade": "B",
-        "base": 57.0,
+        "base": 57.1,
         "components": {
-          "chip": 56.3,
+          "chip": 56.7,
           "momentum": 50.3,
           "volume": 66.7,
           "structure": 80.7,
@@ -9931,8 +10240,8 @@
         ],
         "reasons": {
           "chip": [
-            "大戶占比 69.2%",
-            "千張增 +0.0%",
+            "大戶占比 69.4%",
+            "千張增 +0.1%",
             "籌碼標籤加分"
           ],
           "momentum": [
@@ -9942,6 +10251,108 @@
           ],
           "volume": [
             "量比 2.58x",
+            "5/20 均量 1.91x"
+          ],
+          "structure": [
+            "ignition",
+            "支撐守住"
+          ],
+          "theme": []
+        }
+      }
+    },
+    {
+      "stock_id": "2332",
+      "name": "友訊",
+      "industry": "通信網路業",
+      "market": "TWSE",
+      "sources": [
+        "price_breakout_track"
+      ],
+      "source_tags": [],
+      "status": "ignition",
+      "status_label": "點火",
+      "score": 75.7,
+      "signal_date": "2026-05-29",
+      "ignition_date": "2026-05-29",
+      "days_since_ignition": 0,
+      "close": 16.95,
+      "high": 17.35,
+      "low": 16.25,
+      "volume_lots": 16845,
+      "vol_10d_avg": 6626.0,
+      "vol_ratio": 2.54,
+      "ema5": 16.0,
+      "ema20": 14.98,
+      "ignition_close": 16.95,
+      "ignition_high": 17.35,
+      "ignition_low": 16.25,
+      "ignition_volume_lots": 16845,
+      "ignition_vol_ratio": 2.54,
+      "pullback_from_ignition_close_pct": 0.0,
+      "support_ok": true,
+      "volume_cools": false,
+      "legacy_score": 75,
+      "unified_score": 75.7,
+      "unified_score_grade": "A",
+      "score_breakdown": {
+        "version": "unified_score_v2_momentum_first_stock_level",
+        "total": 75.7,
+        "grade": "A",
+        "base": 65.8,
+        "components": {
+          "chip": 52.0,
+          "momentum": 65.2,
+          "volume": 72.9,
+          "structure": 87.0,
+          "theme": 0.0
+        },
+        "source_count": 6,
+        "source_multiplier": 1.15,
+        "sources": [
+          "momentum_candidates",
+          "price_breakout_track",
+          "right_top",
+          "right_top_track",
+          "stock_analysis",
+          "volume_pullback"
+        ],
+        "aggregation": "max_component_by_stock"
+      },
+      "context_unified_score": 71.7,
+      "context_score_breakdown": {
+        "version": "unified_score_v2_momentum_first_stock_level",
+        "total": 71.7,
+        "grade": "B",
+        "base": 62.4,
+        "components": {
+          "chip": 52.0,
+          "momentum": 63.2,
+          "volume": 66.5,
+          "structure": 80.7,
+          "theme": 0.0
+        },
+        "source_count": 6,
+        "source_multiplier": 1.15,
+        "sources": [
+          "momentum_candidates",
+          "price_breakout_track",
+          "right_top",
+          "right_top_track",
+          "stock_analysis",
+          "volume_pullback"
+        ],
+        "reasons": {
+          "chip": [
+            "大戶占比 38.0%"
+          ],
+          "momentum": [
+            "週漲 +22.4%",
+            "日漲 +5.9%",
+            "追蹤 +5.9%"
+          ],
+          "volume": [
+            "量比 2.54x",
             "5/20 均量 1.91x"
           ],
           "structure": [
@@ -9963,7 +10374,7 @@
       "source_tags": [],
       "status": "ignition",
       "status_label": "點火",
-      "score": 90.1,
+      "score": 89.9,
       "signal_date": "2026-05-29",
       "ignition_date": "2026-05-29",
       "days_since_ignition": 0,
@@ -9984,15 +10395,15 @@
       "support_ok": true,
       "volume_cools": false,
       "legacy_score": 75,
-      "unified_score": 90.1,
+      "unified_score": 89.9,
       "unified_score_grade": "A+",
       "score_breakdown": {
         "version": "unified_score_v2_momentum_first_stock_level",
-        "total": 90.1,
+        "total": 89.9,
         "grade": "A+",
-        "base": 78.3,
+        "base": 78.1,
         "components": {
-          "chip": 61.1,
+          "chip": 59.2,
           "momentum": 80.1,
           "volume": 92.5,
           "structure": 87.0,
@@ -10010,14 +10421,14 @@
         ],
         "aggregation": "max_component_by_stock"
       },
-      "context_unified_score": 80.3,
+      "context_unified_score": 80.1,
       "context_score_breakdown": {
         "version": "unified_score_v2_momentum_first_stock_level",
-        "total": 80.3,
+        "total": 80.1,
         "grade": "A",
-        "base": 69.9,
+        "base": 69.7,
         "components": {
-          "chip": 61.1,
+          "chip": 59.2,
           "momentum": 76.3,
           "volume": 69.2,
           "structure": 80.7,
@@ -10036,7 +10447,7 @@
         "reasons": {
           "chip": [
             "大戶占比 70.5%",
-            "千張增 +0.6%"
+            "千張增 +0.2%"
           ],
           "momentum": [
             "週漲 +51.5%",
@@ -10640,7 +11051,7 @@
       ],
       "status": "failed",
       "status_label": "失敗",
-      "score": 67.5,
+      "score": 67.3,
       "signal_date": "2026-05-29",
       "ignition_date": "2026-05-28",
       "days_since_ignition": 1,
@@ -10661,23 +11072,24 @@
       "support_ok": false,
       "volume_cools": true,
       "legacy_score": 6,
-      "unified_score": 67.5,
+      "unified_score": 67.3,
       "unified_score_grade": "B",
       "score_breakdown": {
         "version": "unified_score_v2_momentum_first_stock_level",
-        "total": 67.5,
+        "total": 67.3,
         "grade": "B",
-        "base": 58.7,
+        "base": 58.5,
         "components": {
-          "chip": 57.7,
+          "chip": 55.8,
           "momentum": 56.1,
           "volume": 63.3,
           "structure": 79.2,
           "theme": 0.0
         },
-        "source_count": 6,
+        "source_count": 7,
         "source_multiplier": 1.15,
         "sources": [
+          "big_holder_trend",
           "chips",
           "momentum_candidates",
           "price_breakout_track",
@@ -10687,22 +11099,23 @@
         ],
         "aggregation": "max_component_by_stock"
       },
-      "context_unified_score": 66.7,
+      "context_unified_score": 66.5,
       "context_score_breakdown": {
         "version": "unified_score_v2_momentum_first_stock_level",
-        "total": 66.7,
+        "total": 66.5,
         "grade": "B",
-        "base": 58.0,
+        "base": 57.8,
         "components": {
-          "chip": 57.7,
+          "chip": 55.8,
           "momentum": 56.1,
           "volume": 60.4,
           "structure": 79.2,
           "theme": 0.0
         },
-        "source_count": 6,
+        "source_count": 7,
         "source_multiplier": 1.15,
         "sources": [
+          "big_holder_trend",
           "chips",
           "momentum_candidates",
           "price_breakout_track",
@@ -10712,7 +11125,7 @@
         ],
         "reasons": {
           "chip": [
-            "大戶占比 62.1%",
+            "大戶占比 62.6%",
             "千張增 +0.8%",
             "籌碼標籤加分"
           ],
@@ -10939,7 +11352,7 @@
       "source_tags": [],
       "status": "failed",
       "status_label": "失敗",
-      "score": 76.7,
+      "score": 68.6,
       "signal_date": "2026-05-29",
       "ignition_date": "2026-05-26",
       "days_since_ignition": 3,
@@ -10960,24 +11373,23 @@
       "support_ok": false,
       "volume_cools": true,
       "legacy_score": 5,
-      "unified_score": 76.7,
-      "unified_score_grade": "A",
+      "unified_score": 68.6,
+      "unified_score_grade": "B",
       "score_breakdown": {
         "version": "unified_score_v2_momentum_first_stock_level",
-        "total": 76.7,
-        "grade": "A",
-        "base": 66.7,
+        "total": 68.6,
+        "grade": "B",
+        "base": 59.6,
         "components": {
-          "chip": 70.3,
+          "chip": 0.0,
           "momentum": 72.4,
           "volume": 62.1,
           "structure": 76.8,
           "theme": 0.0
         },
-        "source_count": 6,
+        "source_count": 5,
         "source_multiplier": 1.15,
         "sources": [
-          "big_holder_trend",
           "momentum_pullback",
           "price_breakout_track",
           "right_top_track",
@@ -10986,33 +11398,29 @@
         ],
         "aggregation": "max_component_by_stock"
       },
-      "context_unified_score": 73.7,
+      "context_unified_score": 65.6,
       "context_score_breakdown": {
         "version": "unified_score_v2_momentum_first_stock_level",
-        "total": 73.7,
+        "total": 65.6,
         "grade": "B",
-        "base": 64.1,
+        "base": 57.1,
         "components": {
-          "chip": 70.3,
+          "chip": 0.0,
           "momentum": 69.1,
           "volume": 57.8,
           "structure": 76.8,
           "theme": 0.0
         },
-        "source_count": 5,
+        "source_count": 4,
         "source_multiplier": 1.15,
         "sources": [
-          "big_holder_trend",
           "momentum_pullback",
           "price_breakout_track",
           "right_top_track",
           "volume_pullback"
         ],
         "reasons": {
-          "chip": [
-            "大戶占比 37.0%",
-            "千張增 +24.4%"
-          ],
+          "chip": [],
           "momentum": [
             "週漲 +29.6%",
             "日漲 +3.1%",
@@ -11407,113 +11815,6 @@
       }
     },
     {
-      "stock_id": "3708",
-      "name": "上緯投控",
-      "industry": "綠能",
-      "market": "TWSE",
-      "sources": [
-        "chips",
-        "price_breakout_track"
-      ],
-      "source_tags": [
-        "持續成長"
-      ],
-      "status": "failed",
-      "status_label": "失敗",
-      "score": 63.5,
-      "signal_date": "2026-05-29",
-      "ignition_date": "2026-05-27",
-      "days_since_ignition": 2,
-      "close": 124.5,
-      "high": 126.5,
-      "low": 123.5,
-      "volume_lots": 874,
-      "vol_10d_avg": 2057.0,
-      "vol_ratio": 0.42,
-      "ema5": 125.78,
-      "ema20": 122.79,
-      "ignition_close": 131.0,
-      "ignition_high": 140.5,
-      "ignition_low": 128.5,
-      "ignition_volume_lots": 4431,
-      "ignition_vol_ratio": 2.76,
-      "pullback_from_ignition_close_pct": -4.96,
-      "support_ok": false,
-      "volume_cools": true,
-      "legacy_score": 0,
-      "unified_score": 63.5,
-      "unified_score_grade": "C",
-      "score_breakdown": {
-        "version": "unified_score_v2_momentum_first_stock_level",
-        "total": 63.5,
-        "grade": "C",
-        "base": 55.3,
-        "components": {
-          "chip": 51.7,
-          "momentum": 55.1,
-          "volume": 58.8,
-          "structure": 70.6,
-          "theme": 0.0
-        },
-        "source_count": 7,
-        "source_multiplier": 1.15,
-        "sources": [
-          "big_holder_trend",
-          "chips",
-          "momentum_candidates",
-          "price_breakout_track",
-          "right_top_track",
-          "stock_analysis",
-          "volume_pullback"
-        ],
-        "aggregation": "max_component_by_stock"
-      },
-      "context_unified_score": 62.0,
-      "context_score_breakdown": {
-        "version": "unified_score_v2_momentum_first_stock_level",
-        "total": 62.0,
-        "grade": "C",
-        "base": 53.9,
-        "components": {
-          "chip": 51.7,
-          "momentum": 53.4,
-          "volume": 56.5,
-          "structure": 70.6,
-          "theme": 0.0
-        },
-        "source_count": 7,
-        "source_multiplier": 1.15,
-        "sources": [
-          "big_holder_trend",
-          "chips",
-          "momentum_candidates",
-          "price_breakout_track",
-          "right_top_track",
-          "stock_analysis",
-          "volume_pullback"
-        ],
-        "reasons": {
-          "chip": [
-            "大戶占比 43.8%",
-            "千張增 +0.2%",
-            "籌碼標籤加分"
-          ],
-          "momentum": [
-            "週漲 +6.9%",
-            "日漲 +0.4%",
-            "收盤站上 EMA120"
-          ],
-          "volume": [
-            "量比 0.42x",
-            "5/20 均量 1.70x",
-            "回測量縮"
-          ],
-          "structure": [],
-          "theme": []
-        }
-      }
-    },
-    {
       "stock_id": "6668",
       "name": "中揚光",
       "industry": "光電業",
@@ -11606,93 +11907,92 @@
       }
     },
     {
-      "stock_id": "3376",
-      "name": "新日興",
-      "industry": "電零",
-      "market": "",
+      "stock_id": "3708",
+      "name": "上緯投控",
+      "industry": "化學工業",
+      "market": "TWSE",
       "sources": [
-        "chips"
+        "price_breakout_track"
       ],
-      "source_tags": [
-        "雙軌觸發",
-        "單周增幅"
-      ],
+      "source_tags": [],
       "status": "failed",
       "status_label": "失敗",
-      "score": 46.3,
+      "score": 58.2,
       "signal_date": "2026-05-29",
-      "ignition_date": "2026-05-25",
-      "days_since_ignition": 4,
-      "close": 202.5,
-      "high": 208.0,
-      "low": 201.5,
-      "volume_lots": 6564,
-      "vol_10d_avg": 6288.0,
-      "vol_ratio": 1.04,
-      "ema5": 207.79,
-      "ema20": 207.27,
-      "ignition_close": 220.5,
-      "ignition_high": 226.0,
-      "ignition_low": 209.5,
-      "ignition_volume_lots": 13387,
-      "ignition_vol_ratio": 2.68,
-      "pullback_from_ignition_close_pct": -8.16,
+      "ignition_date": "2026-05-27",
+      "days_since_ignition": 2,
+      "close": 124.5,
+      "high": 126.5,
+      "low": 123.5,
+      "volume_lots": 874,
+      "vol_10d_avg": 2057.0,
+      "vol_ratio": 0.42,
+      "ema5": 125.78,
+      "ema20": 122.79,
+      "ignition_close": 131.0,
+      "ignition_high": 140.5,
+      "ignition_low": 128.5,
+      "ignition_volume_lots": 4431,
+      "ignition_vol_ratio": 2.76,
+      "pullback_from_ignition_close_pct": -4.96,
       "support_ok": false,
       "volume_cools": true,
-      "legacy_score": -1,
-      "unified_score": 46.3,
-      "unified_score_grade": "D",
+      "legacy_score": 0,
+      "unified_score": 58.2,
+      "unified_score_grade": "C",
       "score_breakdown": {
         "version": "unified_score_v2_momentum_first_stock_level",
-        "total": 46.3,
-        "grade": "D",
-        "base": 42.1,
+        "total": 58.2,
+        "grade": "C",
+        "base": 50.6,
         "components": {
-          "chip": 61.8,
-          "momentum": 32.0,
-          "volume": 50.4,
-          "structure": 59.4,
+          "chip": 0.0,
+          "momentum": 57.3,
+          "volume": 56.9,
+          "structure": 70.6,
           "theme": 0.0
         },
-        "source_count": 3,
-        "source_multiplier": 1.1,
+        "source_count": 4,
+        "source_multiplier": 1.15,
         "sources": [
-          "chips",
+          "price_breakout_track",
+          "right_top_track",
           "stock_analysis",
           "volume_pullback"
         ],
         "aggregation": "max_component_by_stock"
       },
-      "context_unified_score": 43.0,
+      "context_unified_score": 56.1,
       "context_score_breakdown": {
         "version": "unified_score_v2_momentum_first_stock_level",
-        "total": 43.0,
-        "grade": "D",
-        "base": 39.0,
+        "total": 56.1,
+        "grade": "C",
+        "base": 48.7,
         "components": {
-          "chip": 61.8,
-          "momentum": 25.8,
-          "volume": 49.4,
-          "structure": 59.4,
+          "chip": 0.0,
+          "momentum": 53.4,
+          "volume": 56.5,
+          "structure": 70.6,
           "theme": 0.0
         },
-        "source_count": 3,
-        "source_multiplier": 1.1,
+        "source_count": 4,
+        "source_multiplier": 1.15,
         "sources": [
-          "chips",
+          "price_breakout_track",
+          "right_top_track",
           "stock_analysis",
           "volume_pullback"
         ],
         "reasons": {
-          "chip": [
-            "大戶占比 40.9%",
-            "千張增 +2.0%",
-            "籌碼標籤加分"
+          "chip": [],
+          "momentum": [
+            "週漲 +6.9%",
+            "日漲 +0.4%",
+            "收盤站上 EMA120"
           ],
-          "momentum": [],
           "volume": [
-            "量比 1.04x",
-            "5/20 均量 1.26x",
+            "量比 0.42x",
+            "5/20 均量 1.70x",
             "回測量縮"
           ],
           "structure": [],
@@ -12092,7 +12392,7 @@
       "source_tags": [],
       "status": "failed",
       "status_label": "失敗",
-      "score": 59.3,
+      "score": 68.6,
       "signal_date": "2026-05-29",
       "ignition_date": "2026-05-25",
       "days_since_ignition": 4,
@@ -12113,51 +12413,56 @@
       "support_ok": false,
       "volume_cools": true,
       "legacy_score": -2,
-      "unified_score": 59.3,
-      "unified_score_grade": "C",
+      "unified_score": 68.6,
+      "unified_score_grade": "B",
       "score_breakdown": {
         "version": "unified_score_v2_momentum_first_stock_level",
-        "total": 59.3,
-        "grade": "C",
-        "base": 53.9,
+        "total": 68.6,
+        "grade": "B",
+        "base": 59.6,
         "components": {
-          "chip": 0.0,
+          "chip": 57.0,
           "momentum": 73.2,
           "volume": 41.5,
           "structure": 70.7,
           "theme": 0.0
         },
-        "source_count": 3,
-        "source_multiplier": 1.1,
+        "source_count": 4,
+        "source_multiplier": 1.15,
         "sources": [
+          "big_holder_trend",
           "price_breakout_track",
           "right_top_track",
           "volume_pullback"
         ],
         "aggregation": "max_component_by_stock"
       },
-      "context_unified_score": 58.9,
+      "context_unified_score": 68.1,
       "context_score_breakdown": {
         "version": "unified_score_v2_momentum_first_stock_level",
-        "total": 58.9,
-        "grade": "C",
-        "base": 53.5,
+        "total": 68.1,
+        "grade": "B",
+        "base": 59.2,
         "components": {
-          "chip": 0.0,
+          "chip": 57.0,
           "momentum": 73.2,
           "volume": 39.9,
           "structure": 70.7,
           "theme": 0.0
         },
-        "source_count": 3,
-        "source_multiplier": 1.1,
+        "source_count": 4,
+        "source_multiplier": 1.15,
         "sources": [
+          "big_holder_trend",
           "price_breakout_track",
           "right_top_track",
           "volume_pullback"
         ],
         "reasons": {
-          "chip": [],
+          "chip": [
+            "大戶占比 35.3%",
+            "千張增 +5.1%"
+          ],
           "momentum": [
             "週漲 +18.9%",
             "日漲 +7.8%",
@@ -12264,6 +12569,6 @@
   ],
   "unified_score_model": {
     "version": "unified_score_v1",
-    "applied_at": "2026-05-29T17:16:47+08:00"
+    "applied_at": "2026-05-30T09:05:14+08:00"
   }
 }
