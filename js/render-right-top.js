@@ -27,17 +27,17 @@ function renderRightTop(strat, main) {
     return;
   }
 
-  const rtSortCol = window._rtSortCol || 'priority_rank';
+  const rtSortCol = window._rtSortCol || 'score';
   const rtSortAsc = window._rtSortAsc !== undefined ? window._rtSortAsc : false;
   const rtView = window._rtView || 'stock';
   const rtFilter = window._rtFilter || 'all';
 
   function rtCompare(a, b) {
     const va = rtSortCol === 'score'
-      ? (a.unified_score ?? a.score ?? a.quality_score ?? '')
+      ? (a.pattern_score ?? a.score ?? '')
       : (a[rtSortCol] != null ? a[rtSortCol] : '');
     const vb = rtSortCol === 'score'
-      ? (b.unified_score ?? b.score ?? b.quality_score ?? '')
+      ? (b.pattern_score ?? b.score ?? '')
       : (b[rtSortCol] != null ? b[rtSortCol] : '');
     const isDate = /^\d{4}-\d{2}-\d{2}/.test(va) || /^\d{4}-\d{2}-\d{2}/.test(vb);
     const numA = parseFloat(va);
@@ -47,7 +47,6 @@ function renderRightTop(strat, main) {
       : (!isNaN(numA) && !isNaN(numB))
         ? numA - numB
         : String(va).localeCompare(String(vb));
-    if (rtSortCol === 'priority_rank') return rtSortAsc ? -cmp : cmp;
     return rtSortAsc ? cmp : -cmp;
   }
 
@@ -139,8 +138,7 @@ function renderRightTop(strat, main) {
     const rows = data.map(d => [
       d.stock_id, d.name, d.industry, d.market,
       (d.signal_types || []).map(t => typeLabels[t] || t).join(' / '),
-      d.unified_score ?? d.score ?? '',
-      d.quality_score ?? '',
+      d.pattern_score ?? d.score ?? '',
       (d.tags || []).join(' / '),
       d.close ?? '',
       d.vol_ratio ?? '',
@@ -216,8 +214,7 @@ function renderRightTop(strat, main) {
                     <div class="stock-industry" style="font-size:10px;color:var(--text3)">${d.market || '—'}</div>
                   </td>
                   <td>
-                    <span style="font-family:var(--mono);font-size:16px;font-weight:700;color:var(--green)">${fmtNum(d.unified_score ?? d.score, 1)}</span>
-                    <span style="font-size:10px;color:var(--text3);margin-left:4px">${d.unified_score_grade || ''}</span>
+                    <span style="font-family:var(--mono);font-size:16px;font-weight:700;color:var(--green)">${fmtNum(d.pattern_score ?? d.score, 1)}</span>
                   </td>
                   <td><span style="font-size:12px;color:var(--text2)">${d.industry || '—'}</span></td>
                   <td><span class="price-cell">${fmtNum(d.close)}</span></td>

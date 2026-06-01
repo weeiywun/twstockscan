@@ -269,16 +269,6 @@ def main():
             time.sleep(0.35)
 
         # 量化評分（ai_news / ai_industry 固定中立 5.0，不呼叫外部 AI）
-        result = calculate_v1_6_score(
-            ai_news_score     = 5.0,
-            ai_industry_score = 5.0,
-            chip_3w_pct       = stock.get("cumulative_3w") or 0.0,
-            chip_big_pct      = stock.get("big_pct_1000") or 40.0,
-            rev_yoy_curr      = yoy_curr,
-            rev_mom_curr      = mom_curr,
-            rev_yoy_last      = yoy_last,
-        )
-
         expire_obj  = add_trading_days(today_obj, OBSERVE_TRADING_DAYS)
         days_remain = trading_days_remaining(expire_obj, today_obj)
 
@@ -292,15 +282,10 @@ def main():
             "entry_price":    stock.get("close", 0),
             "current_price":  stock.get("close", 0),
             "pnl_pct":        0.0,
-            "rev_grade":      result["rev_grade"],
-            "quant_scores":   result["quant_scores"],
             "pinned":         False,
         }
-        priority_level, priority_reason = classify_priority(entry)
-        entry["priority_level"] = priority_level
-        entry["priority_reason"] = priority_reason
         active_list.append(entry)
-        print(f"    ✅ {sid} 入池，到期 {expire_obj}，營收等級 {result['rev_grade']}")
+        print(f"    ✅ {sid} 入池，到期 {expire_obj}")
 
     # ── 每日更新：active 現價 & 損益 & 剩餘天數 ─────────
     print(f"\n更新 active 標的現價（{len(active_list)} 支）...")
@@ -308,10 +293,6 @@ def main():
 
     for item in active_list:
         sid = item["ticker"]
-        priority_level, priority_reason = classify_priority(item)
-        item["priority_level"] = priority_level
-        item["priority_reason"] = priority_reason
-
         # 更新剩餘天數
         expire_obj = date.fromisoformat(item["expire_date"])
         days_remain = trading_days_remaining(expire_obj, today_obj)

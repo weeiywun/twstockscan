@@ -190,7 +190,11 @@ def send_line_notification(results):
     if not token or not raw_ids:
         print("[LINE] 未設定，跳過"); return
     user_ids = [u.strip() for u in raw_ids.split(",") if u.strip()]
-    items = sorted(results, key=lambda r: r["tag_score"], reverse=True)[:FLEX_MAX]
+    items = sorted(
+        results,
+        key=lambda r: (r.get("cumulative_3w") or 0) + (r.get("cumulative_3w_400") or 0),
+        reverse=True,
+    )[:FLEX_MAX]
     rows = []
     for r in items:
         tag_str  = " ".join(r["tags"]) if r["tags"] else "—"
@@ -347,7 +351,6 @@ def main():
             "chg_1w_1000":       chg_1w_1000,
             "chg_1w_400":        chg_1w_400,
             "tags":              tags,
-            "tag_score":         score,
             "big_trend_1000":    pct_trend,
             "big_trend_400":     pct_400_t,
             "date_labels":       d_labels,

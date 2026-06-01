@@ -458,7 +458,7 @@ def main() -> None:
 
         if base_signal or momentum_signal or price_signal:
             whale = whale_map.get(sid, {})
-            tags, quality_score, signal_types = build_signal_tags(base_signal, momentum_signal, price_signal, whale)
+            tags, _quality_score, signal_types = build_signal_tags(base_signal, momentum_signal, price_signal, whale)
             signal_payload = {
                 **(weekly_context or {}),
                 **(base_signal or {}),
@@ -475,26 +475,17 @@ def main() -> None:
                 "is_price_breakout": bool(price_signal),
                 "signal_types": signal_types,
                 "tags": tags,
-                "quality_score": quality_score,
                 **whale,
                 **signal_payload,
                 "signal_date": signal_date,
             }
-            priority_level, priority_reason = classify_priority(row)
-            row["priority_level"] = priority_level
-            row["priority_reason"] = priority_reason
-            row["priority_rank"] = {"A": 1, "B": 2, "C": 3}.get(priority_level, 9)
             results.append(row)
-            print(f"  {sid} {stock['name']} types={'+'.join(signal_types)} score={quality_score}")
+            print(f"  {sid} {stock['name']} types={'+'.join(signal_types)}")
 
         if i % 200 == 0:
             print(f"掃描進度：{i}/{len(stocks)}，命中 {len(results)}，快取缺漏 {skipped}")
 
-    results.sort(key=lambda row: (
-        -row.get("priority_rank", 9),
-        row.get("quality_score") or 0,
-        row.get("vol_ratio") or 0,
-    ), reverse=True)
+    results.sort(key=lambda row: (row.get("vol_ratio") or 0), reverse=True)
     industry_stats = build_industry_stats(results)
 
     print(f"完成：命中 {len(results)} 檔，快取缺漏 {skipped} 檔")

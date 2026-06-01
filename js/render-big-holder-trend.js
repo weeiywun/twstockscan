@@ -39,7 +39,7 @@ function renderBigHolderTrend(strat, main) {
     </div>`;
   };
   const sortValue = row => {
-    if (bigHolderTrendSortCol === 'score') return row.unified_score ?? row.score ?? 0;
+    if (bigHolderTrendSortCol === 'score') return row.pattern_score ?? row.score ?? 0;
     if (bigHolderTrendSortCol === 'entry_close') return row.entry_close ?? row.close ?? 0;
     if (bigHolderTrendSortCol === 'latest_close') return row.latest_close ?? row.close ?? 0;
     if (bigHolderTrendSortCol === 'since_entry_pct') return row.since_entry_pct ?? 0;
@@ -56,14 +56,13 @@ function renderBigHolderTrend(strat, main) {
     return bigHolderTrendSortAsc ? va - vb : vb - va;
   });
 
-  const avgScore = rows.reduce((sum, row) => sum + Number(row.unified_score ?? row.score ?? 0), 0) / rows.length;
+  const avgScore = rows.reduce((sum, row) => sum + Number(row.pattern_score ?? row.score ?? 0), 0) / rows.length;
   const avgReturn = rows.reduce((sum, row) => sum + Number(row.since_entry_pct ?? 0), 0) / rows.length;
   const sourceDate = strat.dataUpdated || '—';
   const priceUpdated = DATA.big_holder_trend_meta?.price_updated || rows[0]?.latest_price_date || sourceDate;
 
   const tableRows = rows.map(row => {
-    const score = row.unified_score ?? row.score;
-    const grade = row.unified_score_grade || '';
+    const score = row.pattern_score ?? row.score;
     const entryClose = row.entry_close ?? row.close;
     const latestClose = row.latest_close ?? row.close;
     const sinceEntryClass = (row.since_entry_pct ?? 0) >= 0 ? 'pos' : 'neg';
@@ -81,7 +80,6 @@ function renderBigHolderTrend(strat, main) {
       </td>
       <td>
         <span style="font-family:var(--mono);font-weight:700;color:var(--green)">${score != null ? fmt(score, 1) : '—'}</span>
-        <span style="font-size:10px;color:var(--text3);margin-left:4px">${grade}</span>
       </td>
       <td>
         <span class="price-cell">${fmt(entryClose, 1)}</span><br>
@@ -179,7 +177,7 @@ function exportCSVBigHolderTrend() {
     row.stock_id || '',
     row.name || '',
     row.industry || '',
-    row.unified_score ?? row.score ?? '',
+    row.pattern_score ?? row.score ?? '',
     row.entry_close ?? row.close ?? '',
     row.entry_date ?? '',
     row.latest_close ?? row.close ?? '',

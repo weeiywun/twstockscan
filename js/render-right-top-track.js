@@ -22,7 +22,7 @@ function renderRightTopTrack(strat, main) {
 
   // ── 排序輔助 ──
   function getValue(s, col) {
-    if (col === 'score') return s.unified_score ?? s.score ?? -1;
+    if (col === 'score') return s.pattern_score ?? s.score ?? -1;
     if (col === 'trigger_date') return s.trigger_date || '';
     return s[col] ?? '';
   }
@@ -81,7 +81,7 @@ function renderRightTopTrack(strat, main) {
     const rows = (trackData.expired || []).map(s => [
       s.stock_id, s.name, s.industry || '', s.market || '',
       s.trigger_date || '',
-      s.unified_score ?? s.score ?? '',
+      s.pattern_score ?? s.score ?? '',
       s.entry_price   != null ? s.entry_price.toFixed(2)   : '',
       s.current_price != null ? s.current_price.toFixed(2) : '',
       s.pnl_pct       != null ? s.pnl_pct.toFixed(2)       : '',
@@ -170,8 +170,7 @@ function renderRightTopTrack(strat, main) {
         </td>
         <td style="font-family:var(--mono);font-size:12px;color:var(--text3)">${s.trigger_date || '—'}</td>
         <td>
-          <span style="font-family:var(--mono);font-size:12px;font-weight:700;color:var(--green)">${s.unified_score != null ? s.unified_score.toFixed(1) : (s.score ?? '—')}</span>
-          <span style="font-size:10px;color:var(--text3);margin-left:4px">${s.unified_score_grade || ''}</span>
+          <span style="font-family:var(--mono);font-size:12px;font-weight:700;color:var(--green)">${s.pattern_score != null ? s.pattern_score.toFixed(1) : (s.score ?? '—')}</span>
         </td>
         <td style="font-family:var(--mono);font-size:12px">${s.entry_price?.toFixed(2) ?? '—'}</td>
         <td style="font-family:var(--mono);font-size:12px">${s.current_price?.toFixed(2) ?? '—'}</td>
@@ -221,8 +220,7 @@ function renderRightTopTrack(strat, main) {
         </td>
         <td style="font-family:var(--mono);font-size:12px;color:var(--text3)">${s.trigger_date || '—'}</td>
         <td>
-          <span style="font-family:var(--mono);font-size:12px;font-weight:700;color:var(--green)">${s.unified_score != null ? s.unified_score.toFixed(1) : (s.score ?? '—')}</span>
-          <span style="font-size:10px;color:var(--text3);margin-left:4px">${s.unified_score_grade || ''}</span>
+          <span style="font-family:var(--mono);font-size:12px;font-weight:700;color:var(--green)">${s.pattern_score != null ? s.pattern_score.toFixed(1) : (s.score ?? '—')}</span>
         </td>
         <td style="font-family:var(--mono);font-size:12px">${s.entry_price?.toFixed(2) ?? '—'}</td>
         <td style="font-family:var(--mono);font-size:12px">${s.current_price?.toFixed(2) ?? '—'}</td>

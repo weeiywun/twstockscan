@@ -25,7 +25,6 @@
 - `chips_big_holder.json`、`big_holder_trend.json`：大戶與籌碼池。
 - `right_top.json`、`right_top_track.json`：突破策略與追蹤。
 - `volume_signal.json`、`volume_pullback.json`：量增訊號與量增回測來源。
-- `candidate_features.json`：跨策略候選特徵層。
 - `ai_analysis.json`：量增訊號標的追蹤與營收評級。
 - `performance.json`：績效追蹤資料。
 
@@ -40,8 +39,7 @@
 - `scan_big_holder_trend.py`、`update_big_holder_trend_prices.py`：大戶趨勢池與每日追蹤。
 - `scan_right_top.py`、`track_right_top.py`：突破策略與追蹤。
 - `scan_volume_signal.py`、`scan_volume_pullback.py`：量增訊號與量增回測模型。
-- `scan_momentum_candidates.py`、`pattern_detect.py`：每日標的池與型態評分。
-- `enrich_candidate_features.py`、`unified_scoring.py`、`apply_unified_scores.py`：共用特徵與統一評分。
+- `scan_momentum_candidates.py`、`pattern_detect.py`、`apply_pattern_scores.py`：每日標的池與型態評分。
 - `stock_analysis.py`：量增訊號標的追蹤與營收評級。
 - `generate_line_performance_chart.py`、`send_daily_scan_summary.py`：LINE 推播素材與每日摘要。
 - `update_institutional_tags.py`：手動補籌碼池法人標籤。
@@ -69,4 +67,4 @@ GAS 腳本位於 `gas/workflow-triggers.gs`：
 2. 新增對應 renderer，並在 `index.html` 載入。
 3. 在 `DATA`、`loadData()`、`renderStrategy()` 補上資料載入與渲染。
 4. 新增 Python 掃描腳本，並加入適合的 workflow。
-5. 若策略會參與標的池或統一評分，更新 `enrich_candidate_features.py` 與 `apply_unified_scores.py`。
+5. 若策略會參與標的池，請以 `pattern_detect.py` 的型態分數作為唯一評分來源。

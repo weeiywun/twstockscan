@@ -23,7 +23,7 @@ function renderBigHolderTrendTrack(strat, main) {
   }
 
   function getValue(s, col) {
-    if (col === 'score') return s.unified_score ?? s.score ?? -1;
+    if (col === 'score') return s.pattern_score ?? s.score ?? -1;
     if (col === 'entry_date') return s.entry_date || '';
     return s[col] ?? '';
   }

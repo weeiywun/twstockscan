@@ -63,7 +63,7 @@ function renderChipsHolder(strat, main) {
       : null;
   }
   function sortValue(d, col) {
-    if (col === 'score') return d.unified_score ?? d.score ?? d.tag_score;
+    if (col === 'score') return d.pattern_score ?? d.score ?? 0;
     if (col === 'chg_1w_1000') return latestWeekChange(d, '1000');
     if (col === 'chg_1w_400') return latestWeekChange(d, '400');
     return d[col];
@@ -144,8 +144,7 @@ function renderChipsHolder(strat, main) {
         <td><span class="big-pct ${chg1w400 != null && chg1w400 >= 0 ? 'pos' : 'neg'}">${chg1w400 != null ? (chg1w400 > 0 ? '+' : '') + chg1w400.toFixed(2) + '%' : '—'}</span></td>
         <td><div class="spark">${sparkBars(d.big_trend_1000 || [])}</div></td>
         <td>
-          <span style="font-family:var(--mono);font-weight:700;color:var(--green)">${d.unified_score != null ? d.unified_score.toFixed(1) : '—'}</span>
-          <span style="font-size:10px;color:var(--text3);margin-left:4px">${d.unified_score_grade || ''}</span>
+          <span style="font-family:var(--mono);font-weight:700;color:var(--green)">${d.pattern_score != null ? d.pattern_score.toFixed(1) : (d.score != null ? d.score.toFixed(1) : '—')}</span>
         </td>
       </tr>
       <tr class="expand-row" id="expand-${d.stock_id}" style="display:none">

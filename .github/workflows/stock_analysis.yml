@@ -40,11 +40,14 @@ jobs:
           FINMIND_TOKEN: ${{ secrets.FINMIND_API_TOKEN }}
         run: python scripts/stock_analysis.py
 
+      - name: Apply pattern scores
+        run: python scripts/apply_pattern_scores.py
+
       - name: Commit and push results
         run: |
           git config user.name  "github-actions[bot]"
           git config user.email "github-actions[bot]@users.noreply.github.com"
-          git add data/ai_analysis.json
+          git add data/ai_analysis.json data/performance.json
 
           if ! git diff --staged --quiet; then
             git commit -m "data: ai_analysis update $(date -u +%Y-%m-%d)"

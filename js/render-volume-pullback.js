@@ -240,7 +240,7 @@ function renderVolumePullback(strat, main) {
         <div class="stock-industry">${row.industry || ''}</div>
       </td>
       <td><span class="tag-badge" style="color:${statusColor};border-color:rgba(80,90,110,.35)">${row.status || '—'}</span>${risk}</td>
-      <td><span style="font-family:var(--mono);font-weight:700;color:var(--green)">${row.score ?? '—'}</span></td>
+      <td><span style="font-family:var(--mono);font-weight:700;color:var(--green)">${row.pattern_score ?? row.score ?? '—'}</span></td>
       <td><span class="price-cell">${row.close != null ? Number(row.close).toFixed(1) : '—'}</span></td>
       <td>${(row.sources || []).map(s => `<span class="tag-badge" style="color:var(--text2);border-color:rgba(80,90,110,.35)">${sourceLabel(s)}</span>`).join('')}</td>
       <td style="font-size:12px;color:var(--text2);line-height:1.7">${metricText(row)}</td>
@@ -249,9 +249,9 @@ function renderVolumePullback(strat, main) {
       <td colspan="8">
         <div class="expand-content">
           <div class="expand-section" style="flex:1;min-width:180px">
-            <h4>分數來源</h4>
+            <h4>型態分數</h4>
             <div style="font-size:12px;color:var(--text2);line-height:1.9">
-              ${Object.entries(row.score_parts || {}).map(([k, v]) => `<div>${sourceLabel(k)}：<b>${v}</b></div>`).join('') || '<div>—</div>'}
+              ${row.pattern_subs ? Object.entries(row.pattern_subs).map(([k, v]) => `<div>${k}：<b>${v}</b></div>`).join('') : '<div>—</div>'}
             </div>
           </div>
           <div class="expand-section" style="flex:2;min-width:240px">

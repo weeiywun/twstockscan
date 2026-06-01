@@ -22,8 +22,7 @@ function renderStockAnalysis(strat, main) {
 
   // ── 排序輔助 ──
   function getValue(s, col) {
-    if (col === 'score') return s.unified_score ?? s.score ?? -1;
-    if (col === 'chip_score') return s.quant_scores?.chip_score ?? -1;
+    if (col === 'score') return s.pattern_score ?? s.score ?? -1;
     if (col === 'entry_date') return s.trigger_date || s.entry_date || '';
     return s[col] ?? '';
   }
@@ -78,7 +77,7 @@ function renderStockAnalysis(strat, main) {
 
   // ── CSV 匯出 ──
   window.exportHistoryCSV = () => {
-    const headers = ['代號', '名稱', '產業', '入選日', '入選收盤', '現價', '損益%', '籌碼集中', '分數', '舊營收等級', '釘選'];
+    const headers = ['代號', '名稱', '產業', '入選日', '入選收盤', '現價', '損益%', '型態分數', '釘選'];
     const rows = (saData.expired || []).map(s => [
       s.ticker,
       s.name,
@@ -87,9 +86,7 @@ function renderStockAnalysis(strat, main) {
       s.entry_price   != null ? s.entry_price.toFixed(2)   : '',
       s.current_price != null ? s.current_price.toFixed(2) : '',
       s.pnl_pct       != null ? s.pnl_pct.toFixed(2)       : '',
-      s.quant_scores?.chip_score ?? '',
-      s.unified_score ?? s.score ?? '',
-      s.rev_grade || '',
+      s.pattern_score ?? s.score ?? '',
       s.pinned ? 'Y' : '',
     ]);
     const csv = [headers, ...rows]
@@ -143,7 +140,6 @@ function renderStockAnalysis(strat, main) {
       const market = s.market || guessMarket(s.ticker);
       const tvSym  = `${market}:${s.ticker}`;
       const eDate  = s.trigger_date || s.entry_date || '—';
-      const chip   = s.quant_scores?.chip_score;
       return `<tr>
         <td style="font-family:var(--mono);font-size:11px;color:var(--text3)">${i + 1}</td>
         <td>
@@ -159,10 +155,8 @@ function renderStockAnalysis(strat, main) {
         <td style="font-family:var(--mono);font-size:12px">${s.entry_price?.toFixed(1) ?? '—'}</td>
         <td style="font-family:var(--mono);font-size:12px">${s.current_price?.toFixed(1) ?? '—'}</td>
         <td><span class="${pnlCls(s.pnl_pct)}" style="font-family:var(--mono);font-size:12px">${pnlStr(s.pnl_pct)}</span></td>
-        <td style="font-family:var(--mono);font-size:12px;color:var(--text2);text-align:center">${chip ?? '—'}</td>
         <td style="text-align:center">
-          <span style="font-family:var(--mono);font-weight:700;color:var(--green)">${s.unified_score != null ? s.unified_score.toFixed(1) : (s.score ?? '—')}</span>
-          <span style="font-size:10px;color:var(--text3);margin-left:4px">${s.unified_score_grade || ''}</span>
+          <span style="font-family:var(--mono);font-weight:700;color:var(--green)">${s.pattern_score != null ? s.pattern_score.toFixed(1) : (s.score ?? '—')}</span>
         </td>
         <td style="text-align:center">${pinBtn(s)}</td>
       </tr>`;
@@ -178,8 +172,7 @@ function renderStockAnalysis(strat, main) {
             <th onclick="actSort('entry_price')" style="cursor:pointer">入選收盤${sortIcon(aC, aA, 'entry_price')}</th>
             <th onclick="actSort('current_price')" style="cursor:pointer">現價${sortIcon(aC, aA, 'current_price')}</th>
             <th onclick="actSort('pnl_pct')" style="cursor:pointer">損益${sortIcon(aC, aA, 'pnl_pct')}</th>
-            <th onclick="actSort('chip_score')" style="cursor:pointer">籌碼集中${sortIcon(aC, aA, 'chip_score')}</th>
-            <th onclick="actSort('score')" style="cursor:pointer">分數${sortIcon(aC, aA, 'score')}</th>
+            <th onclick="actSort('score')" style="cursor:pointer">型態分數${sortIcon(aC, aA, 'score')}</th>
             <th>釘選</th>
           </tr></thead>
           <tbody>${rows}</tbody>
@@ -193,7 +186,6 @@ function renderStockAnalysis(strat, main) {
   if (expired.length > 0) {
     const histRows = expired.map(s => {
       const eDate = s.trigger_date || s.entry_date || '—';
-      const chip  = s.quant_scores?.chip_score;
       return `<tr>
         <td>
           <span class="stock-code" style="font-size:12px">${s.ticker}</span>
@@ -204,10 +196,8 @@ function renderStockAnalysis(strat, main) {
         <td style="font-family:var(--mono);font-size:12px">${s.entry_price?.toFixed(1) ?? '—'}</td>
         <td style="font-family:var(--mono);font-size:12px">${s.current_price?.toFixed(1) ?? '—'}</td>
         <td><span class="${pnlCls(s.pnl_pct)}" style="font-family:var(--mono);font-size:12px">${pnlStr(s.pnl_pct)}</span></td>
-        <td style="font-family:var(--mono);font-size:12px;color:var(--text2);text-align:center">${chip ?? '—'}</td>
         <td style="text-align:center">
-          <span style="font-family:var(--mono);font-weight:700;color:var(--green)">${s.unified_score != null ? s.unified_score.toFixed(1) : (s.score ?? '—')}</span>
-          <span style="font-size:10px;color:var(--text3);margin-left:4px">${s.unified_score_grade || ''}</span>
+          <span style="font-family:var(--mono);font-weight:700;color:var(--green)">${s.pattern_score != null ? s.pattern_score.toFixed(1) : (s.score ?? '—')}</span>
         </td>
         <td style="text-align:center">${pinBtn(s)}</td>
       </tr>`;
@@ -232,8 +222,7 @@ function renderStockAnalysis(strat, main) {
             <th onclick="histSort('entry_price')" style="cursor:pointer">入選收盤${sortIcon(hC, hA, 'entry_price')}</th>
             <th onclick="histSort('current_price')" style="cursor:pointer">現價${sortIcon(hC, hA, 'current_price')}</th>
             <th onclick="histSort('pnl_pct')" style="cursor:pointer">損益${sortIcon(hC, hA, 'pnl_pct')}</th>
-            <th onclick="histSort('chip_score')" style="cursor:pointer">籌碼集中${sortIcon(hC, hA, 'chip_score')}</th>
-            <th onclick="histSort('score')" style="cursor:pointer">分數${sortIcon(hC, hA, 'score')}</th>
+            <th onclick="histSort('score')" style="cursor:pointer">型態分數${sortIcon(hC, hA, 'score')}</th>
             <th>釘選</th>
           </tr></thead>
           <tbody>${histRows}</tbody>

@@ -151,7 +151,6 @@ def main():
                 "name":          item["name"],
                 "industry":      item["industry"],
                 "tags":          item.get("tags", []),
-                "tag_score":     item.get("tag_score", 0),
                 "cumulative_3w": item.get("cumulative_3w"),
                 "big_pct_1000":  item.get("big_pct_1000"),
                 **signal,

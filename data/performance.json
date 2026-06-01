@@ -18,58 +18,24 @@
       "sell_fee": 47,
       "sell_tax": 165,
       "current_price": 52,
-      "unified_score": 15.9,
-      "unified_score_grade": "D",
-      "score_breakdown": {
-        "version": "unified_score_v2_momentum_first_stock_level",
-        "total": 15.9,
-        "grade": "D",
-        "base": 15.9,
-        "components": {
-          "chip": 0.0,
-          "momentum": 25.6,
-          "volume": 17.5,
-          "structure": 0.0,
-          "theme": 0.0
-        },
-        "source_count": 1,
-        "source_multiplier": 1.0,
-        "sources": [
-          "holding"
-        ],
-        "aggregation": "max_component_by_stock"
+      "score": 24.0,
+      "pattern_state": "先觀察",
+      "pattern_score": 24.0,
+      "pattern_subs": {
+        "結構": 5,
+        "型態": 0.0,
+        "量價": 10,
+        "位置": 9,
+        "籌碼": 0
       },
-      "score": 15.9,
-      "legacy_score": 0,
-      "context_unified_score": 15.9,
-      "context_score_breakdown": {
-        "version": "unified_score_v2_momentum_first_stock_level",
-        "total": 15.9,
-        "grade": "D",
-        "base": 15.9,
-        "components": {
-          "chip": 0.0,
-          "momentum": 25.6,
-          "volume": 17.5,
-          "structure": 0.0,
-          "theme": 0.0
-        },
-        "source_count": 1,
-        "source_multiplier": 1.0,
-        "sources": [
-          "holding"
-        ],
-        "reasons": {
-          "chip": [],
-          "momentum": [],
-          "volume": [
-            "量比 0.58x",
-            "5/20 均量 0.55x"
-          ],
-          "structure": [],
-          "theme": []
-        }
-      }
+      "pattern_tags": [
+        "量縮整理"
+      ],
+      "patterns": [],
+      "key_level": null,
+      "invalidation": null,
+      "pattern_confidence": 1.0,
+      "score_model": "pattern_score_only_v1"
     },
     {
       "id": "p1776522841867",
@@ -87,77 +53,27 @@
       "sell_fee": 96,
       "sell_tax": 339,
       "current_price": 124,
-      "unified_score": 73.0,
-      "unified_score_grade": "B",
-      "score_breakdown": {
-        "version": "unified_score_v2_momentum_first_stock_level",
-        "total": 73.0,
-        "grade": "B",
-        "base": 63.5,
-        "components": {
-          "chip": 55.9,
-          "momentum": 55.7,
-          "volume": 79.3,
-          "structure": 86.8,
-          "theme": 0.0
-        },
-        "source_count": 6,
-        "source_multiplier": 1.15,
-        "sources": [
-          "holding",
-          "momentum_candidates",
-          "price_breakout_track",
-          "right_top",
-          "right_top_track",
-          "volume_pullback"
-        ],
-        "aggregation": "max_component_by_stock"
+      "score": 35.4,
+      "pattern_state": "先觀察",
+      "pattern_score": 35.4,
+      "pattern_subs": {
+        "結構": 22,
+        "型態": 8.4,
+        "量價": 0,
+        "位置": 5,
+        "籌碼": 0
       },
-      "score": 73.0,
-      "legacy_score": 0,
-      "context_unified_score": 67.1,
-      "context_score_breakdown": {
-        "version": "unified_score_v2_momentum_first_stock_level",
-        "total": 67.1,
-        "grade": "B",
-        "base": 58.3,
-        "components": {
-          "chip": 55.9,
-          "momentum": 52.3,
-          "volume": 64.7,
-          "structure": 86.8,
-          "theme": 0.0
-        },
-        "source_count": 5,
-        "source_multiplier": 1.15,
-        "sources": [
-          "holding",
-          "momentum_candidates",
-          "right_top",
-          "right_top_track",
-          "volume_pullback"
-        ],
-        "reasons": {
-          "chip": [
-            "大戶占比 40.6%"
-          ],
-          "momentum": [
-            "週漲 +8.0%",
-            "日漲 +3.8%",
-            "收盤站上 EMA120"
-          ],
-          "volume": [
-            "量比 1.18x",
-            "5/20 均量 2.12x",
-            "回測量縮"
-          ],
-          "structure": [
-            "再啟動",
-            "支撐守住"
-          ],
-          "theme": []
-        }
-      }
+      "pattern_tags": [
+        "均線多頭",
+        "箱頂整理"
+      ],
+      "patterns": [
+        "box_near_top"
+      ],
+      "key_level": 126.0,
+      "invalidation": null,
+      "pattern_confidence": 0.6,
+      "score_model": "pattern_score_only_v1"
     },
     {
       "id": "p1776522969168",
@@ -175,66 +91,28 @@
       "sell_fee": 256,
       "sell_tax": 901,
       "current_price": 171.5,
-      "unified_score": 47.9,
-      "unified_score_grade": "D",
-      "score_breakdown": {
-        "version": "unified_score_v2_momentum_first_stock_level",
-        "total": 47.9,
-        "grade": "D",
-        "base": 43.5,
-        "components": {
-          "chip": 0.0,
-          "momentum": 78.9,
-          "volume": 32.0,
-          "structure": 0.0,
-          "theme": 0.0
-        },
-        "source_count": 3,
-        "source_multiplier": 1.1,
-        "sources": [
-          "holding",
-          "right_top_track",
-          "stock_analysis"
-        ],
-        "aggregation": "max_component_by_stock"
+      "score": 52.6,
+      "pattern_state": "太遠不追",
+      "pattern_score": 52.6,
+      "pattern_subs": {
+        "結構": 27,
+        "型態": 17.6,
+        "量價": 5,
+        "位置": 3,
+        "籌碼": 0
       },
-      "score": 47.9,
-      "legacy_score": 0,
-      "context_unified_score": 43.0,
-      "context_score_breakdown": {
-        "version": "unified_score_v2_momentum_first_stock_level",
-        "total": 43.0,
-        "grade": "D",
-        "base": 39.1,
-        "components": {
-          "chip": 0.0,
-          "momentum": 75.5,
-          "volume": 20.5,
-          "structure": 0.0,
-          "theme": 0.0
-        },
-        "source_count": 3,
-        "source_multiplier": 1.1,
-        "sources": [
-          "holding",
-          "right_top_track",
-          "stock_analysis"
-        ],
-        "reasons": {
-          "chip": [],
-          "momentum": [
-            "週漲 +49.8%",
-            "追蹤 +11.6%",
-            "收盤站上 EMA120"
-          ],
-          "volume": [
-            "量比 0.60x",
-            "5/20 均量 0.90x"
-          ],
-          "structure": [],
-          "theme": []
-        }
-      }
+      "pattern_tags": [
+        "均線多頭",
+        "W底突破頸線",
+        "已延伸/過熱"
+      ],
+      "patterns": [
+        "w_bottom_neckline"
+      ],
+      "key_level": 149.5,
+      "invalidation": 145.01,
+      "pattern_confidence": 0.8,
+      "score_model": "pattern_score_only_v1"
     },
     {
       "id": "p1777280271672",
@@ -264,62 +142,29 @@
         }
       ],
       "current_price": 661,
-      "unified_score": 33.1,
-      "unified_score_grade": "D",
-      "score_breakdown": {
-        "version": "unified_score_v2_momentum_first_stock_level",
-        "total": 33.1,
-        "grade": "D",
-        "base": 33.1,
-        "components": {
-          "chip": 0.0,
-          "momentum": 63.9,
-          "volume": 17.5,
-          "structure": 0.0,
-          "theme": 0.0
-        },
-        "source_count": 1,
-        "source_multiplier": 1.0,
-        "sources": [
-          "holding"
-        ],
-        "aggregation": "max_component_by_stock"
+      "score": 49.6,
+      "pattern_state": "太遠不追",
+      "pattern_score": 49.6,
+      "pattern_subs": {
+        "結構": 22,
+        "型態": 17.6,
+        "量價": 10,
+        "位置": 0,
+        "籌碼": 0
       },
-      "score": 33.1,
-      "legacy_score": 3.5,
-      "context_unified_score": 33.1,
-      "context_score_breakdown": {
-        "version": "unified_score_v2_momentum_first_stock_level",
-        "total": 33.1,
-        "grade": "D",
-        "base": 33.1,
-        "components": {
-          "chip": 0.0,
-          "momentum": 63.9,
-          "volume": 17.5,
-          "structure": 0.0,
-          "theme": 0.0
-        },
-        "source_count": 1,
-        "source_multiplier": 1.0,
-        "sources": [
-          "holding"
-        ],
-        "reasons": {
-          "chip": [],
-          "momentum": [
-            "週漲 +126.0%",
-            "收盤站上 EMA120",
-            "EMA20 乖離偏高"
-          ],
-          "volume": [
-            "量比 0.55x",
-            "5/20 均量 0.68x"
-          ],
-          "structure": [],
-          "theme": []
-        }
-      }
+      "pattern_tags": [
+        "均線多頭",
+        "W底突破頸線",
+        "量縮整理",
+        "已延伸/過熱"
+      ],
+      "patterns": [
+        "w_bottom_neckline"
+      ],
+      "key_level": 336.5,
+      "invalidation": 326.4,
+      "pattern_confidence": 0.8,
+      "score_model": "pattern_score_only_v1"
     },
     {
       "id": "p1777280305937",
@@ -358,62 +203,28 @@
         }
       ],
       "current_price": 269.5,
-      "unified_score": 40.3,
-      "unified_score_grade": "D",
-      "score_breakdown": {
-        "version": "unified_score_v2_momentum_first_stock_level",
-        "total": 40.3,
-        "grade": "D",
-        "base": 40.3,
-        "components": {
-          "chip": 0.0,
-          "momentum": 67.3,
-          "volume": 40.2,
-          "structure": 0.0,
-          "theme": 0.0
-        },
-        "source_count": 1,
-        "source_multiplier": 1.0,
-        "sources": [
-          "holding"
-        ],
-        "aggregation": "max_component_by_stock"
+      "score": 49.6,
+      "pattern_state": "太遠不追",
+      "pattern_score": 49.6,
+      "pattern_subs": {
+        "結構": 27,
+        "型態": 17.6,
+        "量價": 5,
+        "位置": 0,
+        "籌碼": 0
       },
-      "score": 40.3,
-      "legacy_score": 0,
-      "context_unified_score": 40.3,
-      "context_score_breakdown": {
-        "version": "unified_score_v2_momentum_first_stock_level",
-        "total": 40.3,
-        "grade": "D",
-        "base": 40.3,
-        "components": {
-          "chip": 0.0,
-          "momentum": 67.3,
-          "volume": 40.2,
-          "structure": 0.0,
-          "theme": 0.0
-        },
-        "source_count": 1,
-        "source_multiplier": 1.0,
-        "sources": [
-          "holding"
-        ],
-        "reasons": {
-          "chip": [],
-          "momentum": [
-            "週漲 +67.0%",
-            "日漲 +5.0%",
-            "收盤站上 EMA120"
-          ],
-          "volume": [
-            "量比 1.45x",
-            "5/20 均量 1.36x"
-          ],
-          "structure": [],
-          "theme": []
-        }
-      }
+      "pattern_tags": [
+        "均線多頭",
+        "W底突破頸線",
+        "已延伸/過熱"
+      ],
+      "patterns": [
+        "w_bottom_neckline"
+      ],
+      "key_level": 195.5,
+      "invalidation": 189.63,
+      "pattern_confidence": 0.8,
+      "score_model": "pattern_score_only_v1"
     },
     {
       "id": "p1777347611521",
@@ -443,77 +254,27 @@
         }
       ],
       "current_price": 124,
-      "unified_score": 73.0,
-      "unified_score_grade": "B",
-      "score_breakdown": {
-        "version": "unified_score_v2_momentum_first_stock_level",
-        "total": 73.0,
-        "grade": "B",
-        "base": 63.5,
-        "components": {
-          "chip": 55.9,
-          "momentum": 55.7,
-          "volume": 79.3,
-          "structure": 86.8,
-          "theme": 0.0
-        },
-        "source_count": 6,
-        "source_multiplier": 1.15,
-        "sources": [
-          "holding",
-          "momentum_candidates",
-          "price_breakout_track",
-          "right_top",
-          "right_top_track",
-          "volume_pullback"
-        ],
-        "aggregation": "max_component_by_stock"
+      "score": 35.4,
+      "pattern_state": "先觀察",
+      "pattern_score": 35.4,
+      "pattern_subs": {
+        "結構": 22,
+        "型態": 8.4,
+        "量價": 0,
+        "位置": 5,
+        "籌碼": 0
       },
-      "score": 73.0,
-      "legacy_score": 0,
-      "context_unified_score": 67.1,
-      "context_score_breakdown": {
-        "version": "unified_score_v2_momentum_first_stock_level",
-        "total": 67.1,
-        "grade": "B",
-        "base": 58.3,
-        "components": {
-          "chip": 55.9,
-          "momentum": 52.3,
-          "volume": 64.7,
-          "structure": 86.8,
-          "theme": 0.0
-        },
-        "source_count": 5,
-        "source_multiplier": 1.15,
-        "sources": [
-          "holding",
-          "momentum_candidates",
-          "right_top",
-          "right_top_track",
-          "volume_pullback"
-        ],
-        "reasons": {
-          "chip": [
-            "大戶占比 40.6%"
-          ],
-          "momentum": [
-            "週漲 +8.0%",
-            "日漲 +3.8%",
-            "收盤站上 EMA120"
-          ],
-          "volume": [
-            "量比 1.18x",
-            "5/20 均量 2.12x",
-            "回測量縮"
-          ],
-          "structure": [
-            "再啟動",
-            "支撐守住"
-          ],
-          "theme": []
-        }
-      }
+      "pattern_tags": [
+        "均線多頭",
+        "箱頂整理"
+      ],
+      "patterns": [
+        "box_near_top"
+      ],
+      "key_level": 126.0,
+      "invalidation": null,
+      "pattern_confidence": 0.6,
+      "score_model": "pattern_score_only_v1"
     },
     {
       "id": "p1777347643566",
@@ -543,66 +304,28 @@
         }
       ],
       "current_price": 146,
-      "unified_score": 47.4,
-      "unified_score_grade": "D",
-      "score_breakdown": {
-        "version": "unified_score_v2_momentum_first_stock_level",
-        "total": 47.4,
-        "grade": "D",
-        "base": 43.1,
-        "components": {
-          "chip": 0.0,
-          "momentum": 69.5,
-          "volume": 47.3,
-          "structure": 0.0,
-          "theme": 0.0
-        },
-        "source_count": 3,
-        "source_multiplier": 1.1,
-        "sources": [
-          "holding",
-          "right_top_track",
-          "stock_analysis"
-        ],
-        "aggregation": "max_component_by_stock"
+      "score": 63,
+      "pattern_state": "值得看圖",
+      "pattern_score": 63,
+      "pattern_subs": {
+        "結構": 27,
+        "型態": 25,
+        "量價": 6,
+        "位置": 5,
+        "籌碼": 0
       },
-      "score": 47.4,
-      "legacy_score": 0.8,
-      "context_unified_score": 45.9,
-      "context_score_breakdown": {
-        "version": "unified_score_v2_momentum_first_stock_level",
-        "total": 45.9,
-        "grade": "D",
-        "base": 41.8,
-        "components": {
-          "chip": 0.0,
-          "momentum": 66.5,
-          "volume": 47.3,
-          "structure": 0.0,
-          "theme": 0.0
-        },
-        "source_count": 3,
-        "source_multiplier": 1.1,
-        "sources": [
-          "holding",
-          "right_top_track",
-          "stock_analysis"
-        ],
-        "reasons": {
-          "chip": [],
-          "momentum": [
-            "週漲 +12.8%",
-            "日漲 +9.7%",
-            "追蹤 +6.4%"
-          ],
-          "volume": [
-            "量比 2.43x",
-            "5/20 均量 1.29x"
-          ],
-          "structure": [],
-          "theme": []
-        }
-      }
+      "pattern_tags": [
+        "均線多頭",
+        "長盤突破首日"
+      ],
+      "patterns": [
+        "long_consolidation_breakout",
+        "w_bottom_neckline"
+      ],
+      "key_level": 146.0,
+      "invalidation": 141.62,
+      "pattern_confidence": 1.0,
+      "score_model": "pattern_score_only_v1"
     },
     {
       "id": "p1777901637665",
@@ -632,66 +355,28 @@
         }
       ],
       "current_price": 146,
-      "unified_score": 47.4,
-      "unified_score_grade": "D",
-      "score_breakdown": {
-        "version": "unified_score_v2_momentum_first_stock_level",
-        "total": 47.4,
-        "grade": "D",
-        "base": 43.1,
-        "components": {
-          "chip": 0.0,
-          "momentum": 69.5,
-          "volume": 47.3,
-          "structure": 0.0,
-          "theme": 0.0
-        },
-        "source_count": 3,
-        "source_multiplier": 1.1,
-        "sources": [
-          "holding",
-          "right_top_track",
-          "stock_analysis"
-        ],
-        "aggregation": "max_component_by_stock"
+      "score": 63,
+      "pattern_state": "值得看圖",
+      "pattern_score": 63,
+      "pattern_subs": {
+        "結構": 27,
+        "型態": 25,
+        "量價": 6,
+        "位置": 5,
+        "籌碼": 0
       },
-      "score": 47.4,
-      "legacy_score": 0.8,
-      "context_unified_score": 45.9,
-      "context_score_breakdown": {
-        "version": "unified_score_v2_momentum_first_stock_level",
-        "total": 45.9,
-        "grade": "D",
-        "base": 41.8,
-        "components": {
-          "chip": 0.0,
-          "momentum": 66.5,
-          "volume": 47.3,
-          "structure": 0.0,
-          "theme": 0.0
-        },
-        "source_count": 3,
-        "source_multiplier": 1.1,
-        "sources": [
-          "holding",
-          "right_top_track",
-          "stock_analysis"
-        ],
-        "reasons": {
-          "chip": [],
-          "momentum": [
-            "週漲 +12.8%",
-            "日漲 +9.7%",
-            "追蹤 +6.4%"
-          ],
-          "volume": [
-            "量比 2.43x",
-            "5/20 均量 1.29x"
-          ],
-          "structure": [],
-          "theme": []
-        }
-      }
+      "pattern_tags": [
+        "均線多頭",
+        "長盤突破首日"
+      ],
+      "patterns": [
+        "long_consolidation_breakout",
+        "w_bottom_neckline"
+      ],
+      "key_level": 146.0,
+      "invalidation": 141.62,
+      "pattern_confidence": 1.0,
+      "score_model": "pattern_score_only_v1"
     },
     {
       "id": "p1778048653927",
@@ -730,69 +415,29 @@
         }
       ],
       "current_price": 304.5,
-      "unified_score": 53.3,
-      "unified_score_grade": "C",
-      "score_breakdown": {
-        "version": "unified_score_v2_momentum_first_stock_level",
-        "total": 53.3,
-        "grade": "C",
-        "base": 48.5,
-        "components": {
-          "chip": 68.3,
-          "momentum": 76.1,
-          "volume": 29.6,
-          "structure": 0.0,
-          "theme": 0.0
-        },
-        "source_count": 3,
-        "source_multiplier": 1.1,
-        "sources": [
-          "big_holder_trend",
-          "holding",
-          "right_top_track"
-        ],
-        "aggregation": "max_component_by_stock"
+      "score": 57.6,
+      "pattern_state": "太遠不追",
+      "pattern_score": 57.6,
+      "pattern_subs": {
+        "結構": 27,
+        "型態": 17.6,
+        "量價": 10,
+        "位置": 3,
+        "籌碼": 0
       },
-      "score": 53.3,
-      "legacy_score": 0,
-      "context_unified_score": 51.5,
-      "context_score_breakdown": {
-        "version": "unified_score_v2_momentum_first_stock_level",
-        "total": 51.5,
-        "grade": "C",
-        "base": 46.8,
-        "components": {
-          "chip": 68.3,
-          "momentum": 76.1,
-          "volume": 22.8,
-          "structure": 0.0,
-          "theme": 0.0
-        },
-        "source_count": 3,
-        "source_multiplier": 1.1,
-        "sources": [
-          "big_holder_trend",
-          "holding",
-          "right_top_track"
-        ],
-        "reasons": {
-          "chip": [
-            "大戶占比 63.0%",
-            "千張增 +3.0%"
-          ],
-          "momentum": [
-            "週漲 +50.8%",
-            "日漲 +4.9%",
-            "追蹤 +7.8%"
-          ],
-          "volume": [
-            "量比 0.88x",
-            "5/20 均量 0.96x"
-          ],
-          "structure": [],
-          "theme": []
-        }
-      }
+      "pattern_tags": [
+        "均線多頭",
+        "W底突破頸線",
+        "量縮整理",
+        "已延伸/過熱"
+      ],
+      "patterns": [
+        "w_bottom_neckline"
+      ],
+      "key_level": 286.0,
+      "invalidation": 277.42,
+      "pattern_confidence": 0.8,
+      "score_model": "pattern_score_only_v1"
     },
     {
       "id": "p1778130331338",
@@ -822,77 +467,27 @@
         }
       ],
       "current_price": 87.4,
-      "unified_score": 68.4,
-      "unified_score_grade": "B",
-      "score_breakdown": {
-        "version": "unified_score_v2_momentum_first_stock_level",
-        "total": 68.4,
-        "grade": "B",
-        "base": 59.5,
-        "components": {
-          "chip": 55.4,
-          "momentum": 58.7,
-          "volume": 61.7,
-          "structure": 80.7,
-          "theme": 0.0
-        },
-        "source_count": 5,
-        "source_multiplier": 1.15,
-        "sources": [
-          "chips",
-          "holding",
-          "momentum_candidates",
-          "volume_pullback",
-          "volume_signal"
-        ],
-        "aggregation": "max_component_by_stock"
+      "score": 49.4,
+      "pattern_state": "先觀察",
+      "pattern_score": 49.4,
+      "pattern_subs": {
+        "結構": 22,
+        "型態": 8.4,
+        "量價": 10,
+        "位置": 9,
+        "籌碼": 0
       },
-      "score": 68.4,
-      "legacy_score": 0,
-      "context_unified_score": 67.3,
-      "context_score_breakdown": {
-        "version": "unified_score_v2_momentum_first_stock_level",
-        "total": 67.3,
-        "grade": "B",
-        "base": 58.5,
-        "components": {
-          "chip": 55.4,
-          "momentum": 58.7,
-          "volume": 57.9,
-          "structure": 80.7,
-          "theme": 0.0
-        },
-        "source_count": 5,
-        "source_multiplier": 1.15,
-        "sources": [
-          "chips",
-          "holding",
-          "momentum_candidates",
-          "volume_pullback",
-          "volume_signal"
-        ],
-        "reasons": {
-          "chip": [
-            "大戶占比 49.4%",
-            "千張增 +0.7%",
-            "籌碼標籤加分"
-          ],
-          "momentum": [
-            "週漲 +9.1%",
-            "日漲 +6.9%",
-            "收盤站上 EMA120"
-          ],
-          "volume": [
-            "量比 3.02x",
-            "5/20 均量 1.46x"
-          ],
-          "structure": [
-            "點火首日",
-            "支撐守住"
-          ],
-          "theme": []
-        }
-      }
+      "pattern_tags": [
+        "均線多頭",
+        "箱頂整理"
+      ],
+      "patterns": [
+        "box_near_top"
+      ],
+      "key_level": 89.7,
+      "invalidation": null,
+      "pattern_confidence": 0.6,
+      "score_model": "pattern_score_only_v1"
     },
     {
       "id": "p1778130400466",
@@ -922,66 +517,28 @@
         }
       ],
       "current_price": 171.5,
-      "unified_score": 47.9,
-      "unified_score_grade": "D",
-      "score_breakdown": {
-        "version": "unified_score_v2_momentum_first_stock_level",
-        "total": 47.9,
-        "grade": "D",
-        "base": 43.5,
-        "components": {
-          "chip": 0.0,
-          "momentum": 78.9,
-          "volume": 32.0,
-          "structure": 0.0,
-          "theme": 0.0
-        },
-        "source_count": 3,
-        "source_multiplier": 1.1,
-        "sources": [
-          "holding",
-          "right_top_track",
-          "stock_analysis"
-        ],
-        "aggregation": "max_component_by_stock"
+      "score": 52.6,
+      "pattern_state": "太遠不追",
+      "pattern_score": 52.6,
+      "pattern_subs": {
+        "結構": 27,
+        "型態": 17.6,
+        "量價": 5,
+        "位置": 3,
+        "籌碼": 0
       },
-      "score": 47.9,
-      "legacy_score": 0,
-      "context_unified_score": 43.0,
-      "context_score_breakdown": {
-        "version": "unified_score_v2_momentum_first_stock_level",
-        "total": 43.0,
-        "grade": "D",
-        "base": 39.1,
-        "components": {
-          "chip": 0.0,
-          "momentum": 75.5,
-          "volume": 20.5,
-          "structure": 0.0,
-          "theme": 0.0
-        },
-        "source_count": 3,
-        "source_multiplier": 1.1,
-        "sources": [
-          "holding",
-          "right_top_track",
-          "stock_analysis"
-        ],
-        "reasons": {
-          "chip": [],
-          "momentum": [
-            "週漲 +49.8%",
-            "追蹤 +11.6%",
-            "收盤站上 EMA120"
-          ],
-          "volume": [
-            "量比 0.60x",
-            "5/20 均量 0.90x"
-          ],
-          "structure": [],
-          "theme": []
-        }
-      }
+      "pattern_tags": [
+        "均線多頭",
+        "W底突破頸線",
+        "已延伸/過熱"
+      ],
+      "patterns": [
+        "w_bottom_neckline"
+      ],
+      "key_level": 149.5,
+      "invalidation": 145.01,
+      "pattern_confidence": 0.8,
+      "score_model": "pattern_score_only_v1"
     },
     {
       "id": "p1778208418799",
@@ -1011,77 +568,27 @@
         }
       ],
       "current_price": 87.4,
-      "unified_score": 68.4,
-      "unified_score_grade": "B",
-      "score_breakdown": {
-        "version": "unified_score_v2_momentum_first_stock_level",
-        "total": 68.4,
-        "grade": "B",
-        "base": 59.5,
-        "components": {
-          "chip": 55.4,
-          "momentum": 58.7,
-          "volume": 61.7,
-          "structure": 80.7,
-          "theme": 0.0
-        },
-        "source_count": 5,
-        "source_multiplier": 1.15,
-        "sources": [
-          "chips",
-          "holding",
-          "momentum_candidates",
-          "volume_pullback",
-          "volume_signal"
-        ],
-        "aggregation": "max_component_by_stock"
+      "score": 49.4,
+      "pattern_state": "先觀察",
+      "pattern_score": 49.4,
+      "pattern_subs": {
+        "結構": 22,
+        "型態": 8.4,
+        "量價": 10,
+        "位置": 9,
+        "籌碼": 0
       },
-      "score": 68.4,
-      "legacy_score": 0,
-      "context_unified_score": 67.3,
-      "context_score_breakdown": {
-        "version": "unified_score_v2_momentum_first_stock_level",
-        "total": 67.3,
-        "grade": "B",
-        "base": 58.5,
-        "components": {
-          "chip": 55.4,
-          "momentum": 58.7,
-          "volume": 57.9,
-          "structure": 80.7,
-          "theme": 0.0
-        },
-        "source_count": 5,
-        "source_multiplier": 1.15,
-        "sources": [
-          "chips",
-          "holding",
-          "momentum_candidates",
-          "volume_pullback",
-          "volume_signal"
-        ],
-        "reasons": {
-          "chip": [
-            "大戶占比 49.4%",
-            "千張增 +0.7%",
-            "籌碼標籤加分"
-          ],
-          "momentum": [
-            "週漲 +9.1%",
-            "日漲 +6.9%",
-            "收盤站上 EMA120"
-          ],
-          "volume": [
-            "量比 3.02x",
-            "5/20 均量 1.46x"
-          ],
-          "structure": [
-            "點火首日",
-            "支撐守住"
-          ],
-          "theme": []
-        }
-      }
+      "pattern_tags": [
+        "均線多頭",
+        "箱頂整理"
+      ],
+      "patterns": [
+        "box_near_top"
+      ],
+      "key_level": 89.7,
+      "invalidation": null,
+      "pattern_confidence": 0.6,
+      "score_model": "pattern_score_only_v1"
     },
     {
       "id": "p1778208511613",
@@ -1111,77 +618,27 @@
         }
       ],
       "current_price": 87.4,
-      "unified_score": 68.4,
-      "unified_score_grade": "B",
-      "score_breakdown": {
-        "version": "unified_score_v2_momentum_first_stock_level",
-        "total": 68.4,
-        "grade": "B",
-        "base": 59.5,
-        "components": {
-          "chip": 55.4,
-          "momentum": 58.7,
-          "volume": 61.7,
-          "structure": 80.7,
-          "theme": 0.0
-        },
-        "source_count": 5,
-        "source_multiplier": 1.15,
-        "sources": [
-          "chips",
-          "holding",
-          "momentum_candidates",
-          "volume_pullback",
-          "volume_signal"
-        ],
-        "aggregation": "max_component_by_stock"
+      "score": 49.4,
+      "pattern_state": "先觀察",
+      "pattern_score": 49.4,
+      "pattern_subs": {
+        "結構": 22,
+        "型態": 8.4,
+        "量價": 10,
+        "位置": 9,
+        "籌碼": 0
       },
-      "score": 68.4,
-      "legacy_score": 0,
-      "context_unified_score": 67.3,
-      "context_score_breakdown": {
-        "version": "unified_score_v2_momentum_first_stock_level",
-        "total": 67.3,
-        "grade": "B",
-        "base": 58.5,
-        "components": {
-          "chip": 55.4,
-          "momentum": 58.7,
-          "volume": 57.9,
-          "structure": 80.7,
-          "theme": 0.0
-        },
-        "source_count": 5,
-        "source_multiplier": 1.15,
-        "sources": [
-          "chips",
-          "holding",
-          "momentum_candidates",
-          "volume_pullback",
-          "volume_signal"
-        ],
-        "reasons": {
-          "chip": [
-            "大戶占比 49.4%",
-            "千張增 +0.7%",
-            "籌碼標籤加分"
-          ],
-          "momentum": [
-            "週漲 +9.1%",
-            "日漲 +6.9%",
-            "收盤站上 EMA120"
-          ],
-          "volume": [
-            "量比 3.02x",
-            "5/20 均量 1.46x"
-          ],
-          "structure": [
-            "點火首日",
-            "支撐守住"
-          ],
-          "theme": []
-        }
-      }
+      "pattern_tags": [
+        "均線多頭",
+        "箱頂整理"
+      ],
+      "patterns": [
+        "box_near_top"
+      ],
+      "key_level": 89.7,
+      "invalidation": null,
+      "pattern_confidence": 0.6,
+      "score_model": "pattern_score_only_v1"
     },
     {
       "id": "p1778374255362",
@@ -1211,77 +668,27 @@
         }
       ],
       "current_price": 87.4,
-      "unified_score": 68.4,
-      "unified_score_grade": "B",
-      "score_breakdown": {
-        "version": "unified_score_v2_momentum_first_stock_level",
-        "total": 68.4,
-        "grade": "B",
-        "base": 59.5,
-        "components": {
-          "chip": 55.4,
-          "momentum": 58.7,
-          "volume": 61.7,
-          "structure": 80.7,
-          "theme": 0.0
-        },
-        "source_count": 5,
-        "source_multiplier": 1.15,
-        "sources": [
-          "chips",
-          "holding",
-          "momentum_candidates",
-          "volume_pullback",
-          "volume_signal"
-        ],
-        "aggregation": "max_component_by_stock"
+      "score": 49.4,
+      "pattern_state": "先觀察",
+      "pattern_score": 49.4,
+      "pattern_subs": {
+        "結構": 22,
+        "型態": 8.4,
+        "量價": 10,
+        "位置": 9,
+        "籌碼": 0
       },
-      "score": 68.4,
-      "legacy_score": 0,
-      "context_unified_score": 67.3,
-      "context_score_breakdown": {
-        "version": "unified_score_v2_momentum_first_stock_level",
-        "total": 67.3,
-        "grade": "B",
-        "base": 58.5,
-        "components": {
-          "chip": 55.4,
-          "momentum": 58.7,
-          "volume": 57.9,
-          "structure": 80.7,
-          "theme": 0.0
-        },
-        "source_count": 5,
-        "source_multiplier": 1.15,
-        "sources": [
-          "chips",
-          "holding",
-          "momentum_candidates",
-          "volume_pullback",
-          "volume_signal"
-        ],
-        "reasons": {
-          "chip": [
-            "大戶占比 49.4%",
-            "千張增 +0.7%",
-            "籌碼標籤加分"
-          ],
-          "momentum": [
-            "週漲 +9.1%",
-            "日漲 +6.9%",
-            "收盤站上 EMA120"
-          ],
-          "volume": [
-            "量比 3.02x",
-            "5/20 均量 1.46x"
-          ],
-          "structure": [
-            "點火首日",
-            "支撐守住"
-          ],
-          "theme": []
-        }
-      }
+      "pattern_tags": [
+        "均線多頭",
+        "箱頂整理"
+      ],
+      "patterns": [
+        "box_near_top"
+      ],
+      "key_level": 89.7,
+      "invalidation": null,
+      "pattern_confidence": 0.6,
+      "score_model": "pattern_score_only_v1"
     },
     {
       "id": "p1778464457204",
@@ -1311,77 +718,27 @@
         }
       ],
       "current_price": 87.4,
-      "unified_score": 68.4,
-      "unified_score_grade": "B",
-      "score_breakdown": {
-        "version": "unified_score_v2_momentum_first_stock_level",
-        "total": 68.4,
-        "grade": "B",
-        "base": 59.5,
-        "components": {
-          "chip": 55.4,
-          "momentum": 58.7,
-          "volume": 61.7,
-          "structure": 80.7,
-          "theme": 0.0
-        },
-        "source_count": 5,
-        "source_multiplier": 1.15,
-        "sources": [
-          "chips",
-          "holding",
-          "momentum_candidates",
-          "volume_pullback",
-          "volume_signal"
-        ],
-        "aggregation": "max_component_by_stock"
+      "score": 49.4,
+      "pattern_state": "先觀察",
+      "pattern_score": 49.4,
+      "pattern_subs": {
+        "結構": 22,
+        "型態": 8.4,
+        "量價": 10,
+        "位置": 9,
+        "籌碼": 0
       },
-      "score": 68.4,
-      "legacy_score": 0,
-      "context_unified_score": 67.3,
-      "context_score_breakdown": {
-        "version": "unified_score_v2_momentum_first_stock_level",
-        "total": 67.3,
-        "grade": "B",
-        "base": 58.5,
-        "components": {
-          "chip": 55.4,
-          "momentum": 58.7,
-          "volume": 57.9,
-          "structure": 80.7,
-          "theme": 0.0
-        },
-        "source_count": 5,
-        "source_multiplier": 1.15,
-        "sources": [
-          "chips",
-          "holding",
-          "momentum_candidates",
-          "volume_pullback",
-          "volume_signal"
-        ],
-        "reasons": {
-          "chip": [
-            "大戶占比 49.4%",
-            "千張增 +0.7%",
-            "籌碼標籤加分"
-          ],
-          "momentum": [
-            "週漲 +9.1%",
-            "日漲 +6.9%",
-            "收盤站上 EMA120"
-          ],
-          "volume": [
-            "量比 3.02x",
-            "5/20 均量 1.46x"
-          ],
-          "structure": [
-            "點火首日",
-            "支撐守住"
-          ],
-          "theme": []
-        }
-      }
+      "pattern_tags": [
+        "均線多頭",
+        "箱頂整理"
+      ],
+      "patterns": [
+        "box_near_top"
+      ],
+      "key_level": 89.7,
+      "invalidation": null,
+      "pattern_confidence": 0.6,
+      "score_model": "pattern_score_only_v1"
     },
     {
       "id": "p1778476199959",
@@ -1411,60 +768,22 @@
         }
       ],
       "current_price": 51.2,
-      "unified_score": 20.4,
-      "unified_score_grade": "D",
-      "score_breakdown": {
-        "version": "unified_score_v2_momentum_first_stock_level",
-        "total": 20.4,
-        "grade": "D",
-        "base": 20.4,
-        "components": {
-          "chip": 0.0,
-          "momentum": 29.6,
-          "volume": 28.4,
-          "structure": 0.0,
-          "theme": 0.0
-        },
-        "source_count": 1,
-        "source_multiplier": 1.0,
-        "sources": [
-          "holding"
-        ],
-        "aggregation": "max_component_by_stock"
+      "score": 14.0,
+      "pattern_state": "先觀察",
+      "pattern_score": 14.0,
+      "pattern_subs": {
+        "結構": 0,
+        "型態": 0.0,
+        "量價": 5,
+        "位置": 9,
+        "籌碼": 0
       },
-      "score": 20.4,
-      "legacy_score": 0,
-      "context_unified_score": 20.4,
-      "context_score_breakdown": {
-        "version": "unified_score_v2_momentum_first_stock_level",
-        "total": 20.4,
-        "grade": "D",
-        "base": 20.4,
-        "components": {
-          "chip": 0.0,
-          "momentum": 29.6,
-          "volume": 28.4,
-          "structure": 0.0,
-          "theme": 0.0
-        },
-        "source_count": 1,
-        "source_multiplier": 1.0,
-        "sources": [
-          "holding"
-        ],
-        "reasons": {
-          "chip": [],
-          "momentum": [
-            "日漲 +3.8%"
-          ],
-          "volume": [
-            "量比 1.26x",
-            "5/20 均量 1.02x"
-          ],
-          "structure": [],
-          "theme": []
-        }
-      }
+      "pattern_tags": [],
+      "patterns": [],
+      "key_level": null,
+      "invalidation": null,
+      "pattern_confidence": 1.0,
+      "score_model": "pattern_score_only_v1"
     },
     {
       "id": "p1778648736842",
@@ -1512,68 +831,28 @@
         }
       ],
       "current_price": 125.5,
-      "unified_score": 69.3,
-      "unified_score_grade": "B",
-      "score_breakdown": {
-        "version": "unified_score_v2_momentum_first_stock_level",
-        "total": 69.3,
-        "grade": "B",
-        "base": 63.0,
-        "components": {
-          "chip": 90.0,
-          "momentum": 73.2,
-          "volume": 84.4,
-          "structure": 0.0,
-          "theme": 0.0
-        },
-        "source_count": 3,
-        "source_multiplier": 1.1,
-        "sources": [
-          "holding",
-          "right_top",
-          "right_top_track"
-        ],
-        "aggregation": "max_component_by_stock"
+      "score": 48.6,
+      "pattern_state": "太遠不追",
+      "pattern_score": 48.6,
+      "pattern_subs": {
+        "結構": 22,
+        "型態": 17.6,
+        "量價": 6,
+        "位置": 3,
+        "籌碼": 0
       },
-      "score": 69.3,
-      "legacy_score": 0,
-      "context_unified_score": 61.6,
-      "context_score_breakdown": {
-        "version": "unified_score_v2_momentum_first_stock_level",
-        "total": 61.6,
-        "grade": "C",
-        "base": 56.0,
-        "components": {
-          "chip": 90.0,
-          "momentum": 71.5,
-          "volume": 59.2,
-          "structure": 0.0,
-          "theme": 0.0
-        },
-        "source_count": 3,
-        "source_multiplier": 1.1,
-        "sources": [
-          "holding",
-          "right_top",
-          "right_top_track"
-        ],
-        "reasons": {
-          "chip": [
-            "大戶占比 67.6%"
-          ],
-          "momentum": [
-            "週漲 +45.7%",
-            "日漲 +3.1%",
-            "追蹤 +33.2%"
-          ],
-          "volume": [
-            "量比 2.35x",
-            "5/20 均量 1.72x"
-          ],
-          "structure": [],
-          "theme": []
-        }
-      }
+      "pattern_tags": [
+        "均線多頭",
+        "W底突破頸線",
+        "已延伸/過熱"
+      ],
+      "patterns": [
+        "w_bottom_neckline"
+      ],
+      "key_level": 98.0,
+      "invalidation": 95.06,
+      "pattern_confidence": 0.8,
+      "score_model": "pattern_score_only_v1"
     },
     {
       "id": "p1779159288100",
@@ -1603,60 +882,24 @@
         }
       ],
       "current_price": 61.2,
-      "unified_score": 35.6,
-      "unified_score_grade": "D",
-      "score_breakdown": {
-        "version": "unified_score_v2_momentum_first_stock_level",
-        "total": 35.6,
-        "grade": "D",
-        "base": 35.6,
-        "components": {
-          "chip": 0.0,
-          "momentum": 62.8,
-          "volume": 29.2,
-          "structure": 0.0,
-          "theme": 0.0
-        },
-        "source_count": 1,
-        "source_multiplier": 1.0,
-        "sources": [
-          "holding"
-        ],
-        "aggregation": "max_component_by_stock"
+      "score": 34.0,
+      "pattern_state": "先觀察",
+      "pattern_score": 34.0,
+      "pattern_subs": {
+        "結構": 22,
+        "型態": 0.0,
+        "量價": 5,
+        "位置": 7,
+        "籌碼": 0
       },
-      "score": 35.6,
-      "legacy_score": 0,
-      "context_unified_score": 35.6,
-      "context_score_breakdown": {
-        "version": "unified_score_v2_momentum_first_stock_level",
-        "total": 35.6,
-        "grade": "D",
-        "base": 35.6,
-        "components": {
-          "chip": 0.0,
-          "momentum": 62.8,
-          "volume": 29.2,
-          "structure": 0.0,
-          "theme": 0.0
-        },
-        "source_count": 1,
-        "source_multiplier": 1.0,
-        "sources": [
-          "holding"
-        ],
-        "reasons": {
-          "chip": [],
-          "momentum": [
-            "收盤站上 EMA120"
-          ],
-          "volume": [
-            "量比 0.62x",
-            "5/20 均量 1.20x"
-          ],
-          "structure": [],
-          "theme": []
-        }
-      }
+      "pattern_tags": [
+        "均線多頭"
+      ],
+      "patterns": [],
+      "key_level": null,
+      "invalidation": null,
+      "pattern_confidence": 1.0,
+      "score_model": "pattern_score_only_v1"
     },
     {
       "id": "p1779172767180",
@@ -1686,60 +929,24 @@
         }
       ],
       "current_price": 61.2,
-      "unified_score": 35.6,
-      "unified_score_grade": "D",
-      "score_breakdown": {
-        "version": "unified_score_v2_momentum_first_stock_level",
-        "total": 35.6,
-        "grade": "D",
-        "base": 35.6,
-        "components": {
-          "chip": 0.0,
-          "momentum": 62.8,
-          "volume": 29.2,
-          "structure": 0.0,
-          "theme": 0.0
-        },
-        "source_count": 1,
-        "source_multiplier": 1.0,
-        "sources": [
-          "holding"
-        ],
-        "aggregation": "max_component_by_stock"
+      "score": 34.0,
+      "pattern_state": "先觀察",
+      "pattern_score": 34.0,
+      "pattern_subs": {
+        "結構": 22,
+        "型態": 0.0,
+        "量價": 5,
+        "位置": 7,
+        "籌碼": 0
       },
-      "score": 35.6,
-      "legacy_score": 0,
-      "context_unified_score": 35.6,
-      "context_score_breakdown": {
-        "version": "unified_score_v2_momentum_first_stock_level",
-        "total": 35.6,
-        "grade": "D",
-        "base": 35.6,
-        "components": {
-          "chip": 0.0,
-          "momentum": 62.8,
-          "volume": 29.2,
-          "structure": 0.0,
-          "theme": 0.0
-        },
-        "source_count": 1,
-        "source_multiplier": 1.0,
-        "sources": [
-          "holding"
-        ],
-        "reasons": {
-          "chip": [],
-          "momentum": [
-            "收盤站上 EMA120"
-          ],
-          "volume": [
-            "量比 0.62x",
-            "5/20 均量 1.20x"
-          ],
-          "structure": [],
-          "theme": []
-        }
-      }
+      "pattern_tags": [
+        "均線多頭"
+      ],
+      "patterns": [],
+      "key_level": null,
+      "invalidation": null,
+      "pattern_confidence": 1.0,
+      "score_model": "pattern_score_only_v1"
     },
     {
       "id": "p1779172783547",
@@ -1769,60 +976,24 @@
         }
       ],
       "current_price": 61.2,
-      "unified_score": 35.6,
-      "unified_score_grade": "D",
-      "score_breakdown": {
-        "version": "unified_score_v2_momentum_first_stock_level",
-        "total": 35.6,
-        "grade": "D",
-        "base": 35.6,
-        "components": {
-          "chip": 0.0,
-          "momentum": 62.8,
-          "volume": 29.2,
-          "structure": 0.0,
-          "theme": 0.0
-        },
-        "source_count": 1,
-        "source_multiplier": 1.0,
-        "sources": [
-          "holding"
-        ],
-        "aggregation": "max_component_by_stock"
+      "score": 34.0,
+      "pattern_state": "先觀察",
+      "pattern_score": 34.0,
+      "pattern_subs": {
+        "結構": 22,
+        "型態": 0.0,
+        "量價": 5,
+        "位置": 7,
+        "籌碼": 0
       },
-      "score": 35.6,
-      "legacy_score": 0,
-      "context_unified_score": 35.6,
-      "context_score_breakdown": {
-        "version": "unified_score_v2_momentum_first_stock_level",
-        "total": 35.6,
-        "grade": "D",
-        "base": 35.6,
-        "components": {
-          "chip": 0.0,
-          "momentum": 62.8,
-          "volume": 29.2,
-          "structure": 0.0,
-          "theme": 0.0
-        },
-        "source_count": 1,
-        "source_multiplier": 1.0,
-        "sources": [
-          "holding"
-        ],
-        "reasons": {
-          "chip": [],
-          "momentum": [
-            "收盤站上 EMA120"
-          ],
-          "volume": [
-            "量比 0.62x",
-            "5/20 均量 1.20x"
-          ],
-          "structure": [],
-          "theme": []
-        }
-      }
+      "pattern_tags": [
+        "均線多頭"
+      ],
+      "patterns": [],
+      "key_level": null,
+      "invalidation": null,
+      "pattern_confidence": 1.0,
+      "score_model": "pattern_score_only_v1"
     },
     {
       "id": "p1779418330087",
@@ -1879,73 +1050,27 @@
         }
       ],
       "current_price": 45.25,
-      "unified_score": 64.4,
-      "unified_score_grade": "C",
-      "score_breakdown": {
-        "version": "unified_score_v2_momentum_first_stock_level",
-        "total": 64.4,
-        "grade": "C",
-        "base": 56.0,
-        "components": {
-          "chip": 73.9,
-          "momentum": 81.2,
-          "volume": 48.2,
-          "structure": 0.0,
-          "theme": 0.0
-        },
-        "source_count": 5,
-        "source_multiplier": 1.15,
-        "sources": [
-          "big_holder_trend",
-          "holding",
-          "right_top",
-          "right_top_track",
-          "stock_analysis"
-        ],
-        "aggregation": "max_component_by_stock"
+      "score": 54.6,
+      "pattern_state": "先觀察",
+      "pattern_score": 54.6,
+      "pattern_subs": {
+        "結構": 27,
+        "型態": 17.6,
+        "量價": 5,
+        "位置": 5,
+        "籌碼": 0
       },
-      "score": 64.4,
-      "legacy_score": 7,
-      "context_unified_score": 61.0,
-      "context_score_breakdown": {
-        "version": "unified_score_v2_momentum_first_stock_level",
-        "total": 61.0,
-        "grade": "C",
-        "base": 53.0,
-        "components": {
-          "chip": 72.5,
-          "momentum": 79.8,
-          "volume": 39.4,
-          "structure": 0.0,
-          "theme": 0.0
-        },
-        "source_count": 5,
-        "source_multiplier": 1.15,
-        "sources": [
-          "big_holder_trend",
-          "holding",
-          "right_top",
-          "right_top_track",
-          "stock_analysis"
-        ],
-        "reasons": {
-          "chip": [
-            "大戶占比 54.0%",
-            "千張增 +5.3%"
-          ],
-          "momentum": [
-            "週漲 +32.6%",
-            "日漲 +2.2%",
-            "追蹤 +19.8%"
-          ],
-          "volume": [
-            "量比 1.12x",
-            "5/20 均量 1.45x"
-          ],
-          "structure": [],
-          "theme": []
-        }
-      }
+      "pattern_tags": [
+        "均線多頭",
+        "W底突破頸線"
+      ],
+      "patterns": [
+        "w_bottom_neckline"
+      ],
+      "key_level": 38.65,
+      "invalidation": 37.49,
+      "pattern_confidence": 0.8,
+      "score_model": "pattern_score_only_v1"
     },
     {
       "id": "p1779418348670",
@@ -1975,73 +1100,27 @@
         }
       ],
       "current_price": 45.25,
-      "unified_score": 64.4,
-      "unified_score_grade": "C",
-      "score_breakdown": {
-        "version": "unified_score_v2_momentum_first_stock_level",
-        "total": 64.4,
-        "grade": "C",
-        "base": 56.0,
-        "components": {
-          "chip": 73.9,
-          "momentum": 81.2,
-          "volume": 48.2,
-          "structure": 0.0,
-          "theme": 0.0
-        },
-        "source_count": 5,
-        "source_multiplier": 1.15,
-        "sources": [
-          "big_holder_trend",
-          "holding",
-          "right_top",
-          "right_top_track",
-          "stock_analysis"
-        ],
-        "aggregation": "max_component_by_stock"
+      "score": 54.6,
+      "pattern_state": "先觀察",
+      "pattern_score": 54.6,
+      "pattern_subs": {
+        "結構": 27,
+        "型態": 17.6,
+        "量價": 5,
+        "位置": 5,
+        "籌碼": 0
       },
-      "score": 64.4,
-      "legacy_score": 7,
-      "context_unified_score": 61.0,
-      "context_score_breakdown": {
-        "version": "unified_score_v2_momentum_first_stock_level",
-        "total": 61.0,
-        "grade": "C",
-        "base": 53.0,
-        "components": {
-          "chip": 72.5,
-          "momentum": 79.8,
-          "volume": 39.4,
-          "structure": 0.0,
-          "theme": 0.0
-        },
-        "source_count": 5,
-        "source_multiplier": 1.15,
-        "sources": [
-          "big_holder_trend",
-          "holding",
-          "right_top",
-          "right_top_track",
-          "stock_analysis"
-        ],
-        "reasons": {
-          "chip": [
-            "大戶占比 54.0%",
-            "千張增 +5.3%"
-          ],
-          "momentum": [
-            "週漲 +32.6%",
-            "日漲 +2.2%",
-            "追蹤 +19.8%"
-          ],
-          "volume": [
-            "量比 1.12x",
-            "5/20 均量 1.45x"
-          ],
-          "structure": [],
-          "theme": []
-        }
-      }
+      "pattern_tags": [
+        "均線多頭",
+        "W底突破頸線"
+      ],
+      "patterns": [
+        "w_bottom_neckline"
+      ],
+      "key_level": 38.65,
+      "invalidation": 37.49,
+      "pattern_confidence": 0.8,
+      "score_model": "pattern_score_only_v1"
     },
     {
       "id": "p1779677750867",
@@ -2071,73 +1150,27 @@
         }
       ],
       "current_price": 45.25,
-      "unified_score": 64.4,
-      "unified_score_grade": "C",
-      "score_breakdown": {
-        "version": "unified_score_v2_momentum_first_stock_level",
-        "total": 64.4,
-        "grade": "C",
-        "base": 56.0,
-        "components": {
-          "chip": 73.9,
-          "momentum": 81.2,
-          "volume": 48.2,
-          "structure": 0.0,
-          "theme": 0.0
-        },
-        "source_count": 5,
-        "source_multiplier": 1.15,
-        "sources": [
-          "big_holder_trend",
-          "holding",
-          "right_top",
-          "right_top_track",
-          "stock_analysis"
-        ],
-        "aggregation": "max_component_by_stock"
+      "score": 54.6,
+      "pattern_state": "先觀察",
+      "pattern_score": 54.6,
+      "pattern_subs": {
+        "結構": 27,
+        "型態": 17.6,
+        "量價": 5,
+        "位置": 5,
+        "籌碼": 0
       },
-      "score": 64.4,
-      "legacy_score": 7,
-      "context_unified_score": 61.0,
-      "context_score_breakdown": {
-        "version": "unified_score_v2_momentum_first_stock_level",
-        "total": 61.0,
-        "grade": "C",
-        "base": 53.0,
-        "components": {
-          "chip": 72.5,
-          "momentum": 79.8,
-          "volume": 39.4,
-          "structure": 0.0,
-          "theme": 0.0
-        },
-        "source_count": 5,
-        "source_multiplier": 1.15,
-        "sources": [
-          "big_holder_trend",
-          "holding",
-          "right_top",
-          "right_top_track",
-          "stock_analysis"
-        ],
-        "reasons": {
-          "chip": [
-            "大戶占比 54.0%",
-            "千張增 +5.3%"
-          ],
-          "momentum": [
-            "週漲 +32.6%",
-            "日漲 +2.2%",
-            "追蹤 +19.8%"
-          ],
-          "volume": [
-            "量比 1.12x",
-            "5/20 均量 1.45x"
-          ],
-          "structure": [],
-          "theme": []
-        }
-      }
+      "pattern_tags": [
+        "均線多頭",
+        "W底突破頸線"
+      ],
+      "patterns": [
+        "w_bottom_neckline"
+      ],
+      "key_level": 38.65,
+      "invalidation": 37.49,
+      "pattern_confidence": 0.8,
+      "score_model": "pattern_score_only_v1"
     },
     {
       "id": "p1780016795830",
@@ -2156,64 +1189,27 @@
       "exit_net": null,
       "confirmed": false,
       "current_price": 30.05,
-      "unified_score": 49.6,
-      "unified_score_grade": "D",
-      "score_breakdown": {
-        "version": "unified_score_v2_momentum_first_stock_level",
-        "total": 49.6,
-        "grade": "D",
-        "base": 47.2,
-        "components": {
-          "chip": 0.0,
-          "momentum": 68.8,
-          "volume": 65.0,
-          "structure": 0.0,
-          "theme": 0.0
-        },
-        "source_count": 2,
-        "source_multiplier": 1.05,
-        "sources": [
-          "holding",
-          "right_top_track"
-        ],
-        "aggregation": "max_component_by_stock"
+      "score": 54.6,
+      "pattern_state": "先觀察",
+      "pattern_score": 54.6,
+      "pattern_subs": {
+        "結構": 27,
+        "型態": 17.6,
+        "量價": 5,
+        "位置": 5,
+        "籌碼": 0
       },
-      "score": 49.6,
-      "context_unified_score": 41.0,
-      "context_score_breakdown": {
-        "version": "unified_score_v2_momentum_first_stock_level",
-        "total": 41.0,
-        "grade": "D",
-        "base": 39.0,
-        "components": {
-          "chip": 0.0,
-          "momentum": 68.8,
-          "volume": 32.3,
-          "structure": 0.0,
-          "theme": 0.0
-        },
-        "source_count": 2,
-        "source_multiplier": 1.05,
-        "sources": [
-          "holding",
-          "right_top_track"
-        ],
-        "reasons": {
-          "chip": [],
-          "momentum": [
-            "週漲 +24.5%",
-            "追蹤 +1.5%",
-            "收盤站上 EMA120"
-          ],
-          "volume": [
-            "量比 0.67x",
-            "5/20 均量 1.31x"
-          ],
-          "structure": [],
-          "theme": []
-        }
-      },
-      "legacy_score": 80.3
+      "pattern_tags": [
+        "均線多頭",
+        "W底突破頸線"
+      ],
+      "patterns": [
+        "w_bottom_neckline"
+      ],
+      "key_level": 26.35,
+      "invalidation": 25.56,
+      "pattern_confidence": 0.8,
+      "score_model": "pattern_score_only_v1"
     },
     {
       "id": "p1780016817308",
@@ -2232,64 +1228,27 @@
       "exit_net": null,
       "confirmed": false,
       "current_price": 30.05,
-      "unified_score": 49.6,
-      "unified_score_grade": "D",
-      "score_breakdown": {
-        "version": "unified_score_v2_momentum_first_stock_level",
-        "total": 49.6,
-        "grade": "D",
-        "base": 47.2,
-        "components": {
-          "chip": 0.0,
-          "momentum": 68.8,
-          "volume": 65.0,
-          "structure": 0.0,
-          "theme": 0.0
-        },
-        "source_count": 2,
-        "source_multiplier": 1.05,
-        "sources": [
-          "holding",
-          "right_top_track"
-        ],
-        "aggregation": "max_component_by_stock"
+      "score": 54.6,
+      "pattern_state": "先觀察",
+      "pattern_score": 54.6,
+      "pattern_subs": {
+        "結構": 27,
+        "型態": 17.6,
+        "量價": 5,
+        "位置": 5,
+        "籌碼": 0
       },
-      "score": 49.6,
-      "context_unified_score": 41.0,
-      "context_score_breakdown": {
-        "version": "unified_score_v2_momentum_first_stock_level",
-        "total": 41.0,
-        "grade": "D",
-        "base": 39.0,
-        "components": {
-          "chip": 0.0,
-          "momentum": 68.8,
-          "volume": 32.3,
-          "structure": 0.0,
-          "theme": 0.0
-        },
-        "source_count": 2,
-        "source_multiplier": 1.05,
-        "sources": [
-          "holding",
-          "right_top_track"
-        ],
-        "reasons": {
-          "chip": [],
-          "momentum": [
-            "週漲 +24.5%",
-            "追蹤 +1.5%",
-            "收盤站上 EMA120"
-          ],
-          "volume": [
-            "量比 0.67x",
-            "5/20 均量 1.31x"
-          ],
-          "structure": [],
-          "theme": []
-        }
-      },
-      "legacy_score": 80.3
+      "pattern_tags": [
+        "均線多頭",
+        "W底突破頸線"
+      ],
+      "patterns": [
+        "w_bottom_neckline"
+      ],
+      "key_level": 26.35,
+      "invalidation": 25.56,
+      "pattern_confidence": 0.8,
+      "score_model": "pattern_score_only_v1"
     },
     {
       "id": "p1780016845264",
@@ -2308,64 +1267,27 @@
       "exit_net": null,
       "confirmed": false,
       "current_price": 30.05,
-      "unified_score": 49.6,
-      "unified_score_grade": "D",
-      "score_breakdown": {
-        "version": "unified_score_v2_momentum_first_stock_level",
-        "total": 49.6,
-        "grade": "D",
-        "base": 47.2,
-        "components": {
-          "chip": 0.0,
-          "momentum": 68.8,
-          "volume": 65.0,
-          "structure": 0.0,
-          "theme": 0.0
-        },
-        "source_count": 2,
-        "source_multiplier": 1.05,
-        "sources": [
-          "holding",
-          "right_top_track"
-        ],
-        "aggregation": "max_component_by_stock"
+      "score": 54.6,
+      "pattern_state": "先觀察",
+      "pattern_score": 54.6,
+      "pattern_subs": {
+        "結構": 27,
+        "型態": 17.6,
+        "量價": 5,
+        "位置": 5,
+        "籌碼": 0
       },
-      "score": 49.6,
-      "context_unified_score": 41.0,
-      "context_score_breakdown": {
-        "version": "unified_score_v2_momentum_first_stock_level",
-        "total": 41.0,
-        "grade": "D",
-        "base": 39.0,
-        "components": {
-          "chip": 0.0,
-          "momentum": 68.8,
-          "volume": 32.3,
-          "structure": 0.0,
-          "theme": 0.0
-        },
-        "source_count": 2,
-        "source_multiplier": 1.05,
-        "sources": [
-          "holding",
-          "right_top_track"
-        ],
-        "reasons": {
-          "chip": [],
-          "momentum": [
-            "週漲 +24.5%",
-            "追蹤 +1.5%",
-            "收盤站上 EMA120"
-          ],
-          "volume": [
-            "量比 0.67x",
-            "5/20 均量 1.31x"
-          ],
-          "structure": [],
-          "theme": []
-        }
-      },
-      "legacy_score": 80.3
+      "pattern_tags": [
+        "均線多頭",
+        "W底突破頸線"
+      ],
+      "patterns": [
+        "w_bottom_neckline"
+      ],
+      "key_level": 26.35,
+      "invalidation": 25.56,
+      "pattern_confidence": 0.8,
+      "score_model": "pattern_score_only_v1"
     },
     {
       "id": "p1780017518413",
@@ -2384,64 +1306,27 @@
       "exit_net": null,
       "confirmed": false,
       "current_price": 30.05,
-      "unified_score": 49.6,
-      "unified_score_grade": "D",
-      "score_breakdown": {
-        "version": "unified_score_v2_momentum_first_stock_level",
-        "total": 49.6,
-        "grade": "D",
-        "base": 47.2,
-        "components": {
-          "chip": 0.0,
-          "momentum": 68.8,
-          "volume": 65.0,
-          "structure": 0.0,
-          "theme": 0.0
-        },
-        "source_count": 2,
-        "source_multiplier": 1.05,
-        "sources": [
-          "holding",
-          "right_top_track"
-        ],
-        "aggregation": "max_component_by_stock"
+      "score": 54.6,
+      "pattern_state": "先觀察",
+      "pattern_score": 54.6,
+      "pattern_subs": {
+        "結構": 27,
+        "型態": 17.6,
+        "量價": 5,
+        "位置": 5,
+        "籌碼": 0
       },
-      "score": 49.6,
-      "context_unified_score": 41.0,
-      "context_score_breakdown": {
-        "version": "unified_score_v2_momentum_first_stock_level",
-        "total": 41.0,
-        "grade": "D",
-        "base": 39.0,
-        "components": {
-          "chip": 0.0,
-          "momentum": 68.8,
-          "volume": 32.3,
-          "structure": 0.0,
-          "theme": 0.0
-        },
-        "source_count": 2,
-        "source_multiplier": 1.05,
-        "sources": [
-          "holding",
-          "right_top_track"
-        ],
-        "reasons": {
-          "chip": [],
-          "momentum": [
-            "週漲 +24.5%",
-            "追蹤 +1.5%",
-            "收盤站上 EMA120"
-          ],
-          "volume": [
-            "量比 0.67x",
-            "5/20 均量 1.31x"
-          ],
-          "structure": [],
-          "theme": []
-        }
-      },
-      "legacy_score": 80.3
+      "pattern_tags": [
+        "均線多頭",
+        "W底突破頸線"
+      ],
+      "patterns": [
+        "w_bottom_neckline"
+      ],
+      "key_level": 26.35,
+      "invalidation": 25.56,
+      "pattern_confidence": 0.8,
+      "score_model": "pattern_score_only_v1"
     },
     {
       "id": "p1780020397179",
@@ -2460,64 +1345,27 @@
       "exit_net": null,
       "confirmed": false,
       "current_price": 30.05,
-      "unified_score": 49.6,
-      "unified_score_grade": "D",
-      "score_breakdown": {
-        "version": "unified_score_v2_momentum_first_stock_level",
-        "total": 49.6,
-        "grade": "D",
-        "base": 47.2,
-        "components": {
-          "chip": 0.0,
-          "momentum": 68.8,
-          "volume": 65.0,
-          "structure": 0.0,
-          "theme": 0.0
-        },
-        "source_count": 2,
-        "source_multiplier": 1.05,
-        "sources": [
-          "holding",
-          "right_top_track"
-        ],
-        "aggregation": "max_component_by_stock"
+      "score": 54.6,
+      "pattern_state": "先觀察",
+      "pattern_score": 54.6,
+      "pattern_subs": {
+        "結構": 27,
+        "型態": 17.6,
+        "量價": 5,
+        "位置": 5,
+        "籌碼": 0
       },
-      "score": 49.6,
-      "context_unified_score": 41.0,
-      "context_score_breakdown": {
-        "version": "unified_score_v2_momentum_first_stock_level",
-        "total": 41.0,
-        "grade": "D",
-        "base": 39.0,
-        "components": {
-          "chip": 0.0,
-          "momentum": 68.8,
-          "volume": 32.3,
-          "structure": 0.0,
-          "theme": 0.0
-        },
-        "source_count": 2,
-        "source_multiplier": 1.05,
-        "sources": [
-          "holding",
-          "right_top_track"
-        ],
-        "reasons": {
-          "chip": [],
-          "momentum": [
-            "週漲 +24.5%",
-            "追蹤 +1.5%",
-            "收盤站上 EMA120"
-          ],
-          "volume": [
-            "量比 0.67x",
-            "5/20 均量 1.31x"
-          ],
-          "structure": [],
-          "theme": []
-        }
-      },
-      "legacy_score": 80.3
+      "pattern_tags": [
+        "均線多頭",
+        "W底突破頸線"
+      ],
+      "patterns": [
+        "w_bottom_neckline"
+      ],
+      "key_level": 26.35,
+      "invalidation": 25.56,
+      "pattern_confidence": 0.8,
+      "score_model": "pattern_score_only_v1"
     }
   ],
   "price_history": {
@@ -2979,8 +1827,5 @@
       "content": "這週因為去了一趟沖繩的關係，所以在出發前清倉神達轉為茂綸後，便無其他操作。\n\n這次操作的心得是，像神達這樣公布業績與獲利能力後，直接向下跳空，後續都不會有更好的走勢發展，雖然需考慮一部分大盤的回檔影響，但當日跳空開低且無任何反彈跡象，就可見知一二，後續在大盤反彈時，也無力再衝擊新高。\n\n而轉換為茂綸的原因，一部分是因為神達的虧損而覺得需要拼回來，確實這是不好的示範，但自己是依據突破策略去篩選，加上茂綸的營收與獲利能力都有增加，所以在後續持有就比較安穩。\n在前方有一個大黑k爆量的隔天，還是有守住5日，所以進場等待。\n\n很幸運的有吃到一小段漲幅，目前已清倉一半，剩下兩張部位期待150-180區間。\n\n近期的大盤有出現略為回檔休息的樣貌，篩選出來的大戶持股標的也減少許多，可以繼續觀望看看，以維持現有部位為主。"
     }
   ],
-  "unified_score_model": {
-    "version": "unified_score_v1",
-    "applied_at": "2026-06-01T10:28:02+08:00"
-  }
+  "score_model": "pattern_score_only_v1"
 }

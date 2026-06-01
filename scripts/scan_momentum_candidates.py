@@ -1,9 +1,14 @@
 #!/usr/bin/env python3
-"""
-短線強勢雷達
+"""Build the daily stock pool with pattern score as the only score.
 
-整合目前仍啟用的策略輸出，將籌碼集中、量增訊號、突破追蹤、
-量增回測與量增標的追蹤彙整成單一候選清單。
+The pool keeps only current strategy inputs:
+- low-base big-holder pool (chips_big_holder)
+- trend big-holder pool (big_holder_trend)
+- low-base volume signal (volume_signal)
+
+No legacy context score, source bonus, priority score, AI score, or breakout
+tracking score is used here. Rows enter from strategy membership, then receive
+one pattern score from pattern_detect.
 """
 
 from __future__ import annotations
@@ -13,41 +18,21 @@ import os
 from datetime import date, datetime, timedelta, timezone
 from typing import Any
 
-from finmind_client import load_price_cache, get_stock_price_from_cache
+from finmind_client import get_stock_price_from_cache, load_price_cache
 import pattern_detect
 
 SCRIPT_DIR = os.path.dirname(os.path.abspath(__file__))
 DATA_DIR = os.path.join(SCRIPT_DIR, "..", "data")
 
 CHIPS_PATH = os.path.join(DATA_DIR, "chips_big_holder.json")
+BIG_HOLDER_TREND_PATH = os.path.join(DATA_DIR, "big_holder_trend.json")
 VOLUME_SIGNAL_PATH = os.path.join(DATA_DIR, "volume_signal.json")
-VOLUME_PULLBACK_PATH = os.path.join(DATA_DIR, "volume_pullback.json")
-RIGHT_TOP_TRACK_PATH = os.path.join(DATA_DIR, "right_top_track.json")
-AI_ANALYSIS_PATH = os.path.join(DATA_DIR, "ai_analysis.json")
 CURRENT_PRICES_PATH = os.path.join(DATA_DIR, "current_prices.json")
 OUTPUT_PATH = os.path.join(DATA_DIR, "momentum_candidates.json")
 
 TW_TZ = timezone(timedelta(hours=8))
-HOT_INDUSTRY_KEYWORDS = (
-    "電子零組件",
-    "電子工業",
-    "電腦",
-    "電腦及週邊",
-    "光電",
-    "半導體",
-    "其他電子",
-    "機電",
-    "電機",
-    "通信",
-)
-MAX_EXTENDED_PCT = 15.0
-PRICE_LOOKBACK_DAYS = 200  # ≈130 trading days
-PRIORITY_RANK = {"A": 1, "B": 2, "C": 3}
-FOCUS_VOL_MIN = 1.2
-FOCUS_VOL_MAX = 5.0
-FOCUS_WEEK_CHG_MAX = 18.0
-FOCUS_BBW_MAX = 14.0
-FOCUS_TRACK_PNL_MAX = 14.0
+PRICE_LOOKBACK_DAYS = 220
+WATCH_STATE = "值得看圖"
 
 
 def load_json(path: str) -> dict[str, Any]:
@@ -80,31 +65,33 @@ def round_or_none(value: Any, digits: int = 2) -> float | None:
 
 
 def ensure_row(rows: dict[str, dict[str, Any]], stock_id: str, name: str = "") -> dict[str, Any]:
-    stock_id = str(stock_id or "").strip()
-    if stock_id not in rows:
-        rows[stock_id] = {
-            "stock_id": stock_id,
+    sid = str(stock_id or "").strip()
+    if sid not in rows:
+        rows[sid] = {
+            "stock_id": sid,
             "name": name,
             "industry": "",
             "market": "",
             "close": None,
-            "status": "",
-            "status_rank": 9,
             "sources": [],
             "tags": [],
-            "score_parts": {},
             "metrics": {},
         }
-    if name and not rows[stock_id]["name"]:
-        rows[stock_id]["name"] = name
-    return rows[stock_id]
+    if name and not rows[sid]["name"]:
+        rows[sid]["name"] = name
+    return rows[sid]
 
 
-def merge_base(row: dict[str, Any], item: dict[str, Any], source: str) -> None:
-    row["name"] = row["name"] or item.get("name", "")
-    row["industry"] = row["industry"] or item.get("industry", "")
-    row["market"] = row["market"] or item.get("market", "")
-    row["close"] = item.get("current_price") or item.get("close") or row.get("close")
+def add_source(row: dict[str, Any], item: dict[str, Any], source: str) -> None:
+    row["name"] = row.get("name") or item.get("name", "")
+    row["industry"] = row.get("industry") or item.get("industry", "")
+    row["market"] = row.get("market") or item.get("market", "")
+    row["close"] = (
+        item.get("current_price")
+        or item.get("latest_close")
+        or item.get("close")
+        or row.get("close")
+    )
     if source not in row["sources"]:
         row["sources"].append(source)
     for tag in item.get("tags", []) or item.get("source_tags", []) or []:
@@ -112,344 +99,135 @@ def merge_base(row: dict[str, Any], item: dict[str, Any], source: str) -> None:
             row["tags"].append(tag)
 
 
-def set_status(row: dict[str, Any], label: str, rank: int) -> None:
-    if rank < row.get("status_rank", 9):
-        row["status"] = label
-        row["status_rank"] = rank
+def merge_metric(row: dict[str, Any], key: str, value: Any, digits: int = 2) -> None:
+    value = round_or_none(value, digits)
+    if value is not None:
+        row["metrics"][key] = value
 
 
-def add_score(row: dict[str, Any], key: str, score: float) -> None:
-    row["score_parts"][key] = max(num(row["score_parts"].get(key)), score)
+def add_chips(rows: dict[str, dict[str, Any]]) -> None:
+    for item in load_json(CHIPS_PATH).get("results", []) or []:
+        sid = str(item.get("stock_id") or "")
+        if not sid:
+            continue
+        row = ensure_row(rows, sid, item.get("name", ""))
+        add_source(row, item, "chips")
+        for key in (
+            "market_cap",
+            "bbw",
+            "week_chg_pct",
+            "big_pct_1000",
+            "big_pct_400",
+            "deviation",
+            "vol_20d_avg",
+        ):
+            merge_metric(row, key, item.get(key), 1 if key in ("market_cap", "vol_20d_avg") else 2)
 
 
-def set_priority(row: dict[str, Any]) -> None:
-    metrics = row.get("metrics", {})
-    sources = set(row.get("sources", []))
-    rev_score = num(metrics.get("rev_score"))
-    chip_score = num(metrics.get("chip_score"))
-    today_vol_ratio = num(metrics.get("today_vol_ratio"))
-    ignition_vol_ratio = num(metrics.get("ignition_vol_ratio"))
-    pullback_status = metrics.get("pullback_status")
-    source_count = len(sources)
-    reasons: list[str] = []
-
-    if rev_score >= 8 and chip_score >= 6:
-        reasons.extend(["大戶營收>=8", "籌碼>=6"])
-        level = "A"
-    elif pullback_status == "reentry":
-        reasons.append("量增回測再啟動")
-        level = "A"
-    elif today_vol_ratio >= 3 and {"chips", "volume_signal"}.issubset(sources):
-        reasons.append("大戶池放量>=3x")
-        level = "A"
-    elif source_count >= 3 and ignition_vol_ratio >= 3:
-        reasons.append("多策略共振且點火量>=3x")
-        level = "A"
-    elif rev_score >= 6 or chip_score >= 6 or today_vol_ratio >= 1.5 or pullback_status in ("pullback", "ignition"):
-        reasons.append("達觀察條件")
-        level = "B"
-    else:
-        reasons.append("低優先觀察")
-        level = "C"
-
-    row["priority_level"] = level
-    row["priority_rank"] = PRIORITY_RANK.get(level, 9)
-    row["priority_reason"] = reasons
+def add_big_holder_trend(rows: dict[str, dict[str, Any]]) -> None:
+    for item in load_json(BIG_HOLDER_TREND_PATH).get("results", []) or []:
+        sid = str(item.get("stock_id") or "")
+        if not sid:
+            continue
+        row = ensure_row(rows, sid, item.get("name", ""))
+        add_source(row, item, "big_holder_trend")
+        for key in (
+            "week_chg_pct",
+            "big_pct_1000",
+            "big_pct_400",
+            "max_gain_60d",
+            "pullback_from_60d_high_pct",
+            "vol_20d_avg",
+            "since_entry_pct",
+        ):
+            merge_metric(row, key, item.get(key), 1 if key == "vol_20d_avg" else 2)
 
 
-def is_focus_candidate(row: dict[str, Any]) -> bool:
-    """精選觀察：用既有候選再收斂，避免每日決策清單過寬。"""
-    metrics = row.get("metrics", {})
-    sources = set(row.get("sources", []))
-    if row.get("priority_level") != "A":
-        return False
-    if not ("volume_pullback" in sources or metrics.get("pullback_status") == "reentry"):
-        return False
-    if not ("right_top_track" in sources or "chips" in sources):
-        return False
+def add_volume_signal(rows: dict[str, dict[str, Any]]) -> None:
+    for item in load_json(VOLUME_SIGNAL_PATH).get("results", []) or []:
+        sid = str(item.get("stock_id") or "")
+        if not sid:
+            continue
+        row = ensure_row(rows, sid, item.get("name", ""))
+        add_source(row, item, "volume_signal")
+        merge_metric(row, "today_vol_ratio", item.get("vol_ratio"))
+        merge_metric(row, "vol_today", item.get("vol_today"), 0)
+        merge_metric(row, "vol_10d_avg", item.get("vol_10d_avg"), 0)
 
-    volume_ratio = (
-        round_or_none(metrics.get("today_vol_ratio"))
-        or round_or_none(metrics.get("ignition_vol_ratio"))
-        or round_or_none(metrics.get("track_vol_ratio"))
-    )
-    if volume_ratio is not None and not (FOCUS_VOL_MIN <= volume_ratio <= FOCUS_VOL_MAX):
-        return False
 
-    week_chg = round_or_none(metrics.get("week_chg_pct"))
-    if week_chg is not None and week_chg > FOCUS_WEEK_CHG_MAX:
-        return False
+def apply_pattern(row: dict[str, Any], cache: Any, start_date: str) -> None:
+    result = None
+    sid = row["stock_id"]
+    if cache is not None:
+        df = get_stock_price_from_cache(cache, sid, start_date)
+        if df is not None:
+            tags = set(row.get("tags", []))
+            result = pattern_detect.analyze(
+                df,
+                stock_id=sid,
+                big_trend_up=bool({"chips", "big_holder_trend"} & set(row.get("sources", []))),
+                inst_buying=any("外資" in str(tag) or "投信" in str(tag) for tag in tags),
+                source_count=len(row.get("sources", [])) or 1,
+            )
 
-    bbw = round_or_none(metrics.get("bbw"))
-    if bbw is not None and bbw > FOCUS_BBW_MAX:
-        return False
+    if result:
+        row.update(result.as_dict())
+        return
 
-    track_pnl = round_or_none(metrics.get("track_pnl_pct"))
-    if track_pnl is not None and track_pnl > FOCUS_TRACK_PNL_MAX:
-        return False
-
-    return True
+    row.update({
+        "pattern_state": "先觀察",
+        "pattern_score": 0.0,
+        "pattern_subs": {},
+        "pattern_tags": [],
+        "patterns": [],
+        "key_level": None,
+        "invalidation": None,
+        "pattern_confidence": 1.0,
+    })
 
 
 def scan() -> dict[str, Any]:
     rows: dict[str, dict[str, Any]] = {}
     prices = load_json(CURRENT_PRICES_PATH).get("prices", {})
 
-    for item in load_json(CHIPS_PATH).get("results", []):
-        sid = str(item.get("stock_id") or "")
-        if not sid:
-            continue
-        row = ensure_row(rows, sid, item.get("name", ""))
-        merge_base(row, item, "chips")
-        row["metrics"].update({
-            "market_cap": round_or_none(item.get("market_cap"), 1),
-            "bbw": round_or_none(item.get("bbw"), 2),
-            "week_chg_pct": round_or_none(item.get("week_chg_pct"), 2),
-            "big_pct_1000": round_or_none(item.get("big_pct_1000"), 2),
-            "big_pct_400": round_or_none(item.get("big_pct_400"), 2),
-        })
-        score = 0
-        market_cap = num(item.get("market_cap"), 9999)
-        bbw = num(item.get("bbw"), 999)
-        week_chg = num(item.get("week_chg_pct"))
-        tags = item.get("tags", []) or []
-        if 20 <= market_cap <= 120:
-            score += 8
-        if bbw <= 12:
-            score += 8
-        elif bbw <= 15:
-            score += 4
-        if 0 < week_chg <= 15:
-            score += 5
-        if "持續成長" in tags:
-            score += 5
-        if "單周增幅" in tags:
-            score += 5
-        if "外資連買" in tags or "投信連買" in tags:
-            score += 4
-        add_score(row, "chips", score)
-        set_status(row, "籌碼蓄勢", 5)
+    add_chips(rows)
+    add_big_holder_trend(rows)
+    add_volume_signal(rows)
 
-    for item in load_json(VOLUME_SIGNAL_PATH).get("results", []):
-        sid = str(item.get("stock_id") or "")
-        if not sid:
-            continue
-        row = ensure_row(rows, sid, item.get("name", ""))
-        merge_base(row, item, "volume_signal")
-        vol_ratio = num(item.get("vol_ratio"))
-        row["metrics"].update({
-            "today_vol_ratio": round_or_none(vol_ratio, 2),
-            "vol_today": item.get("vol_today"),
-            "vol_10d_avg": round_or_none(item.get("vol_10d_avg"), 0),
-        })
-        score = 18
-        if vol_ratio >= 5:
-            score += 16
-        elif vol_ratio >= 3:
-            score += 10
-        elif vol_ratio >= 1.5:
-            score += 5
-        if "持續成長" in (item.get("tags", []) or []):
-            score += 5
-        if "外資連買" in (item.get("tags", []) or []):
-            score += 4
-        add_score(row, "ignition", score)
-        set_status(row, "點火首日", 2)
-
-    for item in load_json(RIGHT_TOP_TRACK_PATH).get("active", []):
-        sid = str(item.get("stock_id") or "")
-        if not sid:
-            continue
-        row = ensure_row(rows, sid, item.get("name", ""))
-        merge_base(row, item, "right_top_track")
-        pnl = num(item.get("pnl_pct"))
-        vol_ratio = num(item.get("vol_ratio"))
-        row["metrics"].update({
-            "track_pnl_pct": round_or_none(pnl, 2),
-            "track_vol_ratio": round_or_none(vol_ratio, 2),
-            "entry_price": round_or_none(item.get("entry_price"), 2),
-            "days_remaining": item.get("days_remaining"),
-        })
-        score = 12
-        if pnl >= 30:
-            score += 20
-        elif pnl >= 15:
-            score += 14
-        elif pnl >= 5:
-            score += 8
-        if vol_ratio >= 3:
-            score += 8
-        if num(item.get("days_remaining")) >= 5:
-            score += 3
-        add_score(row, "breakout_track", score)
-        set_status(row, "突破延伸", 4)
-
-    for item in load_json(VOLUME_PULLBACK_PATH).get("active", []):
-        sid = str(item.get("stock_id") or "")
-        if not sid:
-            continue
-        row = ensure_row(rows, sid, item.get("name", ""))
-        merge_base(row, item, "volume_pullback")
-        status = item.get("status", "")
-        status_label = item.get("status_label") or status
-        rank = {"reentry": 1, "ignition": 2, "pullback": 3, "watch": 6}.get(status, 6)
-        set_status(row, status_label, rank)
-        ignition_vol = num(item.get("ignition_vol_ratio"))
-        pullback_pct = num(item.get("pullback_from_ignition_close_pct"))
-        row["metrics"].update({
-            "pullback_status": status,
-            "pullback_score": item.get("score"),
-            "ignition_vol_ratio": round_or_none(ignition_vol, 2),
-            "pullback_from_ignition_close_pct": round_or_none(pullback_pct, 2),
-            "days_since_ignition": item.get("days_since_ignition"),
-            "support_ok": item.get("support_ok"),
-            "volume_cools": item.get("volume_cools"),
-        })
-        score = 8
-        if status == "reentry":
-            score = 35
-        elif status == "pullback":
-            score = 24
-        elif status == "ignition":
-            score = 22
-        if ignition_vol >= 5:
-            score += 12
-        elif ignition_vol >= 3:
-            score += 7
-        if item.get("support_ok"):
-            score += 6
-        if item.get("volume_cools") and num(item.get("days_since_ignition")) >= 1:
-            score += 5
-        if pullback_pct > 25:
-            score -= 10
-        add_score(row, "pullback", score)
-
-    for item in load_json(AI_ANALYSIS_PATH).get("active", []):
-        sid = str(item.get("ticker") or item.get("stock_id") or "")
-        if not sid:
-            continue
-        row = ensure_row(rows, sid, item.get("name", ""))
-        merge_base(row, {"stock_id": sid, **item}, "stock_analysis")
-        pnl = num(item.get("pnl_pct"))
-        row["metrics"].update({
-            "ai_pnl_pct": round_or_none(pnl, 2),
-            "rev_score": round_or_none(item.get("quant_scores", {}).get("rev_score"), 1),
-            "chip_score": round_or_none(item.get("quant_scores", {}).get("chip_score"), 1),
-            "trend_score": round_or_none(item.get("quant_scores", {}).get("trend_score"), 1),
-        })
-        score = 0
-        if pnl >= 10:
-            score += 8
-        add_score(row, "follow", score)
-
-    candidates = []
     cache = load_price_cache()
-    start_date_130 = (date.today() - timedelta(days=PRICE_LOOKBACK_DAYS)).strftime("%Y-%m-%d")
+    start_date = (date.today() - timedelta(days=PRICE_LOOKBACK_DAYS)).strftime("%Y-%m-%d")
+    candidates = []
     for sid, row in rows.items():
         row["close"] = row.get("close") or prices.get(sid)
-        industry = row.get("industry", "")
-        source_bonus = min(12, max(0, len(row["sources"]) - 1) * 5)
-        industry_bonus = 6 if any(key in industry for key in HOT_INDUSTRY_KEYWORDS) else 0
-        track_pnl = num(row["metrics"].get("track_pnl_pct"))
-        pullback_pct = num(row["metrics"].get("pullback_from_ignition_close_pct"))
-        ai_pnl = num(row["metrics"].get("ai_pnl_pct"))
-        extended = max(track_pnl, pullback_pct, ai_pnl) > MAX_EXTENDED_PCT
-        if extended:
-            continue
-        context_score = sum(num(v) for v in row["score_parts"].values()) + source_bonus + industry_bonus
-        if context_score < 35:
-            continue
-        row["context_score"] = round(context_score, 1)
-        row["source_count"] = len(row["sources"])
-        row["risk_flags"] = []
-        set_priority(row)
-
-        # Pattern analysis — state is primary sort key, context_score kept for reference
-        pr = None
-        if cache is not None:
-            df = get_stock_price_from_cache(cache, sid, start_date_130)
-            if df is not None:
-                m = row.get("metrics", {})
-                tags_set = set(row.get("tags", []))
-                pr = pattern_detect.analyze(
-                    df,
-                    stock_id=sid,
-                    track_pnl_pct=num(m.get("track_pnl_pct")),
-                    big_trend_up=num(m.get("chip_score", 0)) >= 5,
-                    inst_buying="外資連買" in tags_set or "投信連買" in tags_set,
-                    source_count=len(row["sources"]),
-                )
-        if pr:
-            row.update(pr.as_dict())
-        else:
-            row.update({
-                "pattern_state": "先觀察",
-                "pattern_score": 0.0,
-                "pattern_subs": {},
-                "pattern_tags": [],
-                "patterns": [],
-                "key_level": None,
-                "invalidation": None,
-                "pattern_confidence": 1.0,
-            })
-
+        row["source_count"] = len(row.get("sources", []))
+        apply_pattern(row, cache, start_date)
+        row["focus_candidate"] = row.get("pattern_state") == WATCH_STATE
         candidates.append(row)
 
-    candidates.sort(key=lambda r: (
-        pattern_detect.STATE_ORDER.get(r.get("pattern_state", "先觀察"), 9),
-        -num(r.get("pattern_score", 0)),
-        -len(r.get("sources", [])),
+    candidates.sort(key=lambda row: (
+        pattern_detect.STATE_ORDER.get(row.get("pattern_state", "先觀察"), 9),
+        -num(row.get("pattern_score")),
+        -num(row.get("source_count")),
+        str(row.get("stock_id") or ""),
     ))
-    focus_results = [r for r in candidates if r.get("pattern_state") == "值得看圖"]
-    for r in candidates:
-        r["focus_candidate"] = r.get("pattern_state") == "值得看圖"
+    focus_results = [row for row in candidates if row.get("focus_candidate")]
 
     return {
         "strategy_id": "momentum_candidates",
         "updated": now_tw(),
         "model": {
-            "sources": [
-                "chips_big_holder",
-                "volume_signal",
-                "right_top_track",
-                "volume_pullback",
-                "ai_analysis",
-            ],
-            "score_min": 35,
-            "max_extended_pct": MAX_EXTENDED_PCT,
-            "focus_rules": {
-                "priority_level": "A",
-                "required_any": ["volume_pullback", "pullback_status=reentry"],
-                "required_context_any": ["right_top_track", "chips"],
-                "volume_ratio_range": [FOCUS_VOL_MIN, FOCUS_VOL_MAX],
-                "week_chg_pct_max": FOCUS_WEEK_CHG_MAX,
-                "bbw_max": FOCUS_BBW_MAX,
-                "track_pnl_pct_max": FOCUS_TRACK_PNL_MAX,
-            },
-            "priority_rules": {
-                "A": [
-                    "rev_score >= 8 and chip_score >= 6",
-                    "volume pullback reentry",
-                    "chips + volume signal with volume ratio >= 3",
-                    "3+ sources with ignition volume ratio >= 3",
-                ],
-                "B": ["single quality or ignition/pullback observation condition"],
-            },
+            "version": "pattern_score_only_v1",
+            "sources": ["chips_big_holder", "big_holder_trend", "volume_signal"],
+            "score_field": "pattern_score",
+            "focus_rule": "pattern_state == 值得看圖",
         },
         "summary": {
             "total": len(candidates),
-            "top10": len(candidates[:10]),
+            "focus": len(focus_results),
             "pattern_watch": sum(1 for r in candidates if r.get("pattern_state") == "值得看圖"),
             "pattern_observe": sum(1 for r in candidates if r.get("pattern_state") == "先觀察"),
             "pattern_extended": sum(1 for r in candidates if r.get("pattern_state") == "太遠不追"),
             "pattern_broken": sum(1 for r in candidates if r.get("pattern_state") == "型態破壞"),
-            "priority_a": sum(1 for r in candidates if r.get("priority_level") == "A"),
-            "priority_b": sum(1 for r in candidates if r.get("priority_level") == "B"),
-            "priority_c": sum(1 for r in candidates if r.get("priority_level") == "C"),
-            "focus": len(focus_results),
-            "reentry": sum(1 for r in candidates if r.get("status") == "再啟動"),
-            "ignition": sum(1 for r in candidates if r.get("status") == "點火首日"),
-            "pullback": sum(1 for r in candidates if r.get("status") == "回穩觀察"),
         },
         "focus_results": focus_results,
         "results": candidates,
@@ -461,8 +239,11 @@ def main() -> int:
     with open(OUTPUT_PATH, "w", encoding="utf-8") as f:
         json.dump(output, f, ensure_ascii=False, indent=2)
         f.write("\n")
-    s = output["summary"]
-    print(f"短線強勢雷達：{s['total']} 檔  值得看圖 {s['pattern_watch']} / 先觀察 {s['pattern_observe']}")
+    summary = output["summary"]
+    print(
+        "pattern-only stock pool: "
+        f"{summary['total']} total / {summary['pattern_watch']} watch"
+    )
     return 0
 
 

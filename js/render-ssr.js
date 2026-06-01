@@ -34,10 +34,9 @@ function renderSSR(strat, main) {
     return ({
       chips: '大戶',
       volume_signal: '量增',
-      right_top_track: '突破追蹤',
-      volume_pullback: '量增回測',
       stock_analysis: '標的追蹤',
       momentum_candidates: '標的池',
+      big_holder_trend: '趨勢',
     }[src] || src);
   }
 
@@ -45,8 +44,7 @@ function renderSSR(strat, main) {
     const sources = new Set(row.sources || []);
     if (filter === 'chips') return sources.has('chips');
     if (filter === 'volume_signal') return sources.has('volume_signal');
-    if (filter === 'right_top_track') return sources.has('right_top_track');
-    if (filter === 'volume_pullback') return sources.has('volume_pullback');
+    if (filter === 'big_holder_trend') return sources.has('big_holder_trend');
     return true;
   }
 
@@ -56,7 +54,7 @@ function renderSSR(strat, main) {
 
   function value(row, col) {
     const m = row.metrics || {};
-    if (col === 'score') return row.pattern_score ?? row.context_score ?? row.unified_score ?? row.score ?? 0;
+    if (col === 'score') return row.pattern_score ?? 0;
     if (col === 'pattern_state') return stateOrder[row.pattern_state] ?? 9;
     if (col === 'primary_metric') return m.ignition_vol_ratio ?? m.today_vol_ratio ?? m.track_vol_ratio ?? 0;
     if (col === 'track_pnl_pct') return m.track_pnl_pct ?? -999;
@@ -89,8 +87,7 @@ function renderSSR(strat, main) {
     { key: 'all', label: '全部', count: focusRows.length },
     { key: 'chips', label: '大戶', count: sourceCount('chips') },
     { key: 'volume_signal', label: '量增', count: sourceCount('volume_signal') },
-    { key: 'right_top_track', label: '突破', count: sourceCount('right_top_track') },
-    { key: 'volume_pullback', label: '回測', count: sourceCount('volume_pullback') },
+    { key: 'big_holder_trend', label: '趨勢', count: sourceCount('big_holder_trend') },
   ];
 
   const filterButtons = filters.map(opt => `
@@ -111,7 +108,6 @@ function renderSSR(strat, main) {
     const patternList = (row.patterns || []).join(' / ');
     const keyLevel = row.key_level;
     const invalidation = row.invalidation;
-    const ctxScore = row.context_score ?? row.unified_score ?? row.score ?? 0;
     const vol = m.today_vol_ratio ?? m.ignition_vol_ratio ?? m.track_vol_ratio;
     const track = m.track_pnl_pct;
     const color = stateColor(patState);
@@ -145,8 +141,7 @@ function renderSSR(strat, main) {
       </td>
       <td><span class="price-cell">${fmtNum(row.close, 1)}</span></td>
       <td style="font-size:11px;color:var(--text2);line-height:1.6">
-        <span style="font-family:var(--mono)">${fmtNum(ctxScore, 0)}</span> ctx
-        ${vol != null ? ` · 量 ${fmtNum(vol, 2)}x` : ''}
+        ${vol != null ? `<span style="font-family:var(--mono)">量 ${fmtNum(vol, 2)}x</span>` : '<span style="color:var(--text3)">-</span>'}
         ${track != null ? ` · <span class="${Number(track) >= 0 ? 'pos' : 'neg'}">${fmtPct(track, 1)}</span>` : ''}
         <br>${(row.sources || []).map(s => `<span class="tag-badge" style="color:var(--text3);border-color:rgba(80,90,110,.25)">${sourceLabel(s)}</span>`).join('')}
       </td>
@@ -157,7 +152,7 @@ function renderSSR(strat, main) {
     const headers = [
       '代號', '名稱', '產業', '市場',
       '型態狀態', '型態分', '型態標籤', '關鍵價', '失效價', '型態可信度',
-      '收盤', '量比', '追蹤損益(%)', '週漲跌(%)', 'BBW', 'context_score', '來源',
+      '收盤', '量比', '追蹤損益(%)', '週漲跌(%)', 'BBW', '來源',
     ];
     const csvRows = rows.map(row => {
       const m = row.metrics || {};
@@ -178,7 +173,6 @@ function renderSSR(strat, main) {
         m.track_pnl_pct != null ? Number(m.track_pnl_pct).toFixed(2) : '',
         m.week_chg_pct != null ? Number(m.week_chg_pct).toFixed(2) : '',
         m.bbw != null ? Number(m.bbw).toFixed(1) : '',
-        row.context_score ?? row.unified_score ?? row.score ?? '',
         (row.sources || []).map(sourceLabel).join(' / '),
       ];
     });
@@ -209,7 +203,7 @@ function renderSSR(strat, main) {
           </div>
         </div>
         <div style="padding:10px 14px;border-bottom:1px solid var(--border);font-size:12px;color:var(--text3);line-height:1.7">
-          僅顯示 pattern_state＝值得看圖 的標的，依型態分排序；context_score 與來源標籤為次要參考。
+          僅顯示 pattern_state＝值得看圖 的標的，依型態分排序；不再使用舊有綜合分數。
         </div>
         <div style="display:flex;gap:8px;padding:10px 14px;border-bottom:1px solid var(--border);flex-wrap:wrap">
           ${filterButtons}
