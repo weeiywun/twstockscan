@@ -1276,7 +1276,7 @@
       "exit_price": null,
       "exit_date": null,
       "exit_net": null,
-      "confirmed": false,
+      "confirmed": true,
       "current_price": 30.05,
       "score": 54.6,
       "pattern_state": "先觀察",
@@ -1298,7 +1298,18 @@
       "key_level": 26.35,
       "invalidation": 25.56,
       "pattern_confidence": 0.8,
-      "score_model": "pattern_score_only_v1"
+      "score_model": "pattern_score_only_v1",
+      "exits": [
+        {
+          "id": "e1780288442852",
+          "date": "2026-06-01",
+          "shares": 3000,
+          "exit_price": 29.25,
+          "exit_net": 87412,
+          "sell_fee": 75,
+          "sell_tax": 263
+        }
+      ]
     },
     {
       "id": "p1780017518413",
