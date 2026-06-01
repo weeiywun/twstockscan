@@ -12,8 +12,7 @@
 - `big_holder_trend`：大戶趨勢池，讀取 `big_holder_trend.json`。
 - `stock_analysis`：籌碼標的追蹤，讀取 `ai_analysis.json`。
 - `right_top`：突破策略，讀取 `right_top.json`。
-- `right_top_track`：突破標的追蹤，讀取 `right_top_track.json`。
-- `performance`：績效追蹤，需要 URL 解鎖參數才顯示，讀取 `performance.json`。
+- `right_top_track`：突破標的追蹤，讀取 `right_top_track.json`
 
 `volume_signal` 與 `volume_pullback` 不直接出現在導覽列，但仍是標的池與追蹤流程的資料來源，因此保留。
 
@@ -26,7 +25,6 @@
 - `right_top.json`、`right_top_track.json`：突破策略與追蹤。
 - `volume_signal.json`、`volume_pullback.json`：量增訊號與量增回測來源。
 - `ai_analysis.json`：量增訊號標的追蹤與營收評級。
-- `performance.json`：績效追蹤資料。
 
 ## 目前腳本
 
