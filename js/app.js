@@ -638,7 +638,9 @@ async function loadData() {
           if (typeof _applyPriceToVolumeSignal === 'function') _applyPriceToVolumeSignal(cpData.prices);
           // DISABLED / BACKUP - DO NOT DELETE: VCP price patching is paused while the tab is hidden.
           if (typeof _applyPriceToRightTop === 'function') _applyPriceToRightTop(cpData.prices);
+          if (typeof _applyPriceToBigHolderTrend === 'function') _applyPriceToBigHolderTrend(cpData.prices);
           if (typeof _applyPriceToRttTrack === 'function') _applyPriceToRttTrack(cpData.prices);
+          if (typeof _applyPriceToBhtTrack === 'function') _applyPriceToBhtTrack(cpData.prices);
           // DISABLED / BACKUP - DO NOT DELETE: institutional momentum price patching is paused while the tab is hidden.
           if (typeof _applyPriceToAnalysis === 'function') _applyPriceToAnalysis(cpData.prices);
           if (typeof _applyPriceToPerf === 'function') await _applyPriceToPerf(cpData.prices, cpData.date, false);

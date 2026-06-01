@@ -1076,6 +1076,99 @@ async function triggerPriceUpdate(btn) {
   btn.textContent = orig;
 }
 
+async function triggerShioajiPriceUpdate(btn) {
+  const token = ghToken();
+  if (!token) {
+    openTokenModal();
+    alert('請先設定 GitHub Token（需要 repo 權限）');
+    return;
+  }
+  const orig = btn.textContent;
+  const requestId = `shioaji-price-${Date.now()}-${Math.random().toString(36).slice(2, 8)}`;
+  const triggeredAt = new Date().toISOString();
+  btn.disabled = true;
+  try {
+    btn.textContent = '⏳ 觸發中...';
+    const dispatchRes = await fetch(
+      `https://api.github.com/repos/${GH_OWNER}/${GH_REPO}/actions/workflows/shioaji_current_prices.yml/dispatches`,
+      {
+        method: 'POST',
+        headers: { Authorization: `token ${token}`, 'Content-Type': 'application/json', Accept: 'application/vnd.github.v3+json' },
+        body: JSON.stringify({ ref: 'main', inputs: { confirm: 'UPDATE_SHIOAJI_PRICES' } }),
+      }
+    );
+    if (dispatchRes.status !== 204) {
+      const e = await dispatchRes.json().catch(() => ({}));
+      throw new Error(e.message || `HTTP ${dispatchRes.status}`);
+    }
+
+    const conclusion = await _pollNamedWorkflow(btn, token, 'shioaji_current_prices.yml', triggeredAt, requestId, 240);
+    if (conclusion !== 'success') throw new Error(`Workflow 結果：${conclusion}，請至 GitHub Actions 查看日誌`);
+
+    btn.textContent = '⏳ 載入現價...';
+    const pRes = await fetch(`data/current_prices.json?t=${Date.now()}`, { cache: 'no-store' });
+    if (!pRes.ok) throw new Error('無法讀取 current_prices.json');
+    const pData = await pRes.json();
+    const priceMap = pData.prices || {};
+    const dateUsed = pData.date || dateTW();
+
+    _applyPriceToChips(priceMap);
+    _applyPriceToVolumeSignal(priceMap);
+    _applyPriceToRightTop(priceMap);
+    _applyPriceToBigHolderTrend(priceMap);
+    _applyPriceToRttTrack(priceMap);
+    _applyPriceToBhtTrack(priceMap);
+    _applyPriceToAnalysis(priceMap);
+    await _applyPriceToPerf(priceMap, dateUsed, false);
+    renderStrategy();
+    btn.textContent = `✓ 已更新標的現價 (${dateUsed})`;
+    btn.disabled = false;
+    setTimeout(() => { btn.textContent = orig; }, 4000);
+    return;
+  } catch(e) {
+    alert('更新標的現價失敗：' + e.message);
+  }
+  btn.disabled = false;
+  btn.textContent = orig;
+}
+
+async function _pollNamedWorkflow(btn, token, workflowFile, triggeredAt, requestId, timeoutSeconds = 180) {
+  const headers = { Authorization: `token ${token}`, Accept: 'application/vnd.github.v3+json' };
+  await new Promise(r => setTimeout(r, 4000));
+
+  let runId = null;
+  for (let i = 0; i < 8 && !runId; i++) {
+    await new Promise(r => setTimeout(r, 2000));
+    const res = await fetch(
+      `https://api.github.com/repos/${GH_OWNER}/${GH_REPO}/actions/workflows/${workflowFile}/runs?event=workflow_dispatch&branch=main&per_page=10`,
+      { headers }
+    );
+    if (res.ok) {
+      const data = await res.json();
+      const run = (data.workflow_runs || []).find(r =>
+        r.event === 'workflow_dispatch' &&
+        r.head_branch === 'main' &&
+        r.created_at >= triggeredAt
+      );
+      if (run) {
+        runId = run.id;
+        console.info(`Workflow request ${requestId} matched run ${runId}`);
+      }
+    }
+  }
+  if (!runId) throw new Error('找不到 Workflow Run，請確認 Token 有 repo 權限');
+
+  for (let elapsed = 0; elapsed < timeoutSeconds; elapsed += 5) {
+    await new Promise(r => setTimeout(r, 5000));
+    btn.textContent = `⏳ 更新中... ${elapsed + 5}s`;
+    const res = await fetch(`https://api.github.com/repos/${GH_OWNER}/${GH_REPO}/actions/runs/${runId}`, { headers });
+    if (!res.ok) continue;
+    const run = await res.json();
+    if (run.status === 'completed') return run.conclusion;
+  }
+  throw new Error('等待逾時，workflow 可能仍在執行，請稍後重新整理');
+}
+
 async function _pollPriceWorkflow(btn, token, triggeredAt, requestId) {
   const headers = { Authorization: `token ${token}`, Accept: 'application/vnd.github.v3+json' };
   // 等 Actions 排程（通常 3-5 秒）
@@ -1140,10 +1233,39 @@ function _applyPriceToRightTop(priceMap) {
   });
 }
 
+function _applyPriceToBigHolderTrend(priceMap) {
+  const trend = DATA.big_holder_trend_data;
+  if (!trend || !trend.length) return;
+  trend.forEach(item => {
+    if (priceMap[item.stock_id] === undefined) return;
+    item.latest_close = priceMap[item.stock_id];
+    item.close = priceMap[item.stock_id];
+    if (item.entry_close) {
+      item.since_entry_pct = parseFloat(
+        ((item.latest_close - item.entry_close) / item.entry_close * 100).toFixed(2)
+      );
+    }
+  });
+}
+
 function _applyPriceToRttTrack(priceMap) {
   const rtt = DATA.right_top_track_data;
   if (!rtt) return;
   [...(rtt.active || []), ...(rtt.history || [])].forEach(item => {
+    if (priceMap[item.stock_id] === undefined) return;
+    item.current_price = priceMap[item.stock_id];
+    if (item.entry_price) {
+      item.pnl_pct = parseFloat(
+        ((item.current_price - item.entry_price) / item.entry_price * 100).toFixed(2)
+      );
+    }
+  });
+}
+
+function _applyPriceToBhtTrack(priceMap) {
+  const bht = DATA.big_holder_trend_track_data;
+  if (!bht) return;
+  [...(bht.active || []), ...(bht.expired || []), ...(bht.history || [])].forEach(item => {
     if (priceMap[item.stock_id] === undefined) return;
     item.current_price = priceMap[item.stock_id];
     if (item.entry_price) {
