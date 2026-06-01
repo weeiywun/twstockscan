@@ -2129,48 +2129,45 @@
       "vol_ratio": 0.75,
       "high_10w": 41.45,
       "pinned": false,
-      "unified_score": 60.2,
-      "unified_score_grade": "C",
+      "unified_score": 38.3,
+      "unified_score_grade": "D",
       "score_breakdown": {
         "version": "unified_score_v2_momentum_first_stock_level",
-        "total": 60.2,
-        "grade": "C",
-        "base": 54.7,
-        "components": {
-          "chip": 0.0,
-          "momentum": 71.3,
-          "volume": 51.3,
-          "structure": 65.2,
-          "theme": 0.0
-        },
-        "source_count": 3,
-        "source_multiplier": 1.1,
-        "sources": [
-          "momentum_pullback",
-          "right_top_track",
-          "標的追蹤"
-        ],
-        "aggregation": "max_component_by_stock"
-      },
-      "score": 60.2,
-      "legacy_score": 16.8,
-      "context_unified_score": 55.8,
-      "context_score_breakdown": {
-        "version": "unified_score_v2_momentum_first_stock_level",
-        "total": 55.8,
-        "grade": "C",
-        "base": 53.2,
+        "total": 38.3,
+        "grade": "D",
+        "base": 38.3,
         "components": {
           "chip": 0.0,
           "momentum": 67.9,
-          "volume": 51.3,
-          "structure": 65.2,
+          "volume": 30.9,
+          "structure": 0.0,
           "theme": 0.0
         },
-        "source_count": 2,
-        "source_multiplier": 1.05,
+        "source_count": 1,
+        "source_multiplier": 1.0,
         "sources": [
-          "momentum_pullback",
+          "right_top_track"
+        ],
+        "aggregation": "max_component_by_stock"
+      },
+      "score": 38.3,
+      "legacy_score": 16.8,
+      "context_unified_score": 38.3,
+      "context_score_breakdown": {
+        "version": "unified_score_v2_momentum_first_stock_level",
+        "total": 38.3,
+        "grade": "D",
+        "base": 38.3,
+        "components": {
+          "chip": 0.0,
+          "momentum": 67.9,
+          "volume": 30.9,
+          "structure": 0.0,
+          "theme": 0.0
+        },
+        "source_count": 1,
+        "source_multiplier": 1.0,
+        "sources": [
           "right_top_track"
         ],
         "reasons": {
@@ -2181,14 +2178,9 @@
           ],
           "volume": [
             "量比 0.75x",
-            "5/20 均量 1.26x",
-            "回測量縮 72%"
+            "5/20 均量 1.26x"
           ],
-          "structure": [
-            "強勢回測區",
-            "均線距離 -2.0%",
-            "防守距離 3.0%"
-          ],
+          "structure": [],
           "theme": []
         }
       }
@@ -2802,48 +2794,45 @@
       "vol_ratio": 2.41,
       "high_10w": 77.3,
       "pinned": false,
-      "unified_score": 61.0,
-      "unified_score_grade": "C",
+      "unified_score": 38.5,
+      "unified_score_grade": "D",
       "score_breakdown": {
         "version": "unified_score_v2_momentum_first_stock_level",
-        "total": 61.0,
-        "grade": "C",
-        "base": 55.5,
-        "components": {
-          "chip": 0.0,
-          "momentum": 70.9,
-          "volume": 52.6,
-          "structure": 69.3,
-          "theme": 0.0
-        },
-        "source_count": 3,
-        "source_multiplier": 1.1,
-        "sources": [
-          "momentum_pullback",
-          "right_top_track",
-          "標的追蹤"
-        ],
-        "aggregation": "max_component_by_stock"
-      },
-      "score": 61.0,
-      "legacy_score": 18.7,
-      "context_unified_score": 56.6,
-      "context_score_breakdown": {
-        "version": "unified_score_v2_momentum_first_stock_level",
-        "total": 56.6,
-        "grade": "C",
-        "base": 53.9,
+        "total": 38.5,
+        "grade": "D",
+        "base": 38.5,
         "components": {
           "chip": 0.0,
           "momentum": 67.4,
-          "volume": 52.6,
-          "structure": 69.3,
+          "volume": 32.8,
+          "structure": 0.0,
           "theme": 0.0
         },
-        "source_count": 2,
-        "source_multiplier": 1.05,
+        "source_count": 1,
+        "source_multiplier": 1.0,
         "sources": [
-          "momentum_pullback",
+          "right_top_track"
+        ],
+        "aggregation": "max_component_by_stock"
+      },
+      "score": 38.5,
+      "legacy_score": 18.7,
+      "context_unified_score": 38.5,
+      "context_score_breakdown": {
+        "version": "unified_score_v2_momentum_first_stock_level",
+        "total": 38.5,
+        "grade": "D",
+        "base": 38.5,
+        "components": {
+          "chip": 0.0,
+          "momentum": 67.4,
+          "volume": 32.8,
+          "structure": 0.0,
+          "theme": 0.0
+        },
+        "source_count": 1,
+        "source_multiplier": 1.0,
+        "sources": [
           "right_top_track"
         ],
         "reasons": {
@@ -2855,14 +2844,9 @@
           ],
           "volume": [
             "量比 2.41x",
-            "5/20 均量 0.64x",
-            "回測量縮 86%"
+            "5/20 均量 0.64x"
           ],
-          "structure": [
-            "強勢回測區",
-            "均線距離 -0.2%",
-            "防守距離 3.9%"
-          ],
+          "structure": [],
           "theme": []
         }
       }
@@ -3708,48 +3692,45 @@
       "vol_ratio": 0.87,
       "high_10w": 36.9,
       "pinned": false,
-      "unified_score": 59.9,
-      "unified_score_grade": "C",
+      "unified_score": 37.6,
+      "unified_score_grade": "D",
       "score_breakdown": {
         "version": "unified_score_v2_momentum_first_stock_level",
-        "total": 59.9,
-        "grade": "C",
-        "base": 54.5,
-        "components": {
-          "chip": 0.0,
-          "momentum": 73.3,
-          "volume": 46.4,
-          "structure": 66.0,
-          "theme": 0.0
-        },
-        "source_count": 3,
-        "source_multiplier": 1.1,
-        "sources": [
-          "momentum_pullback",
-          "right_top_track",
-          "標的追蹤"
-        ],
-        "aggregation": "max_component_by_stock"
-      },
-      "score": 59.9,
-      "legacy_score": 19.9,
-      "context_unified_score": 55.8,
-      "context_score_breakdown": {
-        "version": "unified_score_v2_momentum_first_stock_level",
-        "total": 55.8,
-        "grade": "C",
-        "base": 53.1,
+        "total": 37.6,
+        "grade": "D",
+        "base": 37.6,
         "components": {
           "chip": 0.0,
           "momentum": 70.3,
-          "volume": 46.4,
-          "structure": 66.0,
+          "volume": 23.7,
+          "structure": 0.0,
           "theme": 0.0
         },
-        "source_count": 2,
-        "source_multiplier": 1.05,
+        "source_count": 1,
+        "source_multiplier": 1.0,
         "sources": [
-          "momentum_pullback",
+          "right_top_track"
+        ],
+        "aggregation": "max_component_by_stock"
+      },
+      "score": 37.6,
+      "legacy_score": 19.9,
+      "context_unified_score": 37.6,
+      "context_score_breakdown": {
+        "version": "unified_score_v2_momentum_first_stock_level",
+        "total": 37.6,
+        "grade": "D",
+        "base": 37.6,
+        "components": {
+          "chip": 0.0,
+          "momentum": 70.3,
+          "volume": 23.7,
+          "structure": 0.0,
+          "theme": 0.0
+        },
+        "source_count": 1,
+        "source_multiplier": 1.0,
+        "sources": [
           "right_top_track"
         ],
         "reasons": {
@@ -3761,14 +3742,9 @@
           ],
           "volume": [
             "量比 0.87x",
-            "5/20 均量 0.99x",
-            "回測量縮 78%"
+            "5/20 均量 0.99x"
           ],
-          "structure": [
-            "強勢回測區",
-            "均線距離 -0.2%",
-            "防守距離 5.5%"
-          ],
+          "structure": [],
           "theme": []
         }
       }
@@ -3871,48 +3847,45 @@
       "vol_ratio": 0.71,
       "high_10w": 184,
       "pinned": false,
-      "unified_score": 58.8,
-      "unified_score_grade": "C",
+      "unified_score": 35.7,
+      "unified_score_grade": "D",
       "score_breakdown": {
         "version": "unified_score_v2_momentum_first_stock_level",
-        "total": 58.8,
-        "grade": "C",
-        "base": 53.4,
-        "components": {
-          "chip": 0.0,
-          "momentum": 60.8,
-          "volume": 59.4,
-          "structure": 74.8,
-          "theme": 0.0
-        },
-        "source_count": 3,
-        "source_multiplier": 1.1,
-        "sources": [
-          "momentum_pullback",
-          "right_top_track",
-          "標的追蹤"
-        ],
-        "aggregation": "max_component_by_stock"
-      },
-      "score": 58.8,
-      "legacy_score": 11.8,
-      "context_unified_score": 53.1,
-      "context_score_breakdown": {
-        "version": "unified_score_v2_momentum_first_stock_level",
-        "total": 53.1,
-        "grade": "C",
-        "base": 50.6,
+        "total": 35.7,
+        "grade": "D",
+        "base": 35.7,
         "components": {
           "chip": 0.0,
           "momentum": 55.9,
-          "volume": 56.8,
-          "structure": 74.8,
+          "volume": 42.3,
+          "structure": 0.0,
           "theme": 0.0
         },
-        "source_count": 2,
-        "source_multiplier": 1.05,
+        "source_count": 1,
+        "source_multiplier": 1.0,
         "sources": [
-          "momentum_pullback",
+          "right_top_track"
+        ],
+        "aggregation": "max_component_by_stock"
+      },
+      "score": 35.7,
+      "legacy_score": 11.8,
+      "context_unified_score": 35.7,
+      "context_score_breakdown": {
+        "version": "unified_score_v2_momentum_first_stock_level",
+        "total": 35.7,
+        "grade": "D",
+        "base": 35.7,
+        "components": {
+          "chip": 0.0,
+          "momentum": 55.9,
+          "volume": 42.3,
+          "structure": 0.0,
+          "theme": 0.0
+        },
+        "source_count": 1,
+        "source_multiplier": 1.0,
+        "sources": [
           "right_top_track"
         ],
         "reasons": {
@@ -3923,14 +3896,9 @@
           ],
           "volume": [
             "量比 0.71x",
-            "5/20 均量 1.65x",
-            "回測量縮 63%"
+            "5/20 均量 1.65x"
           ],
-          "structure": [
-            "強勢回測區",
-            "均線距離 -1.3%",
-            "防守距離 1.0%"
-          ],
+          "structure": [],
           "theme": []
         }
       }
@@ -4094,51 +4062,48 @@
       "vol_ratio": 0.55,
       "high_10w": 39.85,
       "pinned": false,
-      "unified_score": 66.9,
-      "unified_score_grade": "B",
+      "unified_score": 42.5,
+      "unified_score_grade": "D",
       "score_breakdown": {
         "version": "unified_score_v2_momentum_first_stock_level",
-        "total": 66.9,
-        "grade": "B",
-        "base": 58.2,
+        "total": 42.5,
+        "grade": "D",
+        "base": 38.7,
         "components": {
           "chip": 61.5,
-          "momentum": 65.4,
-          "volume": 41.6,
-          "structure": 81.4,
+          "momentum": 61.4,
+          "volume": 19.6,
+          "structure": 0.0,
           "theme": 0.0
         },
-        "source_count": 5,
-        "source_multiplier": 1.15,
+        "source_count": 3,
+        "source_multiplier": 1.1,
         "sources": [
           "big_holder_trend",
-          "momentum_pullback",
           "right_top_track",
-          "stock_analysis",
-          "標的追蹤"
+          "stock_analysis"
         ],
         "aggregation": "max_component_by_stock"
       },
-      "score": 66.9,
+      "score": 42.5,
       "legacy_score": 13.2,
-      "context_unified_score": 64.7,
+      "context_unified_score": 42.4,
       "context_score_breakdown": {
         "version": "unified_score_v2_momentum_first_stock_level",
-        "total": 64.7,
-        "grade": "C",
-        "base": 56.3,
+        "total": 42.4,
+        "grade": "D",
+        "base": 38.5,
         "components": {
           "chip": 61.5,
           "momentum": 61.1,
-          "volume": 41.6,
-          "structure": 81.4,
+          "volume": 19.6,
+          "structure": 0.0,
           "theme": 0.0
         },
-        "source_count": 4,
-        "source_multiplier": 1.15,
+        "source_count": 3,
+        "source_multiplier": 1.1,
         "sources": [
           "big_holder_trend",
-          "momentum_pullback",
           "right_top_track",
           "stock_analysis"
         ],
@@ -4154,14 +4119,9 @@
           ],
           "volume": [
             "量比 0.55x",
-            "5/20 均量 0.87x",
-            "回測量縮 63%"
+            "5/20 均量 0.87x"
           ],
-          "structure": [
-            "強勢回測區",
-            "均線距離 +0.5%",
-            "防守距離 0.7%"
-          ],
+          "structure": [],
           "theme": []
         }
       }
@@ -9258,50 +9218,47 @@
       "vol_ratio": 0.99,
       "high_10w": 56.2,
       "pinned": false,
-      "unified_score": 69.3,
-      "unified_score_grade": "B",
+      "unified_score": 63.1,
+      "unified_score_grade": "C",
       "score_breakdown": {
         "version": "unified_score_v2_momentum_first_stock_level",
-        "total": 69.3,
-        "grade": "B",
-        "base": 60.3,
-        "components": {
-          "chip": 0.0,
-          "momentum": 69.3,
-          "volume": 66.6,
-          "structure": 83.0,
-          "theme": 0.0
-        },
-        "source_count": 5,
-        "source_multiplier": 1.15,
-        "sources": [
-          "momentum_pullback",
-          "price_breakout_track",
-          "right_top_track",
-          "volume_pullback",
-          "標的追蹤"
-        ],
-        "aggregation": "max_component_by_stock"
-      },
-      "score": 69.3,
-      "legacy_score": 17.9,
-      "context_unified_score": 64.5,
-      "context_score_breakdown": {
-        "version": "unified_score_v2_momentum_first_stock_level",
-        "total": 64.5,
+        "total": 63.1,
         "grade": "C",
-        "base": 58.6,
+        "base": 57.3,
         "components": {
           "chip": 0.0,
           "momentum": 65.6,
-          "volume": 66.6,
-          "structure": 83.0,
+          "volume": 63.5,
+          "structure": 79.6,
           "theme": 0.0
         },
         "source_count": 3,
         "source_multiplier": 1.1,
         "sources": [
-          "momentum_pullback",
+          "price_breakout_track",
+          "right_top_track",
+          "volume_pullback"
+        ],
+        "aggregation": "max_component_by_stock"
+      },
+      "score": 63.1,
+      "legacy_score": 17.9,
+      "context_unified_score": 60.2,
+      "context_score_breakdown": {
+        "version": "unified_score_v2_momentum_first_stock_level",
+        "total": 60.2,
+        "grade": "C",
+        "base": 57.3,
+        "components": {
+          "chip": 0.0,
+          "momentum": 65.6,
+          "volume": 63.5,
+          "structure": 79.6,
+          "theme": 0.0
+        },
+        "source_count": 2,
+        "source_multiplier": 1.05,
+        "sources": [
           "right_top_track",
           "volume_pullback"
         ],
@@ -9315,13 +9272,9 @@
           "volume": [
             "量比 0.99x",
             "5/20 均量 2.90x",
-            "回測量縮 53%"
+            "回測量縮"
           ],
-          "structure": [
-            "強勢回測區",
-            "均線距離 +1.4%",
-            "防守距離 1.2%"
-          ],
+          "structure": [],
           "theme": []
         }
       }
@@ -9936,48 +9889,45 @@
       "vol_ratio": 2.55,
       "high_10w": 24.2,
       "pinned": false,
-      "unified_score": 61.2,
-      "unified_score_grade": "C",
+      "unified_score": 37.9,
+      "unified_score_grade": "D",
       "score_breakdown": {
         "version": "unified_score_v2_momentum_first_stock_level",
-        "total": 61.2,
-        "grade": "C",
-        "base": 55.7,
-        "components": {
-          "chip": 0.0,
-          "momentum": 65.3,
-          "volume": 58.3,
-          "structure": 78.1,
-          "theme": 0.0
-        },
-        "source_count": 3,
-        "source_multiplier": 1.1,
-        "sources": [
-          "momentum_pullback",
-          "right_top_track",
-          "標的追蹤"
-        ],
-        "aggregation": "max_component_by_stock"
-      },
-      "score": 61.2,
-      "legacy_score": 12.2,
-      "context_unified_score": 56.4,
-      "context_score_breakdown": {
-        "version": "unified_score_v2_momentum_first_stock_level",
-        "total": 56.4,
-        "grade": "C",
-        "base": 53.7,
+        "total": 37.9,
+        "grade": "D",
+        "base": 37.9,
         "components": {
           "chip": 0.0,
           "momentum": 61.0,
-          "volume": 58.3,
-          "structure": 78.1,
+          "volume": 41.7,
+          "structure": 0.0,
           "theme": 0.0
         },
-        "source_count": 2,
-        "source_multiplier": 1.05,
+        "source_count": 1,
+        "source_multiplier": 1.0,
         "sources": [
-          "momentum_pullback",
+          "right_top_track"
+        ],
+        "aggregation": "max_component_by_stock"
+      },
+      "score": 37.9,
+      "legacy_score": 12.2,
+      "context_unified_score": 37.9,
+      "context_score_breakdown": {
+        "version": "unified_score_v2_momentum_first_stock_level",
+        "total": 37.9,
+        "grade": "D",
+        "base": 37.9,
+        "components": {
+          "chip": 0.0,
+          "momentum": 61.0,
+          "volume": 41.7,
+          "structure": 0.0,
+          "theme": 0.0
+        },
+        "source_count": 1,
+        "source_multiplier": 1.0,
+        "sources": [
           "right_top_track"
         ],
         "reasons": {
@@ -9989,14 +9939,9 @@
           ],
           "volume": [
             "量比 2.55x",
-            "5/20 均量 1.06x",
-            "回測量縮 69%"
+            "5/20 均量 1.06x"
           ],
-          "structure": [
-            "強勢回測區",
-            "均線距離 +0.3%",
-            "防守距離 1.2%"
-          ],
+          "structure": [],
           "theme": []
         }
       }
@@ -10242,50 +10187,47 @@
       "vol_ratio": 1.98,
       "high_10w": 77.9,
       "pinned": false,
-      "unified_score": 65.4,
-      "unified_score_grade": "B",
+      "unified_score": 54.7,
+      "unified_score_grade": "C",
       "score_breakdown": {
         "version": "unified_score_v2_momentum_first_stock_level",
-        "total": 65.4,
-        "grade": "B",
-        "base": 56.8,
-        "components": {
-          "chip": 0.0,
-          "momentum": 63.0,
-          "volume": 67.3,
-          "structure": 77.7,
-          "theme": 0.0
-        },
-        "source_count": 5,
-        "source_multiplier": 1.15,
-        "sources": [
-          "momentum_pullback",
-          "price_breakout_track",
-          "right_top_track",
-          "volume_pullback",
-          "標的追蹤"
-        ],
-        "aggregation": "max_component_by_stock"
-      },
-      "score": 65.4,
-      "legacy_score": 12.3,
-      "context_unified_score": 60.3,
-      "context_score_breakdown": {
-        "version": "unified_score_v2_momentum_first_stock_level",
-        "total": 60.3,
+        "total": 54.7,
         "grade": "C",
-        "base": 54.8,
+        "base": 49.8,
         "components": {
           "chip": 0.0,
           "momentum": 58.5,
-          "volume": 67.3,
-          "structure": 77.7,
+          "volume": 59.1,
+          "structure": 57.7,
           "theme": 0.0
         },
         "source_count": 3,
         "source_multiplier": 1.1,
         "sources": [
-          "momentum_pullback",
+          "price_breakout_track",
+          "right_top_track",
+          "volume_pullback"
+        ],
+        "aggregation": "max_component_by_stock"
+      },
+      "score": 54.7,
+      "legacy_score": 12.3,
+      "context_unified_score": 52.2,
+      "context_score_breakdown": {
+        "version": "unified_score_v2_momentum_first_stock_level",
+        "total": 52.2,
+        "grade": "C",
+        "base": 49.8,
+        "components": {
+          "chip": 0.0,
+          "momentum": 58.5,
+          "volume": 59.1,
+          "structure": 57.7,
+          "theme": 0.0
+        },
+        "source_count": 2,
+        "source_multiplier": 1.05,
+        "sources": [
           "right_top_track",
           "volume_pullback"
         ],
@@ -10299,13 +10241,9 @@
           "volume": [
             "量比 1.98x",
             "5/20 均量 1.45x",
-            "回測量縮 81%"
+            "回測量縮"
           ],
-          "structure": [
-            "強勢回測區",
-            "均線距離 +1.3%",
-            "防守距離 1.3%"
-          ],
+          "structure": [],
           "theme": []
         }
       }
@@ -10325,50 +10263,47 @@
       "vol_ratio": 1.71,
       "high_10w": 45.3,
       "pinned": false,
-      "unified_score": 68.6,
-      "unified_score_grade": "B",
+      "unified_score": 60.6,
+      "unified_score_grade": "C",
       "score_breakdown": {
         "version": "unified_score_v2_momentum_first_stock_level",
-        "total": 68.6,
-        "grade": "B",
-        "base": 59.6,
-        "components": {
-          "chip": 0.0,
-          "momentum": 72.4,
-          "volume": 62.1,
-          "structure": 76.8,
-          "theme": 0.0
-        },
-        "source_count": 5,
-        "source_multiplier": 1.15,
-        "sources": [
-          "momentum_pullback",
-          "price_breakout_track",
-          "right_top_track",
-          "volume_pullback",
-          "標的追蹤"
-        ],
-        "aggregation": "max_component_by_stock"
-      },
-      "score": 68.6,
-      "legacy_score": 14.1,
-      "context_unified_score": 64.0,
-      "context_score_breakdown": {
-        "version": "unified_score_v2_momentum_first_stock_level",
-        "total": 64.0,
+        "total": 60.6,
         "grade": "C",
-        "base": 58.1,
+        "base": 55.1,
         "components": {
           "chip": 0.0,
           "momentum": 69.1,
-          "volume": 62.1,
-          "structure": 76.8,
+          "volume": 52.2,
+          "structure": 73.1,
           "theme": 0.0
         },
         "source_count": 3,
         "source_multiplier": 1.1,
         "sources": [
-          "momentum_pullback",
+          "price_breakout_track",
+          "right_top_track",
+          "volume_pullback"
+        ],
+        "aggregation": "max_component_by_stock"
+      },
+      "score": 60.6,
+      "legacy_score": 14.1,
+      "context_unified_score": 57.9,
+      "context_score_breakdown": {
+        "version": "unified_score_v2_momentum_first_stock_level",
+        "total": 57.9,
+        "grade": "C",
+        "base": 55.1,
+        "components": {
+          "chip": 0.0,
+          "momentum": 69.1,
+          "volume": 52.2,
+          "structure": 73.1,
+          "theme": 0.0
+        },
+        "source_count": 2,
+        "source_multiplier": 1.05,
+        "sources": [
           "right_top_track",
           "volume_pullback"
         ],
@@ -10382,13 +10317,9 @@
           "volume": [
             "量比 1.71x",
             "5/20 均量 1.18x",
-            "回測量縮 72%"
+            "回測量縮"
           ],
-          "structure": [
-            "強勢回測區",
-            "均線距離 -0.1%",
-            "防守距離 5.5%"
-          ],
+          "structure": [],
           "theme": []
         }
       }
@@ -10720,52 +10651,49 @@
       "vol_ratio": 0.79,
       "high_10w": 64.9,
       "pinned": false,
-      "unified_score": 71.7,
+      "unified_score": 67.0,
       "unified_score_grade": "B",
       "score_breakdown": {
         "version": "unified_score_v2_momentum_first_stock_level",
-        "total": 71.7,
+        "total": 67.0,
         "grade": "B",
-        "base": 62.3,
-        "components": {
-          "chip": 0.0,
-          "momentum": 71.4,
-          "volume": 71.0,
-          "structure": 83.1,
-          "theme": 0.0
-        },
-        "source_count": 6,
-        "source_multiplier": 1.15,
-        "sources": [
-          "momentum_candidates",
-          "momentum_pullback",
-          "price_breakout_track",
-          "right_top_track",
-          "volume_pullback",
-          "標的追蹤"
-        ],
-        "aggregation": "max_component_by_stock"
-      },
-      "score": 71.7,
-      "legacy_score": 28.4,
-      "context_unified_score": 69.6,
-      "context_score_breakdown": {
-        "version": "unified_score_v2_momentum_first_stock_level",
-        "total": 69.6,
-        "grade": "B",
-        "base": 60.5,
+        "base": 58.2,
         "components": {
           "chip": 0.0,
           "momentum": 68.0,
-          "volume": 69.8,
-          "structure": 83.1,
+          "volume": 64.0,
+          "structure": 77.6,
           "theme": 0.0
         },
         "source_count": 4,
         "source_multiplier": 1.15,
         "sources": [
           "momentum_candidates",
-          "momentum_pullback",
+          "price_breakout_track",
+          "right_top_track",
+          "volume_pullback"
+        ],
+        "aggregation": "max_component_by_stock"
+      },
+      "score": 67.0,
+      "legacy_score": 28.4,
+      "context_unified_score": 63.6,
+      "context_score_breakdown": {
+        "version": "unified_score_v2_momentum_first_stock_level",
+        "total": 63.6,
+        "grade": "C",
+        "base": 57.8,
+        "components": {
+          "chip": 0.0,
+          "momentum": 68.0,
+          "volume": 62.3,
+          "structure": 77.6,
+          "theme": 0.0
+        },
+        "source_count": 3,
+        "source_multiplier": 1.1,
+        "sources": [
+          "momentum_candidates",
           "right_top_track",
           "volume_pullback"
         ],
@@ -10779,12 +10707,11 @@
           "volume": [
             "量比 0.79x",
             "5/20 均量 2.23x",
-            "回測量縮 73%"
+            "回測量縮"
           ],
           "structure": [
             "回穩觀察",
-            "強勢回測區",
-            "均線距離 +0.0%"
+            "支撐守住"
           ],
           "theme": []
         }
@@ -11297,7 +11224,7 @@
         "version": "unified_score_v2_momentum_first_stock_level",
         "total": 38.4,
         "grade": "D",
-        "base": 36.5,
+        "base": 36.6,
         "components": {
           "chip": 61.3,
           "momentum": 50.1,
@@ -12177,48 +12104,45 @@
       "vol_ratio": 0.23,
       "high_10w": 330,
       "pinned": false,
-      "unified_score": 64.6,
-      "unified_score_grade": "C",
+      "unified_score": 41.1,
+      "unified_score_grade": "D",
       "score_breakdown": {
         "version": "unified_score_v2_momentum_first_stock_level",
-        "total": 64.6,
-        "grade": "C",
-        "base": 58.7,
-        "components": {
-          "chip": 0.0,
-          "momentum": 69.3,
-          "volume": 71.7,
-          "structure": 63.9,
-          "theme": 0.0
-        },
-        "source_count": 3,
-        "source_multiplier": 1.1,
-        "sources": [
-          "momentum_pullback",
-          "right_top_track",
-          "標的追蹤"
-        ],
-        "aggregation": "max_component_by_stock"
-      },
-      "score": 64.6,
-      "legacy_score": 6.5,
-      "context_unified_score": 57.3,
-      "context_score_breakdown": {
-        "version": "unified_score_v2_momentum_first_stock_level",
-        "total": 57.3,
-        "grade": "C",
-        "base": 54.5,
+        "total": 41.1,
+        "grade": "D",
+        "base": 41.1,
         "components": {
           "chip": 0.0,
           "momentum": 65.7,
-          "volume": 61.5,
-          "structure": 63.9,
+          "volume": 46.2,
+          "structure": 0.0,
           "theme": 0.0
         },
-        "source_count": 2,
-        "source_multiplier": 1.05,
+        "source_count": 1,
+        "source_multiplier": 1.0,
         "sources": [
-          "momentum_pullback",
+          "right_top_track"
+        ],
+        "aggregation": "max_component_by_stock"
+      },
+      "score": 41.1,
+      "legacy_score": 6.5,
+      "context_unified_score": 41.1,
+      "context_score_breakdown": {
+        "version": "unified_score_v2_momentum_first_stock_level",
+        "total": 41.1,
+        "grade": "D",
+        "base": 41.1,
+        "components": {
+          "chip": 0.0,
+          "momentum": 65.7,
+          "volume": 46.2,
+          "structure": 0.0,
+          "theme": 0.0
+        },
+        "source_count": 1,
+        "source_multiplier": 1.0,
+        "sources": [
           "right_top_track"
         ],
         "reasons": {
@@ -12229,14 +12153,9 @@
           ],
           "volume": [
             "量比 0.23x",
-            "5/20 均量 1.78x",
-            "回測量縮 73%"
+            "5/20 均量 1.78x"
           ],
-          "structure": [
-            "強勢回測區",
-            "均線距離 +2.8%",
-            "防守距離 2.8%"
-          ],
+          "structure": [],
           "theme": []
         }
       }
@@ -12576,50 +12495,47 @@
       "vol_ratio": 0.8,
       "high_10w": 30.8,
       "pinned": false,
-      "unified_score": 65.0,
-      "unified_score_grade": "B",
+      "unified_score": 53.2,
+      "unified_score_grade": "C",
       "score_breakdown": {
         "version": "unified_score_v2_momentum_first_stock_level",
-        "total": 65.0,
-        "grade": "B",
-        "base": 56.6,
-        "components": {
-          "chip": 0.0,
-          "momentum": 66.4,
-          "volume": 59.7,
-          "structure": 78.3,
-          "theme": 0.0
-        },
-        "source_count": 5,
-        "source_multiplier": 1.15,
-        "sources": [
-          "momentum_pullback",
-          "price_breakout_track",
-          "right_top_track",
-          "volume_pullback",
-          "標的追蹤"
-        ],
-        "aggregation": "max_component_by_stock"
-      },
-      "score": 65.0,
-      "legacy_score": 5.5,
-      "context_unified_score": 60.2,
-      "context_score_breakdown": {
-        "version": "unified_score_v2_momentum_first_stock_level",
-        "total": 60.2,
+        "total": 53.2,
         "grade": "C",
-        "base": 54.7,
+        "base": 48.4,
         "components": {
           "chip": 0.0,
           "momentum": 62.4,
-          "volume": 59.7,
-          "structure": 78.3,
+          "volume": 48.9,
+          "structure": 54.0,
           "theme": 0.0
         },
         "source_count": 3,
         "source_multiplier": 1.1,
         "sources": [
-          "momentum_pullback",
+          "price_breakout_track",
+          "right_top_track",
+          "volume_pullback"
+        ],
+        "aggregation": "max_component_by_stock"
+      },
+      "score": 53.2,
+      "legacy_score": 5.5,
+      "context_unified_score": 50.8,
+      "context_score_breakdown": {
+        "version": "unified_score_v2_momentum_first_stock_level",
+        "total": 50.8,
+        "grade": "C",
+        "base": 48.4,
+        "components": {
+          "chip": 0.0,
+          "momentum": 62.4,
+          "volume": 48.9,
+          "structure": 54.0,
+          "theme": 0.0
+        },
+        "source_count": 2,
+        "source_multiplier": 1.05,
+        "sources": [
           "right_top_track",
           "volume_pullback"
         ],
@@ -12633,13 +12549,9 @@
           "volume": [
             "量比 0.80x",
             "5/20 均量 1.31x",
-            "回測量縮 93%"
+            "回測量縮"
           ],
-          "structure": [
-            "強勢回測區",
-            "均線距離 -0.1%",
-            "防守距離 1.8%"
-          ],
+          "structure": [],
           "theme": []
         }
       }
@@ -14024,52 +13936,48 @@
       "vol_ratio": 1.62,
       "high_10w": 231.5,
       "pinned": false,
-      "unified_score": 79.9,
+      "unified_score": 78.3,
       "unified_score_grade": "A",
       "score_breakdown": {
         "version": "unified_score_v2_momentum_first_stock_level",
-        "total": 79.9,
+        "total": 78.3,
         "grade": "A",
-        "base": 69.5,
+        "base": 68.1,
         "components": {
           "chip": 83.5,
           "momentum": 65.5,
-          "volume": 77.0,
-          "structure": 82.7,
-          "theme": 0.0
-        },
-        "source_count": 7,
-        "source_multiplier": 1.15,
-        "sources": [
-          "momentum_pullback",
-          "price_breakout_track",
-          "right_top",
-          "right_top_track",
-          "volume_pullback",
-          "標的追蹤",
-          "突破策略"
-        ],
-        "aggregation": "max_component_by_stock"
-      },
-      "score": 79.9,
-      "legacy_score": 13.2,
-      "context_unified_score": 75.2,
-      "context_score_breakdown": {
-        "version": "unified_score_v2_momentum_first_stock_level",
-        "total": 75.2,
-        "grade": "A",
-        "base": 65.4,
-        "components": {
-          "chip": 83.5,
-          "momentum": 59.6,
-          "volume": 71.2,
-          "structure": 82.7,
+          "volume": 75.2,
+          "structure": 76.7,
           "theme": 0.0
         },
         "source_count": 4,
         "source_multiplier": 1.15,
         "sources": [
-          "momentum_pullback",
+          "price_breakout_track",
+          "right_top",
+          "right_top_track",
+          "volume_pullback"
+        ],
+        "aggregation": "max_component_by_stock"
+      },
+      "score": 78.3,
+      "legacy_score": 13.2,
+      "context_unified_score": 69.9,
+      "context_score_breakdown": {
+        "version": "unified_score_v2_momentum_first_stock_level",
+        "total": 69.9,
+        "grade": "B",
+        "base": 63.5,
+        "components": {
+          "chip": 83.5,
+          "momentum": 59.6,
+          "volume": 67.5,
+          "structure": 76.7,
+          "theme": 0.0
+        },
+        "source_count": 3,
+        "source_multiplier": 1.1,
+        "sources": [
           "right_top",
           "right_top_track",
           "volume_pullback"
@@ -14086,13 +13994,9 @@
           "volume": [
             "量比 1.62x",
             "5/20 均量 2.18x",
-            "回測量縮 60%"
+            "回測量縮"
           ],
-          "structure": [
-            "強勢回測區",
-            "均線距離 +0.7%",
-            "防守距離 1.9%"
-          ],
+          "structure": [],
           "theme": []
         }
       }
@@ -14189,50 +14093,47 @@
       "vol_ratio": 1.22,
       "high_10w": 49.6,
       "pinned": false,
-      "unified_score": 59.7,
-      "unified_score_grade": "C",
+      "unified_score": 49.8,
+      "unified_score_grade": "D",
       "score_breakdown": {
         "version": "unified_score_v2_momentum_first_stock_level",
-        "total": 59.7,
-        "grade": "C",
-        "base": 51.9,
-        "components": {
-          "chip": 0.0,
-          "momentum": 57.5,
-          "volume": 54.9,
-          "structure": 82.2,
-          "theme": 0.0
-        },
-        "source_count": 5,
-        "source_multiplier": 1.15,
-        "sources": [
-          "momentum_pullback",
-          "price_breakout_track",
-          "right_top_track",
-          "volume_pullback",
-          "標的追蹤"
-        ],
-        "aggregation": "max_component_by_stock"
-      },
-      "score": 59.7,
-      "legacy_score": 11.7,
-      "context_unified_score": 54.5,
-      "context_score_breakdown": {
-        "version": "unified_score_v2_momentum_first_stock_level",
-        "total": 54.5,
-        "grade": "C",
-        "base": 49.5,
+        "total": 49.8,
+        "grade": "D",
+        "base": 45.3,
         "components": {
           "chip": 0.0,
           "momentum": 52.1,
-          "volume": 54.9,
-          "structure": 82.2,
+          "volume": 51.2,
+          "structure": 60.4,
           "theme": 0.0
         },
         "source_count": 3,
         "source_multiplier": 1.1,
         "sources": [
-          "momentum_pullback",
+          "price_breakout_track",
+          "right_top_track",
+          "volume_pullback"
+        ],
+        "aggregation": "max_component_by_stock"
+      },
+      "score": 49.8,
+      "legacy_score": 11.7,
+      "context_unified_score": 47.6,
+      "context_score_breakdown": {
+        "version": "unified_score_v2_momentum_first_stock_level",
+        "total": 47.6,
+        "grade": "D",
+        "base": 45.3,
+        "components": {
+          "chip": 0.0,
+          "momentum": 52.1,
+          "volume": 51.2,
+          "structure": 60.4,
+          "theme": 0.0
+        },
+        "source_count": 2,
+        "source_multiplier": 1.05,
+        "sources": [
           "right_top_track",
           "volume_pullback"
         ],
@@ -14245,13 +14146,9 @@
           "volume": [
             "量比 1.22x",
             "5/20 均量 1.29x",
-            "回測量縮 42%"
+            "回測量縮"
           ],
-          "structure": [
-            "強勢回測區",
-            "均線距離 +0.2%",
-            "防守距離 0.2%"
-          ],
+          "structure": [],
           "theme": []
         }
       }
@@ -14755,50 +14652,47 @@
       "vol_ratio": 3.08,
       "high_10w": 56.6,
       "pinned": false,
-      "unified_score": 68.7,
-      "unified_score_grade": "B",
+      "unified_score": 58.5,
+      "unified_score_grade": "C",
       "score_breakdown": {
         "version": "unified_score_v2_momentum_first_stock_level",
-        "total": 68.7,
-        "grade": "B",
-        "base": 59.7,
-        "components": {
-          "chip": 0.0,
-          "momentum": 68.7,
-          "volume": 69.6,
-          "structure": 76.2,
-          "theme": 0.0
-        },
-        "source_count": 5,
-        "source_multiplier": 1.15,
-        "sources": [
-          "momentum_pullback",
-          "price_breakout_track",
-          "right_top_track",
-          "volume_pullback",
-          "標的追蹤"
-        ],
-        "aggregation": "max_component_by_stock"
-      },
-      "score": 68.7,
-      "legacy_score": 18.8,
-      "context_unified_score": 63.9,
-      "context_score_breakdown": {
-        "version": "unified_score_v2_momentum_first_stock_level",
-        "total": 63.9,
+        "total": 58.5,
         "grade": "C",
-        "base": 58.1,
+        "base": 53.2,
         "components": {
           "chip": 0.0,
           "momentum": 65.0,
-          "volume": 69.6,
-          "structure": 76.2,
+          "volume": 62.1,
+          "structure": 56.3,
           "theme": 0.0
         },
         "source_count": 3,
         "source_multiplier": 1.1,
         "sources": [
-          "momentum_pullback",
+          "price_breakout_track",
+          "right_top_track",
+          "volume_pullback"
+        ],
+        "aggregation": "max_component_by_stock"
+      },
+      "score": 58.5,
+      "legacy_score": 18.8,
+      "context_unified_score": 55.9,
+      "context_score_breakdown": {
+        "version": "unified_score_v2_momentum_first_stock_level",
+        "total": 55.9,
+        "grade": "C",
+        "base": 53.2,
+        "components": {
+          "chip": 0.0,
+          "momentum": 65.0,
+          "volume": 62.1,
+          "structure": 56.3,
+          "theme": 0.0
+        },
+        "source_count": 2,
+        "source_multiplier": 1.05,
+        "sources": [
           "right_top_track",
           "volume_pullback"
         ],
@@ -14812,13 +14706,9 @@
           "volume": [
             "量比 3.08x",
             "5/20 均量 1.24x",
-            "回測量縮 71%"
+            "回測量縮"
           ],
-          "structure": [
-            "強勢回測區",
-            "均線距離 -0.7%",
-            "防守距離 2.6%"
-          ],
+          "structure": [],
           "theme": []
         }
       }
@@ -15560,50 +15450,47 @@
       "vol_ratio": 0.75,
       "high_10w": 1155,
       "pinned": false,
-      "unified_score": 67.7,
-      "unified_score_grade": "B",
+      "unified_score": 43.6,
+      "unified_score_grade": "D",
       "score_breakdown": {
         "version": "unified_score_v2_momentum_first_stock_level",
-        "total": 67.7,
-        "grade": "B",
-        "base": 58.8,
-        "components": {
-          "chip": 68.7,
-          "momentum": 66.5,
-          "volume": 44.7,
-          "structure": 72.4,
-          "theme": 0.0
-        },
-        "source_count": 4,
-        "source_multiplier": 1.15,
-        "sources": [
-          "big_holder_trend",
-          "momentum_pullback",
-          "right_top_track",
-          "標的追蹤"
-        ],
-        "aggregation": "max_component_by_stock"
-      },
-      "score": 67.7,
-      "legacy_score": 10.1,
-      "context_unified_score": 62.7,
-      "context_score_breakdown": {
-        "version": "unified_score_v2_momentum_first_stock_level",
-        "total": 62.7,
-        "grade": "C",
-        "base": 57.0,
+        "total": 43.6,
+        "grade": "D",
+        "base": 41.5,
         "components": {
           "chip": 68.7,
           "momentum": 62.5,
-          "volume": 44.7,
-          "structure": 72.4,
+          "volume": 26.1,
+          "structure": 0.0,
           "theme": 0.0
         },
-        "source_count": 3,
-        "source_multiplier": 1.1,
+        "source_count": 2,
+        "source_multiplier": 1.05,
         "sources": [
           "big_holder_trend",
-          "momentum_pullback",
+          "right_top_track"
+        ],
+        "aggregation": "max_component_by_stock"
+      },
+      "score": 43.6,
+      "legacy_score": 10.1,
+      "context_unified_score": 43.6,
+      "context_score_breakdown": {
+        "version": "unified_score_v2_momentum_first_stock_level",
+        "total": 43.6,
+        "grade": "D",
+        "base": 41.5,
+        "components": {
+          "chip": 68.7,
+          "momentum": 62.5,
+          "volume": 26.1,
+          "structure": 0.0,
+          "theme": 0.0
+        },
+        "source_count": 2,
+        "source_multiplier": 1.05,
+        "sources": [
+          "big_holder_trend",
           "right_top_track"
         ],
         "reasons": {
@@ -15617,14 +15504,9 @@
           ],
           "volume": [
             "量比 0.75x",
-            "5/20 均量 1.10x",
-            "回測量縮 59%"
+            "5/20 均量 1.10x"
           ],
-          "structure": [
-            "強勢回測區",
-            "均線距離 +0.8%",
-            "防守距離 0.9%"
-          ],
+          "structure": [],
           "theme": []
         }
       }
@@ -17414,49 +17296,46 @@
       "vol_ratio": 0.69,
       "high_10w": 83,
       "pinned": false,
-      "unified_score": 66.8,
-      "unified_score_grade": "B",
+      "unified_score": 40.7,
+      "unified_score_grade": "D",
       "score_breakdown": {
         "version": "unified_score_v2_momentum_first_stock_level",
-        "total": 66.8,
-        "grade": "B",
-        "base": 58.1,
-        "components": {
-          "chip": 73.3,
-          "momentum": 60.7,
-          "volume": 47.5,
-          "structure": 76.9,
-          "theme": 0.0
-        },
-        "source_count": 4,
-        "source_multiplier": 1.15,
-        "sources": [
-          "big_holder_trend",
-          "momentum_pullback",
-          "right_top_track",
-          "標的追蹤"
-        ],
-        "aggregation": "max_component_by_stock"
-      },
-      "score": 66.8,
-      "context_unified_score": 61.4,
-      "context_score_breakdown": {
-        "version": "unified_score_v2_momentum_first_stock_level",
-        "total": 61.4,
-        "grade": "C",
-        "base": 55.8,
+        "total": 40.7,
+        "grade": "D",
+        "base": 38.7,
         "components": {
           "chip": 73.3,
           "momentum": 55.8,
-          "volume": 47.5,
-          "structure": 76.9,
+          "volume": 25.2,
+          "structure": 0.0,
           "theme": 0.0
         },
-        "source_count": 3,
-        "source_multiplier": 1.1,
+        "source_count": 2,
+        "source_multiplier": 1.05,
         "sources": [
           "big_holder_trend",
-          "momentum_pullback",
+          "right_top_track"
+        ],
+        "aggregation": "max_component_by_stock"
+      },
+      "score": 40.7,
+      "context_unified_score": 40.7,
+      "context_score_breakdown": {
+        "version": "unified_score_v2_momentum_first_stock_level",
+        "total": 40.7,
+        "grade": "D",
+        "base": 38.7,
+        "components": {
+          "chip": 73.3,
+          "momentum": 55.8,
+          "volume": 25.2,
+          "structure": 0.0,
+          "theme": 0.0
+        },
+        "source_count": 2,
+        "source_multiplier": 1.05,
+        "sources": [
+          "big_holder_trend",
           "right_top_track"
         ],
         "reasons": {
@@ -17470,14 +17349,9 @@
           ],
           "volume": [
             "量比 0.69x",
-            "5/20 均量 1.06x",
-            "回測量縮 75%"
+            "5/20 均量 1.06x"
           ],
-          "structure": [
-            "強勢回測區",
-            "均線距離 +0.2%",
-            "防守距離 2.0%"
-          ],
+          "structure": [],
           "theme": []
         }
       },
@@ -21633,7 +21507,7 @@
         "version": "unified_score_v2_momentum_first_stock_level",
         "total": 79.4,
         "grade": "A",
-        "base": 69.1,
+        "base": 69.0,
         "components": {
           "chip": 90.0,
           "momentum": 74.7,
@@ -25827,46 +25701,44 @@
       "high_10w": 69.6,
       "remove_date": "2026-06-05",
       "pinned": false,
-      "unified_score": 59.0,
-      "unified_score_grade": "C",
+      "unified_score": 39.8,
+      "unified_score_grade": "D",
       "score_breakdown": {
         "version": "unified_score_v2_momentum_first_stock_level",
-        "total": 59.0,
-        "grade": "C",
-        "base": 56.1,
+        "total": 39.8,
+        "grade": "D",
+        "base": 39.8,
         "components": {
           "chip": 0.0,
-          "momentum": 70.8,
-          "volume": 55.8,
-          "structure": 68.9,
+          "momentum": 67.4,
+          "volume": 37.7,
+          "structure": 0.0,
           "theme": 0.0
         },
-        "source_count": 2,
-        "source_multiplier": 1.05,
+        "source_count": 1,
+        "source_multiplier": 1.0,
         "sources": [
-          "momentum_pullback",
           "right_top_track"
         ],
         "aggregation": "max_component_by_stock"
       },
-      "score": 59.0,
-      "context_unified_score": 57.3,
+      "score": 39.8,
+      "context_unified_score": 39.8,
       "context_score_breakdown": {
         "version": "unified_score_v2_momentum_first_stock_level",
-        "total": 57.3,
-        "grade": "C",
-        "base": 54.6,
+        "total": 39.8,
+        "grade": "D",
+        "base": 39.8,
         "components": {
           "chip": 0.0,
           "momentum": 67.4,
-          "volume": 55.8,
-          "structure": 68.9,
+          "volume": 37.7,
+          "structure": 0.0,
           "theme": 0.0
         },
-        "source_count": 2,
-        "source_multiplier": 1.05,
+        "source_count": 1,
+        "source_multiplier": 1.0,
         "sources": [
-          "momentum_pullback",
           "right_top_track"
         ],
         "reasons": {
@@ -25878,14 +25750,9 @@
           ],
           "volume": [
             "量比 2.74x",
-            "5/20 均量 0.86x",
-            "回測量縮 84%"
+            "5/20 均量 0.86x"
           ],
-          "structure": [
-            "強勢回測區",
-            "均線距離 -1.9%",
-            "防守距離 0.8%"
-          ],
+          "structure": [],
           "theme": []
         }
       },
@@ -26974,6 +26841,6 @@
   ],
   "unified_score_model": {
     "version": "unified_score_v1",
-    "applied_at": "2026-05-30T09:05:14+08:00"
+    "applied_at": "2026-06-01T10:28:02+08:00"
   }
 }

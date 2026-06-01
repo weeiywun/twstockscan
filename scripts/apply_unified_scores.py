@@ -212,8 +212,7 @@ def main() -> int:
         ("right_top.json", ["results"], "right_top"),
         ("right_top_track.json", ["active", "expired"], "right_top_track"),
         ("volume_signal.json", ["results"], "volume_signal"),
-        ("volume_pullback.json", ["active", "failed", "history"], "volume_pullback"),
-        ("momentum_pullback.json", ["results"], "momentum_pullback"),
+        ("volume_pullback.json", ["active", "failed", "history"], "volume_pullback"),
         ("momentum_candidates.json", ["focus_results", "results"], "momentum_candidates"),
     ]
     total = 0

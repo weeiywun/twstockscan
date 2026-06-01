@@ -125,26 +125,6 @@ const STRATEGIES = [
     dataKey: "volume_pullback_data",
   },
   {
-    id: "momentum_pullback",
-    name: "動能回測",
-    shortName: "動能回測",
-    icon: "◉",
-    group: "source",
-    available: true,
-    description: "找出已經被市場資金推升、目前回測到 Fib / 均線共振區，且風險距離可控的強勢股候選，方便人工看圖複查。",
-    conditions: [
-      "先有動能：近 60 日出現明確推升，波段漲幅至少 18%",
-      "趨勢未壞：Close > EMA60，且 EMA20 > EMA60 > EMA120",
-      "回測區：目前落在 Fib 23.6%~61.8%，優先 23.6%~50%",
-      "均線共振：靠近 EMA5 / EMA10 / EMA20 / EMA60，其中 EMA20 / EMA60 權重較高",
-      "回測量能：近 3 日量能相對攻擊量至少降溫 20%",
-      "防守距離：現價距主要支撐不超過 12%，用於判斷風險是否值得",
-    ],
-    dataUpdated: "載入中...",
-    dataSource: "price_cache + 既有策略標籤",
-    dataKey: "momentum_pullback_data",
-  },
-  {
     id: "stock_analysis",
     name: "低基期標的",
     shortName: "低基期標的",
@@ -207,8 +187,7 @@ const DATA = {
   big_holder_trend_data:  [],
   big_holder_trend_meta:  null,
   volume_signal_data:     [],
-  volume_pullback_data:    null,
-  momentum_pullback_data:  null,
+  volume_pullback_data:    null,
   momentum_candidates_data: null,
   stock_analysis_data:    null,
   performance_data:       null,
@@ -354,7 +333,6 @@ function _navBadge(s) {
   if (s.id === 'ssr') return DATA.momentum_candidates_data?.focus_results?.length ?? (typeof buildSSRRows === 'function' ? buildSSRRows().length : '—');
   if (s.id === 'stock_analysis') return DATA.stock_analysis_data?.active?.length ?? '—';
   if (s.id === 'volume_pullback') return DATA.volume_pullback_data?.active?.length ?? '—';
-  if (s.id === 'momentum_pullback') return DATA.momentum_pullback_data?.results?.length ?? '—';
   if (s.id === 'right_top_track') return DATA.right_top_track_data?.active?.length ?? '—';
   return (DATA[s.dataKey] || []).length;
 }
@@ -445,7 +423,6 @@ function renderStrategy() {
   if (strat.id === 'big_holder_trend') { renderBigHolderTrend(strat, main); return; }
   if (strat.id === 'volume_signal')    { renderVolumeSignal(strat, main);   return; }
   if (strat.id === 'volume_pullback')  { renderVolumePullback(strat, main); return; }
-  if (strat.id === 'momentum_pullback'){ renderMomentumPullback(strat, main); return; }
   if (strat.id === 'stock_analysis')        { renderStockAnalysis(strat, main);         return; }
   if (strat.id === 'big_holder_trend_track'){ renderBigHolderTrendTrack(strat, main);   return; }
   if (strat.id === 'right_top')             { renderRightTop(strat, main);               return; }
@@ -541,12 +518,11 @@ async function loadData() {
   const timestamp = new Date().getTime();
 
   try {
-    const [chipsRes, bhtRes, vsRes, vpbRes, mpbRes, mcRes, saRes, perfRes, miRes, fdRes, mbRes, rtRes, rttRes, bhttRes] = await Promise.all([
+    const [chipsRes, bhtRes, vsRes, vpbRes, mcRes, saRes, perfRes, miRes, fdRes, mbRes, rtRes, rttRes, bhttRes] = await Promise.all([
       fetch(`data/chips_big_holder.json?t=${timestamp}`,        { cache: 'no-store' }).then(r => r.ok ? r.json() : null).catch(() => null),
       fetch(`data/big_holder_trend.json?t=${timestamp}`,        { cache: 'no-store' }).then(r => r.ok ? r.json() : null).catch(() => null),
       fetch(`data/volume_signal.json?t=${timestamp}`,           { cache: 'no-store' }).then(r => r.ok ? r.json() : null).catch(() => null),
-      fetch(`data/volume_pullback.json?t=${timestamp}`,         { cache: 'no-store' }).then(r => r.ok ? r.json() : null).catch(() => null),
-      fetch(`data/momentum_pullback.json?t=${timestamp}`,       { cache: 'no-store' }).then(r => r.ok ? r.json() : null).catch(() => null),
+      fetch(`data/volume_pullback.json?t=${timestamp}`,         { cache: 'no-store' }).then(r => r.ok ? r.json() : null).catch(() => null),
       fetch(`data/momentum_candidates.json?t=${timestamp}`,     { cache: 'no-store' }).then(r => r.ok ? r.json() : null).catch(() => null),
       fetch(`data/ai_analysis.json?t=${timestamp}`,             { cache: 'no-store' }).then(r => r.ok ? r.json() : null).catch(() => null),
       fetch(`data/performance.json?t=${timestamp}`,             { cache: 'no-store' }).then(r => r.ok ? r.json() : null).catch(() => null),
@@ -592,12 +568,6 @@ async function loadData() {
       DATA.volume_pullback_data = vpbRes;
       const strat = STRATEGIES.find(s => s.id === 'volume_pullback');
       if (strat) strat.dataUpdated = (vpbRes.updated || '').slice(0, 10) || strat.dataUpdated;
-    }
-
-    if (mpbRes && mpbRes.results) {
-      DATA.momentum_pullback_data = mpbRes;
-      const strat = STRATEGIES.find(s => s.id === 'momentum_pullback');
-      if (strat) strat.dataUpdated = (mpbRes.source_date || mpbRes.updated || '').slice(0, 10) || strat.dataUpdated;
     }
 
     if (mcRes && mcRes.results) {

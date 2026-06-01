@@ -111,7 +111,8 @@
           ],
           "theme": []
         }
-      }
+      },
+      "legacy_score": 60.5
     },
     {
       "stock_id": "2603",
@@ -222,7 +223,8 @@
           "structure": [],
           "theme": []
         }
-      }
+      },
+      "legacy_score": 51.1
     },
     {
       "stock_id": "4306",
@@ -332,7 +334,8 @@
           "structure": [],
           "theme": []
         }
-      }
+      },
+      "legacy_score": 46.7
     },
     {
       "stock_id": "3038",
@@ -433,7 +436,8 @@
           "structure": [],
           "theme": []
         }
-      }
+      },
+      "legacy_score": 38.7
     },
     {
       "stock_id": "5452",
@@ -536,7 +540,8 @@
           "structure": [],
           "theme": []
         }
-      }
+      },
+      "legacy_score": 35.6
     },
     {
       "stock_id": "6214",
@@ -646,7 +651,8 @@
           "structure": [],
           "theme": []
         }
-      }
+      },
+      "legacy_score": 46.9
     },
     {
       "stock_id": "6153",
@@ -748,7 +754,8 @@
           "structure": [],
           "theme": []
         }
-      }
+      },
+      "legacy_score": 32.2
     },
     {
       "stock_id": "1810",
@@ -862,7 +869,8 @@
           "structure": [],
           "theme": []
         }
-      }
+      },
+      "legacy_score": 67.3
     },
     {
       "stock_id": "2385",
@@ -971,7 +979,8 @@
           "structure": [],
           "theme": []
         }
-      }
+      },
+      "legacy_score": 43.9
     },
     {
       "stock_id": "2206",
@@ -1082,7 +1091,8 @@
           ],
           "theme": []
         }
-      }
+      },
+      "legacy_score": 58.4
     },
     {
       "stock_id": "1709",
@@ -1200,7 +1210,8 @@
           ],
           "theme": []
         }
-      }
+      },
+      "legacy_score": 70.6
     },
     {
       "stock_id": "1723",
@@ -1305,7 +1316,8 @@
           "structure": [],
           "theme": []
         }
-      }
+      },
+      "legacy_score": 39.6
     },
     {
       "stock_id": "2597",
@@ -1416,7 +1428,8 @@
           ],
           "theme": []
         }
-      }
+      },
+      "legacy_score": 54.9
     },
     {
       "stock_id": "8942",
@@ -1461,48 +1474,45 @@
       "vol_20d_avg": 654,
       "week_chg_pct": 0.61,
       "bbw": 12.32,
-      "unified_score": 57.2,
-      "unified_score_grade": "C",
+      "unified_score": 33.2,
+      "unified_score_grade": "D",
       "score_breakdown": {
         "version": "unified_score_v2_momentum_first_stock_level",
-        "total": 57.2,
-        "grade": "C",
-        "base": 52.0,
-        "components": {
-          "chip": 47.2,
-          "momentum": 56.0,
-          "volume": 44.8,
-          "structure": 72.7,
-          "theme": 0.0
-        },
-        "source_count": 3,
-        "source_multiplier": 1.1,
-        "sources": [
-          "chips",
-          "momentum_pullback",
-          "籌碼集中"
-        ],
-        "aggregation": "max_component_by_stock"
-      },
-      "score": 57.2,
-      "context_unified_score": 52.5,
-      "context_score_breakdown": {
-        "version": "unified_score_v2_momentum_first_stock_level",
-        "total": 52.5,
-        "grade": "C",
-        "base": 50.0,
+        "total": 33.2,
+        "grade": "D",
+        "base": 33.2,
         "components": {
           "chip": 47.2,
           "momentum": 51.6,
-          "volume": 44.8,
-          "structure": 72.7,
+          "volume": 21.2,
+          "structure": 0.0,
           "theme": 0.0
         },
-        "source_count": 2,
-        "source_multiplier": 1.05,
+        "source_count": 1,
+        "source_multiplier": 1.0,
         "sources": [
-          "chips",
-          "momentum_pullback"
+          "chips"
+        ],
+        "aggregation": "max_component_by_stock"
+      },
+      "score": 33.2,
+      "context_unified_score": 33.2,
+      "context_score_breakdown": {
+        "version": "unified_score_v2_momentum_first_stock_level",
+        "total": 33.2,
+        "grade": "D",
+        "base": 33.2,
+        "components": {
+          "chip": 47.2,
+          "momentum": 51.6,
+          "volume": 21.2,
+          "structure": 0.0,
+          "theme": 0.0
+        },
+        "source_count": 1,
+        "source_multiplier": 1.0,
+        "sources": [
+          "chips"
         ],
         "reasons": {
           "chip": [
@@ -1517,17 +1527,13 @@
           ],
           "volume": [
             "量比 1.19x",
-            "5/20 均量 0.79x",
-            "回測量縮 82%"
+            "5/20 均量 0.79x"
           ],
-          "structure": [
-            "健康回測區",
-            "均線距離 +0.2%",
-            "防守距離 0.2%"
-          ],
+          "structure": [],
           "theme": []
         }
-      }
+      },
+      "legacy_score": 57.2
     },
     {
       "stock_id": "2645",
@@ -1638,7 +1644,8 @@
           ],
           "theme": []
         }
-      }
+      },
+      "legacy_score": 56.9
     },
     {
       "stock_id": "5607",
@@ -1743,7 +1750,8 @@
           "structure": [],
           "theme": []
         }
-      }
+      },
+      "legacy_score": 39.9
     },
     {
       "stock_id": "1460",
@@ -1849,7 +1857,8 @@
           "structure": [],
           "theme": []
         }
-      }
+      },
+      "legacy_score": 34.2
     },
     {
       "stock_id": "1455",
@@ -1959,7 +1968,8 @@
           ],
           "theme": []
         }
-      }
+      },
+      "legacy_score": 61.2
     },
     {
       "stock_id": "2618",
@@ -2078,7 +2088,8 @@
           ],
           "theme": []
         }
-      }
+      },
+      "legacy_score": 66.5
     },
     {
       "stock_id": "2105",
@@ -2181,7 +2192,8 @@
           "structure": [],
           "theme": []
         }
-      }
+      },
+      "legacy_score": 39.3
     },
     {
       "stock_id": "1444",
@@ -2293,7 +2305,8 @@
           ],
           "theme": []
         }
-      }
+      },
+      "legacy_score": 63.1
     },
     {
       "stock_id": "2886",
@@ -2407,7 +2420,8 @@
           ],
           "theme": []
         }
-      }
+      },
+      "legacy_score": 64.2
     },
     {
       "stock_id": "1612",
@@ -2522,7 +2536,8 @@
           ],
           "theme": []
         }
-      }
+      },
+      "legacy_score": 60.8
     },
     {
       "stock_id": "5213",
@@ -2624,7 +2639,8 @@
           "structure": [],
           "theme": []
         }
-      }
+      },
+      "legacy_score": 38.8
     },
     {
       "stock_id": "2387",
@@ -2735,7 +2751,8 @@
           ],
           "theme": []
         }
-      }
+      },
+      "legacy_score": 65.1
     },
     {
       "stock_id": "4532",
@@ -2838,7 +2855,8 @@
           "structure": [],
           "theme": []
         }
-      }
+      },
+      "legacy_score": 36.1
     },
     {
       "stock_id": "5522",
@@ -2949,7 +2967,8 @@
           ],
           "theme": []
         }
-      }
+      },
+      "legacy_score": 59.6
     },
     {
       "stock_id": "6121",
@@ -3057,7 +3076,8 @@
           "structure": [],
           "theme": []
         }
-      }
+      },
+      "legacy_score": 41.3
     },
     {
       "stock_id": "3706",
@@ -3172,12 +3192,13 @@
           ],
           "theme": []
         }
-      }
+      },
+      "legacy_score": 68.4
     }
   ],
   "price_updated": "2026-05-29",
   "unified_score_model": {
     "version": "unified_score_v1",
-    "applied_at": "2026-05-30T09:05:14+08:00"
+    "applied_at": "2026-06-01T10:28:02+08:00"
   }
 }

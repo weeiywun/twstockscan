@@ -10,7 +10,6 @@
 - `ssr`：標的池，讀取 `momentum_candidates.json`。
 - `chips_big_holder`：籌碼集中，讀取 `chips_big_holder.json`。
 - `big_holder_trend`：大戶趨勢池，讀取 `big_holder_trend.json`。
-- `momentum_pullback`：動能回測，讀取 `momentum_pullback.json`。
 - `stock_analysis`：籌碼標的追蹤，讀取 `ai_analysis.json`。
 - `right_top`：突破策略，讀取 `right_top.json`。
 - `right_top_track`：突破標的追蹤，讀取 `right_top_track.json`。
@@ -26,7 +25,6 @@
 - `chips_big_holder.json`、`big_holder_trend.json`：大戶與籌碼池。
 - `right_top.json`、`right_top_track.json`：突破策略與追蹤。
 - `volume_signal.json`、`volume_pullback.json`：量增訊號與量增回測來源。
-- `momentum_pullback.json`、`momentum_candidates.json`：動能回測與每日標的池。
 - `candidate_features.json`：跨策略候選特徵層。
 - `ai_analysis.json`：量增訊號標的追蹤與營收評級。
 - `performance.json`：績效追蹤資料。
@@ -42,7 +40,6 @@
 - `scan_big_holder_trend.py`、`update_big_holder_trend_prices.py`：大戶趨勢池與每日追蹤。
 - `scan_right_top.py`、`track_right_top.py`：突破策略與追蹤。
 - `scan_volume_signal.py`、`scan_volume_pullback.py`：量增訊號與量增回測模型。
-- `scan_momentum_pullback.py`：動能回測模型。
 - `scan_momentum_candidates.py`、`pattern_detect.py`：每日標的池與型態評分。
 - `enrich_candidate_features.py`、`unified_scoring.py`、`apply_unified_scores.py`：共用特徵與統一評分。
 - `stock_analysis.py`：量增訊號標的追蹤與營收評級。
