@@ -13,15 +13,15 @@
       "pnl_pct": 10.01,
       "rev_grade": "S",
       "pinned": false,
-      "score": 59.6,
+      "score": 49.6,
       "stock_id": "2882",
       "pattern_state": "先觀察",
-      "pattern_score": 59.6,
+      "pattern_score": 49.6,
       "pattern_subs": {
         "結構": 27,
         "型態": 17.6,
-        "量價": 6,
-        "位置": 9,
+        "量價": 0,
+        "位置": 5,
         "籌碼": 0
       },
       "pattern_tags": [
@@ -80,27 +80,28 @@
       "pnl_pct": 0.24,
       "rev_grade": "S",
       "pinned": false,
-      "score": 39.4,
+      "score": 67,
       "stock_id": "2603",
-      "pattern_state": "先觀察",
-      "pattern_score": 39.4,
+      "pattern_state": "值得看圖",
+      "pattern_score": 67,
       "pattern_subs": {
-        "結構": 22,
-        "型態": 8.4,
+        "結構": 27,
+        "型態": 25,
         "量價": 0,
-        "位置": 9,
+        "位置": 15,
         "籌碼": 0
       },
       "pattern_tags": [
         "均線多頭",
-        "箱頂整理"
+        "長盤突破首日"
       ],
       "patterns": [
-        "box_near_top"
+        "long_consolidation_breakout",
+        "w_bottom_neckline"
       ],
-      "key_level": 222.5,
-      "invalidation": null,
-      "pattern_confidence": 0.6,
+      "key_level": 222.0,
+      "invalidation": 215.34,
+      "pattern_confidence": 1.0,
       "score_model": "pattern_score_only_v1"
     },
     {
@@ -147,15 +148,15 @@
       "pnl_pct": 0.52,
       "rev_grade": "D",
       "pinned": true,
-      "score": 49.6,
+      "score": 61.6,
       "stock_id": "2352",
-      "pattern_state": "先觀察",
-      "pattern_score": 49.6,
+      "pattern_state": "值得看圖",
+      "pattern_score": 61.6,
       "pattern_subs": {
-        "結構": 22,
+        "結構": 27,
         "型態": 17.6,
-        "量價": 5,
-        "位置": 5,
+        "量價": 6,
+        "位置": 11,
         "籌碼": 0
       },
       "pattern_tags": [
@@ -165,8 +166,8 @@
       "patterns": [
         "w_bottom_neckline"
       ],
-      "key_level": 26.5,
-      "invalidation": 25.7,
+      "key_level": 29.3,
+      "invalidation": 28.42,
       "pattern_confidence": 0.8,
       "score_model": "pattern_score_only_v1"
     },
@@ -182,28 +183,28 @@
       "pnl_pct": 9.69,
       "rev_grade": "B",
       "pinned": false,
-      "score": 63,
+      "score": 52.6,
       "stock_id": "3231",
-      "pattern_state": "值得看圖",
-      "pattern_score": 63,
+      "pattern_state": "太遠不追",
+      "pattern_score": 52.6,
       "pattern_subs": {
         "結構": 27,
-        "型態": 25,
+        "型態": 17.6,
         "量價": 6,
-        "位置": 5,
+        "位置": 2,
         "籌碼": 0
       },
       "pattern_tags": [
         "均線多頭",
-        "長盤突破首日"
+        "W底突破頸線",
+        "已延伸/過熱"
       ],
       "patterns": [
-        "long_consolidation_breakout",
         "w_bottom_neckline"
       ],
       "key_level": 146.0,
       "invalidation": 141.62,
-      "pattern_confidence": 1.0,
+      "pattern_confidence": 0.8,
       "score_model": "pattern_score_only_v1"
     },
     {
@@ -288,12 +289,12 @@
       "pnl_pct": -8.16,
       "rev_grade": "C",
       "pinned": false,
-      "score": 28.0,
+      "score": 36.0,
       "stock_id": "3376",
       "pattern_state": "先觀察",
-      "pattern_score": 28.0,
+      "pattern_score": 36.0,
       "pattern_subs": {
-        "結構": 14,
+        "結構": 22,
         "型態": 0.0,
         "量價": 5,
         "位置": 9,
@@ -320,15 +321,15 @@
       "pnl_pct": -2.15,
       "rev_grade": "B",
       "pinned": false,
-      "score": 59.6,
+      "score": 53.6,
       "stock_id": "2421",
-      "pattern_state": "值得看圖",
-      "pattern_score": 59.6,
+      "pattern_state": "先觀察",
+      "pattern_score": 53.6,
       "pattern_subs": {
         "結構": 22,
         "型態": 17.6,
         "量價": 5,
-        "位置": 15,
+        "位置": 9,
         "籌碼": 0
       },
       "pattern_tags": [
@@ -355,26 +356,27 @@
       "pnl_pct": 1.69,
       "rev_grade": "S",
       "pinned": false,
-      "score": 55.0,
+      "score": 44.4,
       "stock_id": "2618",
       "pattern_state": "先觀察",
-      "pattern_score": 55.0,
+      "pattern_score": 44.4,
       "pattern_subs": {
-        "結構": 22,
-        "型態": 14.0,
-        "量價": 10,
+        "結構": 27,
+        "型態": 8.4,
+        "量價": 0,
         "位置": 9,
         "籌碼": 0
       },
       "pattern_tags": [
-        "收斂接近pivot"
+        "均線多頭",
+        "箱頂整理"
       ],
       "patterns": [
-        "tight_pivot"
+        "box_near_top"
       ],
-      "key_level": 36.25,
-      "invalidation": 33.71,
-      "pattern_confidence": 0.7,
+      "key_level": 38.4,
+      "invalidation": null,
+      "pattern_confidence": 0.6,
       "score_model": "pattern_score_only_v1"
     },
     {
@@ -389,26 +391,23 @@
       "pnl_pct": 7.96,
       "rev_grade": "B",
       "pinned": false,
-      "score": 67.0,
+      "score": 32.0,
       "stock_id": "2332",
-      "pattern_state": "值得看圖",
-      "pattern_score": 67.0,
+      "pattern_state": "先觀察",
+      "pattern_score": 32.0,
       "pattern_subs": {
         "結構": 22,
-        "型態": 24.0,
-        "量價": 10,
-        "位置": 11,
+        "型態": 0.0,
+        "量價": 5,
+        "位置": 5,
         "籌碼": 0
       },
       "pattern_tags": [
-        "均線多頭",
-        "長盤突破首日"
+        "均線多頭"
       ],
-      "patterns": [
-        "long_consolidation_breakout"
-      ],
-      "key_level": 16.2,
-      "invalidation": 15.71,
+      "patterns": [],
+      "key_level": null,
+      "invalidation": null,
       "pattern_confidence": 1.0,
       "score_model": "pattern_score_only_v1"
     },
@@ -424,14 +423,14 @@
       "pnl_pct": -2.4,
       "rev_grade": "S",
       "pinned": false,
-      "score": 14.0,
+      "score": 33.0,
       "stock_id": "2461",
       "pattern_state": "先觀察",
-      "pattern_score": 14.0,
+      "pattern_score": 33.0,
       "pattern_subs": {
-        "結構": 0,
+        "結構": 13,
         "型態": 0.0,
-        "量價": 5,
+        "量價": 11,
         "位置": 9,
         "籌碼": 0
       },
@@ -490,14 +489,14 @@
       "pnl_pct": 0.0,
       "rev_grade": "S",
       "pinned": false,
-      "score": 44.4,
+      "score": 39.4,
       "stock_id": "4306",
       "pattern_state": "先觀察",
-      "pattern_score": 44.4,
+      "pattern_score": 39.4,
       "pattern_subs": {
         "結構": 22,
         "型態": 8.4,
-        "量價": 5,
+        "量價": 0,
         "位置": 9,
         "籌碼": 0
       },
@@ -543,7 +542,7 @@
       "patterns": [
         "box_near_top"
       ],
-      "key_level": 326.5,
+      "key_level": 327.0,
       "invalidation": null,
       "pattern_confidence": 0.6,
       "score_model": "pattern_score_only_v1"
@@ -560,15 +559,15 @@
       "pnl_pct": -1.43,
       "rev_grade": "S",
       "pinned": false,
-      "score": 57.6,
+      "score": 58.6,
       "stock_id": "2606",
-      "pattern_state": "值得看圖",
-      "pattern_score": 57.6,
+      "pattern_state": "先觀察",
+      "pattern_score": 58.6,
       "pattern_subs": {
         "結構": 27,
         "型態": 17.6,
-        "量價": 0,
-        "位置": 13,
+        "量價": 5,
+        "位置": 9,
         "籌碼": 0
       },
       "pattern_tags": [
@@ -625,15 +624,15 @@
       "pnl_pct": -5.32,
       "rev_grade": "C",
       "pinned": false,
-      "score": 36.0,
+      "score": 26.0,
       "stock_id": "3708",
       "pattern_state": "先觀察",
-      "pattern_score": 36.0,
+      "pattern_score": 26.0,
       "pattern_subs": {
-        "結構": 22,
+        "結構": 14,
         "型態": 0.0,
         "量價": 5,
-        "位置": 9,
+        "位置": 7,
         "籌碼": 0
       },
       "pattern_tags": [
@@ -693,24 +692,27 @@
       "pnl_pct": 6.28,
       "rev_grade": "C",
       "pinned": false,
-      "score": 40.0,
+      "score": 43.4,
       "stock_id": "2881",
       "pattern_state": "先觀察",
-      "pattern_score": 40.0,
+      "pattern_score": 43.4,
       "pattern_subs": {
         "結構": 27,
-        "型態": 0.0,
-        "量價": 11,
-        "位置": 2,
+        "型態": 8.4,
+        "量價": 0,
+        "位置": 8,
         "籌碼": 0
       },
       "pattern_tags": [
-        "均線多頭"
+        "均線多頭",
+        "箱頂整理"
       ],
-      "patterns": [],
-      "key_level": null,
+      "patterns": [
+        "box_near_top"
+      ],
+      "key_level": 110.0,
       "invalidation": null,
-      "pattern_confidence": 1.0,
+      "pattern_confidence": 0.6,
       "score_model": "pattern_score_only_v1"
     },
     {
@@ -725,27 +727,27 @@
       "pnl_pct": -2.01,
       "rev_grade": "C",
       "pinned": false,
-      "score": 39.4,
+      "score": 60.6,
       "stock_id": "1810",
-      "pattern_state": "先觀察",
-      "pattern_score": 39.4,
+      "pattern_state": "值得看圖",
+      "pattern_score": 60.6,
       "pattern_subs": {
         "結構": 22,
-        "型態": 8.4,
-        "量價": 0,
-        "位置": 9,
+        "型態": 17.6,
+        "量價": 6,
+        "位置": 15,
         "籌碼": 0
       },
       "pattern_tags": [
         "均線多頭",
-        "箱頂整理"
+        "W底突破頸線"
       ],
       "patterns": [
-        "box_near_top"
+        "w_bottom_neckline"
       ],
       "key_level": 20.0,
-      "invalidation": null,
-      "pattern_confidence": 0.6,
+      "invalidation": 19.4,
+      "pattern_confidence": 0.8,
       "score_model": "pattern_score_only_v1"
     },
     {
@@ -760,27 +762,30 @@
       "pnl_pct": 0.95,
       "rev_grade": "B",
       "pinned": false,
-      "score": 59.0,
+      "score": 76,
       "stock_id": "1612",
-      "pattern_state": "先觀察",
-      "pattern_score": 59.0,
+      "pattern_state": "值得看圖",
+      "pattern_score": 76,
       "pattern_subs": {
         "結構": 30,
-        "型態": 14.0,
+        "型態": 25,
         "量價": 6,
-        "位置": 9,
+        "位置": 15,
         "籌碼": 0
       },
       "pattern_tags": [
         "均線多頭",
-        "收斂接近pivot"
+        "長盤突破首日"
       ],
       "patterns": [
+        "long_consolidation_breakout",
+        "platform_breakout_retest",
+        "w_bottom_neckline",
         "tight_pivot"
       ],
       "key_level": 37.5,
-      "invalidation": 34.88,
-      "pattern_confidence": 0.7,
+      "invalidation": 36.38,
+      "pattern_confidence": 1.0,
       "score_model": "pattern_score_only_v1"
     },
     {
@@ -795,27 +800,27 @@
       "pnl_pct": 1.34,
       "rev_grade": "D",
       "pinned": false,
-      "score": 50.4,
+      "score": 59.0,
       "stock_id": "2206",
-      "pattern_state": "先觀察",
-      "pattern_score": 50.4,
+      "pattern_state": "值得看圖",
+      "pattern_score": 59.0,
       "pattern_subs": {
-        "結構": 27,
-        "型態": 8.4,
-        "量價": 6,
-        "位置": 9,
+        "結構": 30,
+        "型態": 14.0,
+        "量價": 0,
+        "位置": 15,
         "籌碼": 0
       },
       "pattern_tags": [
         "均線多頭",
-        "箱頂整理"
+        "收斂接近pivot"
       ],
       "patterns": [
-        "box_near_top"
+        "tight_pivot"
       ],
-      "key_level": 61.3,
-      "invalidation": null,
-      "pattern_confidence": 0.6,
+      "key_level": 60.6,
+      "invalidation": 56.36,
+      "pattern_confidence": 0.7,
       "score_model": "pattern_score_only_v1"
     },
     {
@@ -830,27 +835,24 @@
       "pnl_pct": 1.55,
       "rev_grade": "B",
       "pinned": false,
-      "score": 44.4,
+      "score": 47.0,
       "stock_id": "6214",
       "pattern_state": "先觀察",
-      "pattern_score": 44.4,
+      "pattern_score": 47.0,
       "pattern_subs": {
         "結構": 27,
-        "型態": 8.4,
-        "量價": 0,
-        "位置": 9,
+        "型態": 0.0,
+        "量價": 15,
+        "位置": 5,
         "籌碼": 0
       },
       "pattern_tags": [
-        "均線多頭",
-        "箱頂整理"
+        "均線多頭"
       ],
-      "patterns": [
-        "box_near_top"
-      ],
-      "key_level": 132.5,
+      "patterns": [],
+      "key_level": null,
       "invalidation": null,
-      "pattern_confidence": 0.6,
+      "pattern_confidence": 1.0,
       "score_model": "pattern_score_only_v1"
     },
     {
@@ -900,18 +902,19 @@
       "pnl_pct": 0.0,
       "rev_grade": "B",
       "pinned": false,
-      "score": 46.0,
+      "score": 48.0,
       "stock_id": "3293",
       "pattern_state": "先觀察",
-      "pattern_score": 46.0,
+      "pattern_score": 48.0,
       "pattern_subs": {
-        "結構": 17,
+        "結構": 25,
         "型態": 14.0,
-        "量價": 6,
+        "量價": 0,
         "位置": 9,
         "籌碼": 0
       },
       "pattern_tags": [
+        "均線多頭",
         "收斂接近pivot"
       ],
       "patterns": [
@@ -934,27 +937,24 @@
       "pnl_pct": 0.0,
       "rev_grade": "S",
       "pinned": false,
-      "score": 73,
+      "score": 47.0,
       "stock_id": "2362",
-      "pattern_state": "值得看圖",
-      "pattern_score": 73,
+      "pattern_state": "太遠不追",
+      "pattern_score": 47.0,
       "pattern_subs": {
         "結構": 27,
-        "型態": 25,
-        "量價": 10,
-        "位置": 11,
+        "型態": 0.0,
+        "量價": 15,
+        "位置": 5,
         "籌碼": 0
       },
       "pattern_tags": [
         "均線多頭",
-        "長盤突破首日"
+        "已延伸/過熱"
       ],
-      "patterns": [
-        "long_consolidation_breakout",
-        "platform_breakout_retest"
-      ],
-      "key_level": 42.8,
-      "invalidation": 41.52,
+      "patterns": [],
+      "key_level": null,
+      "invalidation": null,
       "pattern_confidence": 1.0,
       "score_model": "pattern_score_only_v1"
     },
@@ -970,27 +970,28 @@
       "pnl_pct": 0.0,
       "rev_grade": "S",
       "pinned": false,
-      "score": 48.4,
+      "score": 67,
       "stock_id": "2886",
-      "pattern_state": "先觀察",
-      "pattern_score": 48.4,
+      "pattern_state": "值得看圖",
+      "pattern_score": 67,
       "pattern_subs": {
-        "結構": 21,
-        "型態": 8.4,
-        "量價": 10,
-        "位置": 9,
+        "結構": 27,
+        "型態": 25,
+        "量價": 0,
+        "位置": 15,
         "籌碼": 0
       },
       "pattern_tags": [
         "均線多頭",
-        "箱頂整理"
+        "長盤突破首日"
       ],
       "patterns": [
-        "box_near_top"
+        "long_consolidation_breakout",
+        "platform_breakout_retest"
       ],
       "key_level": 41.4,
-      "invalidation": null,
-      "pattern_confidence": 0.6,
+      "invalidation": 40.16,
+      "pattern_confidence": 1.0,
       "score_model": "pattern_score_only_v1"
     },
     {
@@ -1005,25 +1006,26 @@
       "pnl_pct": 0.0,
       "rev_grade": "S",
       "pinned": false,
-      "score": 52.0,
+      "score": 60.0,
       "stock_id": "2597",
-      "pattern_state": "先觀察",
-      "pattern_score": 52.0,
+      "pattern_state": "值得看圖",
+      "pattern_score": 60.0,
       "pattern_subs": {
-        "結構": 17,
+        "結構": 25,
         "型態": 14.0,
         "量價": 6,
         "位置": 15,
         "籌碼": 0
       },
       "pattern_tags": [
+        "均線多頭",
         "收斂接近pivot"
       ],
       "patterns": [
         "tight_pivot"
       ],
-      "key_level": 165.5,
-      "invalidation": 153.92,
+      "key_level": 166.0,
+      "invalidation": 154.38,
       "pattern_confidence": 0.7,
       "score_model": "pattern_score_only_v1"
     },
@@ -1039,14 +1041,14 @@
       "pnl_pct": 0.0,
       "rev_grade": "D",
       "pinned": false,
-      "score": 31.4,
+      "score": 25.4,
       "stock_id": "5876",
       "pattern_state": "先觀察",
-      "pattern_score": 31.4,
+      "pattern_score": 25.4,
       "pattern_subs": {
         "結構": 8,
         "型態": 8.4,
-        "量價": 6,
+        "量價": 0,
         "位置": 9,
         "籌碼": 0
       },
@@ -1073,18 +1075,19 @@
       "pnl_pct": 0.0,
       "rev_grade": "B",
       "pinned": false,
-      "score": 31.4,
+      "score": 39.4,
       "stock_id": "2412",
       "pattern_state": "先觀察",
-      "pattern_score": 31.4,
+      "pattern_score": 39.4,
       "pattern_subs": {
-        "結構": 8,
+        "結構": 22,
         "型態": 8.4,
-        "量價": 6,
+        "量價": 0,
         "位置": 9,
         "籌碼": 0
       },
       "pattern_tags": [
+        "均線多頭",
         "箱頂整理"
       ],
       "patterns": [
@@ -1110,15 +1113,15 @@
       "repeat_count": 1,
       "remove_date": "2026-05-13",
       "pinned": true,
-      "score": 39.0,
+      "score": 41.0,
       "stock_id": "2342",
       "pattern_state": "太遠不追",
-      "pattern_score": 39.0,
+      "pattern_score": 41.0,
       "pattern_subs": {
         "結構": 27,
         "型態": 0.0,
         "量價": 5,
-        "位置": 7,
+        "位置": 9,
         "籌碼": 0
       },
       "pattern_tags": [
@@ -1144,15 +1147,15 @@
       "repeat_count": 1,
       "remove_date": "2026-05-13",
       "pinned": true,
-      "score": 52.0,
+      "score": 48.0,
       "stock_id": "2059",
       "pattern_state": "太遠不追",
-      "pattern_score": 52.0,
+      "pattern_score": 48.0,
       "pattern_subs": {
         "結構": 27,
         "型態": 0.0,
         "量價": 16,
-        "位置": 9,
+        "位置": 5,
         "籌碼": 0
       },
       "pattern_tags": [
@@ -1179,28 +1182,25 @@
       "repeat_count": 1,
       "remove_date": "2026-05-15",
       "pinned": true,
-      "score": 54.6,
+      "score": 41.0,
       "stock_id": "3016",
       "pattern_state": "太遠不追",
-      "pattern_score": 54.6,
+      "pattern_score": 41.0,
       "pattern_subs": {
         "結構": 27,
-        "型態": 17.6,
-        "量價": 10,
-        "位置": 0,
+        "型態": 0.0,
+        "量價": 11,
+        "位置": 3,
         "籌碼": 0
       },
       "pattern_tags": [
         "均線多頭",
-        "W底突破頸線",
         "已延伸/過熱"
       ],
-      "patterns": [
-        "w_bottom_neckline"
-      ],
-      "key_level": 130.5,
-      "invalidation": 126.58,
-      "pattern_confidence": 0.8,
+      "patterns": [],
+      "key_level": null,
+      "invalidation": null,
+      "pattern_confidence": 1.0,
       "score_model": "pattern_score_only_v1"
     },
     {
@@ -1216,15 +1216,15 @@
       "repeat_count": 1,
       "remove_date": "2026-05-13",
       "pinned": true,
-      "score": 52.6,
+      "score": 54.6,
       "stock_id": "2233",
       "pattern_state": "太遠不追",
-      "pattern_score": 52.6,
+      "pattern_score": 54.6,
       "pattern_subs": {
         "結構": 27,
         "型態": 17.6,
         "量價": 5,
-        "位置": 3,
+        "位置": 5,
         "籌碼": 0
       },
       "pattern_tags": [
@@ -1253,28 +1253,28 @@
       "repeat_count": 1,
       "remove_date": "2026-05-13",
       "pinned": true,
-      "score": 63,
+      "score": 52.6,
       "stock_id": "3231",
-      "pattern_state": "值得看圖",
-      "pattern_score": 63,
+      "pattern_state": "太遠不追",
+      "pattern_score": 52.6,
       "pattern_subs": {
         "結構": 27,
-        "型態": 25,
+        "型態": 17.6,
         "量價": 6,
-        "位置": 5,
+        "位置": 2,
         "籌碼": 0
       },
       "pattern_tags": [
         "均線多頭",
-        "長盤突破首日"
+        "W底突破頸線",
+        "已延伸/過熱"
       ],
       "patterns": [
-        "long_consolidation_breakout",
         "w_bottom_neckline"
       ],
       "key_level": 146.0,
       "invalidation": 141.62,
-      "pattern_confidence": 1.0,
+      "pattern_confidence": 0.8,
       "score_model": "pattern_score_only_v1"
     },
     {
@@ -1305,15 +1305,15 @@
       "entry_date": "2026-04-23",
       "remove_date": "2026-05-15",
       "pinned": true,
-      "score": 67,
+      "score": 69,
       "stock_id": "2385",
       "pattern_state": "值得看圖",
-      "pattern_score": 67,
+      "pattern_score": 69,
       "pattern_subs": {
         "結構": 27,
         "型態": 25,
-        "量價": 0,
-        "位置": 15,
+        "量價": 6,
+        "位置": 11,
         "籌碼": 0
       },
       "pattern_tags": [
@@ -1322,7 +1322,6 @@
       ],
       "patterns": [
         "long_consolidation_breakout",
-        "platform_breakout_retest",
         "w_bottom_neckline"
       ],
       "key_level": 135.0,
@@ -1358,19 +1357,20 @@
       "pinned": true,
       "entry_date": "2026-04-27",
       "remove_date": "2026-05-19",
-      "score": 41.0,
+      "score": 46.0,
       "stock_id": "3526",
       "pattern_state": "太遠不追",
-      "pattern_score": 41.0,
+      "pattern_score": 46.0,
       "pattern_subs": {
         "結構": 27,
         "型態": 0.0,
-        "量價": 5,
+        "量價": 10,
         "位置": 9,
         "籌碼": 0
       },
       "pattern_tags": [
         "均線多頭",
+        "量縮整理",
         "已延伸/過熱"
       ],
       "patterns": [],
@@ -1407,14 +1407,14 @@
       "pinned": true,
       "entry_date": "2026-04-27",
       "remove_date": "2026-05-19",
-      "score": 44.0,
+      "score": 40.0,
       "stock_id": "6015",
       "pattern_state": "太遠不追",
-      "pattern_score": 44.0,
+      "pattern_score": 40.0,
       "pattern_subs": {
         "結構": 27,
         "型態": 0.0,
-        "量價": 15,
+        "量價": 11,
         "位置": 2,
         "籌碼": 0
       },
@@ -1479,27 +1479,27 @@
       "pinned": false,
       "entry_date": "2026-05-07",
       "remove_date": "2026-05-29",
-      "score": 50.4,
+      "score": 55.6,
       "stock_id": "2328",
       "pattern_state": "先觀察",
-      "pattern_score": 50.4,
+      "pattern_score": 55.6,
       "pattern_subs": {
         "結構": 27,
-        "型態": 8.4,
+        "型態": 17.6,
         "量價": 6,
-        "位置": 9,
+        "位置": 5,
         "籌碼": 0
       },
       "pattern_tags": [
         "均線多頭",
-        "箱頂整理"
+        "W底突破頸線"
       ],
       "patterns": [
-        "box_near_top"
+        "w_bottom_neckline"
       ],
-      "key_level": 57.3,
-      "invalidation": null,
-      "pattern_confidence": 0.6,
+      "key_level": 56.3,
+      "invalidation": 54.61,
+      "pattern_confidence": 0.8,
       "score_model": "pattern_score_only_v1"
     },
     {
@@ -1554,14 +1554,14 @@
       "pinned": false,
       "entry_date": "2026-05-07",
       "remove_date": "2026-05-29",
-      "score": 14.0,
+      "score": 20.0,
       "stock_id": "2867",
       "pattern_state": "先觀察",
-      "pattern_score": 14.0,
+      "pattern_score": 20.0,
       "pattern_subs": {
         "結構": 0,
         "型態": 0.0,
-        "量價": 5,
+        "量價": 11,
         "位置": 9,
         "籌碼": 0
       },
@@ -1660,25 +1660,28 @@
       "pinned": false,
       "entry_date": "2026-05-08",
       "remove_date": "2026-06-01",
-      "score": 46.0,
+      "score": 49.4,
       "stock_id": "4961",
       "pattern_state": "先觀察",
-      "pattern_score": 46.0,
+      "pattern_score": 49.4,
       "pattern_subs": {
         "結構": 27,
-        "型態": 0.0,
-        "量價": 10,
+        "型態": 8.4,
+        "量價": 5,
         "位置": 9,
         "籌碼": 0
       },
       "pattern_tags": [
         "均線多頭",
+        "箱頂整理",
         "量縮整理"
       ],
-      "patterns": [],
-      "key_level": null,
+      "patterns": [
+        "box_near_top"
+      ],
+      "key_level": 182.5,
       "invalidation": null,
-      "pattern_confidence": 1.0,
+      "pattern_confidence": 0.6,
       "score_model": "pattern_score_only_v1"
     },
     {
@@ -1695,28 +1698,25 @@
       "pinned": false,
       "entry_date": "2026-05-11",
       "remove_date": "2026-06-02",
-      "score": 40.4,
+      "score": 37.0,
       "stock_id": "8390",
       "pattern_state": "太遠不追",
-      "pattern_score": 40.4,
+      "pattern_score": 37.0,
       "pattern_subs": {
         "結構": 27,
-        "型態": 8.4,
-        "量價": 0,
+        "型態": 0.0,
+        "量價": 5,
         "位置": 5,
         "籌碼": 0
       },
       "pattern_tags": [
         "均線多頭",
-        "箱頂整理",
         "已延伸/過熱"
       ],
-      "patterns": [
-        "box_near_top"
-      ],
-      "key_level": 125.5,
+      "patterns": [],
+      "key_level": null,
       "invalidation": null,
-      "pattern_confidence": 0.6,
+      "pattern_confidence": 1.0,
       "score_model": "pattern_score_only_v1"
     },
     {
@@ -1733,27 +1733,27 @@
       "pinned": false,
       "entry_date": "2026-05-11",
       "remove_date": "2026-06-02",
-      "score": 59.8,
+      "score": 61.6,
       "stock_id": "2425",
       "pattern_state": "值得看圖",
-      "pattern_score": 59.8,
+      "pattern_score": 61.6,
       "pattern_subs": {
         "結構": 27,
-        "型態": 23.8,
-        "量價": 0,
-        "位置": 9,
+        "型態": 17.6,
+        "量價": 6,
+        "位置": 11,
         "籌碼": 0
       },
       "pattern_tags": [
         "均線多頭",
-        "平台突破回測"
+        "W底突破頸線"
       ],
       "patterns": [
-        "platform_breakout_retest"
+        "w_bottom_neckline"
       ],
       "key_level": 35.95,
       "invalidation": 34.87,
-      "pattern_confidence": 0.95,
+      "pattern_confidence": 0.8,
       "score_model": "pattern_score_only_v1"
     },
     {
@@ -1808,14 +1808,14 @@
       "pinned": false,
       "entry_date": "2026-05-11",
       "remove_date": "2026-06-02",
-      "score": 52.6,
+      "score": 46.6,
       "stock_id": "6446",
       "pattern_state": "太遠不追",
-      "pattern_score": 52.6,
+      "pattern_score": 46.6,
       "pattern_subs": {
         "結構": 27,
         "型態": 17.6,
-        "量價": 6,
+        "量價": 0,
         "位置": 2,
         "籌碼": 0
       },
@@ -1884,24 +1884,27 @@
       "pinned": false,
       "entry_date": "2026-05-11",
       "remove_date": "2026-06-02",
-      "score": 40.0,
+      "score": 43.4,
       "stock_id": "2881",
       "pattern_state": "先觀察",
-      "pattern_score": 40.0,
+      "pattern_score": 43.4,
       "pattern_subs": {
         "結構": 27,
-        "型態": 0.0,
-        "量價": 11,
-        "位置": 2,
+        "型態": 8.4,
+        "量價": 0,
+        "位置": 8,
         "籌碼": 0
       },
       "pattern_tags": [
-        "均線多頭"
+        "均線多頭",
+        "箱頂整理"
       ],
-      "patterns": [],
-      "key_level": null,
+      "patterns": [
+        "box_near_top"
+      ],
+      "key_level": 110.0,
       "invalidation": null,
-      "pattern_confidence": 1.0,
+      "pattern_confidence": 0.6,
       "score_model": "pattern_score_only_v1"
     },
     {
@@ -1918,14 +1921,14 @@
       "pinned": true,
       "entry_date": "2026-05-11",
       "remove_date": "2026-06-02",
-      "score": 50.6,
+      "score": 44.6,
       "stock_id": "2302",
       "pattern_state": "太遠不追",
-      "pattern_score": 50.6,
+      "pattern_score": 44.6,
       "pattern_subs": {
         "結構": 27,
         "型態": 17.6,
-        "量價": 6,
+        "量價": 0,
         "位置": 0,
         "籌碼": 0
       },
@@ -1956,14 +1959,14 @@
       "pinned": false,
       "entry_date": "2026-05-11",
       "remove_date": "2026-06-02",
-      "score": 31.0,
+      "score": 36.0,
       "stock_id": "2897",
       "pattern_state": "先觀察",
-      "pattern_score": 31.0,
+      "pattern_score": 36.0,
       "pattern_subs": {
         "結構": 3,
         "型態": 14.0,
-        "量價": 5,
+        "量價": 10,
         "位置": 9,
         "籌碼": 0
       },
@@ -1992,27 +1995,24 @@
       "pinned": false,
       "entry_date": "2026-05-11",
       "remove_date": "2026-06-02",
-      "score": 73,
+      "score": 47.0,
       "stock_id": "2362",
-      "pattern_state": "值得看圖",
-      "pattern_score": 73,
+      "pattern_state": "太遠不追",
+      "pattern_score": 47.0,
       "pattern_subs": {
         "結構": 27,
-        "型態": 25,
-        "量價": 10,
-        "位置": 11,
+        "型態": 0.0,
+        "量價": 15,
+        "位置": 5,
         "籌碼": 0
       },
       "pattern_tags": [
         "均線多頭",
-        "長盤突破首日"
+        "已延伸/過熱"
       ],
-      "patterns": [
-        "long_consolidation_breakout",
-        "platform_breakout_retest"
-      ],
-      "key_level": 42.8,
-      "invalidation": 41.52,
+      "patterns": [],
+      "key_level": null,
+      "invalidation": null,
       "pattern_confidence": 1.0,
       "score_model": "pattern_score_only_v1"
     },
@@ -2030,14 +2030,14 @@
       "pinned": false,
       "entry_date": "2026-05-11",
       "remove_date": "2026-06-02",
-      "score": 44.0,
+      "score": 47.0,
       "stock_id": "1723",
       "pattern_state": "先觀察",
-      "pattern_score": 44.0,
+      "pattern_score": 47.0,
       "pattern_subs": {
-        "結構": 30,
+        "結構": 27,
         "型態": 0.0,
-        "量價": 5,
+        "量價": 11,
         "位置": 9,
         "籌碼": 0
       },
@@ -2064,14 +2064,14 @@
       "pinned": false,
       "entry_date": "2026-05-11",
       "remove_date": "2026-06-02",
-      "score": 36.0,
+      "score": 46.0,
       "stock_id": "5607",
       "pattern_state": "先觀察",
-      "pattern_score": 36.0,
+      "pattern_score": 46.0,
       "pattern_subs": {
         "結構": 22,
         "型態": 0.0,
-        "量價": 5,
+        "量價": 15,
         "位置": 9,
         "籌碼": 0
       },
@@ -2098,15 +2098,15 @@
       "pinned": false,
       "entry_date": "2026-05-11",
       "remove_date": "2026-06-02",
-      "score": 36.0,
+      "score": 26.0,
       "stock_id": "3708",
       "pattern_state": "先觀察",
-      "pattern_score": 36.0,
+      "pattern_score": 26.0,
       "pattern_subs": {
-        "結構": 22,
+        "結構": 14,
         "型態": 0.0,
         "量價": 5,
-        "位置": 9,
+        "位置": 7,
         "籌碼": 0
       },
       "pattern_tags": [
@@ -2130,17 +2130,17 @@
       "pnl_pct": 18.98,
       "rev_grade": "D",
       "pinned": false,
-      "score": 49.6,
+      "score": 61.6,
       "entry_date": "2026-05-12",
       "remove_date": "2026-06-03",
       "stock_id": "8105",
       "pattern_state": "太遠不追",
-      "pattern_score": 49.6,
+      "pattern_score": 61.6,
       "pattern_subs": {
-        "結構": 22,
+        "結構": 27,
         "型態": 17.6,
-        "量價": 5,
-        "位置": 5,
+        "量價": 6,
+        "位置": 11,
         "籌碼": 0
       },
       "pattern_tags": [
@@ -2151,8 +2151,8 @@
       "patterns": [
         "w_bottom_neckline"
       ],
-      "key_level": 14.8,
-      "invalidation": 14.36,
+      "key_level": 18.6,
+      "invalidation": 18.04,
       "pattern_confidence": 0.8,
       "score_model": "pattern_score_only_v1"
     },
@@ -2168,17 +2168,17 @@
       "pnl_pct": 0.37,
       "rev_grade": "D",
       "pinned": false,
-      "score": 67,
+      "score": 69,
       "entry_date": "2026-05-12",
       "remove_date": "2026-06-03",
       "stock_id": "2385",
       "pattern_state": "值得看圖",
-      "pattern_score": 67,
+      "pattern_score": 69,
       "pattern_subs": {
         "結構": 27,
         "型態": 25,
-        "量價": 0,
-        "位置": 15,
+        "量價": 6,
+        "位置": 11,
         "籌碼": 0
       },
       "pattern_tags": [
@@ -2187,7 +2187,6 @@
       ],
       "patterns": [
         "long_consolidation_breakout",
-        "platform_breakout_retest",
         "w_bottom_neckline"
       ],
       "key_level": 135.0,
@@ -2245,27 +2244,30 @@
       "pnl_pct": 32.21,
       "rev_grade": "B",
       "pinned": true,
-      "score": 32.0,
+      "score": 43.4,
       "entry_date": "2026-05-14",
       "remove_date": "2026-06-05",
       "stock_id": "3479",
       "pattern_state": "太遠不追",
-      "pattern_score": 32.0,
+      "pattern_score": 43.4,
       "pattern_subs": {
         "結構": 27,
-        "型態": 0.0,
-        "量價": 5,
-        "位置": 0,
+        "型態": 8.4,
+        "量價": 0,
+        "位置": 8,
         "籌碼": 0
       },
       "pattern_tags": [
         "均線多頭",
+        "箱頂整理",
         "已延伸/過熱"
       ],
-      "patterns": [],
-      "key_level": null,
+      "patterns": [
+        "box_near_top"
+      ],
+      "key_level": 132.0,
       "invalidation": null,
-      "pattern_confidence": 1.0,
+      "pattern_confidence": 0.6,
       "score_model": "pattern_score_only_v1"
     },
     {
@@ -2280,16 +2282,16 @@
       "pnl_pct": 0.21,
       "rev_grade": "S",
       "pinned": false,
-      "score": 48.0,
+      "score": 54.0,
       "entry_date": "2026-05-14",
       "remove_date": "2026-06-05",
       "stock_id": "3290",
       "pattern_state": "先觀察",
-      "pattern_score": 48.0,
+      "pattern_score": 54.0,
       "pattern_subs": {
         "結構": 25,
         "型態": 14.0,
-        "量價": 0,
+        "量價": 6,
         "位置": 9,
         "籌碼": 0
       },
@@ -2317,29 +2319,30 @@
       "pnl_pct": 4.65,
       "rev_grade": "S",
       "pinned": false,
-      "score": 59.6,
+      "score": 49.4,
       "entry_date": "2026-05-14",
       "remove_date": "2026-06-05",
       "stock_id": "2027",
-      "pattern_state": "值得看圖",
-      "pattern_score": 59.6,
+      "pattern_state": "先觀察",
+      "pattern_score": 49.4,
       "pattern_subs": {
-        "結構": 22,
-        "型態": 17.6,
+        "結構": 27,
+        "型態": 8.4,
         "量價": 5,
-        "位置": 15,
+        "位置": 9,
         "籌碼": 0
       },
       "pattern_tags": [
         "均線多頭",
-        "W底突破頸線"
+        "箱頂整理",
+        "量縮整理"
       ],
       "patterns": [
-        "w_bottom_neckline"
+        "box_near_top"
       ],
-      "key_level": 40.45,
-      "invalidation": 39.24,
-      "pattern_confidence": 0.8,
+      "key_level": 44.75,
+      "invalidation": null,
+      "pattern_confidence": 0.6,
       "score_model": "pattern_score_only_v1"
     },
     {

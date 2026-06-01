@@ -18,12 +18,12 @@
       "sell_fee": 47,
       "sell_tax": 165,
       "current_price": 52,
-      "score": 24,
+      "score": 19.0,
       "pattern_state": "先觀察",
-      "pattern_score": 24,
+      "pattern_score": 19.0,
       "pattern_subs": {
-        "結構": 5,
-        "型態": 0,
+        "結構": 0,
+        "型態": 0.0,
         "量價": 10,
         "位置": 9,
         "籌碼": 0
@@ -34,7 +34,7 @@
       "patterns": [],
       "key_level": null,
       "invalidation": null,
-      "pattern_confidence": 1,
+      "pattern_confidence": 1.0,
       "score_model": "pattern_score_only_v1"
     },
     {
@@ -70,7 +70,7 @@
       "patterns": [
         "box_near_top"
       ],
-      "key_level": 126,
+      "key_level": 126.0,
       "invalidation": null,
       "pattern_confidence": 0.6,
       "score_model": "pattern_score_only_v1"
@@ -92,7 +92,7 @@
       "sell_tax": 901,
       "current_price": 171.5,
       "score": 52.6,
-      "pattern_state": "太遠不追",
+      "pattern_state": "先觀察",
       "pattern_score": 52.6,
       "pattern_subs": {
         "結構": 27,
@@ -103,8 +103,7 @@
       },
       "pattern_tags": [
         "均線多頭",
-        "W底突破頸線",
-        "已延伸/過熱"
+        "W底突破頸線"
       ],
       "patterns": [
         "w_bottom_neckline"
@@ -142,14 +141,14 @@
         }
       ],
       "current_price": 661,
-      "score": 49.6,
+      "score": 51.6,
       "pattern_state": "太遠不追",
-      "pattern_score": 49.6,
+      "pattern_score": 51.6,
       "pattern_subs": {
         "結構": 22,
         "型態": 17.6,
         "量價": 10,
-        "位置": 0,
+        "位置": 2,
         "籌碼": 0
       },
       "pattern_tags": [
@@ -271,7 +270,7 @@
       "patterns": [
         "box_near_top"
       ],
-      "key_level": 126,
+      "key_level": 126.0,
       "invalidation": null,
       "pattern_confidence": 0.6,
       "score_model": "pattern_score_only_v1"
@@ -304,27 +303,27 @@
         }
       ],
       "current_price": 146,
-      "score": 63,
-      "pattern_state": "值得看圖",
-      "pattern_score": 63,
+      "score": 52.6,
+      "pattern_state": "太遠不追",
+      "pattern_score": 52.6,
       "pattern_subs": {
         "結構": 27,
-        "型態": 25,
+        "型態": 17.6,
         "量價": 6,
-        "位置": 5,
+        "位置": 2,
         "籌碼": 0
       },
       "pattern_tags": [
         "均線多頭",
-        "長盤突破首日"
+        "W底突破頸線",
+        "已延伸/過熱"
       ],
       "patterns": [
-        "long_consolidation_breakout",
         "w_bottom_neckline"
       ],
-      "key_level": 146,
+      "key_level": 146.0,
       "invalidation": 141.62,
-      "pattern_confidence": 1,
+      "pattern_confidence": 0.8,
       "score_model": "pattern_score_only_v1"
     },
     {
@@ -355,27 +354,27 @@
         }
       ],
       "current_price": 146,
-      "score": 63,
-      "pattern_state": "值得看圖",
-      "pattern_score": 63,
+      "score": 52.6,
+      "pattern_state": "太遠不追",
+      "pattern_score": 52.6,
       "pattern_subs": {
         "結構": 27,
-        "型態": 25,
+        "型態": 17.6,
         "量價": 6,
-        "位置": 5,
+        "位置": 2,
         "籌碼": 0
       },
       "pattern_tags": [
         "均線多頭",
-        "長盤突破首日"
+        "W底突破頸線",
+        "已延伸/過熱"
       ],
       "patterns": [
-        "long_consolidation_breakout",
         "w_bottom_neckline"
       ],
-      "key_level": 146,
+      "key_level": 146.0,
       "invalidation": 141.62,
-      "pattern_confidence": 1,
+      "pattern_confidence": 0.8,
       "score_model": "pattern_score_only_v1"
     },
     {
@@ -415,26 +414,25 @@
         }
       ],
       "current_price": 304.5,
-      "score": 57.6,
-      "pattern_state": "太遠不追",
-      "pattern_score": 57.6,
+      "score": 59.6,
+      "pattern_state": "先觀察",
+      "pattern_score": 59.6,
       "pattern_subs": {
         "結構": 27,
         "型態": 17.6,
         "量價": 10,
-        "位置": 3,
+        "位置": 5,
         "籌碼": 0
       },
       "pattern_tags": [
         "均線多頭",
         "W底突破頸線",
-        "量縮整理",
-        "已延伸/過熱"
+        "量縮整理"
       ],
       "patterns": [
         "w_bottom_neckline"
       ],
-      "key_level": 286,
+      "key_level": 286.0,
       "invalidation": 277.42,
       "pattern_confidence": 0.8,
       "score_model": "pattern_score_only_v1"
@@ -467,26 +465,26 @@
         }
       ],
       "current_price": 87.4,
-      "score": 49.4,
-      "pattern_state": "先觀察",
-      "pattern_score": 49.4,
+      "score": 67.0,
+      "pattern_state": "值得看圖",
+      "pattern_score": 67.0,
       "pattern_subs": {
         "結構": 22,
-        "型態": 8.4,
+        "型態": 24.0,
         "量價": 10,
-        "位置": 9,
+        "位置": 11,
         "籌碼": 0
       },
       "pattern_tags": [
         "均線多頭",
-        "箱頂整理"
+        "長盤突破首日"
       ],
       "patterns": [
-        "box_near_top"
+        "long_consolidation_breakout"
       ],
       "key_level": 89.7,
-      "invalidation": null,
-      "pattern_confidence": 0.6,
+      "invalidation": 87.01,
+      "pattern_confidence": 1.0,
       "score_model": "pattern_score_only_v1"
     },
     {
@@ -518,7 +516,7 @@
       ],
       "current_price": 171.5,
       "score": 52.6,
-      "pattern_state": "太遠不追",
+      "pattern_state": "先觀察",
       "pattern_score": 52.6,
       "pattern_subs": {
         "結構": 27,
@@ -529,8 +527,7 @@
       },
       "pattern_tags": [
         "均線多頭",
-        "W底突破頸線",
-        "已延伸/過熱"
+        "W底突破頸線"
       ],
       "patterns": [
         "w_bottom_neckline"
@@ -568,26 +565,26 @@
         }
       ],
       "current_price": 87.4,
-      "score": 49.4,
-      "pattern_state": "先觀察",
-      "pattern_score": 49.4,
+      "score": 67.0,
+      "pattern_state": "值得看圖",
+      "pattern_score": 67.0,
       "pattern_subs": {
         "結構": 22,
-        "型態": 8.4,
+        "型態": 24.0,
         "量價": 10,
-        "位置": 9,
+        "位置": 11,
         "籌碼": 0
       },
       "pattern_tags": [
         "均線多頭",
-        "箱頂整理"
+        "長盤突破首日"
       ],
       "patterns": [
-        "box_near_top"
+        "long_consolidation_breakout"
       ],
       "key_level": 89.7,
-      "invalidation": null,
-      "pattern_confidence": 0.6,
+      "invalidation": 87.01,
+      "pattern_confidence": 1.0,
       "score_model": "pattern_score_only_v1"
     },
     {
@@ -618,26 +615,26 @@
         }
       ],
       "current_price": 87.4,
-      "score": 49.4,
-      "pattern_state": "先觀察",
-      "pattern_score": 49.4,
+      "score": 67.0,
+      "pattern_state": "值得看圖",
+      "pattern_score": 67.0,
       "pattern_subs": {
         "結構": 22,
-        "型態": 8.4,
+        "型態": 24.0,
         "量價": 10,
-        "位置": 9,
+        "位置": 11,
         "籌碼": 0
       },
       "pattern_tags": [
         "均線多頭",
-        "箱頂整理"
+        "長盤突破首日"
       ],
       "patterns": [
-        "box_near_top"
+        "long_consolidation_breakout"
       ],
       "key_level": 89.7,
-      "invalidation": null,
-      "pattern_confidence": 0.6,
+      "invalidation": 87.01,
+      "pattern_confidence": 1.0,
       "score_model": "pattern_score_only_v1"
     },
     {
@@ -668,26 +665,26 @@
         }
       ],
       "current_price": 87.4,
-      "score": 49.4,
-      "pattern_state": "先觀察",
-      "pattern_score": 49.4,
+      "score": 67.0,
+      "pattern_state": "值得看圖",
+      "pattern_score": 67.0,
       "pattern_subs": {
         "結構": 22,
-        "型態": 8.4,
+        "型態": 24.0,
         "量價": 10,
-        "位置": 9,
+        "位置": 11,
         "籌碼": 0
       },
       "pattern_tags": [
         "均線多頭",
-        "箱頂整理"
+        "長盤突破首日"
       ],
       "patterns": [
-        "box_near_top"
+        "long_consolidation_breakout"
       ],
       "key_level": 89.7,
-      "invalidation": null,
-      "pattern_confidence": 0.6,
+      "invalidation": 87.01,
+      "pattern_confidence": 1.0,
       "score_model": "pattern_score_only_v1"
     },
     {
@@ -718,26 +715,26 @@
         }
       ],
       "current_price": 87.4,
-      "score": 49.4,
-      "pattern_state": "先觀察",
-      "pattern_score": 49.4,
+      "score": 67.0,
+      "pattern_state": "值得看圖",
+      "pattern_score": 67.0,
       "pattern_subs": {
         "結構": 22,
-        "型態": 8.4,
+        "型態": 24.0,
         "量價": 10,
-        "位置": 9,
+        "位置": 11,
         "籌碼": 0
       },
       "pattern_tags": [
         "均線多頭",
-        "箱頂整理"
+        "長盤突破首日"
       ],
       "patterns": [
-        "box_near_top"
+        "long_consolidation_breakout"
       ],
       "key_level": 89.7,
-      "invalidation": null,
-      "pattern_confidence": 0.6,
+      "invalidation": 87.01,
+      "pattern_confidence": 1.0,
       "score_model": "pattern_score_only_v1"
     },
     {
@@ -768,13 +765,13 @@
         }
       ],
       "current_price": 51.2,
-      "score": 14,
+      "score": 24.0,
       "pattern_state": "先觀察",
-      "pattern_score": 14,
+      "pattern_score": 24.0,
       "pattern_subs": {
-        "結構": 0,
-        "型態": 0,
-        "量價": 5,
+        "結構": 4,
+        "型態": 0.0,
+        "量價": 11,
         "位置": 9,
         "籌碼": 0
       },
@@ -782,7 +779,7 @@
       "patterns": [],
       "key_level": null,
       "invalidation": null,
-      "pattern_confidence": 1,
+      "pattern_confidence": 1.0,
       "score_model": "pattern_score_only_v1"
     },
     {
@@ -831,25 +828,24 @@
         }
       ],
       "current_price": 125.5,
-      "score": 48.6,
-      "pattern_state": "太遠不追",
-      "pattern_score": 48.6,
+      "score": 44.6,
+      "pattern_state": "先觀察",
+      "pattern_score": 44.6,
       "pattern_subs": {
         "結構": 22,
         "型態": 17.6,
-        "量價": 6,
-        "位置": 3,
+        "量價": 0,
+        "位置": 5,
         "籌碼": 0
       },
       "pattern_tags": [
         "均線多頭",
-        "W底突破頸線",
-        "已延伸/過熱"
+        "W底突破頸線"
       ],
       "patterns": [
         "w_bottom_neckline"
       ],
-      "key_level": 98,
+      "key_level": 98.0,
       "invalidation": 95.06,
       "pattern_confidence": 0.8,
       "score_model": "pattern_score_only_v1"
@@ -882,23 +878,24 @@
         }
       ],
       "current_price": 61.2,
-      "score": 34,
+      "score": 39.0,
       "pattern_state": "先觀察",
-      "pattern_score": 34,
+      "pattern_score": 39.0,
       "pattern_subs": {
         "結構": 22,
-        "型態": 0,
-        "量價": 5,
+        "型態": 0.0,
+        "量價": 10,
         "位置": 7,
         "籌碼": 0
       },
       "pattern_tags": [
-        "均線多頭"
+        "均線多頭",
+        "量縮整理"
       ],
       "patterns": [],
       "key_level": null,
       "invalidation": null,
-      "pattern_confidence": 1,
+      "pattern_confidence": 1.0,
       "score_model": "pattern_score_only_v1"
     },
     {
@@ -929,23 +926,24 @@
         }
       ],
       "current_price": 61.2,
-      "score": 34,
+      "score": 39.0,
       "pattern_state": "先觀察",
-      "pattern_score": 34,
+      "pattern_score": 39.0,
       "pattern_subs": {
         "結構": 22,
-        "型態": 0,
-        "量價": 5,
+        "型態": 0.0,
+        "量價": 10,
         "位置": 7,
         "籌碼": 0
       },
       "pattern_tags": [
-        "均線多頭"
+        "均線多頭",
+        "量縮整理"
       ],
       "patterns": [],
       "key_level": null,
       "invalidation": null,
-      "pattern_confidence": 1,
+      "pattern_confidence": 1.0,
       "score_model": "pattern_score_only_v1"
     },
     {
@@ -976,23 +974,24 @@
         }
       ],
       "current_price": 61.2,
-      "score": 34,
+      "score": 39.0,
       "pattern_state": "先觀察",
-      "pattern_score": 34,
+      "pattern_score": 39.0,
       "pattern_subs": {
         "結構": 22,
-        "型態": 0,
-        "量價": 5,
+        "型態": 0.0,
+        "量價": 10,
         "位置": 7,
         "籌碼": 0
       },
       "pattern_tags": [
-        "均線多頭"
+        "均線多頭",
+        "量縮整理"
       ],
       "patterns": [],
       "key_level": null,
       "invalidation": null,
-      "pattern_confidence": 1,
+      "pattern_confidence": 1.0,
       "score_model": "pattern_score_only_v1"
     },
     {
@@ -1189,14 +1188,14 @@
       "exit_net": null,
       "confirmed": true,
       "current_price": 30.05,
-      "score": 54.6,
+      "score": 58.6,
       "pattern_state": "先觀察",
-      "pattern_score": 54.6,
+      "pattern_score": 58.6,
       "pattern_subs": {
         "結構": 27,
         "型態": 17.6,
         "量價": 5,
-        "位置": 5,
+        "位置": 9,
         "籌碼": 0
       },
       "pattern_tags": [
@@ -1239,14 +1238,14 @@
       "exit_net": null,
       "confirmed": true,
       "current_price": 30.05,
-      "score": 54.6,
+      "score": 58.6,
       "pattern_state": "先觀察",
-      "pattern_score": 54.6,
+      "pattern_score": 58.6,
       "pattern_subs": {
         "結構": 27,
         "型態": 17.6,
         "量價": 5,
-        "位置": 5,
+        "位置": 9,
         "籌碼": 0
       },
       "pattern_tags": [
@@ -1289,14 +1288,14 @@
       "exit_net": null,
       "confirmed": true,
       "current_price": 30.05,
-      "score": 54.6,
+      "score": 58.6,
       "pattern_state": "先觀察",
-      "pattern_score": 54.6,
+      "pattern_score": 58.6,
       "pattern_subs": {
         "結構": 27,
         "型態": 17.6,
         "量價": 5,
-        "位置": 5,
+        "位置": 9,
         "籌碼": 0
       },
       "pattern_tags": [
@@ -1339,14 +1338,14 @@
       "exit_net": null,
       "confirmed": true,
       "current_price": 30.05,
-      "score": 54.6,
+      "score": 58.6,
       "pattern_state": "先觀察",
-      "pattern_score": 54.6,
+      "pattern_score": 58.6,
       "pattern_subs": {
         "結構": 27,
         "型態": 17.6,
         "量價": 5,
-        "位置": 5,
+        "位置": 9,
         "籌碼": 0
       },
       "pattern_tags": [
@@ -1389,14 +1388,14 @@
       "exit_net": null,
       "confirmed": true,
       "current_price": 30.05,
-      "score": 54.6,
+      "score": 58.6,
       "pattern_state": "先觀察",
-      "pattern_score": 54.6,
+      "pattern_score": 58.6,
       "pattern_subs": {
         "結構": 27,
         "型態": 17.6,
         "量價": 5,
-        "位置": 5,
+        "位置": 9,
         "籌碼": 0
       },
       "pattern_tags": [
@@ -1437,7 +1436,26 @@
       "exit_price": null,
       "exit_date": null,
       "exit_net": null,
-      "confirmed": false
+      "confirmed": false,
+      "pattern_state": "先觀察",
+      "pattern_score": 46.0,
+      "pattern_subs": {
+        "結構": 27,
+        "型態": 0.0,
+        "量價": 10,
+        "位置": 9,
+        "籌碼": 0
+      },
+      "pattern_tags": [
+        "均線多頭",
+        "量縮整理"
+      ],
+      "patterns": [],
+      "key_level": null,
+      "invalidation": null,
+      "pattern_confidence": 1.0,
+      "score": 46.0,
+      "score_model": "pattern_score_only_v1"
     }
   ],
   "price_history": {
@@ -1854,6 +1872,33 @@
       "2026-04-30": 216,
       "2026-05-04": 226.5,
       "2026-05-06": 233
+    },
+    "3591": {
+      "2026-04-22": 25.3,
+      "2026-04-23": 23.7,
+      "2026-04-24": 23.15,
+      "2026-04-27": 22.3,
+      "2026-04-28": 22.65,
+      "2026-04-29": 23.4,
+      "2026-04-30": 23.35,
+      "2026-05-04": 23.45,
+      "2026-05-06": 24.65,
+      "2026-05-07": 24.4,
+      "2026-05-11": 23.3,
+      "2026-05-13": 23.7,
+      "2026-05-14": 23.7,
+      "2026-05-15": 23.85,
+      "2026-05-18": 24.6,
+      "2026-05-19": 25.75,
+      "2026-05-20": 25.9,
+      "2026-05-21": 26.0,
+      "2026-05-22": 26.75,
+      "2026-05-25": 26.5,
+      "2026-05-26": 25.9,
+      "2026-05-27": 25.5,
+      "2026-05-28": 26.05,
+      "2026-05-29": 25.95,
+      "2026-06-01": 25.85
     }
   },
   "journal": [
