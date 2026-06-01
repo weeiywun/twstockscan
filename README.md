@@ -50,6 +50,7 @@
 - `holdings_scan.yml`：週六大戶資料流程。由 Google Apps Script 以 `holdings_scan_weekly` 觸發，也可手動輸入 `RUN_HOLDINGS_SCAN` 執行。
 - `stock_analysis.yml`：每日主流程成功後自動更新 `ai_analysis.json`。
 - `update_current_prices.yml`：前端更新現價按鈕與平日市場快照更新。
+- `shioaji_current_prices.yml`：手動用 Shioaji snapshots 更新 `current_prices.json`；需設定 `SHIOAJI_API_KEY` 與 `SHIOAJI_SECRET_KEY` repository secrets。
 - `institutional_tags.yml`：手動補法人標籤。
 
 所有資料寫入 workflow 使用同一個 `data-writes-main` concurrency group，避免同時推送互相覆蓋。
