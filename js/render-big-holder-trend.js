@@ -20,6 +20,15 @@ function renderBigHolderTrend(strat, main) {
     if (String(tag).includes('400')) return String(tag).includes('單') ? '400單週' : '400 4週增';
     return String(tag).includes('單') ? '千單週' : '千4週增';
   };
+  const tagSignalScore = row => {
+    const tags = row.tags || [];
+    let score = 0;
+    if (tags.includes('千張4週連增')) score += 3;
+    if (tags.includes('400張4週連增')) score += 2;
+    if (tags.includes('千張單週激增')) score += 5;
+    if (tags.includes('400張單週激增')) score += 4;
+    return row.signal_score ?? score;
+  };
   const trendCells = values => {
     const latestFirst = Array.isArray(values) ? values.slice(-4).reverse() : [];
     return latestFirst.length
@@ -31,6 +40,10 @@ function renderBigHolderTrend(strat, main) {
       .map(tag => `<span class="tag-badge compact" title="${String(tag).replace(/"/g, '&quot;')}">${shortSignalTag(tag)}</span>`)
       .join('');
     return `<div class="holder-trend-cell">
+      <div style="display:flex;align-items:center;gap:6px;margin-bottom:5px">
+        <span style="font-family:var(--mono);font-weight:700;color:var(--green)">${tagSignalScore(row)}</span>
+        <span style="font-size:10px;color:var(--text3)">tag</span>
+      </div>
       <div class="holder-trend-grid">
         <span class="trend-label">千張</span>${trendCells(row.big_trend_1000)}
         <span class="trend-label">400</span>${trendCells(row.big_trend_400)}
@@ -40,6 +53,7 @@ function renderBigHolderTrend(strat, main) {
   };
   const sortValue = row => {
     if (bigHolderTrendSortCol === 'score') return row.pattern_score ?? row.score ?? 0;
+    if (bigHolderTrendSortCol === 'signal_score') return tagSignalScore(row);
     if (bigHolderTrendSortCol === 'entry_close') return row.entry_close ?? row.close ?? 0;
     if (bigHolderTrendSortCol === 'latest_close') return row.latest_close ?? row.close ?? 0;
     if (bigHolderTrendSortCol === 'since_entry_pct') return row.since_entry_pct ?? 0;
@@ -114,7 +128,7 @@ function renderBigHolderTrend(strat, main) {
         <div class="summary-card">
           <div class="summary-label">平均分數</div>
           <div class="summary-value amber">${fmt(avgScore, 1)}</div>
-          <div class="summary-sub">統一分數模型</div>
+          <div class="summary-sub">型態分數</div>
         </div>
         <div class="summary-card">
           <div class="summary-label">入池後平均漲幅</div>
@@ -146,7 +160,7 @@ function renderBigHolderTrend(strat, main) {
                 <th onclick="bigHolderTrendSort('since_entry_pct')">漲幅${sortIcon('since_entry_pct')}</th>
                 <th onclick="bigHolderTrendSort('vol_20d_avg')">20均量${sortIcon('vol_20d_avg')}</th>
                 <th onclick="bigHolderTrendSort('max_gain_60d')">60日漲幅${sortIcon('max_gain_60d')}</th>
-                <th>大戶比例 / 訊號</th>
+                <th onclick="bigHolderTrendSort('signal_score')">大戶比例 / 訊號${sortIcon('signal_score')}</th>
               </tr>
             </thead>
             <tbody>${tableRows}</tbody>
@@ -170,7 +184,7 @@ function exportCSVBigHolderTrend() {
   const data = DATA.big_holder_trend_data || [];
   if (!data.length) return;
   const headers = [
-    '代號', '名稱', '產業', '分數', '入選收盤', '入選日期', '現價', '現價日期', '漲幅(%)',
+    '代號', '名稱', '產業', '分數', 'TAG分數', '入選收盤', '入選日期', '現價', '現價日期', '漲幅(%)',
     '20均量', '60日漲幅(%)', '訊號', '千張近四週', '400張近四週',
   ];
   const rows = data.map(row => [
@@ -178,6 +192,7 @@ function exportCSVBigHolderTrend() {
     row.name || '',
     row.industry || '',
     row.pattern_score ?? row.score ?? '',
+    tagSignalScore(row),
     row.entry_close ?? row.close ?? '',
     row.entry_date ?? '',
     row.latest_close ?? row.close ?? '',

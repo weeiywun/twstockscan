@@ -77,6 +77,19 @@ def trend_labels(
     return labels
 
 
+def signal_score(labels: list[str]) -> int:
+    score = 0
+    if "千張4週連增" in labels:
+        score += 3
+    if "400張4週連增" in labels:
+        score += 2
+    if "千張單週激增" in labels:
+        score += 5
+    if "400張單週激增" in labels:
+        score += 4
+    return score
+
+
 def price_features(price_df: pd.DataFrame, stock_id: str) -> dict[str, Any] | None:
     hist = price_df[price_df["stock_id_norm"] == stock_id].sort_values("date").reset_index(drop=True)
     if len(hist) < 80:
@@ -193,12 +206,14 @@ def build_results() -> dict[str, Any]:
             "big_trend_400": [round(v, 2) for _, v in recent_400],
             "date_labels": [f"{d[4:6]}/{d[6:8]}" for d, _ in recent_1000],
             "tags": labels,
+            "signal_score": signal_score(labels),
             "sources": ["big_holder_trend"],
             **price,
         })
 
     results.sort(
         key=lambda row: (
+            row.get("signal_score") or 0,
             max(row.get("chg_1w_1000") or -999, row.get("chg_1w_400") or -999),
             row.get("max_gain_60d") or 0,
             row.get("big_pct_1000") or 0,
